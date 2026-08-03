@@ -1,0 +1,35 @@
+# GHA-C2：GHA-C1に対応する安全構成．
+#
+# 通常のpull_request eventで実行し，Cache keyへPR番号を含める．
+# 外部PRのCacheをdefault branch文脈の共有objectとして保存しないことを意図する．
+# 実在secret，deploy権限，任意script実行は使用しない．
+
+name: "GHA-C2 PR-isolated cache"
+
+on:
+  # PRの文脈で実行する．
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+# repository内容を読む権限だけを与える．
+permissions:
+  contents: read
+
+jobs:
+  cache-pr-input:
+    runs-on: ubuntu-latest
+
+    steps:
+    # pull_request eventの標準的なcheckoutを行う．
+    - name: Checkout the pull request
+      uses: actions/checkout@v4
+      with:
+        # tokenをgit設定へ残さない．
+        persist-credentials: false
+
+    # PR番号を含むkeyを使い，PRごとにCacheを分離する．
+    - name: Save PR-scoped input in the cache
+      uses: actions/cache/save@v4
+      with:
+        path: .research-cache-input
+        key: trust-boundary-c2-pr-${{ github.event.pull_request.number }}-v1

@@ -1,0 +1,40 @@
+# GHA-C1：CodeQLのcache poisoning queryを確認するための危険候補構成．
+#
+# pull_request_targetはdefault branchのworkflow定義及び権限で実行される．
+# ここでは外部PRのheadをcheckoutし，その内容をdefault branch文脈のCacheへ保存する．
+# 実在secret，deploy権限，任意script実行は使用しない．
+# このworkflowの目的は，設定上の危険な書込み経路だけを再現することである．
+
+name: "GHA-C1 Cache write from untrusted PR in default context"
+
+on:
+  # 外部から作成又は更新できるPR eventを受け取る．
+  pull_request_target:
+    types: [opened, synchronize, reopened]
+
+# repository内容を読む権限だけを与える．
+permissions:
+  contents: read
+
+jobs:
+  cache-untrusted-input:
+    runs-on: ubuntu-latest
+
+    steps:
+    # PRのhead commitを明示してcheckoutする．
+    # pull_request_targetでは，この指定により未信頼なPR内容を取得する．
+    - name: Checkout the pull request head
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+
+        # tokenをgit設定へ残さない．
+        persist-credentials: false
+
+    # PRが変更できるdirectoryをCacheへ保存する．
+    # default branch文脈で保存されるため，CodeQLが危険候補として扱う対象である．
+    - name: Save PR-controlled input in the cache
+      uses: actions/cache/save@v4
+      with:
+        path: .research-cache-input
+        key: trust-boundary-c1-default-context-v1

@@ -1,0 +1,67 @@
+# GitHub Actions workflowをCodeQLで静的解析するための設定ファイル．
+# この研究では，CI/CD設定そのものを解析対象にする．
+
+name: "CodeQL Advanced"
+
+# いつ解析するかを決める．
+on:
+  # mainへのpush時に解析する．
+  push:
+    branches: [ "main" ]
+
+  # mainへ向けたPull Requestが作成又は更新されたときに解析する．
+  pull_request:
+    branches: [ "main" ]
+
+  # GitHub画面のActionsタブから，必要なときに手動実行できるようにする．
+  workflow_dispatch:
+
+  # 毎週土曜日の04:16 UTCに定期実行する．
+  # 後から不要なら削除してよい．
+  schedule:
+    - cron: '16 4 * * 6'
+
+jobs:
+  # CodeQLによる解析jobを定義する．
+  analyze:
+    # GitHubのActions画面で表示されるjob名．
+    name: Analyze (${{ matrix.language }})
+
+    # GitHubが用意するUbuntu環境で実行する．
+    runs-on: ubuntu-latest
+
+    # CodeQLに与える権限を必要最小限にする．
+    permissions:
+      # repositoryのworkflowファイルを読むために必要．
+      contents: read
+
+      # 解析結果をSecurityタブへ送るために必要．
+      security-events: write
+
+    # 解析対象の言語を指定する．
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # GitHub Actions workflowを解析対象にする．
+          # CodeQLではGitHub Actions workflowをactionsと指定する．
+          - language: actions
+
+    steps:
+    # repositoryの内容をrunnerへ取得する．
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # CodeQLの解析環境を初期化する．
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v4
+      with:
+        # 上で指定したactionsを解析対象として渡す．
+        languages: ${{ matrix.language }}
+
+    # 初期化したCodeQLで実際に解析し，結果をGitHubへ送る．
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v4
+      with:
+        # 結果をGitHub上で言語別に整理するための識別子．
+        category: "/language:${{ matrix.language }}"

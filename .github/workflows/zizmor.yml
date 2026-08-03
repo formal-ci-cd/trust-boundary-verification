@@ -1,0 +1,44 @@
+# GitHub Actionsのworkflow設定をzizmorで静的解析する．
+# この研究では，CodeQL，zizmor，actionlintの結果を比較する．
+
+name: "zizmor"
+
+on:
+  # mainへ反映された構成を継続的に検査する．
+  push:
+    branches: [ "main" ]
+
+  # 実験用のPull Requestで，変更前に検査する．
+  pull_request:
+    branches: [ "main" ]
+
+  # GitHubのActions画面から手動実行できるようにする．
+  workflow_dispatch:
+
+# workflow全体には，必要最小限の権限だけを与える．
+permissions:
+  contents: read
+  actions: read
+  security-events: write
+
+jobs:
+  zizmor:
+    name: Analyze GitHub Actions workflows with zizmor
+    runs-on: ubuntu-latest
+
+    steps:
+    # Pull Request又はmain上のworkflow定義を取得する．
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        # tokenをgit設定へ残さない．
+        persist-credentials: false
+
+    # .github/workflowsだけを対象に静的解析する．
+    # online auditは無効化し，初回はworkflow定義だけで再現可能な比較を行う．
+    - name: Run zizmor
+      uses: zizmorcore/zizmor-action@5f14fd08f7cf1cb1609c1e344975f152c7ee938d # v0.5.6
+      with:
+        inputs: .github/workflows
+        online-audits: false
+        advanced-security: true

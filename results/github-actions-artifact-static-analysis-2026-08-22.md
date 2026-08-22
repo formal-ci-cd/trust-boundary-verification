@@ -50,7 +50,7 @@ actionlintの出力は0件であった．すなわち，workflowの構文，式�
 | GHA-A1 | alertなし | `dangerous-triggers` | findingなし | 模擬権限へ到達する反例あり． |
 | GHA-A2 | alertなし | `dangerous-triggers` | findingなし | 完全性確認によって反例なし． |
 
-NuSMVではGHA-A1とGHA-A2を区別できたが，保存成功及び取得成功はまだ`unknown`である．GHA-A1の反例は，現在の静的構成で危険な場合を排除できないことを示すものであり，GitHub上で攻撃経路が実際に成立した証拠ではない．
+初回のNuSMV検査では保存成功及び取得成功を`unknown`としても，GHA-A1に反例が存在し，GHA-A2では未信頼状態の権限到達がないことを確認した．その後，PR #7の実行で保存及び取得の成功を観測し，GHA-A1では反例と同じ模擬権限到達，GHA-A2ではdigest不一致による遮断を確認した．実行証拠は[成果物経路の実行結果](github-actions-artifact-runtime-2026-08-22.md)に記録している．
 
 ## 6．現時点で分かったこと
 

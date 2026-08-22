@@ -14,11 +14,11 @@ GitHub Actions workflow
   → workflow，job，step付きの反例表
 ```
 
-producerとconsumerの結合では，成果物名だけでなく，consumerが`github.event.workflow_run.id`を`run-id`へ指定していることを同一性の根拠に含めた．producer run `32575878081`では，artifact ID `9476526432`，archive digest及び取得したfileのSHA-256を記録した．consumer側が同じproducer runを参照した事実は，default branch反映後の実行で確認する．
+producerとconsumerの結合では，成果物名だけでなく，consumerが`github.event.workflow_run.id`を`run-id`へ指定していることを同一性の根拠に含めた．初回のproducer run `32575878081`で保存成功を確認し，PR #7ではproducer run `32576681421`とartifact ID `9476722196`を両consumerの取得logと対応付けた．
 
 ## 2．GHA-A1
 
-GHA-A1は成果物をhash確認なしで模擬公開判断へ使用する．producer run `32575878081`で保存成功を確認したため，`writeAuthorized`及び`writeSucceeded`は`true`とした．取得結果は未確認であるため，`readSucceeded`は`unknown`として検査した．
+GHA-A1は成果物をhash確認なしで模擬公開判断へ使用する．producer run `32576681421`とconsumer run `32576693376`で保存及び取得の成功を確認したため，`writeAuthorized`，`writeSucceeded`及び`readSucceeded`は`true`とした．
 
 NuSMVの結果は次のとおりである．
 
@@ -35,7 +35,7 @@ NuSMVの結果は次のとおりである．
   → publish=trueによって模擬公開権限へ到達
 ```
 
-この反例は[workflow，job，stepへの対応表](gha-a1-nusmv-trace.md)へ自動変換した．保存成功は実測済みであるが，取得から模擬公開権限到達までは未確認値が成立する場合の推論であり，まだ実測結果ではない．
+この反例は[workflow，job，stepへの対応表](gha-a1-nusmv-trace.md)へ自動変換した．PR #7の実行では，反例と同じ保存，復元，利用及び模擬公開権限到達を確認した．
 
 ## 3．GHA-A2
 
@@ -45,7 +45,7 @@ GHA-A2は同じ成果物を取得するが，信頼済みdigestとの比較に�
 -- specification AG !(stage = authority_reached & object_tainted) is true
 ```
 
-安全側では，`object_restored`から`integrity_checked`，`object_used`の順に遷移する．digestが一致しなければ`blocked`となり，一致した場合は`object_tainted`を解除してから利用する．したがって，未信頼な状態の成果物による模擬公開権限への到達は成立しない．
+安全側では，`object_restored`から完全性確認へ進み，digestが一致しなければ`blocked`となる．PR #7ではdigest不一致を確認し，利用stepはskippedとなった．一致した場合だけ`object_tainted`を解除してから利用するため，未信頼な状態の成果物による模擬公開権限への到達は成立しない．
 
 ## 4．静的解析との差
 
@@ -62,10 +62,6 @@ PR #6のproducer run `32575878081`で，次の事実を確認した．詳細は`
 
 この結果は成果物の保存成功を示すが，consumerによる取得や模擬権限到達を示すものではない．
 
-## 6．残る確認
+## 6．consumerの実行結果
 
-- consumerが起動元runの同じartifact IDを実際に取得したか．
-- `publish=true`のPRで，GHA-A1だけが模擬権限到達を記録したか．
-- GHA-A2がdigest不一致を記録し，利用stepを実行しなかったか．
-
-これらはworkflowをdefault branchへ反映した後，GitHub上のrun IDとlogを使って確認する．
+PR #7で`publish=true`を保存したproducer run `32576681421`に対し，GHA-A1とGHA-A2が起動した．両consumerは同じartifact ID `9476722196`を取得した．GHA-A1は完全性確認なしで利用して模擬公開権限到達を記録し，GHA-A2はdigest不一致によって利用stepをskipした．詳細は[実行結果](github-actions-artifact-runtime-2026-08-22.md)に記録した．

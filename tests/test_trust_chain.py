@@ -79,6 +79,46 @@ class TrustChainTest(unittest.TestCase):
             self.assertEqual(chain["facts"]["writeAuthorized"], "true")
             self.assertEqual(chain["facts"]["writeSucceeded"], "true")
 
+    def test_runtime_consumers_used_the_same_artifact(self):
+        observation = BUILD.load_json(
+            ROOT / "model" / "observations" / "gha-a-runtime-pr7.json"
+        )
+        producer = observation["producer"]
+        consumers = {
+            consumer["scenarioId"]: consumer
+            for consumer in observation["consumers"]
+        }
+
+        self.assertEqual(set(consumers), {"GHA-A1", "GHA-A2"})
+        for consumer in consumers.values():
+            self.assertEqual(
+                consumer["triggerProducerRunId"], producer["runId"]
+            )
+            self.assertEqual(
+                consumer["downloadedArtifactId"], producer["artifact"]["id"]
+            )
+            self.assertEqual(
+                consumer["downloadedArchiveDigest"],
+                producer["artifact"]["archiveDigest"],
+            )
+            self.assertEqual(
+                consumer["payloadSha256"],
+                producer["artifact"]["payloadSha256"],
+            )
+            self.assertTrue(consumer["downloadSucceeded"])
+
+        self.assertTrue(consumers["GHA-A1"]["dummyPublishAuthorityReached"])
+        self.assertEqual(consumers["GHA-A1"]["useStepConclusion"], "success")
+        self.assertIsNone(consumers["GHA-A1"]["integrityCheckPassed"])
+        self.assertFalse(consumers["GHA-A2"]["dummyPublishAuthorityReached"])
+        self.assertEqual(consumers["GHA-A2"]["useStepConclusion"], "skipped")
+        self.assertEqual(consumers["GHA-A2"]["reason"], "digest_mismatch")
+
+        for scenario_id in ("gha-a1", "gha-a2"):
+            chain = self.build(scenario_id)
+            self.assertEqual(chain["scenario"]["evidenceStatus"], "observed")
+            self.assertEqual(chain["facts"]["readSucceeded"], "true")
+
     def test_unsafe_chain_has_authority_counterexample_conditions(self):
         chain = self.build("gha-a1")
         rendered = CONVERT.render_model(chain, "gha-a1.json")
@@ -97,7 +137,7 @@ class TrustChainTest(unittest.TestCase):
         rendered = CONVERT.render_model(chain, "gha-a2.json")
 
         self.assertIn("integrity_check_present := TRUE;", rendered)
-        self.assertIn("integrity_check_passed : boolean;", rendered)
+        self.assertIn("integrity_check_passed := FALSE;", rendered)
         self.assertIn(
             "stage = object_restored & integrity_check_present & integrity_check_passed : integrity_checked;",
             rendered,

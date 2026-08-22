@@ -7,9 +7,6 @@
 -- TRACE integrity_checked: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:1 - 復元した内容を利用する前に完全性を確認する．
 -- TRACE authority_reached: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - digest確認済みの成果物だけを模擬公開判断へ渡す．
 MODULE main
-FROZENVAR
-  read_succeeded : boolean;
-  integrity_check_passed : boolean;
 VAR
   stage : {start, object_written, object_restored, integrity_checked, object_used, authority_reached, blocked};
   object_tainted : boolean;
@@ -19,8 +16,10 @@ DEFINE
   write_authorized := TRUE;
   write_succeeded := TRUE;
   same_object := TRUE;
+  read_succeeded := TRUE;
   consumer_uses_object := TRUE;
   integrity_check_present := TRUE;
+  integrity_check_passed := FALSE;
   privileged_consumer := TRUE;
   has_authority := TRUE;
 INVAR write_succeeded -> write_authorized

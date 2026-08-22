@@ -23,7 +23,7 @@ GHA-A1は成果物をhash確認なしで模擬公開判断へ使用する．prod
 NuSMVの結果は次のとおりである．
 
 ```text
--- specification AG stage != authority_reached is false
+-- specification AG !(stage = authority_reached & object_tainted) is false
 ```
 
 反例は次の順序になった．
@@ -42,14 +42,14 @@ NuSMVの結果は次のとおりである．
 GHA-A2は同じ成果物を取得するが，信頼済みdigestとの比較に成功した内容だけを利用する．NuSMVの結果は次のとおりである．
 
 ```text
--- specification AG stage != authority_reached is true
+-- specification AG !(stage = authority_reached & object_tainted) is true
 ```
 
-未信頼な内容が完全性確認を通過しない限り，`object_used`から`integrity_checked`へ遷移し，未検証内容による模擬公開権限への到達は成立しない．
+安全側では，`object_restored`から`integrity_checked`，`object_used`の順に遷移する．digestが一致しなければ`blocked`となり，一致した場合は`object_tainted`を解除してから利用する．したがって，未信頼な状態の成果物による模擬公開権限への到達は成立しない．
 
 ## 4．静的解析との差
 
-CodeQLのbuilt-in queryは両構成を報告せず，zizmorは両方へ同じ`dangerous-triggers`を報告した．形式モデルでは，成果物名とrun IDによるobject同一性，完全性確認及び模擬権限を明示したため，GHA-A1とGHA-A2を異なる結果として検証できた．
+CodeQLのbuilt-in queryは両構成を報告せず，zizmorは両方へ同じ`dangerous-triggers`を報告した．形式モデルでは，成果物名とrun IDによるobject同一性，完全性確認，未信頼状態及び模擬権限を明示したため，GHA-A1とGHA-A2を異なる結果として検証できた．
 
 ## 5．producerの実行結果
 

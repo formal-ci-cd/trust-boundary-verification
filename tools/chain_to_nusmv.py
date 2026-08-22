@@ -15,7 +15,8 @@ FACT_MAPPING = {
     "same_object": "sameObject",
     "read_succeeded": "readSucceeded",
     "consumer_uses_object": "consumerUsesObject",
-    "integrity_verified": "integrityVerified",
+    "integrity_check_present": "integrityCheckPresent",
+    "integrity_check_passed": "integrityCheckPassed",
     "privileged_consumer": "privilegedConsumer",
     "has_authority": "hasAuthority",
 }
@@ -70,7 +71,8 @@ def render_model(chain, source_name):
     lines.extend(
         [
             "VAR",
-            "  stage : {start, object_written, object_restored, object_used, integrity_checked, authority_reached, blocked};",
+            "  stage : {start, object_written, object_restored, integrity_checked, object_used, authority_reached, blocked};",
+            "  object_tainted : boolean;",
         ]
     )
     if known_facts:
@@ -83,22 +85,31 @@ def render_model(chain, source_name):
         [
             "INVAR write_succeeded -> write_authorized",
             "INVAR read_succeeded -> write_succeeded",
+            "INVAR integrity_check_passed -> integrity_check_present",
             "ASSIGN",
             "  init(stage) := start;",
+            "  init(object_tainted) := producer_untrusted;",
+            "  next(object_tainted) := case",
+            "    stage = object_restored & integrity_check_present & integrity_check_passed : FALSE;",
+            "    TRUE : object_tainted;",
+            "  esac;",
             "  next(stage) := case",
             "    stage = start & (!producer_untrusted | !write_intent | !write_authorized | !write_succeeded) : blocked;",
             "    stage = start : object_written;",
             "    stage = object_written & same_object & read_succeeded : object_restored;",
             "    stage = object_written : blocked;",
+            "    stage = object_restored & integrity_check_present & integrity_check_passed : integrity_checked;",
+            "    stage = object_restored & integrity_check_present : blocked;",
             "    stage = object_restored & consumer_uses_object : object_used;",
             "    stage = object_restored : blocked;",
-            "    stage = object_used & integrity_verified : integrity_checked;",
+            "    stage = integrity_checked & consumer_uses_object : object_used;",
+            "    stage = integrity_checked : blocked;",
             "    stage = object_used & privileged_consumer & has_authority : authority_reached;",
             "    stage = object_used : blocked;",
             "    TRUE : stage;",
             "  esac;",
             "",
-            "CTLSPEC AG stage != authority_reached",
+            "CTLSPEC AG !(stage = authority_reached & object_tainted)",
             "",
         ]
     )

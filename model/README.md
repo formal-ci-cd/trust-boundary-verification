@@ -96,7 +96,16 @@ python3 tools/chain_to_nusmv.py \
   --output model/nusmv/gha-a1.smv
 ```
 
-`model/trust-chain.schema.json`は，保存側，取得側，共有objectの同一性，実行時の事実及び反例の位置対応を定義する．保存成功などが未確認の場合は`unknown`とし，NuSMVで真偽の両方を検査する．
+`model/trust-chain.schema.json`は，保存側，取得側，共有objectの同一性，実行時の事実及び反例の位置対応を定義する．保存成功などが未確認の場合は`unknown`とし，NuSMVで真偽の両方を検査する．成果物は未信頼なproducerから生成された時点で`object_tainted`とし，信頼済みdigestによる完全性確認に成功した場合だけ未信頼状態を解除する．
+
+状態の順序は次のとおりである．完全性確認がある場合は，復元した内容を利用する前に必ず検査する．
+
+```text
+保存 → 復元 → 完全性確認 → 利用 → 権限
+             └ 不一致 → 遮断
+```
+
+安全性は，権限への到達自体を禁止するのではなく，「未信頼な状態のobjectが権限へ到達しないこと」として検査する．これにより，完全性確認済みの信頼できる内容を後続処理が利用する正常な経路は違反にしない．
 
 NuSMVが反例を出した場合は，`tools/explain_nusmv_trace.py`で各状態を元のworkflow，job及びstepへ対応付ける．GHA-A1の結果は[反例対応表](../results/gha-a1-nusmv-trace.md)に保存している．
 

@@ -45,6 +45,17 @@ class TrustChainTest(unittest.TestCase):
         self.assertEqual(chain["facts"]["producerUntrusted"], "true")
         self.assertEqual(chain["facts"]["privilegedConsumer"], "true")
 
+    def test_generated_chain_facts_match_the_schema(self):
+        schema = BUILD.load_json(ROOT / "model" / "trust-chain.schema.json")
+        required_facts = set(
+            schema["properties"]["facts"]["required"]
+        )
+
+        for scenario_id in ("gha-a1", "gha-a2"):
+            chain = self.build(scenario_id)
+            self.assertEqual(chain["schemaVersion"], "0.2.0")
+            self.assertEqual(set(chain["facts"]), required_facts)
+
     def test_observed_producer_run_matches_the_chain_and_payload(self):
         observation = BUILD.load_json(
             ROOT
@@ -72,25 +83,47 @@ class TrustChainTest(unittest.TestCase):
         chain = self.build("gha-a1")
         rendered = CONVERT.render_model(chain, "gha-a1.json")
 
-        self.assertIn("integrity_verified := FALSE;", rendered)
+        self.assertIn("integrity_check_present := FALSE;", rendered)
+        self.assertIn("integrity_check_passed := FALSE;", rendered)
         self.assertIn("has_authority := TRUE;", rendered)
-        self.assertIn("CTLSPEC AG stage != authority_reached", rendered)
+        self.assertIn(
+            "CTLSPEC AG !(stage = authority_reached & object_tainted)",
+            rendered,
+        )
         self.assertIn("artifact-a1-unsafe-consumer.yml", rendered)
 
     def test_safe_chain_blocks_unverified_authority_path(self):
         chain = self.build("gha-a2")
         rendered = CONVERT.render_model(chain, "gha-a2.json")
 
-        self.assertIn("integrity_verified := TRUE;", rendered)
+        self.assertIn("integrity_check_present := TRUE;", rendered)
+        self.assertIn("integrity_check_passed : boolean;", rendered)
         self.assertIn(
-            "stage = object_used & integrity_verified : integrity_checked;",
+            "stage = object_restored & integrity_check_present & integrity_check_passed : integrity_checked;",
             rendered,
+        )
+        self.assertIn(
+            "stage = integrity_checked & consumer_uses_object : object_used;",
+            rendered,
+        )
+
+    def test_successful_integrity_check_removes_untrusted_taint(self):
+        chain = self.build("gha-a2")
+        rendered = CONVERT.render_model(chain, "gha-a2.json")
+
+        self.assertIn("init(object_tainted) := producer_untrusted;", rendered)
+        self.assertIn(
+            "stage = object_restored & integrity_check_present & integrity_check_passed : FALSE;",
+            rendered,
+        )
+        self.assertIn(
+            "INVAR integrity_check_passed -> integrity_check_present", rendered
         )
 
     def test_nusmv_counterexample_is_mapped_to_workflow_steps(self):
         chain = self.build("gha-a1")
         nusmv_output = """
--- specification AG stage != authority_reached is false
+-- specification AG !(stage = authority_reached & object_tainted) is false
 Trace Description: CTL Counterexample
 -> State: 1.1 <-
   stage = start

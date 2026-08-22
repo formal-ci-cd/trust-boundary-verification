@@ -14,7 +14,7 @@
     "evidence"
   ],
   "properties": {
-    "schemaVersion": {"const": "0.1.0"},
+    "schemaVersion": {"const": "0.2.0"},
     "scenario": {
       "type": "object",
       "required": ["id", "platform", "description", "evidenceStatus"],
@@ -50,7 +50,8 @@
         "sameObject",
         "readSucceeded",
         "consumerUsesObject",
-        "integrityVerified",
+        "integrityCheckPresent",
+        "integrityCheckPassed",
         "privilegedConsumer",
         "hasAuthority"
       ],

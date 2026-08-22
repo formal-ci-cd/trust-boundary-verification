@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "scenario": {
     "id": "GHA-A2",
     "platform": "GitHub Actions",
@@ -16,7 +16,8 @@
     "sameObject": "true",
     "readSucceeded": "unknown",
     "consumerUsesObject": "true",
-    "integrityVerified": "true",
+    "integrityCheckPresent": "true",
+    "integrityCheckPassed": "unknown",
     "hasAuthority": "true"
   },
   "sharedObject": {

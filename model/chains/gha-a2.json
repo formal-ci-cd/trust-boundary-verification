@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "0.1.0",
+  "schemaVersion": "0.2.0",
   "scenario": {
     "id": "GHA-A2",
     "platform": "GitHub Actions",
@@ -56,7 +56,8 @@
     "sameObject": "true",
     "readSucceeded": "unknown",
     "consumerUsesObject": "true",
-    "integrityVerified": "true",
+    "integrityCheckPresent": "true",
+    "integrityCheckPassed": "unknown",
     "privilegedConsumer": "true",
     "hasAuthority": "true"
   },
@@ -94,7 +95,7 @@
       "workflowName": "GHA-A2 Verified artifact consumer",
       "jobId": "consume-after-verification",
       "stepIndex": 1,
-      "meaning": "利用前の完全性確認により未検証内容を遮断する．"
+      "meaning": "復元した内容を利用する前に完全性を確認する．"
     },
     "authority_reached": {
       "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",

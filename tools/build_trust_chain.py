@@ -97,7 +97,8 @@ def build_chain(config, producer_model, consumer_model):
         "sameObject": configured_facts["sameObject"],
         "readSucceeded": configured_facts["readSucceeded"],
         "consumerUsesObject": configured_facts["consumerUsesObject"],
-        "integrityVerified": configured_facts["integrityVerified"],
+        "integrityCheckPresent": configured_facts["integrityCheckPresent"],
+        "integrityCheckPassed": configured_facts["integrityCheckPassed"],
         "privilegedConsumer": privileged_consumer,
         "hasAuthority": configured_facts["hasAuthority"],
     }
@@ -127,7 +128,7 @@ def build_chain(config, producer_model, consumer_model):
         "integrity_checked": location(
             consumer,
             config["integrityStepIndex"],
-            "利用前の完全性確認により未検証内容を遮断する．",
+            "復元した内容を利用する前に完全性を確認する．",
         ),
         "authority_reached": location(
             consumer,
@@ -141,7 +142,7 @@ def build_chain(config, producer_model, consumer_model):
     shared_object["name"] = object_name
 
     return {
-        "schemaVersion": "0.1.0",
+        "schemaVersion": config["schemaVersion"],
         "scenario": config["scenario"],
         "producer": producer,
         "consumer": consumer,

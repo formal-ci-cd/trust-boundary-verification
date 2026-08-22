@@ -48,6 +48,8 @@ Cache keyが文字列として同じでも，同じCache objectとは限らな�
 - physical storage namespace．
 - 保存及び復元のrun順序．
 
+GitHub Actionsにおける具体的なscope規則と判定条件は，[GitHub ActionsにおけるCache object同一性](github-actions-cache-object-identity.md)に整理する．
+
 ## artifactにおけるobject同一性
 
 artifactでは，少なくとも次を考慮する．

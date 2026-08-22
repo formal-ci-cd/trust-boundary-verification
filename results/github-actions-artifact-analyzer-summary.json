@@ -1,0 +1,43 @@
+{
+  "observedAt": "2026-08-22",
+  "scope": [
+    ".github/workflows/artifact-a1-pr-producer.yml",
+    ".github/workflows/artifact-a1-unsafe-consumer.yml",
+    ".github/workflows/artifact-a2-safe-consumer.yml"
+  ],
+  "results": [
+    {
+      "tool": "CodeQL CLI",
+      "version": "2.26.3",
+      "queryPack": "codeql/actions-queries@0.6.33",
+      "suite": "actions-code-scanning.qls",
+      "scannedWorkflowCount": 9,
+      "alertCount": 0,
+      "evidenceStatus": "local-observed"
+    },
+    {
+      "tool": "zizmor",
+      "version": "1.29.0",
+      "persona": "regular",
+      "offline": true,
+      "relevantFindingCount": 2,
+      "relevantFindings": [
+        {
+          "workflow": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "audit": "dangerous-triggers"
+        },
+        {
+          "workflow": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "audit": "dangerous-triggers"
+        }
+      ],
+      "evidenceStatus": "local-observed"
+    },
+    {
+      "tool": "actionlint",
+      "version": "1.7.12",
+      "findingCount": 0,
+      "evidenceStatus": "local-observed"
+    }
+  ]
+}

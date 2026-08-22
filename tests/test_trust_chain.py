@@ -45,6 +45,29 @@ class TrustChainTest(unittest.TestCase):
         self.assertEqual(chain["facts"]["producerUntrusted"], "true")
         self.assertEqual(chain["facts"]["privilegedConsumer"], "true")
 
+    def test_observed_producer_run_matches_the_chain_and_payload(self):
+        observation = BUILD.load_json(
+            ROOT
+            / "model"
+            / "observations"
+            / "gha-a-producer-run-32575878081.json"
+        )
+        operation = observation["operationResults"][0]
+        payload = ROOT / ".research-artifact-input" / "payload.txt"
+        actual_digest = hashlib.sha256(payload.read_bytes()).hexdigest()
+
+        self.assertEqual(
+            operation["operationId"], "artifact-write:produce-artifact:2"
+        )
+        self.assertEqual(operation["writeAuthorized"], "true")
+        self.assertEqual(operation["writeSucceeded"], "true")
+        self.assertEqual(operation["artifact"]["payloadSha256"], actual_digest)
+
+        for scenario_id in ("gha-a1", "gha-a2"):
+            chain = self.build(scenario_id)
+            self.assertEqual(chain["facts"]["writeAuthorized"], "true")
+            self.assertEqual(chain["facts"]["writeSucceeded"], "true")
+
     def test_unsafe_chain_has_authority_counterexample_conditions(self):
         chain = self.build("gha-a1")
         rendered = CONVERT.render_model(chain, "gha-a1.json")

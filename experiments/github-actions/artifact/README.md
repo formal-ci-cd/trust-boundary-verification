@@ -54,4 +54,4 @@ publish=true
 
 ## 6．現時点の状態
 
-workflow，CodeQLから共通モデルへの変換，NuSMVモデル及び反例の対応付けまでは作成済みである．GitHub上の複数runを使った実測は，workflowをdefault branchへ反映した後に行う．したがって，現時点の実行結果は`planned`であり，実証済みではない．
+workflow，CodeQLから共通モデルへの変換，NuSMVモデル及び反例の対応付けまでは作成済みである．PR #6のproducer run `32575878081`では，PR側の`publish=false`が成果物として保存され，取得したfileのSHA-256が基準値と一致することを確認した．consumerはdefault branch上のworkflowから起動されるため，取得及び模擬権限到達は未確認であり，実行結果は`incomplete`である．

@@ -4,15 +4,15 @@
     "id": "GHA-A2",
     "platform": "GitHub Actions",
     "description": "PR由来の成果物をworkflow_runが取得するが，信頼済みdigestと一致した場合だけ使用する．",
-    "evidenceStatus": "planned"
+    "evidenceStatus": "incomplete"
   },
   "producerModel": "model/examples/gha-a-producer.json",
   "consumerModel": "model/examples/gha-a2-consumer.json",
   "producerOperationId": "artifact-write:produce-artifact:2",
   "consumerOperationId": "artifact-read:consume-after-verification:0",
   "facts": {
-    "writeAuthorized": "unknown",
-    "writeSucceeded": "unknown",
+    "writeAuthorized": "true",
+    "writeSucceeded": "true",
     "sameObject": "true",
     "readSucceeded": "unknown",
     "consumerUsesObject": "true",
@@ -45,6 +45,11 @@
       "kind": "inference",
       "source": ".github/workflows/artifact-a2-safe-consumer.yml",
       "claim": "成果物は信頼済みdigestとの比較に成功した場合だけ使用される．"
+    },
+    {
+      "kind": "runtime",
+      "source": "model/observations/gha-a-producer-run-32575878081.json",
+      "claim": "pull_requestのproducer runで成果物の保存成功と内容を確認した．"
     }
   ]
 }

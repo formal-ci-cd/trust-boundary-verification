@@ -8,14 +8,14 @@
 -- TRACE authority_reached: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - digest確認済みの成果物だけを模擬公開判断へ渡す．
 MODULE main
 FROZENVAR
-  write_authorized : boolean;
-  write_succeeded : boolean;
   read_succeeded : boolean;
 VAR
   stage : {start, object_written, object_restored, object_used, integrity_checked, authority_reached, blocked};
 DEFINE
   producer_untrusted := TRUE;
   write_intent := TRUE;
+  write_authorized := TRUE;
+  write_succeeded := TRUE;
   same_object := TRUE;
   consumer_uses_object := TRUE;
   integrity_verified := TRUE;

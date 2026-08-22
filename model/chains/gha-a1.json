@@ -4,7 +4,7 @@
     "id": "GHA-A1",
     "platform": "GitHub Actions",
     "description": "PR由来の成果物をworkflow_runが完全性確認なしで模擬公開判断へ使用する．",
-    "evidenceStatus": "planned"
+    "evidenceStatus": "incomplete"
   },
   "producer": {
     "workflow": {
@@ -51,8 +51,8 @@
   "facts": {
     "producerUntrusted": "true",
     "writeIntent": "true",
-    "writeAuthorized": "unknown",
-    "writeSucceeded": "unknown",
+    "writeAuthorized": "true",
+    "writeSucceeded": "true",
     "sameObject": "true",
     "readSucceeded": "unknown",
     "consumerUsesObject": "true",
@@ -114,6 +114,11 @@
       "kind": "inference",
       "source": ".github/workflows/artifact-a1-unsafe-consumer.yml",
       "claim": "成果物の内容はhash確認なしで模擬公開判断へ渡される．"
+    },
+    {
+      "kind": "runtime",
+      "source": "model/observations/gha-a-producer-run-32575878081.json",
+      "claim": "pull_requestのproducer runで成果物の保存成功と内容を確認した．"
     }
   ]
 }

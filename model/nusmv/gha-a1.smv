@@ -8,14 +8,14 @@
 -- TRACE authority_reached: .github/workflows/artifact-a1-unsafe-consumer.yml:consume-without-verification:1 - 成果物のpublish=trueを模擬公開権限到達として記録する．
 MODULE main
 FROZENVAR
-  write_authorized : boolean;
-  write_succeeded : boolean;
   read_succeeded : boolean;
 VAR
   stage : {start, object_written, object_restored, object_used, integrity_checked, authority_reached, blocked};
 DEFINE
   producer_untrusted := TRUE;
   write_intent := TRUE;
+  write_authorized := TRUE;
+  write_succeeded := TRUE;
   same_object := TRUE;
   consumer_uses_object := TRUE;
   integrity_verified := FALSE;

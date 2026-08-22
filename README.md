@@ -35,5 +35,5 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 
 最初に読む資料は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)です．CodeQLの解析方法に関する調査は[CodeQLによるGitHub Actions解析の内部表現](docs/codeql-actions-internal-model.md)，形式検証へ渡す中間形式は[CI/CD共通モデル](model/README.md)に記録しています．
 
-成果物を複数run間で受け渡すGHA-A1及びGHA-A2の構成は，[GitHub Actions成果物実験](experiments/github-actions/artifact/README.md)に記録しています．静的解析の比較は[成果物実験の静的解析結果](results/github-actions-artifact-static-analysis-2026-08-22.md)，形式検証は[成果物経路の形式検証結果](results/github-actions-artifact-formal-model-2026-08-22.md)を参照してください．
+成果物を複数run間で受け渡すGHA-A1及びGHA-A2の構成は，[GitHub Actions成果物実験](experiments/github-actions/artifact/README.md)に記録しています．静的解析の比較は[成果物実験の静的解析結果](results/github-actions-artifact-static-analysis-2026-08-22.md)，形式検証は[成果物経路の形式検証結果](results/github-actions-artifact-formal-model-2026-08-22.md)，GitHub上での確認結果は[成果物経路の実行結果](results/github-actions-artifact-runtime-2026-08-22.md)を参照してください．
 Experimental artifacts for formal verification of CI/CD trust boundaries.

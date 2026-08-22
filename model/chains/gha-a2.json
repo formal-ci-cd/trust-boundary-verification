@@ -4,7 +4,7 @@
     "id": "GHA-A2",
     "platform": "GitHub Actions",
     "description": "PR由来の成果物をworkflow_runが取得するが，信頼済みdigestと一致した場合だけ使用する．",
-    "evidenceStatus": "incomplete"
+    "evidenceStatus": "observed"
   },
   "producer": {
     "workflow": {
@@ -54,10 +54,10 @@
     "writeAuthorized": "true",
     "writeSucceeded": "true",
     "sameObject": "true",
-    "readSucceeded": "unknown",
+    "readSucceeded": "true",
     "consumerUsesObject": "true",
     "integrityCheckPresent": "true",
-    "integrityCheckPassed": "unknown",
+    "integrityCheckPassed": "false",
     "privilegedConsumer": "true",
     "hasAuthority": "true"
   },
@@ -120,6 +120,11 @@
       "kind": "runtime",
       "source": "model/observations/gha-a-producer-run-32575878081.json",
       "claim": "pull_requestのproducer runで成果物の保存成功と内容を確認した．"
+    },
+    {
+      "kind": "runtime",
+      "source": "model/observations/gha-a-runtime-pr7.json",
+      "claim": "同じartifact IDの取得後，digest不一致で利用stepがskipされ，模擬公開権限へ到達しなかった．"
     }
   ]
 }

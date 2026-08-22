@@ -53,7 +53,7 @@ producerのkeyに含まれる`github.event.pull_request.number`とconsumerの`in
 
 GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-boundary-build-output`及び保存pathを取得した．GHA-A1及びGHA-A2からは，`actions/download-artifact`，同じ成果物名，取得先，`github.event.workflow_run.id`を使用する`run-id`を取得した．変換処理はこれらを`artifactWriteIntent`及び`artifactReadIntent`として出力する．
 
-この情報により，成果物名だけでなく「どのproducer runの成果物を取得するか」まで共通モデルへ残せる．ただし，実際のartifact ID，保存成功及び取得成功は実行記録から補う必要がある．
+この情報により，成果物名だけでなく「どのproducer runの成果物を取得するか」まで共通モデルへ残せる．実際のartifact ID，保存成功及び取得成功は，`model/observations/gha-a-runtime-pr7.json`の実行記録から補った．
 
 ## 5．取得できない情報
 
@@ -71,4 +71,4 @@ GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-bo
 
 CodeQLの内部表現は，モデル検査器へそのまま渡せる完成済みの状態遷移モデルではない．一方で，YAMLを独自に再解析しなくても，workflowの構造，起動契機，権限，Action，引数及び式を関係として取得できる．そのため，本研究ではCodeQLを，形式検証用モデルを生成するための前処理として利用できる可能性がある．
 
-静的な関係は共通モデルへ変換し，成果物名と起動元run IDを使ってproducerとconsumerを結合できた．さらに，NuSMVの反例を元のworkflow，job及びstepへ対応付けた．次は，GitHub上の実行記録からartifact ID，保存結果，取得結果及び模擬権限への到達結果を追加する．
+静的な関係は共通モデルへ変換し，成果物名と起動元run IDを使ってproducerとconsumerを結合できた．さらに，NuSMVの反例を元のworkflow，job及びstepへ対応付けた．PR #7の実行記録からartifact ID，保存結果，取得結果及び模擬権限への到達結果を追加し，GHA-A1の反例と実行経路が一致することを確認した．

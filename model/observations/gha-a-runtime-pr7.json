@@ -1,0 +1,61 @@
+{
+  "id": "gha-a-runtime-pr7",
+  "platform": "github-actions",
+  "observedAt": "2026-08-22",
+  "pullRequest": {
+    "number": 7,
+    "url": "https://github.com/formal-ci-cd/trust-boundary-verification/pull/7",
+    "headSha": "c1db7415ab688a317bc2b7d909940fe43352fb6a",
+    "payload": "publish=true"
+  },
+  "producer": {
+    "runId": "32576681421",
+    "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/32576681421",
+    "event": "pull_request",
+    "conclusion": "success",
+    "artifact": {
+      "id": "9476722196",
+      "name": "trust-boundary-build-output",
+      "sizeInBytes": 151,
+      "archiveDigest": "sha256:7b0e1395c4f12c70302f23d1176778d7c4a924739ad09f2e1c26391493c38a61",
+      "payloadSha256": "4c1594ac5a818f3f8dda9dee58fafbc84eb3af633d17efef08e1fbde07078e8d"
+    }
+  },
+  "consumers": [
+    {
+      "scenarioId": "GHA-A1",
+      "runId": "32576693376",
+      "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/32576693376",
+      "event": "workflow_run",
+      "workflowHeadSha": "bd9fe5c5ce7c33fb6a06c2b5715817eb341ede5f",
+      "triggerProducerRunId": "32576681421",
+      "downloadedArtifactId": "9476722196",
+      "downloadedArtifactName": "trust-boundary-build-output",
+      "downloadedArchiveDigest": "sha256:7b0e1395c4f12c70302f23d1176778d7c4a924739ad09f2e1c26391493c38a61",
+      "payloadSha256": "4c1594ac5a818f3f8dda9dee58fafbc84eb3af633d17efef08e1fbde07078e8d",
+      "downloadSucceeded": true,
+      "integrityCheckPresent": false,
+      "integrityCheckPassed": null,
+      "useStepConclusion": "success",
+      "dummyPublishAuthorityReached": true
+    },
+    {
+      "scenarioId": "GHA-A2",
+      "runId": "32576693203",
+      "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/32576693203",
+      "event": "workflow_run",
+      "workflowHeadSha": "bd9fe5c5ce7c33fb6a06c2b5715817eb341ede5f",
+      "triggerProducerRunId": "32576681421",
+      "downloadedArtifactId": "9476722196",
+      "downloadedArtifactName": "trust-boundary-build-output",
+      "downloadedArchiveDigest": "sha256:7b0e1395c4f12c70302f23d1176778d7c4a924739ad09f2e1c26391493c38a61",
+      "payloadSha256": "4c1594ac5a818f3f8dda9dee58fafbc84eb3af633d17efef08e1fbde07078e8d",
+      "downloadSucceeded": true,
+      "integrityCheckPresent": true,
+      "integrityCheckPassed": false,
+      "useStepConclusion": "skipped",
+      "dummyPublishAuthorityReached": false,
+      "reason": "digest_mismatch"
+    }
+  ]
+}

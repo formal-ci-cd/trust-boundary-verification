@@ -54,4 +54,4 @@ publish=true
 
 ## 6．現時点の状態
 
-workflow，CodeQLから共通モデルへの変換，NuSMVモデル及び反例の対応付けまでは作成済みである．PR #6のproducer run `32575878081`では，PR側の`publish=false`が成果物として保存され，取得したfileのSHA-256が基準値と一致することを確認した．consumerはdefault branch上のworkflowから起動されるため，取得及び模擬権限到達は未確認であり，実行結果は`incomplete`である．
+workflow，CodeQLから共通モデルへの変換，NuSMVモデル，反例の対応付け及びGitHub上の実行確認まで完了した．PR #7のproducer run `32576681421`が保存したartifact ID `9476722196`を両consumerが取得した．GHA-A1は完全性確認なしで模擬公開権限へ到達し，GHA-A2はdigest不一致によって利用を遮断した．実行記録は`model/observations/gha-a-runtime-pr7.json`，結果と比較は`results/github-actions-artifact-runtime-2026-08-22.md`に保存した．

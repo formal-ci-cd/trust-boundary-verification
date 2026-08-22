@@ -35,6 +35,7 @@ class CodeQLCsvToModelTest(unittest.TestCase):
         self.assertEqual(operation["kind"], "cacheWriteIntent")
         self.assertEqual(operation["key"], "trust-boundary-c1-default-context-v1")
         self.assertEqual(operation["path"], ".research-cache-input")
+        self.assertEqual(model["verificationFacts"]["sameObject"], "unknown")
 
     def test_gha_c2_keeps_pr_scoped_key(self):
         model = self.build("GHA-C2 PR-isolated cache")

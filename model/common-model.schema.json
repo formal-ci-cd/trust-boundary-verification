@@ -8,6 +8,7 @@
     "source",
     "workflow",
     "sharedStateOperations",
+    "verificationFacts",
     "runtimeObservations"
   ],
   "properties": {
@@ -52,6 +53,9 @@
     "sharedStateOperations": {
       "type": "array",
       "items": {"$ref": "#/$defs/sharedStateOperation"}
+    },
+    "verificationFacts": {
+      "$ref": "#/$defs/verificationFacts"
     },
     "runtimeObservations": {
       "type": "array",
@@ -128,6 +132,24 @@
         "stepIndex": {"type": "integer", "minimum": 0},
         "key": {"type": ["string", "null"]},
         "path": {"type": ["string", "null"]}
+      },
+      "additionalProperties": false
+    },
+    "verificationFacts": {
+      "type": "object",
+      "required": [
+        "sameObject",
+        "consumerUsesObject",
+        "integrityVerified",
+        "privilegedConsumer",
+        "hasAuthority"
+      ],
+      "properties": {
+        "sameObject": {"enum": ["true", "false", "unknown"]},
+        "consumerUsesObject": {"enum": ["true", "false", "unknown"]},
+        "integrityVerified": {"enum": ["true", "false", "unknown"]},
+        "privilegedConsumer": {"enum": ["true", "false", "unknown"]},
+        "hasAuthority": {"enum": ["true", "false", "unknown"]}
       },
       "additionalProperties": false
     },

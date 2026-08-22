@@ -139,6 +139,13 @@ def build_model(rows, input_path):
             "expressions": expressions,
         },
         "sharedStateOperations": shared_state_operations,
+        "verificationFacts": {
+            "sameObject": "unknown",
+            "consumerUsesObject": "unknown",
+            "integrityVerified": "unknown",
+            "privilegedConsumer": "unknown",
+            "hasAuthority": "unknown",
+        },
         "runtimeObservations": [],
     }
 

@@ -69,5 +69,12 @@
       "path": ".research-cache-input"
     }
   ],
+  "verificationFacts": {
+    "sameObject": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityVerified": "unknown",
+    "privilegedConsumer": "unknown",
+    "hasAuthority": "unknown"
+  },
   "runtimeObservations": []
 }

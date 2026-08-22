@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "0.2.0",
+  "scenario": {
+    "id": "GHA-A2",
+    "platform": "GitHub Actions",
+    "description": "PR由来の成果物をworkflow_runが取得するが，信頼済みdigestと一致した場合だけ使用する．",
+    "evidenceStatus": "incomplete"
+  },
+  "producer": {
+    "workflow": {
+      "name": "GHA-A Producer - untrusted PR artifact",
+      "file": ".github/workflows/artifact-a1-pr-producer.yml",
+      "event": "pull_request"
+    },
+    "operation": {
+      "id": "artifact-write:produce-artifact:2",
+      "kind": "artifactWriteIntent",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "name": "trust-boundary-build-output",
+      "path": ".research-artifact-input/payload.txt",
+      "runId": null
+    }
+  },
+  "consumer": {
+    "workflow": {
+      "name": "GHA-A2 Verified artifact consumer",
+      "file": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "event": "workflow_run"
+    },
+    "operation": {
+      "id": "artifact-read:consume-after-verification:0",
+      "kind": "artifactReadIntent",
+      "jobId": "consume-after-verification",
+      "stepIndex": 0,
+      "name": "trust-boundary-build-output",
+      "path": "${{ runner.temp }}/trust-boundary-artifact",
+      "runId": "${{ github.event.workflow_run.id }}"
+    }
+  },
+  "sharedObject": {
+    "kind": "artifact",
+    "producerRunSelector": "github.run_id",
+    "consumerRunSelector": "github.event.workflow_run.id",
+    "identityBasis": [
+      "producerとconsumerのartifact nameが一致する．",
+      "consumerは起動元workflow runのIDをdownload-artifactへ渡す．"
+    ],
+    "name": "trust-boundary-build-output"
+  },
+  "facts": {
+    "producerUntrusted": "true",
+    "writeIntent": "true",
+    "writeAuthorized": "true",
+    "writeSucceeded": "true",
+    "sameObject": "true",
+    "readSucceeded": "unknown",
+    "consumerUsesObject": "true",
+    "integrityCheckPresent": "true",
+    "integrityCheckPassed": "unknown",
+    "privilegedConsumer": "true",
+    "hasAuthority": "true"
+  },
+  "traceMap": {
+    "start": {
+      "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+      "workflowName": "GHA-A Producer - untrusted PR artifact",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "meaning": "未信頼なworkflowが共有objectへの保存を試みる．"
+    },
+    "object_written": {
+      "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+      "workflowName": "GHA-A Producer - untrusted PR artifact",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "meaning": "共有objectの保存が成功する．"
+    },
+    "object_restored": {
+      "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "workflowName": "GHA-A2 Verified artifact consumer",
+      "jobId": "consume-after-verification",
+      "stepIndex": 0,
+      "meaning": "同じ共有objectを後続workflowが取得する．"
+    },
+    "object_used": {
+      "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "workflowName": "GHA-A2 Verified artifact consumer",
+      "jobId": "consume-after-verification",
+      "stepIndex": 2,
+      "meaning": "取得した内容を後続処理が利用する．"
+    },
+    "integrity_checked": {
+      "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "workflowName": "GHA-A2 Verified artifact consumer",
+      "jobId": "consume-after-verification",
+      "stepIndex": 1,
+      "meaning": "復元した内容を利用する前に完全性を確認する．"
+    },
+    "authority_reached": {
+      "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "workflowName": "GHA-A2 Verified artifact consumer",
+      "jobId": "consume-after-verification",
+      "stepIndex": 2,
+      "meaning": "digest確認済みの成果物だけを模擬公開判断へ渡す．"
+    }
+  },
+  "evidence": [
+    {
+      "kind": "static",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの内部表現からproducerのuploadとconsumerのdownloadを抽出した．"
+    },
+    {
+      "kind": "inference",
+      "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "claim": "成果物は信頼済みdigestとの比較に成功した場合だけ使用される．"
+    },
+    {
+      "kind": "runtime",
+      "source": "model/observations/gha-a-producer-run-32575878081.json",
+      "claim": "pull_requestのproducer runで成果物の保存成功と内容を確認した．"
+    }
+  ]
+}

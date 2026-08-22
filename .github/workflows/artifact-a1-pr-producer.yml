@@ -1,0 +1,55 @@
+# 未信頼なPull Requestの内容を，後続workflowへ渡す成果物として保存する．
+# このworkflow自体には，repositoryへの書込み権限やsecretを与えない．
+name: GHA-A Producer - untrusted PR artifact
+
+on:
+  pull_request:
+    paths:
+      - ".research-artifact-input/payload.txt"
+      - ".github/workflows/artifact-a1-pr-producer.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gha-artifact-producer-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  produce-artifact:
+    name: Save the PR-controlled artifact
+    runs-on: ubuntu-latest
+
+    steps:
+      # Pull Request側の内容を取得する．このjobは低権限のpull_request文脈で動く．
+      - name: Checkout Pull Request content
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      # 形式だけを確認し，値がpublish=trueかどうかは信頼しない．
+      - name: Check artifact input format
+        run: |
+          set -eu
+          grep -Eq '^publish=(true|false)$' .research-artifact-input/payload.txt
+
+      # Pull Requestで変更できるfileを成果物として保存する．
+      - name: Upload PR-controlled artifact
+        id: upload-artifact
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: trust-boundary-build-output
+          path: .research-artifact-input/payload.txt
+          if-no-files-found: error
+          retention-days: 1
+
+      # 後でproducer runと成果物を対応付けられるよう，識別情報を残す．
+      - name: Record producer identity
+        env:
+          ARTIFACT_ID: ${{ steps.upload-artifact.outputs.artifact-id }}
+          ARTIFACT_DIGEST: ${{ steps.upload-artifact.outputs.artifact-digest }}
+        run: |
+          printf 'producer_run_id=%s\n' "$GITHUB_RUN_ID"
+          printf 'producer_head_sha=%s\n' "$GITHUB_SHA"
+          printf 'artifact_id=%s\n' "$ARTIFACT_ID"
+          printf 'artifact_digest=%s\n' "$ARTIFACT_DIGEST"

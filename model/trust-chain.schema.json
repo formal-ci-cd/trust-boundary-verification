@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://formal-ci-cd.github.io/trust-boundary-verification/trust-chain.schema.json",
+  "title": "CI/CD cross-run trust chain",
+  "type": "object",
+  "required": [
+    "schemaVersion",
+    "scenario",
+    "producer",
+    "consumer",
+    "sharedObject",
+    "facts",
+    "traceMap",
+    "evidence"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "0.2.0"},
+    "scenario": {
+      "type": "object",
+      "required": ["id", "platform", "description", "evidenceStatus"],
+      "properties": {
+        "id": {"type": "string"},
+        "platform": {"type": "string"},
+        "description": {"type": "string"},
+        "evidenceStatus": {"enum": ["planned", "observed", "incomplete"]}
+      },
+      "additionalProperties": false
+    },
+    "producer": {"$ref": "#/$defs/endpoint"},
+    "consumer": {"$ref": "#/$defs/endpoint"},
+    "sharedObject": {
+      "type": "object",
+      "required": ["kind", "name", "producerRunSelector", "consumerRunSelector", "identityBasis"],
+      "properties": {
+        "kind": {"enum": ["cache", "artifact"]},
+        "name": {"type": ["string", "null"]},
+        "producerRunSelector": {"type": ["string", "null"]},
+        "consumerRunSelector": {"type": ["string", "null"]},
+        "identityBasis": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": false
+    },
+    "facts": {
+      "type": "object",
+      "required": [
+        "producerUntrusted",
+        "writeIntent",
+        "writeAuthorized",
+        "writeSucceeded",
+        "sameObject",
+        "readSucceeded",
+        "consumerUsesObject",
+        "integrityCheckPresent",
+        "integrityCheckPassed",
+        "privilegedConsumer",
+        "hasAuthority"
+      ],
+      "additionalProperties": {"enum": ["true", "false", "unknown"]}
+    },
+    "traceMap": {
+      "type": "object",
+      "additionalProperties": {"$ref": "#/$defs/location"}
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["kind", "source", "claim"],
+        "properties": {
+          "kind": {"enum": ["static", "runtime", "platform", "inference"]},
+          "source": {"type": "string"},
+          "claim": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "$defs": {
+    "endpoint": {
+      "type": "object",
+      "required": ["workflow", "operation"],
+      "properties": {
+        "workflow": {
+          "type": "object",
+          "required": ["name", "file", "event"],
+          "properties": {
+            "name": {"type": "string"},
+            "file": {"type": "string"},
+            "event": {"type": "string"}
+          },
+          "additionalProperties": false
+        },
+        "operation": {
+          "type": "object",
+          "required": ["id", "kind", "jobId", "stepIndex", "name", "path", "runId"],
+          "properties": {
+            "id": {"type": "string"},
+            "kind": {"type": "string"},
+            "jobId": {"type": "string"},
+            "stepIndex": {"type": "integer"},
+            "name": {"type": ["string", "null"]},
+            "path": {"type": ["string", "null"]},
+            "runId": {"type": ["string", "null"]}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "location": {
+      "type": "object",
+      "required": ["workflowFile", "workflowName", "jobId", "stepIndex", "meaning"],
+      "properties": {
+        "workflowFile": {"type": "string"},
+        "workflowName": {"type": "string"},
+        "jobId": {"type": "string"},
+        "stepIndex": {"type": "integer"},
+        "meaning": {"type": "string"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

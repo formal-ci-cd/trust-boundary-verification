@@ -133,6 +133,32 @@ def build_model(rows, input_path):
                         "path": step["arguments"].get("path"),
                     }
                 )
+            if step.get("action") == "actions/upload-artifact":
+                shared_state_operations.append(
+                    {
+                        "id": f"artifact-write:{job['id']}:{step['index']}",
+                        "kind": "artifactWriteIntent",
+                        "jobId": job["id"],
+                        "stepIndex": step["index"],
+                        "key": None,
+                        "path": step["arguments"].get("path"),
+                        "name": step["arguments"].get("name"),
+                        "runId": None,
+                    }
+                )
+            if step.get("action") == "actions/download-artifact":
+                shared_state_operations.append(
+                    {
+                        "id": f"artifact-read:{job['id']}:{step['index']}",
+                        "kind": "artifactReadIntent",
+                        "jobId": job["id"],
+                        "stepIndex": step["index"],
+                        "key": None,
+                        "path": step["arguments"].get("path"),
+                        "name": step["arguments"].get("name"),
+                        "runId": step["arguments"].get("run-id"),
+                    }
+                )
 
     return {
         "schemaVersion": SCHEMA_VERSION,

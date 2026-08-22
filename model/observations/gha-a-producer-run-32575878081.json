@@ -1,0 +1,30 @@
+{
+  "id": "gha-a-producer-run-32575878081",
+  "platform": "github-actions",
+  "runId": "32575878081",
+  "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/32575878081",
+  "event": "pull_request",
+  "headSha": "5682fb861978a8709deef946bfe8740660d07914",
+  "observedAt": "2026-08-22",
+  "operationResults": [
+    {
+      "operationId": "artifact-write:produce-artifact:2",
+      "writeAuthorized": "true",
+      "writeSucceeded": "true",
+      "artifact": {
+        "id": "9476526432",
+        "name": "trust-boundary-build-output",
+        "sizeInBytes": 152,
+        "archiveDigest": "sha256:22c2299d2769a8d52659e2b88fa02d5ac4be3db773b2571122f19400ebe49d15",
+        "payloadFile": "payload.txt",
+        "payloadSha256": "c94960cc45713534adb51efee8152237985399b2963cf364817d8362b2a2dc1b",
+        "payload": "publish=false"
+      },
+      "evidence": [
+        "producer workflowはsuccessで完了した．",
+        "GitHub Actions artifacts APIでartifact ID，名前及びarchive digestを確認した．",
+        "gh run downloadで取得したpayload.txtの内容とSHA-256を確認した．"
+      ]
+    }
+  ]
+}

@@ -41,7 +41,7 @@
 ## 実施順序
 
 1. GHA-C1及びGHA-C2を作成し，CodeQLのcache poisoning queryを確認する．GHA-C1はCodeQLに検出されたが，実行時のCache保存はGitHub側の権限制御により拒否された．GHA-C2はdefault branch側consumerを追加し，`lookup-only`による実行確認を残している．
-2. GHA-A1及びGHA-A2を作成し，CodeQLのartifact poisoning queryを確認する．
-3. 同じ構成にzizmor及びactionlintを適用する．
+2. GHA-A1及びGHA-A2を作成し，CodeQLのartifact poisoning queryを確認する．workflowと形式モデルは作成済みであり，GitHub上の実測を残している．
+3. 同じ構成にzizmor及びactionlintを適用する．ローカル比較では，CodeQL built-inは両方を報告せず，zizmorは両方へ`dangerous-triggers`，actionlintはfindingなしとなった．
 4. `results/`にツールごとの検出結果を表として残す．
 5. GitLabのGL-C1からGL-C3と共通の形式モデルで比較する．

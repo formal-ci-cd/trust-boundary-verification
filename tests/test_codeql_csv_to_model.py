@@ -80,6 +80,100 @@ class CodeQLCsvToModelTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             MODULE.add_observation(model, observation)
 
+    def test_artifact_actions_become_shared_state_operations(self):
+        rows = [
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "1",
+                "workflowName": "Artifact workflow",
+                "jobId": "-",
+                "stepIndex": "-",
+                "kind": "workflow",
+                "name": "Artifact workflow",
+                "detail": "-",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "5",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "-",
+                "kind": "job",
+                "name": "artifact-job",
+                "detail": "runs-on=ubuntu-latest",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "8",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "0",
+                "kind": "uses-step",
+                "name": "-",
+                "detail": "actions/upload-artifact@commit",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "9",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "0",
+                "kind": "uses-argument",
+                "name": "name",
+                "detail": "build-output",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "10",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "0",
+                "kind": "uses-argument",
+                "name": "path",
+                "detail": "build/output.txt",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "12",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "1",
+                "kind": "uses-step",
+                "name": "-",
+                "detail": "actions/download-artifact@commit",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "13",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "1",
+                "kind": "uses-argument",
+                "name": "name",
+                "detail": "build-output",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "14",
+                "workflowName": "Artifact workflow",
+                "jobId": "artifact-job",
+                "stepIndex": "1",
+                "kind": "uses-argument",
+                "name": "run-id",
+                "detail": "${{ github.event.workflow_run.id }}",
+            },
+        ]
+
+        model = MODULE.build_model(rows, Path("artifact.csv"))
+
+        write_operation, read_operation = model["sharedStateOperations"]
+        self.assertEqual(write_operation["kind"], "artifactWriteIntent")
+        self.assertEqual(write_operation["name"], "build-output")
+        self.assertEqual(read_operation["kind"], "artifactReadIntent")
+        self.assertEqual(
+            read_operation["runId"], "${{ github.event.workflow_run.id }}"
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -164,7 +164,7 @@ YAMLの構文情報
 
 ## 7．次に確認する事項
 
-1. CodeQL databaseから，GHA-C1に対応する`Workflow`，`Event`，`Job`，`Step`及び`Expression`を独自queryで列挙できるか確認する．
-2. 実行時に使用されたCodeQL Action及びquery packのversionを記録する方法を確認する．
-3. 現在のGitHub仕様で成立するキャッシュ書込み経路を再設計する．
-4. キャッシュの利用側を含むモデルに必要なnode及びrelationを，CodeQLから取得できる情報と追加情報に分ける．
+独自queryによる列挙結果は，[CodeQLの内部表現を独自クエリで列挙した結果](../results/codeql-actions-model-v2.26.3.md)に記録した．`Workflow`，`Event`，`Job`，`Step`，Actionの引数及び`Expression`を表として取得できたため，次は次の2点を確認する．
+
+1. 取得した静的な関係を，形式検証用の小さな共通モデルへ変換する．
+2. CodeQLから得られない実行時のキャッシュ状態及び複数run間の遷移を，共通モデルへ追加する．

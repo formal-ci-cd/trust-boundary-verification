@@ -1,0 +1,4 @@
+name: formal-ci-cd/actions-model
+version: 0.0.1
+dependencies:
+  codeql/actions-all: 0.5.0

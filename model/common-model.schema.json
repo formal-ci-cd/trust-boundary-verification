@@ -127,11 +127,20 @@
       "required": ["id", "kind", "jobId", "stepIndex", "key", "path"],
       "properties": {
         "id": {"type": "string"},
-        "kind": {"enum": ["cacheWriteIntent", "cacheReadIntent"]},
+        "kind": {
+          "enum": [
+            "cacheWriteIntent",
+            "cacheReadIntent",
+            "artifactWriteIntent",
+            "artifactReadIntent"
+          ]
+        },
         "jobId": {"type": "string"},
         "stepIndex": {"type": "integer", "minimum": 0},
         "key": {"type": ["string", "null"]},
-        "path": {"type": ["string", "null"]}
+        "path": {"type": ["string", "null"]},
+        "name": {"type": ["string", "null"]},
+        "runId": {"type": ["string", "null"]}
       },
       "additionalProperties": false
     },

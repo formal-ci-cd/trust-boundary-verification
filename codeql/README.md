@@ -8,7 +8,7 @@
 - eventに対するCodeQLの外部起動可能性及びprivileged分類．
 - job，runner及びpermission．
 - step，Action名及びversion．
-- checkout及びキャッシュに関係する主な`with`引数．
+- checkout，キャッシュ及び成果物に関係する主な`with`引数．
 - `${{ ... }}`式と正規化された参照．
 
 ## 実行方法
@@ -29,4 +29,4 @@ CodeQL Bundleを展開し，リポジトリのrootで次のように実行する
   --output=/tmp/workflow-structure.csv
 ```
 
-2026年8月22日にCodeQL CLI `2.26.3`で確認した出力は，[解析結果](../results/codeql-actions-model-v2.26.3.md)及び[全件CSV](../results/codeql-actions-model-v2.26.3.csv)に保存している．
+2026年8月22日にCodeQL CLI `2.26.3`で確認した出力は，[解析結果](../results/codeql-actions-model-v2.26.3.md)及び[全件CSV](../results/codeql-actions-model-v2.26.3.csv)に保存している．成果物については，`name`，`path`，`run-id`及び`github-token`も出力し，保存側と取得側を複数run間の信頼経路へ結合できるようにした．

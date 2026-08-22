@@ -13,7 +13,7 @@ CodeQLがGitHub Actionsのworkflowから構成した内部表現を独自クエ�
 | CodeQL Bundle | `v2.26.3` |
 | CodeQL CLI | `2.26.3` |
 | `codeql/actions-all` | `0.5.0` |
-| 解析対象 | リポジトリ内のGitHub Actions workflow 5件 |
+| 解析対象 | リポジトリ内のGitHub Actions workflow 9件 |
 | 独自クエリ | `codeql/queries/WorkflowStructure.ql` |
 | 全出力 | `results/codeql-actions-model-v2.26.3.csv` |
 
@@ -49,6 +49,12 @@ GHA-C2のPR側producerと同じ形式のkeyを指定し，default branch文脈�
 
 producerのkeyに含まれる`github.event.pull_request.number`とconsumerの`inputs.pr_number`は，実行時に同じ値を与えられる可能性がある．ただし，文字列を同じ値へ展開できても，branch又はPull Requestによるcache scopeが異なれば同じobjectにはならない．このため，静的なkeyの比較だけで`SameObject`を確定せず，実行時のlookup結果を記録する．
 
+### 4.2 成果物のproducerとconsumer
+
+GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-boundary-build-output`及び保存pathを取得した．GHA-A1及びGHA-A2からは，`actions/download-artifact`，同じ成果物名，取得先，`github.event.workflow_run.id`を使用する`run-id`を取得した．変換処理はこれらを`artifactWriteIntent`及び`artifactReadIntent`として出力する．
+
+この情報により，成果物名だけでなく「どのproducer runの成果物を取得するか」まで共通モデルへ残せる．ただし，実際のartifact ID，保存成功及び取得成功は実行記録から補う必要がある．
+
 ## 5．取得できない情報
 
 今回の出力だけでは，次の情報は得られない．
@@ -65,4 +71,4 @@ producerのkeyに含まれる`github.event.pull_request.number`とconsumerの`in
 
 CodeQLの内部表現は，モデル検査器へそのまま渡せる完成済みの状態遷移モデルではない．一方で，YAMLを独自に再解析しなくても，workflowの構造，起動契機，権限，Action，引数及び式を関係として取得できる．そのため，本研究ではCodeQLを，形式検証用モデルを生成するための前処理として利用できる可能性がある．
 
-次は，今回取得できた静的な関係を小さな共通モデルへ変換し，CodeQLから得られない実行時のキャッシュ状態と複数run間の遷移を，どのように追加するかを整理する．
+静的な関係は共通モデルへ変換し，成果物名と起動元run IDを使ってproducerとconsumerを結合できた．さらに，NuSMVの反例を元のworkflow，job及びstepへ対応付けた．次は，GitHub上の実行記録からartifact ID，保存結果，取得結果及び模擬権限への到達結果を追加する．

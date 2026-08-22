@@ -62,7 +62,8 @@ private string getEventPrivilege(Event event) {
 private string getModelArgumentName() {
   result = [
       "ref", "repository", "path", "key", "restore-keys", "persist-credentials",
-      "allow-unsafe-pr-checkout", "lookup-only"
+      "allow-unsafe-pr-checkout", "lookup-only", "name", "run-id", "github-token",
+      "artifact-ids", "pattern", "merge-multiple", "if-no-files-found", "retention-days"
     ]
 }
 

@@ -15,6 +15,8 @@ CodeQLなどの静的解析から得られるworkflowの構造と，CI/CD platfo
 
 `cacheWriteIntent`は，workflowにキャッシュ保存操作が記述されていることだけを表す．これだけでは，実行時にキャッシュを書き込めることを意味しない．
 
+成果物については，`artifactWriteIntent`及び`artifactReadIntent`を使用する．`name`，`path`及び`runId`を保持し，異なるworkflowの保存側と取得側を後段で結合する．
+
 ## 3．書込みに関する関係
 
 キャッシュ書込みは，次の3段階に分ける．
@@ -79,3 +81,30 @@ NuSMV model/nusmv/gha-c1.smv
 ```
 
 初回の検証結果と解釈は，[CI/CD共通モデルのNuSMV検証結果](../results/nusmv-common-model-2026-08-22.md)に記録している．
+
+## 7．複数run間の信頼経路
+
+workflowごとの共通モデルは，`tools/build_trust_chain.py`で1本の信頼経路へ結合する．GHA-A1の例は次のとおりである．
+
+```bash
+python3 tools/build_trust_chain.py \
+  model/chain-inputs/gha-a1.json \
+  --output model/chains/gha-a1.json
+
+python3 tools/chain_to_nusmv.py \
+  model/chains/gha-a1.json \
+  --output model/nusmv/gha-a1.smv
+```
+
+`model/trust-chain.schema.json`は，保存側，取得側，共有objectの同一性，実行時の事実及び反例の位置対応を定義する．保存成功などが未確認の場合は`unknown`とし，NuSMVで真偽の両方を検査する．
+
+NuSMVが反例を出した場合は，`tools/explain_nusmv_trace.py`で各状態を元のworkflow，job及びstepへ対応付ける．GHA-A1の結果は[反例対応表](../results/gha-a1-nusmv-trace.md)に保存している．
+
+## 8．成果物実験の現時点の判定
+
+| 対象 | 静的構成 | 実行時の保存・取得 | NuSMV | 判定 |
+| --- | --- | --- | --- | --- |
+| GHA-A1 | 完全性確認なしで模擬公開判断へ使用する． | 未確認 | 反例あり | `incomplete` |
+| GHA-A2 | digest一致後だけ模擬公開判断へ使用する． | 未確認 | 反例なし | 静的には安全側，実測待ち |
+
+GHA-A1の反例は実行時の未確認値が成立する場合の経路である．GitHub上で保存，取得及び模擬権限到達を観測するまでは，実証済みの危険構成とは扱わない．

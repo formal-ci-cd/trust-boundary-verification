@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "codeqlTable",
+    "file": "results/codeql-actions-model-v2.26.3.csv",
+    "staticAnalysisOnly": true
+  },
+  "workflow": {
+    "name": "GHA-A Producer - untrusted PR artifact",
+    "file": ".github/workflows/artifact-a1-pr-producer.yml",
+    "events": [
+      {
+        "name": "pull_request",
+        "externallyTriggerable": true,
+        "privileged": false
+      }
+    ],
+    "permissions": [
+      {
+        "jobId": null,
+        "scope": "contents",
+        "access": "read"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "produce-artifact",
+        "runnerLabels": [
+          "ubuntu-latest"
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "type": "uses",
+            "action": "actions/checkout",
+            "version": "11d5960a326750d5838078e36cf38b85af677262",
+            "arguments": {
+              "persist-credentials": "false"
+            }
+          },
+          {
+            "index": 1,
+            "type": "run",
+            "command": "set -eu"
+          },
+          {
+            "index": 2,
+            "type": "uses",
+            "action": "actions/upload-artifact",
+            "version": "ea165f8d65b6e75b540449e92b4886f43607fa02",
+            "arguments": {
+              "if-no-files-found": "error",
+              "name": "trust-boundary-build-output",
+              "path": ".research-artifact-input/payload.txt",
+              "retention-days": "1"
+            }
+          },
+          {
+            "index": 3,
+            "type": "run",
+            "command": "printf 'producer_run_id=%s\\n' \"$GITHUB_RUN_ID\""
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "raw": "${{ github.event.pull_request.number }}",
+        "normalized": "github.event.pull_request.number",
+        "line": 15
+      },
+      {
+        "raw": "${{ steps.upload-artifact.outputs.artifact-id }}",
+        "normalized": "steps.upload-artifact.outputs.artifact-id",
+        "line": 49
+      },
+      {
+        "raw": "${{ steps.upload-artifact.outputs.artifact-digest }}",
+        "normalized": "steps.upload-artifact.outputs.artifact-digest",
+        "line": 50
+      }
+    ]
+  },
+  "sharedStateOperations": [
+    {
+      "id": "artifact-write:produce-artifact:2",
+      "kind": "artifactWriteIntent",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "key": null,
+      "path": ".research-artifact-input/payload.txt",
+      "name": "trust-boundary-build-output",
+      "runId": null
+    }
+  ],
+  "verificationFacts": {
+    "sameObject": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityVerified": "unknown",
+    "privilegedConsumer": "unknown",
+    "hasAuthority": "unknown"
+  },
+  "runtimeObservations": []
+}

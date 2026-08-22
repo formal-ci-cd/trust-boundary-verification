@@ -1,0 +1,155 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "codeqlTable",
+    "file": "results/codeql-actions-model-v2.26.3.csv",
+    "staticAnalysisOnly": true
+  },
+  "workflow": {
+    "name": "GHA-A2 Verified artifact consumer",
+    "file": ".github/workflows/artifact-a2-safe-consumer.yml",
+    "events": [
+      {
+        "name": "workflow_run",
+        "externallyTriggerable": true,
+        "privileged": true
+      }
+    ],
+    "permissions": [
+      {
+        "jobId": null,
+        "scope": "actions",
+        "access": "read"
+      },
+      {
+        "jobId": null,
+        "scope": "contents",
+        "access": "read"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "consume-after-verification",
+        "runnerLabels": [
+          "ubuntu-latest"
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "type": "uses",
+            "action": "actions/download-artifact",
+            "version": "d3f86a106a0bac45b974a628896c90dbdf5c8093",
+            "arguments": {
+              "github-token": "${{ secrets.GITHUB_TOKEN }}",
+              "name": "trust-boundary-build-output",
+              "path": "${{ runner.temp }}/trust-boundary-artifact",
+              "run-id": "${{ github.event.workflow_run.id }}"
+            }
+          },
+          {
+            "index": 1,
+            "type": "run",
+            "command": "printf 'actual_digest=%s\\n' \"$actual_digest\""
+          },
+          {
+            "index": 2,
+            "type": "run",
+            "command": "echo \"producer_run_id=$PRODUCER_RUN_ID\""
+          },
+          {
+            "index": 3,
+            "type": "run",
+            "command": "echo \"artifact_sha256=$ACTUAL_DIGEST\""
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "raw": "${{ github.event.workflow_run.id }}",
+        "normalized": "github.event.workflow_run.id",
+        "line": 17
+      },
+      {
+        "raw": "github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'",
+        "normalized": "github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'",
+        "line": 24
+      },
+      {
+        "raw": "${{ runner.temp }}",
+        "normalized": "runner.temp",
+        "line": 33
+      },
+      {
+        "raw": "${{ secrets.GITHUB_TOKEN }}",
+        "normalized": "secrets.GITHUB_TOKEN",
+        "line": 34
+      },
+      {
+        "raw": "${{ github.event.workflow_run.id }}",
+        "normalized": "github.event.workflow_run.id",
+        "line": 35
+      },
+      {
+        "raw": "${{ runner.temp }}",
+        "normalized": "runner.temp",
+        "line": 41
+      },
+      {
+        "raw": "steps.verify-artifact.outputs.verified == 'true'",
+        "normalized": "steps.verify-artifact.outputs.verified == 'true'",
+        "line": 58
+      },
+      {
+        "raw": "${{ runner.temp }}",
+        "normalized": "runner.temp",
+        "line": 60
+      },
+      {
+        "raw": "${{ steps.verify-artifact.outputs.actual_digest }}",
+        "normalized": "steps.verify-artifact.outputs.actual_digest",
+        "line": 61
+      },
+      {
+        "raw": "${{ github.event.workflow_run.id }}",
+        "normalized": "github.event.workflow_run.id",
+        "line": 62
+      },
+      {
+        "raw": "steps.verify-artifact.outputs.verified != 'true'",
+        "normalized": "steps.verify-artifact.outputs.verified != 'true'",
+        "line": 84
+      },
+      {
+        "raw": "${{ steps.verify-artifact.outputs.actual_digest }}",
+        "normalized": "steps.verify-artifact.outputs.actual_digest",
+        "line": 86
+      },
+      {
+        "raw": "${{ github.event.workflow_run.id }}",
+        "normalized": "github.event.workflow_run.id",
+        "line": 87
+      }
+    ]
+  },
+  "sharedStateOperations": [
+    {
+      "id": "artifact-read:consume-after-verification:0",
+      "kind": "artifactReadIntent",
+      "jobId": "consume-after-verification",
+      "stepIndex": 0,
+      "key": null,
+      "path": "${{ runner.temp }}/trust-boundary-artifact",
+      "name": "trust-boundary-build-output",
+      "runId": "${{ github.event.workflow_run.id }}"
+    }
+  ],
+  "verificationFacts": {
+    "sameObject": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityVerified": "unknown",
+    "privilegedConsumer": "unknown",
+    "hasAuthority": "unknown"
+  },
+  "runtimeObservations": []
+}

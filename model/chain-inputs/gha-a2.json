@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "0.1.0",
+  "scenario": {
+    "id": "GHA-A2",
+    "platform": "GitHub Actions",
+    "description": "PR由来の成果物をworkflow_runが取得するが，信頼済みdigestと一致した場合だけ使用する．",
+    "evidenceStatus": "planned"
+  },
+  "producerModel": "model/examples/gha-a-producer.json",
+  "consumerModel": "model/examples/gha-a2-consumer.json",
+  "producerOperationId": "artifact-write:produce-artifact:2",
+  "consumerOperationId": "artifact-read:consume-after-verification:0",
+  "facts": {
+    "writeAuthorized": "unknown",
+    "writeSucceeded": "unknown",
+    "sameObject": "true",
+    "readSucceeded": "unknown",
+    "consumerUsesObject": "true",
+    "integrityVerified": "true",
+    "hasAuthority": "true"
+  },
+  "sharedObject": {
+    "kind": "artifact",
+    "producerRunSelector": "github.run_id",
+    "consumerRunSelector": "github.event.workflow_run.id",
+    "identityBasis": [
+      "producerとconsumerのartifact nameが一致する．",
+      "consumerは起動元workflow runのIDをdownload-artifactへ渡す．"
+    ]
+  },
+  "useStepIndex": 2,
+  "integrityStepIndex": 1,
+  "authority": {
+    "jobId": "consume-after-verification",
+    "stepIndex": 2,
+    "meaning": "digest確認済みの成果物だけを模擬公開判断へ渡す．"
+  },
+  "evidence": [
+    {
+      "kind": "static",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの内部表現からproducerのuploadとconsumerのdownloadを抽出した．"
+    },
+    {
+      "kind": "inference",
+      "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "claim": "成果物は信頼済みdigestとの比較に成功した場合だけ使用される．"
+    }
+  ]
+}

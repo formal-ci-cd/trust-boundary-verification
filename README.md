@@ -30,5 +30,5 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 - `experiments/`：危険構成と安全構成に使う入力データ及び補助script．
 - `results/`：各ツールの実行結果を整理した記録．
 
-最初に読む資料は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)です．
+最初に読む資料は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)です．CodeQLの解析方法に関する調査は[CodeQLによるGitHub Actions解析の内部表現](docs/codeql-actions-internal-model.md)に記録しています．
 Experimental artifacts for formal verification of CI/CD trust boundaries.

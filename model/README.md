@@ -43,7 +43,7 @@ WriteSucceeded
 
 GHA-C1では，CodeQLから`cacheWriteIntent`を取得できた一方，実行`30803626815`ではキャッシュ書込みが拒否された．したがって，`WriteIntent`は成立するが，`WriteAuthorized`及び`WriteSucceeded`は成立しない．`blocked`という判定は入力JSONへ記載せず，これらの事実から導く検証結果として扱う．
 
-GHA-C2はPRごとにkeyが分かれていることを静的に確認できるが，利用側のworkflowと実行時の復元結果をまだ用意していない．このため，現段階ではSafeと確定しない．
+GHA-C2はPRごとにkeyが分かれていることを静的に確認できる．また，default branch側から同じ形式のkeyを`lookup-only`で検索するconsumer workflowを用意し，`cacheReadIntent`への変換まで確認した．実行時のlookup結果はまだ確認していないため，現段階ではSafeと確定しない．
 
 ## 5．変換方法
 

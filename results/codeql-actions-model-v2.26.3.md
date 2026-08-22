@@ -13,7 +13,7 @@ CodeQLがGitHub Actionsのworkflowから構成した内部表現を独自クエ�
 | CodeQL Bundle | `v2.26.3` |
 | CodeQL CLI | `2.26.3` |
 | `codeql/actions-all` | `0.5.0` |
-| 解析対象 | リポジトリ内のGitHub Actions workflow 4件 |
+| 解析対象 | リポジトリ内のGitHub Actions workflow 5件 |
 | 独自クエリ | `codeql/queries/WorkflowStructure.ql` |
 | 全出力 | `results/codeql-actions-model-v2.26.3.csv` |
 
@@ -42,6 +42,12 @@ CodeQL BundleはGitHub公式releaseから取得した`codeql-bundle-osx64.tar.zs
 同じクエリは，GHA-C2から`pull_request`を外部起動可能かつnot-privilegedとして取得した．また，キャッシュkeyにPull Request番号を含む式`${{ github.event.pull_request.number }}`も取得できた．したがって，C1とC2の起動契機及びkey設計の差を，同一形式の表として比較できる．
 
 ただし，`externally-triggerable`及び`privileged`はCodeQLのquery libraryによる静的な分類である．実行時に実際に与えられた権限又はキャッシュ書込みの成否を証明する値ではない．
+
+### 4.1 default branch側consumer
+
+GHA-C2のPR側producerと同じ形式のkeyを指定し，default branch文脈からキャッシュを検索するconsumer workflowを追加した．独自queryは，`actions/cache/restore@v4`，`path`，`key`及び`lookup-only: true`を取得できた．変換処理では，この操作を`cacheReadIntent`として出力した．
+
+producerのkeyに含まれる`github.event.pull_request.number`とconsumerの`inputs.pr_number`は，実行時に同じ値を与えられる可能性がある．ただし，文字列を同じ値へ展開できても，branch又はPull Requestによるcache scopeが異なれば同じobjectにはならない．このため，静的なkeyの比較だけで`SameObject`を確定せず，実行時のlookup結果を記録する．
 
 ## 5．取得できない情報
 

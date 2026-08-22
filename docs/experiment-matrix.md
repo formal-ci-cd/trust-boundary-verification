@@ -40,7 +40,7 @@
 
 ## 実施順序
 
-1. GHA-C1及びGHA-C2を作成し，CodeQLのcache poisoning queryを確認する．GHA-C1はCodeQLに検出されたが，実行時のCache保存はGitHub側の権限制御により拒否された．
+1. GHA-C1及びGHA-C2を作成し，CodeQLのcache poisoning queryを確認する．GHA-C1はCodeQLに検出されたが，実行時のCache保存はGitHub側の権限制御により拒否された．GHA-C2はdefault branch側consumerを追加し，`lookup-only`による実行確認を残している．
 2. GHA-A1及びGHA-A2を作成し，CodeQLのartifact poisoning queryを確認する．
 3. 同じ構成にzizmor及びactionlintを適用する．
 4. `results/`にツールごとの検出結果を表として残す．

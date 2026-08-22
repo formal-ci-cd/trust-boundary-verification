@@ -127,7 +127,7 @@
       "required": ["id", "kind", "jobId", "stepIndex", "key", "path"],
       "properties": {
         "id": {"type": "string"},
-        "kind": {"enum": ["cacheWriteIntent"]},
+        "kind": {"enum": ["cacheWriteIntent", "cacheReadIntent"]},
         "jobId": {"type": "string"},
         "stepIndex": {"type": "integer", "minimum": 0},
         "key": {"type": ["string", "null"]},

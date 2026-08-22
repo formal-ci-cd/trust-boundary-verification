@@ -43,6 +43,10 @@ class ModelToNuSMVTest(unittest.TestCase):
         )
         self.assertIn("CTLSPEC AG stage != authority_reached", rendered)
 
+    def test_consumer_only_model_is_not_used_as_producer(self):
+        with self.assertRaises(ValueError):
+            MODULE.extract_facts(self.load("gha-c2-consumer.json"))
+
 
 if __name__ == "__main__":
     unittest.main()

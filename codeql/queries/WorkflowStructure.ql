@@ -62,7 +62,7 @@ private string getEventPrivilege(Event event) {
 private string getModelArgumentName() {
   result = [
       "ref", "repository", "path", "key", "restore-keys", "persist-credentials",
-      "allow-unsafe-pr-checkout"
+      "allow-unsafe-pr-checkout", "lookup-only"
     ]
 }
 

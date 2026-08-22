@@ -50,6 +50,15 @@ class CodeQLCsvToModelTest(unittest.TestCase):
             "trust-boundary-c2-pr-${{ github.event.pull_request.number }}-v1",
         )
 
+    def test_gha_c2_consumer_becomes_cache_read_intent(self):
+        model = self.build("GHA-C2 Default-branch cache consumer")
+
+        operation = model["sharedStateOperations"][0]
+        self.assertEqual(operation["kind"], "cacheReadIntent")
+        self.assertEqual(operation["key"], "trust-boundary-c2-pr-${{ inputs.pr_number }}-v1")
+        step = model["workflow"]["jobs"][0]["steps"][0]
+        self.assertEqual(step["arguments"]["lookup-only"], "true")
+
     def test_gha_c1_observation_references_existing_operation(self):
         model = self.build("GHA-C1 Cache write from untrusted PR in default context")
         observation_path = ROOT / "model" / "observations" / "gha-c1-run-30803626815.json"

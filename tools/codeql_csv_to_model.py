@@ -122,6 +122,17 @@ def build_model(rows, input_path):
                         "path": step["arguments"].get("path"),
                     }
                 )
+            if step.get("action") in {"actions/cache", "actions/cache/restore"}:
+                shared_state_operations.append(
+                    {
+                        "id": f"cache-read:{job['id']}:{step['index']}",
+                        "kind": "cacheReadIntent",
+                        "jobId": job["id"],
+                        "stepIndex": step["index"],
+                        "key": step["arguments"].get("key"),
+                        "path": step["arguments"].get("path"),
+                    }
+                )
 
     return {
         "schemaVersion": SCHEMA_VERSION,

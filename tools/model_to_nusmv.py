@@ -28,9 +28,11 @@ def select_operation(model, operation_id=None):
     if operation_id:
         matches = [operation for operation in operations if operation["id"] == operation_id]
     else:
-        matches = operations
+        matches = [operation for operation in operations if operation["kind"] == "cacheWriteIntent"]
     if len(matches) != 1:
-        raise ValueError("対象の共有状態操作を1件に特定できません")
+        raise ValueError("対象のキャッシュ保存操作を1件に特定できません")
+    if matches[0]["kind"] != "cacheWriteIntent":
+        raise ValueError("NuSMVモデルの起点にはキャッシュ保存操作が必要です")
     return matches[0]
 
 

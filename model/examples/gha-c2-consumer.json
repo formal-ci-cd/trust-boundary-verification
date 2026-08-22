@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "codeqlTable",
+    "file": "results/codeql-actions-model-v2.26.3.csv",
+    "staticAnalysisOnly": true
+  },
+  "workflow": {
+    "name": "GHA-C2 Default-branch cache consumer",
+    "file": ".github/workflows/cache-c2-default-consumer.yml",
+    "events": [
+      {
+        "name": "workflow_dispatch",
+        "externallyTriggerable": true,
+        "privileged": true
+      }
+    ],
+    "permissions": [
+      {
+        "jobId": null,
+        "scope": "contents",
+        "access": "read"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "cache-default-consumer",
+        "runnerLabels": [
+          "ubuntu-latest"
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "type": "uses",
+            "action": "actions/cache/restore",
+            "version": "v4",
+            "arguments": {
+              "key": "trust-boundary-c2-pr-${{ inputs.pr_number }}-v1",
+              "lookup-only": "true",
+              "path": ".research-cache-input"
+            }
+          },
+          {
+            "index": 1,
+            "type": "run",
+            "command": "printf 'cache-hit=%s\\n' \"$CACHE_HIT\""
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "raw": "${{ inputs.pr_number }}",
+        "normalized": "inputs.pr_number",
+        "line": 28
+      },
+      {
+        "raw": "${{ steps.restore-cache.outputs.cache-hit }}",
+        "normalized": "steps.restore-cache.outputs.cache-hit",
+        "line": 34
+      }
+    ]
+  },
+  "sharedStateOperations": [
+    {
+      "id": "cache-read:cache-default-consumer:0",
+      "kind": "cacheReadIntent",
+      "jobId": "cache-default-consumer",
+      "stepIndex": 0,
+      "key": "trust-boundary-c2-pr-${{ inputs.pr_number }}-v1",
+      "path": ".research-cache-input"
+    }
+  ],
+  "verificationFacts": {
+    "sameObject": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityVerified": "unknown",
+    "privilegedConsumer": "unknown",
+    "hasAuthority": "unknown"
+  },
+  "runtimeObservations": []
+}

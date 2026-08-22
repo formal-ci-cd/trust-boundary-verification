@@ -29,6 +29,9 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 - `.github/workflows/`：CodeQL及びGitHub Actions実験用workflow．
 - `experiments/`：危険構成と安全構成に使う入力データ及び補助script．
 - `results/`：各ツールの実行結果を整理した記録．
+- `codeql/`：CodeQLの内部表現を取り出す独自query．
+- `model/`：静的情報と実行時情報を分離したCI/CD共通モデル．
+- `tools/`：解析結果を共通モデルへ変換する補助script．
 
-最初に読む資料は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)です．
+最初に読む資料は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)です．CodeQLの解析方法に関する調査は[CodeQLによるGitHub Actions解析の内部表現](docs/codeql-actions-internal-model.md)，形式検証へ渡す中間形式は[CI/CD共通モデル](model/README.md)に記録しています．
 Experimental artifacts for formal verification of CI/CD trust boundaries.

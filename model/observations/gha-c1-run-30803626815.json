@@ -1,0 +1,21 @@
+{
+  "id": "gha-c1-run-30803626815",
+  "platform": "github-actions",
+  "runId": "30803626815",
+  "observedAt": "2026-08-03",
+  "platformPolicy": {
+    "cacheWriteDecision": "denied",
+    "effectiveFrom": "2026-06-26",
+    "basis": "https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/"
+  },
+  "operationResults": [
+    {
+      "operationId": "cache-write:cache-untrusted-input:1",
+      "outcome": "failed",
+      "evidence": [
+        "Cache reservation failed: cache write denied: token has no writable scopes",
+        "Cache save failed."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "codeqlTable",
+    "file": "results/codeql-actions-model-v2.26.3.csv",
+    "staticAnalysisOnly": true
+  },
+  "workflow": {
+    "name": "GHA-C2 PR-isolated cache",
+    "file": ".github/workflows/cache-c2-pr-isolated.yml",
+    "events": [
+      {
+        "name": "pull_request",
+        "externallyTriggerable": true,
+        "privileged": false
+      }
+    ],
+    "permissions": [
+      {
+        "jobId": null,
+        "scope": "contents",
+        "access": "read"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "cache-pr-input",
+        "runnerLabels": [
+          "ubuntu-latest"
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "type": "uses",
+            "action": "actions/checkout",
+            "version": "v4",
+            "arguments": {
+              "persist-credentials": "false"
+            }
+          },
+          {
+            "index": 1,
+            "type": "uses",
+            "action": "actions/cache/save",
+            "version": "v4",
+            "arguments": {
+              "key": "trust-boundary-c2-pr-${{ github.event.pull_request.number }}-v1",
+              "path": ".research-cache-input"
+            }
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "raw": "${{ github.event.pull_request.number }}",
+        "normalized": "github.event.pull_request.number",
+        "line": 35
+      }
+    ]
+  },
+  "sharedStateOperations": [
+    {
+      "id": "cache-write:cache-pr-input:1",
+      "kind": "cacheWriteIntent",
+      "jobId": "cache-pr-input",
+      "stepIndex": 1,
+      "key": "trust-boundary-c2-pr-${{ github.event.pull_request.number }}-v1",
+      "path": ".research-cache-input"
+    }
+  ],
+  "verificationFacts": {
+    "sameObject": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityVerified": "unknown",
+    "privilegedConsumer": "unknown",
+    "hasAuthority": "unknown"
+  },
+  "runtimeObservations": []
+}

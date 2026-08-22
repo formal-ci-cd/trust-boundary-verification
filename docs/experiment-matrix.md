@@ -21,7 +21,7 @@
 
 | ID | 対象 | 構成 | 期待する形式判定 | 主な比較点 |
 |---|---|---|---|---|
-| GHA-C1 | Cache | 未信頼入力を扱うworkflowがCacheへ書き込む．後続consumerが復元して利用する． | Unsafe候補 | Cache書込みとconsumer利用の接続． |
+| GHA-C1 | Cache | `pull_request_target`で未信頼入力を取得し，default branch文脈のCacheへ保存を試みる． | 現行GitHubではBlocked | 2026年6月26日以降は低信頼な起動契機のCache tokenがread-onlyとなり，実測でも保存を拒否された． |
 | GHA-C2 | Cache | producerとconsumerのCache scope又はkeyを分離する． | Safe | 同じ文字列のkeyだけではobject同一性を決められないこと． |
 | GHA-C3 | Cache | Cacheを共有するが，consumerは復元内容を実行又は権限利用に使わない． | Safe | 保存objectへの到達と危険な利用を区別できるか． |
 | GHA-C4 | Cache | Cacheを共有するが，consumerはhash又はsignatureを確認してから利用する． | Safe | 完全性検証をcontrolとして扱えるか． |
@@ -40,7 +40,7 @@
 
 ## 実施順序
 
-1. GHA-C1及びGHA-C2を作成し，CodeQLのcache poisoning queryを確認する．
+1. GHA-C1及びGHA-C2を作成し，CodeQLのcache poisoning queryを確認する．GHA-C1はCodeQLに検出されたが，実行時のCache保存はGitHub側の権限制御により拒否された．GHA-C2はdefault branch側consumerを追加し，`lookup-only`による実行確認を残している．
 2. GHA-A1及びGHA-A2を作成し，CodeQLのartifact poisoning queryを確認する．
 3. 同じ構成にzizmor及びactionlintを適用する．
 4. `results/`にツールごとの検出結果を表として残す．

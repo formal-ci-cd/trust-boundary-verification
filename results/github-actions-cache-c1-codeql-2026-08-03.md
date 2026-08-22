@@ -44,3 +44,22 @@ GHA-C1は，未信頼なPR内容を取得する経路と，default branch文脈�
 PR上の自動修正提案は，Cache保存ステップを削除する内容である．通常の運用workflowなら採用を検討するが，本実験では検出対象を保持する必要があるため採用しない．
 
 比較対象のGHA-C2では，`pull_request`を用い，PR番号を含むCache keyで保存する．GHA-C2に同種の指摘が出ないかを次に確認する．
+
+## 2026年8月22日の再確認
+
+GitHub Actionsの公開実行情報を再確認したところ，GHA-C1の実行`30803626815`では，job及び`actions/cache/save` step自体は`success`であったが，check runのannotationに次の警告が記録されていた．
+
+```text
+Cache reservation failed: cache write denied: token has no writable scopes
+Cache save failed.
+```
+
+したがって，GHA-C1は静的解析上の危険な構成としてCodeQLに検出されたが，実行時のCache保存には成功していなかった．GitHubは2026年6月26日から，`pull_request_target`などの低信頼な起動契機に対し，default branchのCacheをread-onlyとする制御を導入している．`actions/cache/save`は保存失敗時にもjobを成功終了させるため，checkが緑色であることだけでは保存成功を確認できない．
+
+また，CodeQL公式sourceでは2026年7月30日に，低信頼な起動契機のread-only Cache accessを考慮する変更が行われた．8月3日の解析で使用されたqueryはGHA-C1を検出したが，現在の公式sourceでは`pull_request_target`はdefault branchのCache書込み可能eventから除外されている．実行時に使用されたquery packのversionは未確認であるため，検出結果と現在のsourceの差が生じた理由は今後確認する．
+
+この再確認により，本実験で確定した内容は次のように修正する．
+
+- CodeQLは，8月3日の解析時にGHA-C1の静的な書込み経路をHighとして検出した．
+- GitHub Actionsの実行時には，Cache tokenのscopeにより書込みが拒否された．
+- 静的な危険候補の検出と，実行時に信頼境界違反が成立することは分けて評価する必要がある．

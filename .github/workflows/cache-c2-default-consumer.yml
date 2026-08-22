@@ -1,0 +1,36 @@
+# GHA-C2のPR側Cacheを，default branch側から参照できるか確認する．
+# Cacheの内容は取得又は実行せず，lookup結果だけを記録する．
+name: GHA-C2 Default-branch cache consumer
+
+on:
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "確認対象とするPull Request番号．"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  cache-default-consumer:
+    runs-on: ubuntu-latest
+
+    steps:
+      # PR側producerと同じ文字列のkeyを指定する．
+      # lookup-onlyにより，Cacheの内容自体はrunnerへ取得しない．
+      - name: Look up the PR cache from the default branch
+        id: restore-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .research-cache-input
+          key: trust-boundary-c2-pr-${{ inputs.pr_number }}-v1
+          lookup-only: true
+
+      # 復元内容は実行せず，Cacheが見つかったかだけをlogへ残す．
+      - name: Record the cache lookup result
+        env:
+          CACHE_HIT: ${{ steps.restore-cache.outputs.cache-hit }}
+        run: |
+          printf 'cache-hit=%s\n' "$CACHE_HIT"

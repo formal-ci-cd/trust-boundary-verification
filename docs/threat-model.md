@@ -48,6 +48,8 @@ Cache keyが文字列として同じでも，同じCache objectとは限らな�
 - physical storage namespace．
 - 保存及び復元のrun順序．
 
+GitHub Actionsにおける具体的なscope規則と判定条件は，[GitHub ActionsにおけるCache object同一性](github-actions-cache-object-identity.md)に整理する．
+
 ## artifactにおけるobject同一性
 
 artifactでは，少なくとも次を考慮する．
@@ -70,3 +72,19 @@ artifactでは，少なくとも次を考慮する．
 5. consumerが影響対象となるprivileged authorityを持たない．
 
 この定義は今後の実験結果に基づいて更新する．
+
+## platformによる実行時制御
+
+workflowに共有状態への書込み処理が記述されていても，実行時のplatformが書込みtokenを発行しなければ，実際のobjectは作成又は更新されない．したがって，`CanWrite`はYAML上の操作だけで決めず，次を含めて判定する．
+
+- CI/CD platform及びversion．
+- 実行日時に適用されるplatformの仕様．
+- 起動契機及び実行文脈．
+- 実行時に与えられるCache token又はartifact権限．
+- 保存処理の実行結果．
+
+2026年8月3日のGHA-C1では，`actions/cache/save`が記述されていたが，`pull_request_target`に与えられたCache tokenがread-onlyであったため，実行時の書込みは拒否された．この場合，静的な`WritesOperation`は存在するが，実行時の`CanWrite`は成立しないものとして区別する．
+
+また，静的解析結果の再現には，解析ツール及びquery packのversionも記録する．platformの仕様とqueryの判定条件は更新されるため，同一のworkflowでも時点によってalert及び実行結果が変化する可能性がある．
+
+静的な操作と実行時の観測結果を分離して記録する具体的な形式は，[CI/CD共通モデル](../model/README.md)に示す．

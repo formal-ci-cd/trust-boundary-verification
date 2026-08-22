@@ -84,3 +84,5 @@ workflowに共有状態への書込み処理が記述されていても，実行
 2026年8月3日のGHA-C1では，`actions/cache/save`が記述されていたが，`pull_request_target`に与えられたCache tokenがread-onlyであったため，実行時の書込みは拒否された．この場合，静的な`WritesOperation`は存在するが，実行時の`CanWrite`は成立しないものとして区別する．
 
 また，静的解析結果の再現には，解析ツール及びquery packのversionも記録する．platformの仕様とqueryの判定条件は更新されるため，同一のworkflowでも時点によってalert及び実行結果が変化する可能性がある．
+
+静的な操作と実行時の観測結果を分離して記録する具体的な形式は，[CI/CD共通モデル](../model/README.md)に示す．

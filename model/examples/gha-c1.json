@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": {
+    "type": "codeqlTable",
+    "file": "results/codeql-actions-model-v2.26.3.csv",
+    "staticAnalysisOnly": true
+  },
+  "workflow": {
+    "name": "GHA-C1 Cache write from untrusted PR in default context",
+    "file": ".github/workflows/cache-c1-untrusted-default-context.yml",
+    "events": [
+      {
+        "name": "pull_request_target",
+        "externallyTriggerable": true,
+        "privileged": true
+      }
+    ],
+    "permissions": [
+      {
+        "jobId": null,
+        "scope": "contents",
+        "access": "read"
+      }
+    ],
+    "jobs": [
+      {
+        "id": "cache-untrusted-input",
+        "runnerLabels": [
+          "ubuntu-latest"
+        ],
+        "steps": [
+          {
+            "index": 0,
+            "type": "uses",
+            "action": "actions/checkout",
+            "version": "v4",
+            "arguments": {
+              "persist-credentials": "false",
+              "ref": "${{ github.event.pull_request.head.sha }}"
+            }
+          },
+          {
+            "index": 1,
+            "type": "uses",
+            "action": "actions/cache/save",
+            "version": "v4",
+            "arguments": {
+              "key": "trust-boundary-c1-default-context-v1",
+              "path": ".research-cache-input"
+            }
+          }
+        ]
+      }
+    ],
+    "expressions": [
+      {
+        "raw": "${{ github.event.pull_request.head.sha }}",
+        "normalized": "github.event.pull_request.head.sha",
+        "line": 29
+      }
+    ]
+  },
+  "sharedStateOperations": [
+    {
+      "id": "cache-write:cache-untrusted-input:1",
+      "kind": "cacheWriteIntent",
+      "jobId": "cache-untrusted-input",
+      "stepIndex": 1,
+      "key": "trust-boundary-c1-default-context-v1",
+      "path": ".research-cache-input"
+    }
+  ],
+  "runtimeObservations": [
+    {
+      "id": "gha-c1-run-30803626815",
+      "platform": "github-actions",
+      "runId": "30803626815",
+      "observedAt": "2026-08-03",
+      "platformPolicy": {
+        "cacheWriteDecision": "denied",
+        "effectiveFrom": "2026-06-26",
+        "basis": "https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/"
+      },
+      "operationResults": [
+        {
+          "operationId": "cache-write:cache-untrusted-input:1",
+          "outcome": "failed",
+          "evidence": [
+            "Cache reservation failed: cache write denied: token has no writable scopes",
+            "Cache save failed."
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+# 未信頼なPull Requestが保存した成果物を，後続のworkflow_runで取得する危険構成．
+# 本物のpublishやdeployは行わず，step summaryへのmarker出力を模擬権限とする．
+name: GHA-A1 Unverified artifact consumer
+
+on:
+  workflow_run:
+    workflows: ["GHA-A Producer - untrusted PR artifact"]
+    types: [completed]
+
+# workflow_runは強い権限を持ち得るため，実験では読取り権限へ明示的に制限する．
+permissions:
+  # 起動元runの成果物を取得するために必要．
+  actions: read
+  # workflow定義以外のrepository内容は変更しない．
+  contents: read
+
+concurrency:
+  group: gha-a1-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  consume-without-verification:
+    name: Use the artifact without integrity verification
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      # 起動元runを明示し，同じrunが生成した同名の成果物を取得する．
+      - name: Download artifact from the producer run
+        id: download-artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: trust-boundary-build-output
+          path: ${{ runner.temp }}/trust-boundary-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # 成果物のhashを確認せず，内容を模擬publish判断へ使用する．
+      - name: Use artifact for a dummy publish decision
+        env:
+          ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt
+          PRODUCER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -eu
+          request=$(tr -d '\r\n' < "$ARTIFACT_FILE")
+          digest=$(sha256sum "$ARTIFACT_FILE" | cut -d ' ' -f 1)
+
+          if [ "$request" = "publish=true" ]; then
+            authority_reached=true
+          else
+            authority_reached=false
+          fi
+
+          {
+            echo '### GHA-A1 実験結果'
+            echo
+            echo "producer_run_id=$PRODUCER_RUN_ID"
+            echo "artifact_sha256=$digest"
+            echo 'integrity_verified=false'
+            echo "dummy_publish_authority_reached=$authority_reached"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          printf 'producer_run_id=%s\n' "$PRODUCER_RUN_ID"
+          printf 'artifact_sha256=%s\n' "$digest"
+          printf 'integrity_verified=false\n'
+          printf 'dummy_publish_authority_reached=%s\n' "$authority_reached"

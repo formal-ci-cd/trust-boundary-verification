@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "0.1.0",
+  "property": "未信頼な成果物を保持したまま権限へ到達しない．",
+  "cases": [
+    {
+      "id": "GHA-A1-AUTO",
+      "expectedVerdict": "unsafe",
+      "actualVerdict": "unsafe",
+      "correct": true,
+      "basis": "完全性確認なしで未信頼な成果物を模擬公開判断へ渡す危険構成．",
+      "model": "model/generated-chains/gha-a1-auto.json",
+      "smv": "model/nusmv/generated/gha-a1-auto.smv"
+    },
+    {
+      "id": "GHA-A2-AUTO",
+      "expectedVerdict": "safe",
+      "actualVerdict": "safe",
+      "correct": true,
+      "basis": "信頼済みdigestとの比較に失敗した成果物を利用前に遮断する安全構成．",
+      "model": "model/generated-chains/gha-a2-auto.json",
+      "smv": "model/nusmv/generated/gha-a2-auto.smv"
+    },
+    {
+      "id": "GHA-A3-AUTO",
+      "expectedVerdict": "safe",
+      "actualVerdict": "safe",
+      "correct": true,
+      "basis": "成果物を取得しても後続処理へ入力しない安全構成．",
+      "model": "model/generated-chains/gha-a3-auto.json",
+      "smv": "model/nusmv/generated/gha-a3-auto.smv"
+    },
+    {
+      "id": "GHA-A4-AUTO",
+      "expectedVerdict": "safe",
+      "actualVerdict": "safe",
+      "correct": true,
+      "basis": "成果物を読んでも公開・更新権限へ到達できない安全構成．",
+      "model": "model/generated-chains/gha-a4-auto.json",
+      "smv": "model/nusmv/generated/gha-a4-auto.smv"
+    }
+  ],
+  "summary": {
+    "total": 4,
+    "correct": 4,
+    "accuracy": 1.0,
+    "confusionMatrix": {
+      "truePositive": 1,
+      "trueNegative": 3,
+      "falsePositive": 0,
+      "falseNegative": 0
+    }
+  },
+  "limitations": [
+    "4構成は研究用に設計した小規模な評価集合であり，一般的な検出精度を示すものではない．",
+    "GHA-A3及びGHA-A4の取得成功と意味付けは実行未確認であり，手動判断を含む．"
+  ]
+}

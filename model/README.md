@@ -117,3 +117,44 @@ NuSMVが反例を出した場合は，`tools/explain_nusmv_trace.py`で各状態
 | GHA-A2 | digest一致後だけ模擬公開判断へ使用する． | 保存と取得後，digest不一致で利用を遮断 | 反例なし | `observed` |
 
 PR #7では，producer run `32576681421`が保存した同一artifact IDを両consumerが取得した．GHA-A1の実行結果はNuSMVの反例と一致し，GHA-A2では完全性確認により利用stepがskipされた．静的解析，実行結果及び形式検証の区分は[実行結果](../results/github-actions-artifact-runtime-2026-08-22.md)に記録している．
+
+## 9．複数workflow間の自動結合
+
+`tools/discover_artifact_chains.py`は，CodeQLのCSVから全workflowを共通モデルへ変換し，次の3条件を全て満たす保存操作と取得操作を自動的に結合する．
+
+1. `upload-artifact`と`download-artifact`の成果物名が一致する．
+2. 取得側の`run-id`が`github.event.workflow_run.id`である．
+3. `workflow_run.workflows`に保存側workflow名が指定されている．
+
+同じ条件を満たす保存側が複数ある場合は，1件へ決めず`ambiguous`として出力する．候補一覧と形式検証モデルは次のように生成する．
+
+```bash
+python3 tools/discover_artifact_chains.py \
+  results/codeql-actions-model-v2.26.3.csv \
+  --annotations model/artifact-chain-annotations.json \
+  --catalog model/artifact-chain-candidates.json \
+  --output-dir model/generated-chains
+```
+
+自動生成モデルの`provenance`は，scenario，保存側，取得側，共有成果物，検証事実及び反例位置の各要素について，情報源を次の3種類のいずれかで記録する．
+
+- `static-analysis`：CodeQLの抽出結果又はそこから機械的に導いた情報．
+- `runtime-observation`：GitHub Actionsのrun，artifact ID及びstep結果から確認した情報．
+- `manual-judgment`：任意のshell処理における成果物利用，完全性確認及び権限の意味を人手で判断した情報．
+
+生成時に，意味を持つ全モデル要素へ情報源がちょうど1件あることを検査する．現段階では，CodeQLが任意のshell処理の業務上の意味まで分類しないため，`model/artifact-chain-annotations.json`による手動判断は残る．
+
+## 10．自動生成モデルの評価
+
+次のコマンドは4構成をNuSMVへ変換し，期待した安全・危険の分類と比較する．
+
+```bash
+python3 tools/evaluate_artifact_chains.py \
+  model/artifact-chain-evaluation.json \
+  --root . \
+  --nusmv /path/to/NuSMV \
+  --smv-dir model/nusmv/generated \
+  --output results/artifact-chain-evaluation-2026-08-23.json
+```
+
+危険構成GHA-A1には反例があり，完全性確認で遮断するGHA-A2，成果物を利用しないGHA-A3及び権限を持たないGHA-A4には反例がなかった．4件全てで期待結果と一致したが，研究用に設計した小規模な評価集合であり，一般的な検出精度を示す値ではない．また，GHA-A3及びGHA-A4は静的構成による評価で，GitHub上の実行は未確認である．

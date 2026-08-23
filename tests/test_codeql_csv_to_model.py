@@ -144,6 +144,26 @@ class CodeQLCsvToModelTest(unittest.TestCase):
             },
             {
                 "filePath": ".github/workflows/artifact.yml",
+                "line": "2",
+                "workflowName": "Artifact workflow",
+                "jobId": "-",
+                "stepIndex": "-",
+                "kind": "event",
+                "name": "workflow_run",
+                "detail": "externally-triggerable;privileged",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
+                "line": "2",
+                "workflowName": "Artifact workflow",
+                "jobId": "-",
+                "stepIndex": "-",
+                "kind": "event-property",
+                "name": "workflow_run.workflows",
+                "detail": "Producer workflow",
+            },
+            {
+                "filePath": ".github/workflows/artifact.yml",
                 "line": "13",
                 "workflowName": "Artifact workflow",
                 "jobId": "artifact-job",
@@ -172,6 +192,10 @@ class CodeQLCsvToModelTest(unittest.TestCase):
         self.assertEqual(read_operation["kind"], "artifactReadIntent")
         self.assertEqual(
             read_operation["runId"], "${{ github.event.workflow_run.id }}"
+        )
+        self.assertEqual(
+            model["workflow"]["events"][0]["properties"]["workflows"],
+            ["Producer workflow"],
         )
 
 

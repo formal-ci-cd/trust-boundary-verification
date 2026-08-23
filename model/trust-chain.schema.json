@@ -14,7 +14,7 @@
     "evidence"
   ],
   "properties": {
-    "schemaVersion": {"const": "0.2.0"},
+    "schemaVersion": {"enum": ["0.2.0", "0.3.0"]},
     "scenario": {
       "type": "object",
       "required": ["id", "platform", "description", "evidenceStatus"],
@@ -73,8 +73,33 @@
         },
         "additionalProperties": false
       }
+    },
+    "provenance": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["element", "sourceKind", "source", "claim"],
+        "properties": {
+          "element": {"type": "string"},
+          "sourceKind": {
+            "enum": ["static-analysis", "runtime-observation", "manual-judgment"]
+          },
+          "source": {"type": "string"},
+          "claim": {"type": "string"}
+        },
+        "additionalProperties": false
+      }
     }
   },
+  "allOf": [
+    {
+      "if": {
+        "properties": {"schemaVersion": {"const": "0.3.0"}},
+        "required": ["schemaVersion"]
+      },
+      "then": {"required": ["provenance"]}
+    }
+  ],
   "$defs": {
     "endpoint": {
       "type": "object",

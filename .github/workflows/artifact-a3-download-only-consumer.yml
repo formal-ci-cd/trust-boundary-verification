@@ -1,0 +1,41 @@
+# 起動元runの成果物を取得するが，内容を後続処理へ渡さない安全構成．
+name: GHA-A3 Download-only artifact consumer
+
+on:
+  workflow_run:
+    workflows: ["GHA-A Producer - untrusted PR artifact"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  download-without-use:
+    name: Download the artifact without using it
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      # 成果物は取得するが，内容をcommandや公開判断へ入力しない．
+      - name: Download artifact from the producer run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: trust-boundary-build-output
+          path: ${{ runner.temp }}/trust-boundary-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # 成果物とは無関係な固定メッセージだけを記録する．
+      - name: Record that the artifact was not used
+        run: |
+          printf 'artifact_downloaded=true\n'
+          printf 'artifact_used=false\n'
+
+      # 模擬権限は存在するが，成果物の内容とは接続しない．
+      - name: Record independent dummy authority
+        run: |
+          printf 'dummy_publish_authority_available=true\n'
+          printf 'artifact_value_forwarded=false\n'

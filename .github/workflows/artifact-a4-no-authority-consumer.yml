@@ -1,0 +1,39 @@
+# 成果物の内容を読むが，secretや公開権限を持つ処理へ到達しない安全構成．
+name: GHA-A4 Artifact consumer without authority
+
+on:
+  workflow_run:
+    workflows: ["GHA-A Producer - untrusted PR artifact"]
+    types: [completed]
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  consume-without-authority:
+    name: Read the artifact without authority
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from the producer run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: trust-boundary-build-output
+          path: ${{ runner.temp }}/trust-boundary-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # 内容は表示するが，このjobには公開やrepository更新を行うstepがない．
+      - name: Read artifact in a read-only job
+        env:
+          ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt
+        run: |
+          set -eu
+          request=$(tr -d '\r\n' < "$ARTIFACT_FILE")
+          printf 'artifact_value=%s\n' "$request"
+          printf 'authority_available=false\n'
+

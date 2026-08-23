@@ -69,7 +69,14 @@
       "properties": {
         "name": {"type": "string"},
         "externallyTriggerable": {"type": "boolean"},
-        "privileged": {"type": "boolean"}
+        "privileged": {"type": "boolean"},
+        "properties": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {"type": "string"}
+          }
+        }
       },
       "additionalProperties": false
     },

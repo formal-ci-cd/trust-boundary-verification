@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "0.1.0",
+  "cases": [
+    {
+      "id": "GHA-A1-AUTO",
+      "model": "model/generated-chains/gha-a1-auto.json",
+      "expectedVerdict": "unsafe",
+      "basis": "完全性確認なしで未信頼な成果物を模擬公開判断へ渡す危険構成．"
+    },
+    {
+      "id": "GHA-A2-AUTO",
+      "model": "model/generated-chains/gha-a2-auto.json",
+      "expectedVerdict": "safe",
+      "basis": "信頼済みdigestとの比較に失敗した成果物を利用前に遮断する安全構成．"
+    },
+    {
+      "id": "GHA-A3-AUTO",
+      "model": "model/generated-chains/gha-a3-auto.json",
+      "expectedVerdict": "safe",
+      "basis": "成果物を取得しても後続処理へ入力しない安全構成．"
+    },
+    {
+      "id": "GHA-A4-AUTO",
+      "model": "model/generated-chains/gha-a4-auto.json",
+      "expectedVerdict": "safe",
+      "basis": "成果物を読んでも公開・更新権限へ到達できない安全構成．"
+    }
+  ]
+}

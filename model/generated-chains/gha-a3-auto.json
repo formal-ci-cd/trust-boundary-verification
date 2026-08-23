@@ -1,0 +1,394 @@
+{
+  "schemaVersion": "0.3.0",
+  "scenario": {
+    "id": "GHA-A3-AUTO",
+    "platform": "GitHub Actions",
+    "description": "成果物を取得するが内容を後続処理に使わない安全構成．",
+    "evidenceStatus": "incomplete"
+  },
+  "producer": {
+    "workflow": {
+      "name": "GHA-A Producer - untrusted PR artifact",
+      "file": ".github/workflows/artifact-a1-pr-producer.yml",
+      "event": "pull_request"
+    },
+    "operation": {
+      "id": "artifact-write:produce-artifact:2",
+      "kind": "artifactWriteIntent",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "name": "trust-boundary-build-output",
+      "path": ".research-artifact-input/payload.txt",
+      "runId": null
+    }
+  },
+  "consumer": {
+    "workflow": {
+      "name": "GHA-A3 Download-only artifact consumer",
+      "file": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "event": "workflow_run"
+    },
+    "operation": {
+      "id": "artifact-read:download-without-use:0",
+      "kind": "artifactReadIntent",
+      "jobId": "download-without-use",
+      "stepIndex": 0,
+      "name": "trust-boundary-build-output",
+      "path": "${{ runner.temp }}/trust-boundary-artifact",
+      "runId": "${{ github.event.workflow_run.id }}"
+    }
+  },
+  "sharedObject": {
+    "kind": "artifact",
+    "producerRunSelector": "github.run_id",
+    "consumerRunSelector": "github.event.workflow_run.id",
+    "identityBasis": [
+      "artifact nameが一致する．",
+      "取得側が起動元workflow_runのrun IDを指定する．",
+      "workflow_runのworkflows指定が保存側workflow名と一致する．"
+    ],
+    "name": "trust-boundary-build-output"
+  },
+  "facts": {
+    "producerUntrusted": "true",
+    "writeIntent": "true",
+    "writeAuthorized": "true",
+    "writeSucceeded": "true",
+    "sameObject": "true",
+    "readSucceeded": "true",
+    "consumerUsesObject": "false",
+    "integrityCheckPresent": "false",
+    "integrityCheckPassed": "false",
+    "privilegedConsumer": "true",
+    "hasAuthority": "true"
+  },
+  "traceMap": {
+    "start": {
+      "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+      "workflowName": "GHA-A Producer - untrusted PR artifact",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "meaning": "未信頼なworkflowが共有objectへの保存を試みる．"
+    },
+    "object_written": {
+      "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+      "workflowName": "GHA-A Producer - untrusted PR artifact",
+      "jobId": "produce-artifact",
+      "stepIndex": 2,
+      "meaning": "共有objectの保存が成功する．"
+    },
+    "object_restored": {
+      "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "workflowName": "GHA-A3 Download-only artifact consumer",
+      "jobId": "download-without-use",
+      "stepIndex": 0,
+      "meaning": "同じ共有objectを後続workflowが取得する．"
+    },
+    "object_used": {
+      "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "workflowName": "GHA-A3 Download-only artifact consumer",
+      "jobId": "download-without-use",
+      "stepIndex": 1,
+      "meaning": "取得した内容を後続処理が利用する．"
+    },
+    "integrity_checked": {
+      "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "workflowName": "GHA-A3 Download-only artifact consumer",
+      "jobId": "download-without-use",
+      "stepIndex": 1,
+      "meaning": "復元した内容を利用する前に完全性を確認する．"
+    },
+    "authority_reached": {
+      "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "workflowName": "GHA-A3 Download-only artifact consumer",
+      "jobId": "download-without-use",
+      "stepIndex": 2,
+      "meaning": "模擬権限は存在するが，成果物の内容を入力しないstepである．"
+    }
+  },
+  "evidence": [
+    {
+      "kind": "static",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQL抽出結果から保存側と取得側を自動結合した．"
+    }
+  ],
+  "provenance": [
+    {
+      "element": "scenario.id",
+      "sourceKind": "manual-judgment",
+      "source": "model/artifact-chain-annotations.json",
+      "claim": "評価scenarioの定義から設定した．"
+    },
+    {
+      "element": "scenario.platform",
+      "sourceKind": "manual-judgment",
+      "source": "model/artifact-chain-annotations.json",
+      "claim": "評価scenarioの定義から設定した．"
+    },
+    {
+      "element": "scenario.description",
+      "sourceKind": "manual-judgment",
+      "source": "model/artifact-chain-annotations.json",
+      "claim": "評価scenarioの定義から設定した．"
+    },
+    {
+      "element": "scenario.evidenceStatus",
+      "sourceKind": "manual-judgment",
+      "source": "model/artifact-chain-annotations.json",
+      "claim": "評価scenarioの定義から設定した．"
+    },
+    {
+      "element": "producer.workflow.name",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.workflow.file",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.workflow.event",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.id",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.kind",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.jobId",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.stepIndex",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.name",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.path",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "producer.operation.runId",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.workflow.name",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.workflow.file",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.workflow.event",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.id",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.kind",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.jobId",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.stepIndex",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.name",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.path",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "consumer.operation.runId",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLの抽出表から取得した．"
+    },
+    {
+      "element": "sharedObject.kind",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "保存操作と取得操作の照合から生成した．"
+    },
+    {
+      "element": "sharedObject.producerRunSelector",
+      "sourceKind": "manual-judgment",
+      "source": "tools/discover_artifact_chains.py",
+      "claim": "upload-artifactは実行中runへ成果物を保存すると解釈した．"
+    },
+    {
+      "element": "sharedObject.consumerRunSelector",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "保存操作と取得操作の照合から生成した．"
+    },
+    {
+      "element": "sharedObject.identityBasis",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "保存操作と取得操作の照合から生成した．"
+    },
+    {
+      "element": "sharedObject.name",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "保存操作と取得操作の照合から生成した．"
+    },
+    {
+      "element": "facts.producerUntrusted",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQL抽出結果と結合条件から算出した．"
+    },
+    {
+      "element": "facts.writeIntent",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQL抽出結果と結合条件から算出した．"
+    },
+    {
+      "element": "facts.sameObject",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQL抽出結果と結合条件から算出した．"
+    },
+    {
+      "element": "facts.privilegedConsumer",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQL抽出結果と結合条件から算出した．"
+    },
+    {
+      "element": "facts.writeAuthorized",
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a-runtime-pr7.json",
+      "claim": "共通producer runで成果物の保存が許可された．"
+    },
+    {
+      "element": "facts.writeSucceeded",
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a-runtime-pr7.json",
+      "claim": "共通producer runで成果物の保存に成功した．"
+    },
+    {
+      "element": "facts.readSucceeded",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "構成比較ではdownload-artifactが成功する場合を仮定する．"
+    },
+    {
+      "element": "facts.consumerUsesObject",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "後続stepは成果物のfileを参照しない．"
+    },
+    {
+      "element": "facts.integrityCheckPresent",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "成果物を利用しないため完全性確認stepを置いていない．"
+    },
+    {
+      "element": "facts.integrityCheckPassed",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "完全性確認を行わない構成なのでfalseとする．"
+    },
+    {
+      "element": "facts.hasAuthority",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "利用しないことによる遮断を単独で評価するため，後続権限がある場合を仮定する．"
+    },
+    {
+      "element": "traceMap.start",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLが抽出した操作位置から生成した．"
+    },
+    {
+      "element": "traceMap.object_written",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLが抽出した操作位置から生成した．"
+    },
+    {
+      "element": "traceMap.object_restored",
+      "sourceKind": "static-analysis",
+      "source": "results/codeql-actions-model-v2.26.3.csv",
+      "claim": "CodeQLが抽出した操作位置から生成した．"
+    },
+    {
+      "element": "traceMap.object_used",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "成果物を使うstepは存在しないため，後続stepを非到達位置として記録する．"
+    },
+    {
+      "element": "traceMap.integrity_checked",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "完全性確認stepは存在しない．"
+    },
+    {
+      "element": "traceMap.authority_reached",
+      "sourceKind": "manual-judgment",
+      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "claim": "模擬権限は存在するが，成果物の内容を入力しないstepである．"
+    }
+  ]
+}

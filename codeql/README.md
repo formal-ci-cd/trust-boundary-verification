@@ -10,6 +10,7 @@
 - step，Action名及びversion．
 - checkout，キャッシュ及び成果物に関係する主な`with`引数．
 - `${{ ... }}`式と正規化された参照．
+- `workflow_run`の`workflows`，`types`及び`branches`指定．
 
 ## 実行方法
 
@@ -29,4 +30,4 @@ CodeQL Bundleを展開し，リポジトリのrootで次のように実行する
   --output=/tmp/workflow-structure.csv
 ```
 
-2026年8月22日にCodeQL CLI `2.26.3`で確認した出力は，[解析結果](../results/codeql-actions-model-v2.26.3.md)及び[全件CSV](../results/codeql-actions-model-v2.26.3.csv)に保存している．成果物については，`name`，`path`，`run-id`及び`github-token`も出力し，保存側と取得側を複数run間の信頼経路へ結合できるようにした．
+2026年8月23日にCodeQL CLI `2.26.3`で再確認した出力は，[解析結果](../results/codeql-actions-model-v2.26.3.md)及び[全件CSV](../results/codeql-actions-model-v2.26.3.csv)に保存している．成果物については，`name`，`path`，`run-id`及び`github-token`も出力する．さらに，`workflow_run.workflows`を取得し，保存側workflow名，成果物名及び起動元run IDの3条件で複数workflow間を結合できるようにした．

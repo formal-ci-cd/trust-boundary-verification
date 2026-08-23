@@ -1,0 +1,51 @@
+-- Generated from model/generated-chains/gha-a4-auto.json
+-- Scenario: GHA-A4-AUTO
+-- TRACE start: .github/workflows/artifact-a1-pr-producer.yml:produce-artifact:2 - 未信頼なworkflowが共有objectへの保存を試みる．
+-- TRACE object_written: .github/workflows/artifact-a1-pr-producer.yml:produce-artifact:2 - 共有objectの保存が成功する．
+-- TRACE object_restored: .github/workflows/artifact-a4-no-authority-consumer.yml:consume-without-authority:0 - 同じ共有objectを後続workflowが取得する．
+-- TRACE object_used: .github/workflows/artifact-a4-no-authority-consumer.yml:consume-without-authority:1 - 取得した内容を後続処理が利用する．
+-- TRACE integrity_checked: .github/workflows/artifact-a4-no-authority-consumer.yml:consume-without-authority:1 - 復元した内容を利用する前に完全性を確認する．
+-- TRACE authority_reached: .github/workflows/artifact-a4-no-authority-consumer.yml:consume-without-authority:1 - 公開・更新権限を持つstepは存在しないため非到達位置として記録する．
+MODULE main
+VAR
+  stage : {start, object_written, object_restored, integrity_checked, object_used, authority_reached, blocked};
+  object_tainted : boolean;
+DEFINE
+  producer_untrusted := TRUE;
+  write_intent := TRUE;
+  write_authorized := TRUE;
+  write_succeeded := TRUE;
+  same_object := TRUE;
+  read_succeeded := TRUE;
+  consumer_uses_object := TRUE;
+  integrity_check_present := FALSE;
+  integrity_check_passed := FALSE;
+  privileged_consumer := TRUE;
+  has_authority := FALSE;
+INVAR write_succeeded -> write_authorized
+INVAR read_succeeded -> write_succeeded
+INVAR integrity_check_passed -> integrity_check_present
+ASSIGN
+  init(stage) := start;
+  init(object_tainted) := producer_untrusted;
+  next(object_tainted) := case
+    stage = object_restored & integrity_check_present & integrity_check_passed : FALSE;
+    TRUE : object_tainted;
+  esac;
+  next(stage) := case
+    stage = start & (!producer_untrusted | !write_intent | !write_authorized | !write_succeeded) : blocked;
+    stage = start : object_written;
+    stage = object_written & same_object & read_succeeded : object_restored;
+    stage = object_written : blocked;
+    stage = object_restored & integrity_check_present & integrity_check_passed : integrity_checked;
+    stage = object_restored & integrity_check_present : blocked;
+    stage = object_restored & consumer_uses_object : object_used;
+    stage = object_restored : blocked;
+    stage = integrity_checked & consumer_uses_object : object_used;
+    stage = integrity_checked : blocked;
+    stage = object_used & privileged_consumer & has_authority : authority_reached;
+    stage = object_used : blocked;
+    TRUE : stage;
+  esac;
+
+CTLSPEC AG !(stage = authority_reached & object_tainted)

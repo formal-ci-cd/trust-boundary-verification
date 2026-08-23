@@ -40,6 +40,7 @@ def load_rows(input_path, workflow_name):
 def build_model(rows, input_path):
     workflow_row = next(row for row in rows if row["kind"] == "workflow")
     events = []
+    event_properties = []
     permissions = []
     jobs = {}
     expressions = []
@@ -51,7 +52,16 @@ def build_model(rows, input_path):
         step_index = row["stepIndex"]
 
         if kind == "event":
-            events.append({"name": row["name"], **parse_event_detail(row["detail"])})
+            events.append(
+                {
+                    "name": row["name"],
+                    **parse_event_detail(row["detail"]),
+                    "properties": {},
+                }
+            )
+        elif kind == "event-property":
+            event_name, property_name = row["name"].split(".", 1)
+            event_properties.append((event_name, property_name, row["detail"]))
         elif kind == "permission":
             scope, access = row["detail"].split(":", 1)
             permissions.append(
@@ -103,6 +113,12 @@ def build_model(rows, input_path):
             expressions.append(
                 {"raw": row["name"], "normalized": row["detail"], "line": int(row["line"])}
             )
+
+    for event_name, property_name, value in event_properties:
+        matches = [event for event in events if event["name"] == event_name]
+        if len(matches) != 1:
+            raise ValueError(f"event propertyの所属を特定できません: {event_name}")
+        matches[0]["properties"].setdefault(property_name, []).append(value)
 
     for (job_id, _), step in sorted(steps.items(), key=lambda item: (item[0][0], int(item[0][1]))):
         if job_id in jobs:

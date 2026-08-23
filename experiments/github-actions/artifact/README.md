@@ -16,6 +16,8 @@ GitHubの公式文書は，`workflow_run`で起動したworkflowが他のworkflo
 | 共通producer | `artifact-a1-pr-producer.yml` | PR側の`payload.txt`を`trust-boundary-build-output`として保存する． |
 | GHA-A1 | `artifact-a1-unsafe-consumer.yml` | 起動元runの成果物を取得し，hashを確認せずに`publish=true`を模擬公開判断へ渡す． |
 | GHA-A2 | `artifact-a2-safe-consumer.yml` | 同じ成果物を取得するが，信頼済みdigestと一致する場合だけ模擬公開判断へ渡す． |
+| GHA-A3 | `artifact-a3-download-only-consumer.yml` | 同じ成果物を取得するが，内容を後続処理へ渡さない． |
+| GHA-A4 | `artifact-a4-no-authority-consumer.yml` | 同じ成果物を読むが，公開・更新権限を持つ処理を置かない． |
 
 producerとconsumerは同じ成果物名を使用する．consumerの`run-id`には`github.event.workflow_run.id`を指定するため，単に同名の成果物を探すのではなく，consumerを起動したproducer runの成果物を取得する．
 
@@ -55,3 +57,5 @@ publish=true
 ## 6．現時点の状態
 
 workflow，CodeQLから共通モデルへの変換，NuSMVモデル，反例の対応付け及びGitHub上の実行確認まで完了した．PR #7のproducer run `32576681421`が保存したartifact ID `9476722196`を両consumerが取得した．GHA-A1は完全性確認なしで模擬公開権限へ到達し，GHA-A2はdigest不一致によって利用を遮断した．実行記録は`model/observations/gha-a-runtime-pr7.json`，結果と比較は`results/github-actions-artifact-runtime-2026-08-22.md`に保存した．
+
+その後，CodeQLの抽出結果から保存側と取得側を自動結合する処理を追加した．GHA-A3及びGHA-A4も静的構成として追加し，危険構成1件と安全構成3件をNuSMVで区別できることを確認した．GHA-A3及びGHA-A4のGitHub上での実行は未確認である．

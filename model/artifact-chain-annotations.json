@@ -1,0 +1,301 @@
+{
+  "schemaVersion": "0.1.0",
+  "scenarios": [
+    {
+      "id": "GHA-A1-AUTO",
+      "producerWorkflow": "GHA-A Producer - untrusted PR artifact",
+      "consumerWorkflow": "GHA-A1 Unverified artifact consumer",
+      "description": "未信頼PRの成果物を完全性確認なしで模擬公開判断へ使用する危険構成．",
+      "evidenceStatus": "observed",
+      "facts": {
+        "writeAuthorized": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "producer runで成果物の保存が許可された．"
+        },
+        "writeSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "producer runで成果物の保存に成功した．"
+        },
+        "readSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "consumer runで同じartifact IDを取得した．"
+        },
+        "consumerUsesObject": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "取得したpublish=trueが模擬公開判断に使われた．"
+        },
+        "integrityCheckPresent": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "claim": "利用前に期待値とのdigest比較を行うstepがない．"
+        },
+        "integrityCheckPassed": {
+          "value": "false",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "実行結果に完全性確認を行っていないことが記録された．"
+        },
+        "hasAuthority": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "模擬公開権限への到達を確認した．"
+        }
+      },
+      "locations": {
+        "objectUsed": {
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "claim": "成果物を模擬公開判断へ渡すstepである．"
+        },
+        "integrityChecked": {
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "claim": "完全性確認stepは存在しないため，利用stepを対応位置として記録する．"
+        },
+        "authorityReached": {
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "claim": "成果物のpublish=trueを模擬公開権限到達として記録する．"
+        }
+      }
+    },
+    {
+      "id": "GHA-A2-AUTO",
+      "producerWorkflow": "GHA-A Producer - untrusted PR artifact",
+      "consumerWorkflow": "GHA-A2 Verified artifact consumer",
+      "description": "信頼済みdigestと一致した成果物だけを使用する安全構成．",
+      "evidenceStatus": "observed",
+      "facts": {
+        "writeAuthorized": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "producer runで成果物の保存が許可された．"
+        },
+        "writeSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "producer runで成果物の保存に成功した．"
+        },
+        "readSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "consumer runで同じartifact IDを取得した．"
+        },
+        "consumerUsesObject": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "digest一致時に限り成果物を模擬公開判断へ渡す構造である．"
+        },
+        "integrityCheckPresent": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "利用前に信頼済みdigestとの比較を行う．"
+        },
+        "integrityCheckPassed": {
+          "value": "false",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "攻撃用成果物はdigest不一致となった．"
+        },
+        "hasAuthority": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "検証成功後には模擬公開判断へ進める構造である．"
+        }
+      },
+      "locations": {
+        "objectUsed": {
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "digest一致時だけ成果物を模擬公開判断へ渡すstepである．"
+        },
+        "integrityChecked": {
+          "jobId": "consume-after-verification",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "成果物のdigestを信頼済み値と比較するstepである．"
+        },
+        "authorityReached": {
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "claim": "検証済み成果物だけを模擬公開判断へ渡す．"
+        }
+      }
+    },
+    {
+      "id": "GHA-A3-AUTO",
+      "producerWorkflow": "GHA-A Producer - untrusted PR artifact",
+      "consumerWorkflow": "GHA-A3 Download-only artifact consumer",
+      "description": "成果物を取得するが内容を後続処理に使わない安全構成．",
+      "evidenceStatus": "incomplete",
+      "facts": {
+        "writeAuthorized": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "共通producer runで成果物の保存が許可された．"
+        },
+        "writeSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "共通producer runで成果物の保存に成功した．"
+        },
+        "readSucceeded": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "構成比較ではdownload-artifactが成功する場合を仮定する．"
+        },
+        "consumerUsesObject": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "後続stepは成果物のfileを参照しない．"
+        },
+        "integrityCheckPresent": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "成果物を利用しないため完全性確認stepを置いていない．"
+        },
+        "integrityCheckPassed": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "完全性確認を行わない構成なのでfalseとする．"
+        },
+        "hasAuthority": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "利用しないことによる遮断を単独で評価するため，後続権限がある場合を仮定する．"
+        }
+      },
+      "locations": {
+        "objectUsed": {
+          "jobId": "download-without-use",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "成果物を使うstepは存在しないため，後続stepを非到達位置として記録する．"
+        },
+        "integrityChecked": {
+          "jobId": "download-without-use",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "完全性確認stepは存在しない．"
+        },
+        "authorityReached": {
+          "jobId": "download-without-use",
+          "stepIndex": 2,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "claim": "模擬権限は存在するが，成果物の内容を入力しないstepである．"
+        }
+      }
+    },
+    {
+      "id": "GHA-A4-AUTO",
+      "producerWorkflow": "GHA-A Producer - untrusted PR artifact",
+      "consumerWorkflow": "GHA-A4 Artifact consumer without authority",
+      "description": "成果物を読むが公開・更新権限を持つ処理がない安全構成．",
+      "evidenceStatus": "incomplete",
+      "facts": {
+        "writeAuthorized": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "共通producer runで成果物の保存が許可された．"
+        },
+        "writeSucceeded": {
+          "value": "true",
+          "sourceKind": "runtime-observation",
+          "source": "model/observations/gha-a-runtime-pr7.json",
+          "claim": "共通producer runで成果物の保存に成功した．"
+        },
+        "readSucceeded": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "構成比較ではdownload-artifactが成功する場合を仮定する．"
+        },
+        "consumerUsesObject": {
+          "value": "true",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "後続stepが成果物のfileを読み取る．"
+        },
+        "integrityCheckPresent": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "利用前のdigest確認を行わない．"
+        },
+        "integrityCheckPassed": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "完全性確認を行わない構成なのでfalseとする．"
+        },
+        "hasAuthority": {
+          "value": "false",
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "成果物を読むjobに公開・repository更新処理がない．"
+        }
+      },
+      "locations": {
+        "objectUsed": {
+          "jobId": "consume-without-authority",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "成果物のfileを読み取るstepである．"
+        },
+        "integrityChecked": {
+          "jobId": "consume-without-authority",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "完全性確認stepは存在しない．"
+        },
+        "authorityReached": {
+          "jobId": "consume-without-authority",
+          "stepIndex": 1,
+          "sourceKind": "manual-judgment",
+          "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "claim": "公開・更新権限を持つstepは存在しないため非到達位置として記録する．"
+        }
+      }
+    }
+  ]
+}

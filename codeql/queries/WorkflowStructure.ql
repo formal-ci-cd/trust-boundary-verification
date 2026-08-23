@@ -82,6 +82,14 @@ private predicate describeNode(AstNode node, string kind, string name, string de
     detail = getEventTrust(event) + ";" + getEventPrivilege(event)
   )
   or
+  exists(Event event, string propertyName |
+    node = event and
+    propertyName = ["workflows", "types", "branches"] and
+    kind = "event-property" and
+    name = event.getName() + "." + propertyName and
+    detail = event.getAPropertyValue(propertyName)
+  )
+  or
   exists(LocalJob job, string runnerLabel |
     node = job and
     kind = "job" and

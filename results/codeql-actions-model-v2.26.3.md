@@ -1,6 +1,8 @@
 # CodeQLの内部表現を独自クエリで列挙した結果
 
-実施日：2026年8月22日
+初回実施日：2026年8月22日．
+
+再解析日：2026年8月23日
 
 ## 1．目的
 
@@ -13,7 +15,7 @@ CodeQLがGitHub Actionsのworkflowから構成した内部表現を独自クエ�
 | CodeQL Bundle | `v2.26.3` |
 | CodeQL CLI | `2.26.3` |
 | `codeql/actions-all` | `0.5.0` |
-| 解析対象 | リポジトリ内のGitHub Actions workflow 9件 |
+| 解析対象 | リポジトリ内のGitHub Actions workflow 11件 |
 | 独自クエリ | `codeql/queries/WorkflowStructure.ql` |
 | 全出力 | `results/codeql-actions-model-v2.26.3.csv` |
 
@@ -51,7 +53,7 @@ producerのkeyに含まれる`github.event.pull_request.number`とconsumerの`in
 
 ### 4.2 成果物のproducerとconsumer
 
-GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-boundary-build-output`及び保存pathを取得した．GHA-A1及びGHA-A2からは，`actions/download-artifact`，同じ成果物名，取得先，`github.event.workflow_run.id`を使用する`run-id`を取得した．変換処理はこれらを`artifactWriteIntent`及び`artifactReadIntent`として出力する．
+GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-boundary-build-output`及び保存pathを取得した．GHA-A1からGHA-A4からは，`actions/download-artifact`，同じ成果物名，取得先，`github.event.workflow_run.id`を使用する`run-id`を取得した．さらに，4本の取得側について`workflow_run.workflows`が共通producer名を指定していることも取得した．変換処理はこれらを`artifactWriteIntent`及び`artifactReadIntent`として出力する．
 
 この情報により，成果物名だけでなく「どのproducer runの成果物を取得するか」まで共通モデルへ残せる．実際のartifact ID，保存成功及び取得成功は，`model/observations/gha-a-runtime-pr7.json`の実行記録から補った．
 
@@ -71,4 +73,4 @@ GHA-Aの共通producerから，`actions/upload-artifact`，成果物名`trust-bo
 
 CodeQLの内部表現は，モデル検査器へそのまま渡せる完成済みの状態遷移モデルではない．一方で，YAMLを独自に再解析しなくても，workflowの構造，起動契機，権限，Action，引数及び式を関係として取得できる．そのため，本研究ではCodeQLを，形式検証用モデルを生成するための前処理として利用できる可能性がある．
 
-静的な関係は共通モデルへ変換し，成果物名と起動元run IDを使ってproducerとconsumerを結合できた．さらに，NuSMVの反例を元のworkflow，job及びstepへ対応付けた．PR #7の実行記録からartifact ID，保存結果，取得結果及び模擬権限への到達結果を追加し，GHA-A1の反例と実行経路が一致することを確認した．
+静的な関係は共通モデルへ変換し，成果物名，起動元run ID及び`workflow_run.workflows`の保存側workflow名を使ってproducerとconsumerを自動結合できた．さらに，NuSMVの反例を元のworkflow，job及びstepへ対応付けた．PR #7の実行記録からartifact ID，保存結果，取得結果及び模擬権限への到達結果を追加し，GHA-A1の反例と実行経路が一致することを確認した．

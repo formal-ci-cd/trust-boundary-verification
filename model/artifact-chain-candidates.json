@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "0.1.0",
+  "source": "results/codeql-actions-model-v2.26.3.csv",
+  "candidates": [
+    {
+      "id": "artifact-abe74ce7be91",
+      "pairingStatus": "unique",
+      "producer": {
+        "workflow": "GHA-A Producer - untrusted PR artifact",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "operationId": "artifact-write:produce-artifact:2"
+      },
+      "consumer": {
+        "workflow": "GHA-A1 Unverified artifact consumer",
+        "file": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+        "operationId": "artifact-read:consume-without-verification:0"
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "consumerRunSelector": "github.event.workflow_run.id",
+        "triggerWorkflow": "GHA-A Producer - untrusted PR artifact"
+      },
+      "matchBasis": [
+        "artifact nameが一致する．",
+        "取得側が起動元workflow_runのrun IDを指定する．",
+        "workflow_runのworkflows指定が保存側workflow名と一致する．"
+      ]
+    },
+    {
+      "id": "artifact-2c67a40cd85c",
+      "pairingStatus": "unique",
+      "producer": {
+        "workflow": "GHA-A Producer - untrusted PR artifact",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "operationId": "artifact-write:produce-artifact:2"
+      },
+      "consumer": {
+        "workflow": "GHA-A2 Verified artifact consumer",
+        "file": ".github/workflows/artifact-a2-safe-consumer.yml",
+        "operationId": "artifact-read:consume-after-verification:0"
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "consumerRunSelector": "github.event.workflow_run.id",
+        "triggerWorkflow": "GHA-A Producer - untrusted PR artifact"
+      },
+      "matchBasis": [
+        "artifact nameが一致する．",
+        "取得側が起動元workflow_runのrun IDを指定する．",
+        "workflow_runのworkflows指定が保存側workflow名と一致する．"
+      ]
+    },
+    {
+      "id": "artifact-f582ab034b5a",
+      "pairingStatus": "unique",
+      "producer": {
+        "workflow": "GHA-A Producer - untrusted PR artifact",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "operationId": "artifact-write:produce-artifact:2"
+      },
+      "consumer": {
+        "workflow": "GHA-A3 Download-only artifact consumer",
+        "file": ".github/workflows/artifact-a3-download-only-consumer.yml",
+        "operationId": "artifact-read:download-without-use:0"
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "consumerRunSelector": "github.event.workflow_run.id",
+        "triggerWorkflow": "GHA-A Producer - untrusted PR artifact"
+      },
+      "matchBasis": [
+        "artifact nameが一致する．",
+        "取得側が起動元workflow_runのrun IDを指定する．",
+        "workflow_runのworkflows指定が保存側workflow名と一致する．"
+      ]
+    },
+    {
+      "id": "artifact-d0802ae279a0",
+      "pairingStatus": "unique",
+      "producer": {
+        "workflow": "GHA-A Producer - untrusted PR artifact",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "operationId": "artifact-write:produce-artifact:2"
+      },
+      "consumer": {
+        "workflow": "GHA-A4 Artifact consumer without authority",
+        "file": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+        "operationId": "artifact-read:consume-without-authority:0"
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "consumerRunSelector": "github.event.workflow_run.id",
+        "triggerWorkflow": "GHA-A Producer - untrusted PR artifact"
+      },
+      "matchBasis": [
+        "artifact nameが一致する．",
+        "取得側が起動元workflow_runのrun IDを指定する．",
+        "workflow_runのworkflows指定が保存側workflow名と一致する．"
+      ]
+    }
+  ]
+}

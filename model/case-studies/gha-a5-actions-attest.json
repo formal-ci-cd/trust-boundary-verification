@@ -4,7 +4,7 @@
     "id": "GHA-A5",
     "platform": "GitHub Actions",
     "description": "actions/attestで報告された成果物metadata汚染を安全に簡略化し，PR由来のdistと対象branchがrepository更新相当の処理へ到達する構成．",
-    "evidenceStatus": "static-case-study"
+    "evidenceStatus": "observed"
   },
   "producer": {
     "workflow": {
@@ -116,6 +116,11 @@
       "kind": "manual-judgment",
       "source": ".github/workflows/artifact-a5-attest-consumer.yml",
       "claim": "本実験では本物のcontents: writeとpushを使わず，repository更新相当の地点への到達だけを模擬する．"
+    },
+    {
+      "kind": "runtime",
+      "source": "model/observations/gha-a5-runtime-pr11.json",
+      "claim": "同一artifactの保存・取得，未検証利用及び模擬repository更新地点への到達をGitHub Actions上で確認した．"
     }
   ]
 }

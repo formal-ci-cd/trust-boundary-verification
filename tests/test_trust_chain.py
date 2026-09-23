@@ -275,6 +275,29 @@ Trace Description: CTL Counterexample
             'console.log("GHA-A5 harmless research marker");',
         )
 
+    def test_a5_runtime_reached_the_dummy_update_with_the_same_artifact(self):
+        observation = BUILD.load_json(
+            ROOT / "model" / "observations" / "gha-a5-runtime-pr11.json"
+        )
+        producer = observation["producer"]
+        consumer = observation["consumer"]
+
+        self.assertEqual(consumer["triggerProducerRunId"], producer["runId"])
+        self.assertEqual(
+            consumer["downloadedArtifactId"], producer["artifact"]["id"]
+        )
+        self.assertEqual(
+            consumer["downloadedArchiveDigest"],
+            producer["artifact"]["archiveDigest"],
+        )
+        self.assertTrue(consumer["downloadSucceeded"])
+        self.assertTrue(consumer["artifactUsed"])
+        self.assertFalse(consumer["integrityVerified"])
+        self.assertTrue(consumer["simulatedContentsWriteAuthority"])
+        self.assertTrue(consumer["dummyRepositoryUpdateReached"])
+        self.assertEqual(observation["safety"]["actualContentsPermission"], "read")
+        self.assertFalse(observation["safety"]["pushPerformed"])
+
 
 if __name__ == "__main__":
     unittest.main()

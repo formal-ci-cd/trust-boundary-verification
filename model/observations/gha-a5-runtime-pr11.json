@@ -1,0 +1,54 @@
+{
+  "id": "gha-a5-runtime-pr11",
+  "platform": "github-actions",
+  "observedAt": "2026-09-23",
+  "pullRequest": {
+    "number": 11,
+    "url": "https://github.com/formal-ci-cd/trust-boundary-verification/pull/11",
+    "headSha": "49fa5618b46e3f4839c64f16d014edf893e8f56b"
+  },
+  "producer": {
+    "runId": "35824000044",
+    "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35824000044",
+    "event": "pull_request",
+    "conclusion": "success",
+    "producerUntrusted": true,
+    "artifactWriteSucceeded": true,
+    "artifact": {
+      "id": "10734401185",
+      "name": "gha-a5-rebuilt-dist",
+      "sizeInBytes": 460,
+      "archiveDigest": "sha256:1bee486f09a3e2a039e7552dc7007bfada223b32d7aadde863c27fd9abe18c0f"
+    }
+  },
+  "consumer": {
+    "runId": "35824013582",
+    "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35824013582",
+    "event": "workflow_run",
+    "conclusion": "success",
+    "workflowHeadSha": "af2b6d101cdca23fb5aacda9657e4c539ea9d22f",
+    "triggerProducerRunId": "35824000044",
+    "downloadedArtifactId": "10734401185",
+    "downloadedArtifactName": "gha-a5-rebuilt-dist",
+    "downloadedArchiveDigest": "sha256:1bee486f09a3e2a039e7552dc7007bfada223b32d7aadde863c27fd9abe18c0f",
+    "downloadSucceeded": true,
+    "artifactUsed": true,
+    "integrityVerified": false,
+    "artifactTargetBranch": "main",
+    "artifactTargetSha": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "simulatedContentsWriteAuthority": true,
+    "dummyRepositoryUpdateReached": true
+  },
+  "safety": {
+    "actualContentsPermission": "read",
+    "checkoutPerformed": false,
+    "commitPerformed": false,
+    "pushPerformed": false
+  },
+  "evidence": [
+    "producerのartifact APIからartifact ID，archive digest及び起動元run IDを確認した．",
+    "consumerのdownload-artifactログから同じartifact ID，archive digest及びproducer run IDを確認した．",
+    "consumerのログから未検証の対象branchとdistが模擬repository更新地点へ到達したことを確認した．",
+    "consumerの権限はcontents: readであり，本物のcheckout，commit及びpushは行っていない．"
+  ]
+}

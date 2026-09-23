@@ -18,7 +18,7 @@
       "jobId": "rebuild-dist",
       "stepIndex": 2,
       "name": "gha-a5-rebuilt-dist",
-      "path": ".research-a5-output",
+      "path": "research-a5-output",
       "runId": null
     }
   },

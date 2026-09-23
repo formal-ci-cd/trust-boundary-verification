@@ -25,17 +25,17 @@ jobs:
       - name: Prepare PR-controlled artifact
         run: |
           set -eu
-          mkdir -p .research-a5-output/dist .research-a5-output/dist-meta
-          cp .research-artifact-a5-input/dist/index.js .research-a5-output/dist/index.js
-          cp .research-artifact-a5-input/head-ref.txt .research-a5-output/dist-meta/head-ref
-          cp .research-artifact-a5-input/head-sha.txt .research-a5-output/dist-meta/head-sha
+          mkdir -p research-a5-output/dist research-a5-output/dist-meta
+          cp .research-artifact-a5-input/dist/index.js research-a5-output/dist/index.js
+          cp .research-artifact-a5-input/head-ref.txt research-a5-output/dist-meta/head-ref
+          cp .research-artifact-a5-input/head-sha.txt research-a5-output/dist-meta/head-sha
 
       - name: Upload rebuilt dist and metadata
         id: upload-artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: gha-a5-rebuilt-dist
-          path: .research-a5-output
+          path: research-a5-output
           if-no-files-found: error
           retention-days: 1
 

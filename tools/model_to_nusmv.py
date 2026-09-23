@@ -7,6 +7,8 @@ from pathlib import Path
 
 
 UNKNOWN = "unknown"
+
+# 初期のキャッシュ実験で状態遷移へ使用する事実名を固定する．
 FACT_NAMES = (
     "write_intent",
     "write_authorized",
@@ -20,10 +22,13 @@ FACT_NAMES = (
 
 
 def boolean_text(value):
+    """Pythonの真偽値をSMVの定数表記へ変換する．"""
     return "TRUE" if value else "FALSE"
 
 
 def select_operation(model, operation_id=None):
+    """SMVの起点とするキャッシュ保存操作を1件選ぶ．"""
+    # IDが省略された場合は，モデル内のcacheWriteIntentが1件であることを要求する．
     operations = model["sharedStateOperations"]
     if operation_id:
         matches = [operation for operation in operations if operation["id"] == operation_id]
@@ -37,6 +42,7 @@ def select_operation(model, operation_id=None):
 
 
 def select_observation(model, observation_id=None):
+    """変換へ使用するGitHub Actionsの実行時観測を1件選ぶ．"""
     observations = model["runtimeObservations"]
     if observation_id:
         matches = [observation for observation in observations if observation["id"] == observation_id]
@@ -49,9 +55,12 @@ def select_observation(model, observation_id=None):
 
 
 def runtime_facts(operation, observation):
+    """実行時観測から，保存許可と保存成功の値を取得する．"""
+    # 観測がなければ失敗と決めず，未確認を表すunknownを返す．
     if observation is None:
         return UNKNOWN, UNKNOWN
 
+    # GitHub側の許可判定と，実際のActionの成否を別の事実として扱う．
     decision = observation["platformPolicy"]["cacheWriteDecision"]
     write_authorized = {
         "allowed": True,
@@ -77,6 +86,7 @@ def runtime_facts(operation, observation):
 
 
 def extract_facts(model, operation_id=None, observation_id=None):
+    """共通JSONと実行時観測から，SMVで使用する全事実をまとめる．"""
     operation = select_operation(model, operation_id)
     observation = select_observation(model, observation_id)
     write_authorized, write_succeeded = runtime_facts(operation, observation)
@@ -95,6 +105,8 @@ def extract_facts(model, operation_id=None, observation_id=None):
 
 
 def render_model(facts, source_name):
+    """初期のキャッシュ実験用の事実からSMVテキストを生成する．"""
+    # unknownはFROZENVAR，確認済みの値はDEFINEへ分けて出力する．
     unknown_facts = [name for name in FACT_NAMES if facts[name] == UNKNOWN]
     known_facts = [name for name in FACT_NAMES if facts[name] != UNKNOWN]
     lines = [
@@ -107,6 +119,7 @@ def render_model(facts, source_name):
         lines.append("FROZENVAR")
         lines.extend(f"  {name} : boolean;" for name in unknown_facts)
 
+    # キャッシュ保存から権限到達までの簡略化した状態遷移を定義する．
     lines.extend(
         [
             "VAR",
@@ -144,6 +157,7 @@ def render_model(facts, source_name):
 
 
 def main():
+    """共通JSONを読み，初期キャッシュ実験用のSMVファイルを書き出す．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("--operation-id")

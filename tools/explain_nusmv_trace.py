@@ -11,15 +11,18 @@ STAGE_PATTERN = re.compile(r"^\s*stage = ([a-z_]+)\s*$")
 
 
 def parse_stages(output):
+    """NuSMV出力からstageの変化だけを出現順に取り出す．"""
     stages = []
     for line in output.splitlines():
         match = STAGE_PATTERN.match(line)
+        # NuSMVは変更されていない値を省略又は繰り返すため，同じ状態の連続は1件へまとめる．
         if match and (not stages or stages[-1] != match.group(1)):
             stages.append(match.group(1))
     return stages
 
 
 def render_explanation(chain, nusmv_output):
+    """反例の各状態をtraceMapで元のworkflow，job及びstepへ対応付ける．"""
     stages = parse_stages(nusmv_output)
     violated = "is false" in nusmv_output
     lines = [
@@ -28,6 +31,7 @@ def render_explanation(chain, nusmv_output):
         f"安全性：{'違反する反例あり' if violated else '違反する反例なし'}",
         "",
     ]
+    # 性質が成立した場合は反例の状態列がないため，表を作らずその旨を記録する．
     if not stages:
         lines.append("NuSMV出力に状態経路は含まれていない．")
         lines.append("")
@@ -41,6 +45,7 @@ def render_explanation(chain, nusmv_output):
     )
     for index, stage in enumerate(stages, start=1):
         location = chain["traceMap"].get(stage)
+        # blockedなど位置対応を持たない状態は説明表から除外する．
         if location is None:
             continue
         lines.append(
@@ -58,6 +63,7 @@ def render_explanation(chain, nusmv_output):
 
 
 def main():
+    """信頼経路JSONとNuSMV出力を読み，人が読めるMarkdownを生成する．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("chain", type=Path)
     parser.add_argument("nusmv_output", type=Path)

@@ -39,8 +39,10 @@ A5では，`start`，`object_written`，`object_restored`，`object_used`，`aut
 | --- | --- | --- | --- |
 | GHA-A3 | 完了 | 安全 | run `35823235871`で取得成功，利用なしを確認 |
 | GHA-A4 | 完了 | 安全 | run `35823235868`で取得・読取り成功，権限なしを確認 |
-| GHA-A5 | 完了 | 危険 | producer run `35823220674`で保存成功，consumerはdefault branchへ反映後に実行する |
+| GHA-A5 | 完了 | 危険 | producer run `35824000044`とconsumer run `35824013582`で経路成立を確認 |
 
-A5の形式モデルは，現段階では公開された脆弱性の説明と作成したworkflowを人手で対応付けたものである．CodeQLの中間表現から再抽出したものではないため，今後の実行結果とCodeQLの再抽出結果を別々に記録する．
+A5の形式モデルは，公開された脆弱性の説明と作成したworkflowを人手で対応付けたものである．CodeQLの中間表現から再抽出したものではないため，CodeQLによる構造抽出と人手による意味付けを区別する．
 
 GHA-A3及びGHA-A4は，producer run `35823220725`が保存したartifact ID `10734380218`を取得した．GHA-A3は`artifact_used=false`及び`artifact_value_forwarded=false`，GHA-A4は`artifact_value=publish=true`及び`authority_available=false`を記録した．したがって，A3は利用前，A4は権限到達前で経路が遮断され，NuSMVの判定と一致した．
+
+GHA-A5は，producer run `35824000044`がartifact ID `10734401185`を保存し，consumer run `35824013582`が同じID及びdigestを取得した．取得側では`artifact_target_branch=main`，`integrity_verified=false`，`dummy_repository_update_reached=true`となった．したがって，未信頼PRの成果物が検証されないままrepository更新相当の地点へ到達する経路が実行時にも成立し，NuSMVの反例と一致した．ただし，実際の権限は`contents: read`であり，checkout，commit及びpushは行っていない．

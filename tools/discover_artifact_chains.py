@@ -14,15 +14,18 @@ import codeql_csv_to_model
 
 
 SOURCE_KINDS = {"static-analysis", "runtime-observation", "manual-judgment"}
+# 取得側が起動元のrunを明示しているか判定するため，正規化後の式を定数化する．
 WORKFLOW_RUN_ID = "github.event.workflow_run.id"
 
 
 def load_json(path):
+    """UTF-8のJSONファイルを読み込む．"""
     with path.open(encoding="utf-8") as source:
         return json.load(source)
 
 
 def normalize_expression(value):
+    """`${{ ... }}`の外側を除き，式の空白差を吸収して比較可能にする．"""
     if value is None:
         return None
     value = value.strip()
@@ -31,6 +34,7 @@ def normalize_expression(value):
 
 
 def load_models(csv_path):
+    """CodeQLのCSVをワークフロー名で分け，全ワークフローの共通モデルを作る．"""
     with csv_path.open(newline="", encoding="utf-8") as source:
         grouped = defaultdict(list)
         for row in csv.DictReader(source):
@@ -42,6 +46,7 @@ def load_models(csv_path):
 
 
 def artifact_operations(models, kind):
+    """全モデルから，指定した種類の成果物操作を順番に取り出す．"""
     for model in models.values():
         for operation in model["sharedStateOperations"]:
             if operation["kind"] == kind:
@@ -49,10 +54,12 @@ def artifact_operations(models, kind):
 
 
 def has_event(model, event_name):
+    """ワークフローが指定された起動契機を持つか確認する．"""
     return any(event["name"] == event_name for event in model["workflow"]["events"])
 
 
 def workflow_run_targets(model):
+    """workflow_runの`workflows:`へ指定された起動元ワークフロー名を返す．"""
     events = [
         event
         for event in model["workflow"]["events"]
@@ -64,6 +71,8 @@ def workflow_run_targets(model):
 
 
 def candidate_id(producer_model, producer_operation, consumer_model, consumer_operation):
+    """保存側と取得側の組合せから，再現可能な短い候補IDを作る．"""
+    # ファイルと操作IDが同じなら何度実行しても同じIDになる．
     identity = "|".join(
         [
             producer_model["workflow"]["file"],
@@ -76,17 +85,21 @@ def candidate_id(producer_model, producer_operation, consumer_model, consumer_op
 
 
 def discover_candidates(models):
+    """三つの静的条件を満たす成果物の保存側と取得側を対応付ける．"""
     writes = list(artifact_operations(models, "artifactWriteIntent"))
     reads = list(artifact_operations(models, "artifactReadIntent"))
     candidates = []
 
     for consumer_model, read in reads:
+        # 今回は別ワークフローの完了後に動く取得側だけを対象にする．
         if not has_event(consumer_model, "workflow_run"):
             continue
+        # 起動元以外の固定runなどを取得する構成は，今回の自動結合対象から除外する．
         if normalize_expression(read.get("runId")) != WORKFLOW_RUN_ID:
             continue
 
         targets = workflow_run_targets(consumer_model)
+        # 成果物名とworkflow_runの起動元名が両方一致する保存操作を探す．
         matches = [
             (producer_model, write)
             for producer_model, write in writes
@@ -103,6 +116,7 @@ def discover_candidates(models):
                     "producerOperation": write,
                     "consumerModel": consumer_model,
                     "consumerOperation": read,
+                    # 複数の保存側が一致した場合は，誤って1件を選ばず曖昧として残す．
                     "pairingStatus": "unique" if len(matches) == 1 else "ambiguous",
                     "matchBasis": [
                         "artifact nameが一致する．",
@@ -115,6 +129,7 @@ def discover_candidates(models):
 
 
 def catalog_entry(candidate):
+    """内部処理用の候補から，確認用catalogへ保存する項目だけを取り出す．"""
     return {
         "id": candidate["id"],
         "pairingStatus": candidate["pairingStatus"],
@@ -141,6 +156,7 @@ def catalog_entry(candidate):
 
 
 def source_record(element, source_kind, source, claim):
+    """モデル要素がどの情報源から得られたかを表す1件の記録を作る．"""
     if source_kind not in SOURCE_KINDS:
         raise ValueError(f"不明な情報源区分です: {source_kind}")
     return {
@@ -152,6 +168,7 @@ def source_record(element, source_kind, source, claim):
 
 
 def annotation_value(annotation, name):
+    """注釈から事実値を取得し，情報源区分が正しいことも確認する．"""
     value = annotation["facts"][name]
     if value["sourceKind"] not in SOURCE_KINDS:
         raise ValueError(f"{name}の情報源区分が不正です")
@@ -159,6 +176,7 @@ def annotation_value(annotation, name):
 
 
 def find_candidate(candidates, annotation):
+    """注釈に書かれた保存側と取得側へ一致する一意な候補を選ぶ．"""
     matches = [
         candidate
         for candidate in candidates
@@ -171,6 +189,7 @@ def find_candidate(candidates, annotation):
         raise ValueError(
             f"scenario {annotation['id']}の結合候補を1件に特定できません: {len(matches)}件"
         )
+    # 自動結合が曖昧な場合，人手注釈があっても自動的には先へ進めない．
     if matches[0]["pairingStatus"] != "unique":
         raise ValueError(
             f"scenario {annotation['id']}の結合候補は曖昧です．手動確認が必要です"
@@ -179,6 +198,7 @@ def find_candidate(candidates, annotation):
 
 
 def static_provenance(chain, csv_source):
+    """CodeQL抽出結果から作ったモデル要素へ情報源を付ける．"""
     records = []
     for side in ("producer", "consumer"):
         for section, values in chain[side].items():
@@ -193,6 +213,7 @@ def static_provenance(chain, csv_source):
                 )
     for name in chain["sharedObject"]:
         if name == "producerRunSelector":
+            # upload-artifactが現在のrunへ保存するという意味は，Action仕様の解釈を含む．
             records.append(
                 source_record(
                     f"sharedObject.{name}",
@@ -214,6 +235,7 @@ def static_provenance(chain, csv_source):
 
 
 def required_provenance_elements(chain):
+    """情報源を必ず1件持つべきモデル要素の一覧を作る．"""
     required = {
         "scenario.id",
         "scenario.platform",
@@ -230,6 +252,7 @@ def required_provenance_elements(chain):
 
 
 def validate_provenance(chain):
+    """情報源の重複，不足及び不正な区分がないことを確認する．"""
     elements = [record["element"] for record in chain["provenance"]]
     duplicates = {element for element in elements if elements.count(element) > 1}
     if duplicates:
@@ -247,6 +270,8 @@ def validate_provenance(chain):
 
 
 def build_annotated_chain(candidate, annotation, csv_source, annotation_source):
+    """自動結合候補へ実行結果と人手判断を加え，検証可能な信頼経路を作る．"""
+    # この一覧の値はCodeQLだけでは確定しないため，注釈側に根拠付きで記録する．
     fact_names = [
         "writeAuthorized",
         "writeSucceeded",
@@ -260,6 +285,7 @@ def build_annotated_chain(candidate, annotation, csv_source, annotation_source):
     if missing:
         raise ValueError(f"scenario {annotation['id']}の事実が不足しています: {sorted(missing)}")
 
+    # build_trust_chainが受け取る形式へ，自動抽出値と注釈値をまとめる．
     config = {
         "schemaVersion": "0.3.0",
         "scenario": {
@@ -273,6 +299,8 @@ def build_annotated_chain(candidate, annotation, csv_source, annotation_source):
         "facts": {
             name: annotation_value(annotation, name) for name in fact_names
         }
+        # 三つの結合条件が成立した候補なので，静的モデル上は同じ成果物として扱う．
+        # これは実際のrunでartifact IDの一致を確認したという意味ではない．
         | {"sameObject": "true"},
         "sharedObject": {
             "kind": "artifact",
@@ -299,6 +327,7 @@ def build_annotated_chain(candidate, annotation, csv_source, annotation_source):
         config, candidate["producerModel"], candidate["consumerModel"]
     )
 
+    # 各モデル要素について，静的解析，実行結果又は人手判断のいずれかを明示する．
     provenance = [
         source_record(
             f"scenario.{name}",
@@ -349,11 +378,13 @@ def build_annotated_chain(candidate, annotation, csv_source, annotation_source):
             )
         )
     chain["provenance"] = provenance
+    # 根拠のない値又は二重に根拠を与えた値が混入した場合は出力前に停止する．
     validate_provenance(chain)
     return chain
 
 
 def write_json(path, value):
+    """親directoryを作成し，読みやすい形式でJSONを書き出す．"""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as destination:
         json.dump(value, destination, ensure_ascii=False, indent=2)
@@ -361,6 +392,7 @@ def write_json(path, value):
 
 
 def main():
+    """候補catalogを生成し，注釈指定時は各信頼経路JSONも生成する．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("--annotations", type=Path)
@@ -368,6 +400,7 @@ def main():
     parser.add_argument("--output-dir", type=Path)
     args = parser.parse_args()
 
+    # 最初に全候補を出力し，どのワークフロー同士が結ばれたか確認可能にする．
     candidates = discover_candidates(load_models(args.input))
     write_json(
         args.catalog,
@@ -378,6 +411,7 @@ def main():
         },
     )
 
+    # 注釈が指定された場合だけ，意味及び実行結果を加えた検証用モデルまで生成する．
     if args.annotations:
         if not args.output_dir:
             parser.error("--annotationsには--output-dirが必要です")

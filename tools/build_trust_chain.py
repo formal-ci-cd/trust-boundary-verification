@@ -12,11 +12,13 @@ UNKNOWN = "unknown"
 
 
 def load_json(path):
+    """UTF-8のJSONファイルを読み込む．"""
     with path.open(encoding="utf-8") as source:
         return json.load(source)
 
 
 def find_operation(model, operation_id):
+    """共通モデルから指定IDの共有状態操作を重複なく1件取得する．"""
     matches = [
         operation
         for operation in model["sharedStateOperations"]
@@ -28,6 +30,7 @@ def find_operation(model, operation_id):
 
 
 def first_event(model):
+    """実験モデルの起動契機を1件取得する．複数あるモデルは誤解釈を避けて停止する．"""
     events = model["workflow"]["events"]
     if len(events) != 1:
         raise ValueError("起動契機を1件に特定できません")
@@ -35,6 +38,7 @@ def first_event(model):
 
 
 def endpoint(model, operation):
+    """ワークフローと共有状態操作から，信頼経路の片側を表す情報を作る．"""
     workflow = model["workflow"]
     event = first_event(model)
     return {
@@ -56,6 +60,7 @@ def endpoint(model, operation):
 
 
 def location(endpoint_value, step_index, meaning, job_id=None):
+    """状態遷移を元のワークフロー，job及びstepへ戻すための位置情報を作る．"""
     return {
         "workflowFile": endpoint_value["workflow"]["file"],
         "workflowName": endpoint_value["workflow"]["name"],
@@ -66,6 +71,8 @@ def location(endpoint_value, step_index, meaning, job_id=None):
 
 
 def build_chain(config, producer_model, consumer_model):
+    """保存側と取得側の共通モデルを，1本の信頼経路へ結合する．"""
+    # 設定が指す保存操作と取得操作を各モデルから選ぶ．
     producer_operation = find_operation(
         producer_model, config["producerOperationId"]
     )
@@ -77,6 +84,7 @@ def build_chain(config, producer_model, consumer_model):
     producer_event = first_event(producer_model)
     consumer_event = first_event(consumer_model)
 
+    # 起動契機に対するCodeQLの分類から，保存側と取得側の信頼区分を作る．
     producer_untrusted = (
         TRUE
         if producer_event["externallyTriggerable"] and not producer_event["privileged"]
@@ -84,10 +92,12 @@ def build_chain(config, producer_model, consumer_model):
     )
     privileged_consumer = TRUE if consumer_event["privileged"] else FALSE
 
+    # 成果物名が異なる場合，同じobjectとして接続してはいけないため停止する．
     object_name = producer_operation.get("name")
     if object_name != consumer_operation.get("name"):
         raise ValueError("producerとconsumerの共有object名が一致しません")
 
+    # 静的に導ける値と，実行結果又は人手判断から与えた値を1か所へまとめる．
     configured_facts = config["facts"]
     facts = {
         "producerUntrusted": producer_untrusted,
@@ -103,6 +113,7 @@ def build_chain(config, producer_model, consumer_model):
         "hasAuthority": configured_facts["hasAuthority"],
     }
 
+    # NuSMVの反例に出る各状態を，元のYAML上の位置へ対応付ける．
     authority = config["authority"]
     trace_map = {
         "start": location(
@@ -138,6 +149,7 @@ def build_chain(config, producer_model, consumer_model):
         ),
     }
 
+    # 保存側で確認した成果物名を，共有objectの正式な名前として記録する．
     shared_object = dict(config["sharedObject"])
     shared_object["name"] = object_name
 
@@ -154,6 +166,7 @@ def build_chain(config, producer_model, consumer_model):
 
 
 def main():
+    """設定と2個の共通モデルを読み，信頼経路JSONを書き出す．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("--root", type=Path, default=Path("."))

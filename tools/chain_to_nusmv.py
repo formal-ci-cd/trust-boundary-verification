@@ -7,6 +7,8 @@ from pathlib import Path
 
 
 UNKNOWN = "unknown"
+
+# JSONでは読みやすいcamelCase，SMVでは読みやすいsnake_caseを使用するため対応を定義する．
 FACT_MAPPING = {
     "producer_untrusted": "producerUntrusted",
     "write_intent": "writeIntent",
@@ -23,6 +25,7 @@ FACT_MAPPING = {
 
 
 def normalize_fact(value):
+    """JSONの`true`，`false`又は`unknown`を，SMV生成で扱う値へ変換する．"""
     if value == "true":
         return True
     if value == "false":
@@ -33,6 +36,7 @@ def normalize_fact(value):
 
 
 def extract_facts(chain):
+    """信頼経路JSONから，状態遷移に使用する事実だけをSMV名で取り出す．"""
     return {
         smv_name: normalize_fact(chain["facts"][json_name])
         for smv_name, json_name in FACT_MAPPING.items()
@@ -40,11 +44,15 @@ def extract_facts(chain):
 
 
 def boolean_text(value):
+    """Pythonの真偽値をSMVの定数表記へ変換する．"""
     return "TRUE" if value else "FALSE"
 
 
 def render_model(chain, source_name):
+    """信頼経路JSONから，NuSMVへ入力するSMVテキストを生成する．"""
     facts = extract_facts(chain)
+
+    # unknownは値を決め打ちせず，NuSMVが真偽の両方を検査できる変数にする．
     unknown_facts = [name for name, value in facts.items() if value == UNKNOWN]
     known_facts = [name for name, value in facts.items() if value != UNKNOWN]
     lines = [
@@ -52,6 +60,7 @@ def render_model(chain, source_name):
         f"-- Scenario: {chain['scenario']['id']}",
     ]
 
+    # 反例を元のYAMLへ戻せるよう，状態とworkflow位置の対応をSMVのコメントへ残す．
     for stage, location_value in chain["traceMap"].items():
         lines.append(
             "-- TRACE {stage}: {workflow}:{job}:{step} - {meaning}".format(
@@ -65,6 +74,7 @@ def render_model(chain, source_name):
 
     lines.extend(["MODULE main"])
     if unknown_facts:
+        # FROZENVARは実行途中で値が変わらないが，初期値はTRUE又はFALSEの両方を取り得る．
         lines.append("FROZENVAR")
         lines.extend(f"  {name} : boolean;" for name in unknown_facts)
 
@@ -76,11 +86,13 @@ def render_model(chain, source_name):
         ]
     )
     if known_facts:
+        # 確認済みの事実は定数として固定する．
         lines.append("DEFINE")
         lines.extend(
             f"  {name} := {boolean_text(facts[name])};" for name in known_facts
         )
 
+    # INVARは事実間の矛盾を禁止し，ASSIGNは処理の進行と未信頼状態の変化を定義する．
     lines.extend(
         [
             "INVAR write_succeeded -> write_authorized",
@@ -109,6 +121,7 @@ def render_model(chain, source_name):
             "    TRUE : stage;",
             "  esac;",
             "",
+            # 全経路で，未信頼な成果物を保持した権限到達が起きないことを検査する．
             "CTLSPEC AG !(stage = authority_reached & object_tainted)",
             "",
         ]
@@ -117,6 +130,7 @@ def render_model(chain, source_name):
 
 
 def main():
+    """信頼経路JSONを読み，SMVファイルを書き出す．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("--output", type=Path, required=True)

@@ -10,11 +10,13 @@ import chain_to_nusmv
 
 
 def load_json(path):
+    """UTF-8のJSONファイルを読み込む．"""
     with path.open(encoding="utf-8") as source:
         return json.load(source)
 
 
 def parse_verdict(output):
+    """NuSMVの検査式から，研究上のsafe又はunsafeへ変換する．"""
     property_line = next(
         (
             line
@@ -33,6 +35,7 @@ def parse_verdict(output):
 
 
 def evaluate_case(case, root, nusmv, smv_dir):
+    """1構成をSMVへ変換してNuSMVを実行し，期待判定と比較する．"""
     model_path = root / case["model"]
     chain = load_json(model_path)
     smv_path = smv_dir / f"{case['id'].lower()}.smv"
@@ -40,6 +43,7 @@ def evaluate_case(case, root, nusmv, smv_dir):
     smv_path.write_text(
         chain_to_nusmv.render_model(chain, str(model_path)), encoding="utf-8"
     )
+    # shellを介さず引数配列でNuSMVを起動し，異常終了した場合はその場で停止する．
     completed = subprocess.run(
         [str(nusmv), str(smv_path)],
         check=True,
@@ -59,6 +63,8 @@ def evaluate_case(case, root, nusmv, smv_dir):
 
 
 def summarize(results):
+    """各構成の結果を混同行列と一致率へ集計する．"""
+    # unsafeを陽性，safeを陰性として数える．
     true_positive = sum(
         result["expectedVerdict"] == "unsafe"
         and result["actualVerdict"] == "unsafe"
@@ -95,6 +101,7 @@ def summarize(results):
 
 
 def write_json(path, value):
+    """親directoryを作成し，読みやすい形式でJSONを書き出す．"""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8") as destination:
         json.dump(value, destination, ensure_ascii=False, indent=2)
@@ -102,6 +109,7 @@ def write_json(path, value):
 
 
 def main():
+    """評価対象一覧を読み，全構成のNuSMV検査結果をJSONへ保存する．"""
     parser = argparse.ArgumentParser()
     parser.add_argument("input", type=Path)
     parser.add_argument("--root", type=Path, default=Path("."))

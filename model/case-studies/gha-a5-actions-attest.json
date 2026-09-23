@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "0.3.0",
+  "scenario": {
+    "id": "GHA-A5",
+    "platform": "GitHub Actions",
+    "description": "actions/attestで報告された成果物metadata汚染を安全に簡略化し，PR由来のdistと対象branchがrepository更新相当の処理へ到達する構成．",
+    "evidenceStatus": "static-case-study"
+  },
+  "producer": {
+    "workflow": {
+      "name": "GHA-A5 actions-attest style untrusted producer",
+      "file": ".github/workflows/artifact-a5-attest-producer.yml",
+      "event": "pull_request"
+    },
+    "operation": {
+      "id": "artifact-write:rebuild-dist:2",
+      "kind": "artifactWriteIntent",
+      "jobId": "rebuild-dist",
+      "stepIndex": 2,
+      "name": "gha-a5-rebuilt-dist",
+      "path": ".research-a5-output",
+      "runId": null
+    }
+  },
+  "consumer": {
+    "workflow": {
+      "name": "GHA-A5 actions-attest style unsafe consumer",
+      "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "event": "workflow_run"
+    },
+    "operation": {
+      "id": "artifact-read:consume-untrusted-dist:0",
+      "kind": "artifactReadIntent",
+      "jobId": "consume-untrusted-dist",
+      "stepIndex": 0,
+      "name": "gha-a5-rebuilt-dist",
+      "path": "${{ runner.temp }}/gha-a5-artifact",
+      "runId": "${{ github.event.workflow_run.id }}"
+    }
+  },
+  "sharedObject": {
+    "kind": "artifact",
+    "producerRunSelector": "github.run_id",
+    "consumerRunSelector": "github.event.workflow_run.id",
+    "identityBasis": [
+      "producerとconsumerのartifact nameが一致する．",
+      "consumerは起動元workflow runのIDをdownload-artifactへ渡す．",
+      "workflow_runのworkflows指定がproducerのworkflow名と一致する．"
+    ],
+    "name": "gha-a5-rebuilt-dist"
+  },
+  "facts": {
+    "producerUntrusted": "true",
+    "writeIntent": "true",
+    "writeAuthorized": "true",
+    "writeSucceeded": "true",
+    "sameObject": "true",
+    "readSucceeded": "true",
+    "consumerUsesObject": "true",
+    "integrityCheckPresent": "false",
+    "integrityCheckPassed": "false",
+    "privilegedConsumer": "true",
+    "hasAuthority": "true"
+  },
+  "traceMap": {
+    "start": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+      "workflowName": "GHA-A5 actions-attest style untrusted producer",
+      "jobId": "rebuild-dist",
+      "stepIndex": 2,
+      "meaning": "未信頼PRがdistと対象branchを成果物へ保存する．"
+    },
+    "object_written": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+      "workflowName": "GHA-A5 actions-attest style untrusted producer",
+      "jobId": "rebuild-dist",
+      "stepIndex": 2,
+      "meaning": "PRが制御する成果物の保存に成功する．"
+    },
+    "object_restored": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+      "jobId": "consume-untrusted-dist",
+      "stepIndex": 0,
+      "meaning": "workflow_runが起動元runの成果物を取得する．"
+    },
+    "object_used": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+      "jobId": "consume-untrusted-dist",
+      "stepIndex": 2,
+      "meaning": "成果物内のdistと対象branchをrepository更新相当の処理へ渡す．"
+    },
+    "integrity_checked": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+      "jobId": "consume-untrusted-dist",
+      "stepIndex": 1,
+      "meaning": "branchとcommit SHAの形式だけを確認し，起動元repository及びPull Requestとの対応は確認しない．"
+    },
+    "authority_reached": {
+      "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+      "jobId": "consume-untrusted-dist",
+      "stepIndex": 2,
+      "meaning": "PR由来のdistと対象branchがrepository更新相当の処理へ到達する．"
+    }
+  },
+  "evidence": [
+    {
+      "kind": "advisory",
+      "source": "https://securitylab.github.com/advisories/GHSL-2026-225_actions_attest/",
+      "claim": "actions/attestの未信頼producerから成果物を介して特権consumerのbranch更新へ到達する実在脆弱性が報告された．"
+    },
+    {
+      "kind": "manual-judgment",
+      "source": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "claim": "本実験では本物のcontents: writeとpushを使わず，repository更新相当の地点への到達だけを模擬する．"
+    }
+  ]
+}

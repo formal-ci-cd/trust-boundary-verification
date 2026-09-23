@@ -204,6 +204,30 @@ Trace Description: CTL Counterexample
 
         self.assertIn(expected_digest, safe_workflow)
 
+    def test_a5_reaches_only_dummy_repository_update(self):
+        chain = BUILD.load_json(
+            ROOT / "model" / "case-studies" / "gha-a5-actions-attest.json"
+        )
+        consumer = (
+            ROOT
+            / ".github"
+            / "workflows"
+            / "artifact-a5-attest-consumer.yml"
+        ).read_text(encoding="utf-8")
+        rendered = CONVERT.render_model(chain, "gha-a5-actions-attest.json")
+
+        self.assertEqual(chain["facts"]["consumerUsesObject"], "true")
+        self.assertEqual(chain["facts"]["integrityCheckPresent"], "false")
+        self.assertEqual(chain["facts"]["hasAuthority"], "true")
+        self.assertIn("dummy_repository_update_reached=true", consumer)
+        self.assertIn("contents: read", consumer)
+        self.assertNotIn("\n  contents: write", consumer)
+        self.assertNotIn("\n          git push", consumer)
+        self.assertIn(
+            "CTLSPEC AG !(stage = authority_reached & object_tainted)",
+            rendered,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

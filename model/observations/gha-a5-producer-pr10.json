@@ -1,0 +1,37 @@
+{
+  "id": "gha-a5-producer-pr10",
+  "platform": "github-actions",
+  "observedAt": "2026-09-23",
+  "pullRequest": {
+    "number": 10,
+    "url": "https://github.com/formal-ci-cd/trust-boundary-verification/pull/10",
+    "headSha": "a4bb3a4eb3bb90ba814a96f4f08687175d6b9314"
+  },
+  "producer": {
+    "runId": "35823220674",
+    "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35823220674",
+    "event": "pull_request",
+    "conclusion": "success",
+    "producerUntrusted": true,
+    "artifactWriteSucceeded": true,
+    "artifact": {
+      "id": "10733909903",
+      "name": "gha-a5-rebuilt-dist",
+      "sizeInBytes": 460,
+      "archiveDigest": "sha256:f6bf9d2b4cb9b0a16d24b15da0c7bcb79a46646c82460d90effbfc1d2c5d2c56",
+      "files": {
+        "dist/index.js": "0363d5ef77bf68438ecea8616f02ba2a0cd39bf936ccd1474491c6c81a469378",
+        "dist-meta/head-ref": "6403203dd5a0867eb14d104ee8a73730bd72dd9ad92e78d996a6dba0a5dcfc01",
+        "dist-meta/head-sha": "3ef4d655ed1629fe130e2db4fc2f8c81db29f4d724bcb84859139844e76e0df2"
+      },
+      "targetBranch": "main",
+      "targetSha": "0000000000000000000000000000000000000000",
+      "distContent": "console.log(\"GHA-A5 harmless research marker\");"
+    }
+  },
+  "evidence": [
+    "producer workflowがsuccessで完了した．",
+    "artifact APIでartifact ID，名前，archive digest及び起動元run IDを確認した．",
+    "成果物を取得し，dist，対象branch及びcommit SHAがPR側の入力と一致することを確認した．"
+  ]
+}

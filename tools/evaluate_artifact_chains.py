@@ -121,8 +121,8 @@ def main():
         "cases": results,
         "summary": summarize(results),
         "limitations": [
-            "4構成は研究用に設計した小規模な評価集合であり，一般的な検出精度を示すものではない．",
-            "GHA-A3及びGHA-A4の取得成功と意味付けは実行未確認であり，手動判断を含む．"
+            "この評価集合は小規模であり，一般的な検出精度を示すものではない．",
+            "shell処理における成果物利用と権限到達の意味付けには手動判断を含む．"
         ]
     }
     write_json(args.output, output)

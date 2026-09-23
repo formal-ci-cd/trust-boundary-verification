@@ -24,6 +24,12 @@
       "model": "model/generated-chains/gha-a4-auto.json",
       "expectedVerdict": "safe",
       "basis": "成果物を読んでも公開・更新権限へ到達できない安全構成．"
+    },
+    {
+      "id": "GHA-A5",
+      "model": "model/case-studies/gha-a5-actions-attest.json",
+      "expectedVerdict": "unsafe",
+      "basis": "実在するactions/attestの脆弱性を簡略化し，未信頼なdistと対象branchがrepository更新相当の処理へ到達する危険構成．"
     }
   ]
 }

@@ -34,6 +34,13 @@ jobs:
         run: |
           set -eu
           request=$(tr -d '\r\n' < "$ARTIFACT_FILE")
-          printf 'artifact_value=%s\n' "$request"
-          printf 'authority_available=false\n'
-
+          {
+            echo '### GHA-A4 実験結果'
+            echo
+            echo 'artifact_downloaded=true'
+            echo 'artifact_used=true'
+            echo "artifact_value=$request"
+            echo 'authority_available=false'
+            echo 'dummy_publish_authority_reached=false'
+            echo "producer_run_id=${{ github.event.workflow_run.id }}"
+          } | tee -a "$GITHUB_STEP_SUMMARY"

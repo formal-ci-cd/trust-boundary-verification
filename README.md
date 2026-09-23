@@ -33,7 +33,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 - `model/`：静的情報と実行時情報を分離したCI/CD共通モデル．
 - `tools/`：解析結果を共通モデルへ変換する補助script．
 
-最初に読む資料は[研究引き継ぎ資料](HANDSOFF.md)です．実装の詳細は[CodeQLからNuSMVまでの変換](docs/codeql-to-nusmv-guide.md)，実験設計は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)に記録しています．CodeQLの内部表現に関する調査は[CodeQLによるGitHub Actions解析の内部表現](docs/codeql-actions-internal-model.md)，形式検証へ渡す中間形式は[CI/CD共通モデル](model/README.md)を参照してください．
+最初に読む資料は[CodeQLからNuSMVまでの変換](docs/codeql-to-nusmv-guide.md)です．実験設計は[実験設計表](docs/experiment-matrix.md)と[脅威モデル](docs/threat-model.md)に記録しています．CodeQLの内部表現に関する調査は[CodeQLによるGitHub Actions解析の内部表現](docs/codeql-actions-internal-model.md)，形式検証へ渡す中間形式は[CI/CD共通モデル](model/README.md)を参照してください．
 
 成果物を複数run間で受け渡すGHA-A1からGHA-A5の構成は，[GitHub Actions成果物実験](experiments/github-actions/artifact/README.md)に記録しています．A1及びA2の結果は[成果物経路の実行結果](results/github-actions-artifact-runtime-2026-08-22.md)，A3からA5の結果は[成果物経路GHA-A3からGHA-A5の検証](results/artifact-case-study-2026-09-23.md)を参照してください．CodeQL抽出結果からの自動結合方法と形式モデルは[CI/CD共通モデル](model/README.md)に記録しています．
 Experimental artifacts for formal verification of CI/CD trust boundaries.

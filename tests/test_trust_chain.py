@@ -64,8 +64,9 @@ class TrustChainTest(unittest.TestCase):
             / "gha-a-producer-run-32575878081.json"
         )
         operation = observation["operationResults"][0]
-        payload = ROOT / ".research-artifact-input" / "payload.txt"
-        actual_digest = hashlib.sha256(payload.read_bytes()).hexdigest()
+        # 過去runの記録は，現在の実験入力ではなく，当時記録した内容と照合する．
+        observed_payload = operation["artifact"]["payload"] + "\n"
+        actual_digest = hashlib.sha256(observed_payload.encode()).hexdigest()
 
         self.assertEqual(
             operation["operationId"], "artifact-write:produce-artifact:2"
@@ -196,8 +197,8 @@ Trace Description: CTL Counterexample
             BUILD.build_chain(config, producer, consumer)
 
     def test_safe_workflow_pins_the_trusted_payload_digest(self):
-        payload = ROOT / ".research-artifact-input" / "payload.txt"
-        expected_digest = hashlib.sha256(payload.read_bytes()).hexdigest()
+        # GHA-A2が信頼する基準値は，PRで変更できる現在fileではなくpublish=falseである．
+        expected_digest = hashlib.sha256(b"publish=false\n").hexdigest()
         safe_workflow = (
             ROOT / ".github" / "workflows" / "artifact-a2-safe-consumer.yml"
         ).read_text(encoding="utf-8")

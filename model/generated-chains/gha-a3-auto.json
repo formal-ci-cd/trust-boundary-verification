@@ -4,7 +4,7 @@
     "id": "GHA-A3-AUTO",
     "platform": "GitHub Actions",
     "description": "成果物を取得するが内容を後続処理に使わない安全構成．",
-    "evidenceStatus": "incomplete"
+    "evidenceStatus": "observed"
   },
   "producer": {
     "workflow": {
@@ -326,15 +326,15 @@
     },
     {
       "element": "facts.readSucceeded",
-      "sourceKind": "manual-judgment",
-      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
-      "claim": "構成比較ではdownload-artifactが成功する場合を仮定する．"
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a3-a4-runtime-pr10.json",
+      "claim": "consumer runで起動元runの同じartifact IDを取得した．"
     },
     {
       "element": "facts.consumerUsesObject",
-      "sourceKind": "manual-judgment",
-      "source": ".github/workflows/artifact-a3-download-only-consumer.yml",
-      "claim": "後続stepは成果物のfileを参照しない．"
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a3-a4-runtime-pr10.json",
+      "claim": "実行ログにartifact_used=false及びartifact_value_forwarded=falseが記録された．"
     },
     {
       "element": "facts.integrityCheckPresent",

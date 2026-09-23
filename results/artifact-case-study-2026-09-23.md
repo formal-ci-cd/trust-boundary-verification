@@ -37,8 +37,10 @@ A5では，`start`，`object_written`，`object_restored`，`object_used`，`aut
 
 | 対象 | workflow作成 | NuSMV | GitHub上の実行 |
 | --- | --- | --- | --- |
-| GHA-A3 | 完了 | 安全 | 実行待ち |
-| GHA-A4 | 完了 | 安全 | 実行待ち |
-| GHA-A5 | 完了 | 危険 | consumerをdefault branchへ反映後に実行する |
+| GHA-A3 | 完了 | 安全 | run `35823235871`で取得成功，利用なしを確認 |
+| GHA-A4 | 完了 | 安全 | run `35823235868`で取得・読取り成功，権限なしを確認 |
+| GHA-A5 | 完了 | 危険 | producer run `35823220674`で保存成功，consumerはdefault branchへ反映後に実行する |
 
 A5の形式モデルは，現段階では公開された脆弱性の説明と作成したworkflowを人手で対応付けたものである．CodeQLの中間表現から再抽出したものではないため，今後の実行結果とCodeQLの再抽出結果を別々に記録する．
+
+GHA-A3及びGHA-A4は，producer run `35823220725`が保存したartifact ID `10734380218`を取得した．GHA-A3は`artifact_used=false`及び`artifact_value_forwarded=false`，GHA-A4は`artifact_value=publish=true`及び`authority_available=false`を記録した．したがって，A3は利用前，A4は権限到達前で経路が遮断され，NuSMVの判定と一致した．

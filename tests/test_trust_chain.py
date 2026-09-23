@@ -120,6 +120,37 @@ class TrustChainTest(unittest.TestCase):
             self.assertEqual(chain["scenario"]["evidenceStatus"], "observed")
             self.assertEqual(chain["facts"]["readSucceeded"], "true")
 
+    def test_a3_and_a4_runtime_results_match_their_blocking_conditions(self):
+        observation = BUILD.load_json(
+            ROOT / "model" / "observations" / "gha-a3-a4-runtime-pr10.json"
+        )
+        producer = observation["producer"]
+        consumers = {
+            consumer["scenarioId"]: consumer
+            for consumer in observation["consumers"]
+        }
+
+        self.assertEqual(set(consumers), {"GHA-A3", "GHA-A4"})
+        for consumer in consumers.values():
+            self.assertEqual(
+                consumer["triggerProducerRunId"], producer["runId"]
+            )
+            self.assertEqual(
+                consumer["downloadedArtifactId"], producer["artifact"]["id"]
+            )
+            self.assertEqual(
+                consumer["downloadedArchiveDigest"],
+                producer["artifact"]["archiveDigest"],
+            )
+            self.assertTrue(consumer["downloadSucceeded"])
+
+        self.assertFalse(consumers["GHA-A3"]["artifactUsed"])
+        self.assertFalse(consumers["GHA-A3"]["artifactValueForwarded"])
+        self.assertTrue(consumers["GHA-A4"]["artifactUsed"])
+        self.assertEqual(consumers["GHA-A4"]["artifactValue"], "publish=true")
+        self.assertFalse(consumers["GHA-A4"]["authorityAvailable"])
+        self.assertFalse(consumers["GHA-A4"]["dummyPublishAuthorityReached"])
+
     def test_unsafe_chain_has_authority_counterexample_conditions(self):
         chain = self.build("gha-a1")
         rendered = CONVERT.render_model(chain, "gha-a1.json")
@@ -227,6 +258,21 @@ Trace Description: CTL Counterexample
         self.assertIn(
             "CTLSPEC AG !(stage = authority_reached & object_tainted)",
             rendered,
+        )
+
+    def test_a5_producer_saved_only_the_harmless_fixture(self):
+        observation = BUILD.load_json(
+            ROOT / "model" / "observations" / "gha-a5-producer-pr10.json"
+        )
+        artifact = observation["producer"]["artifact"]
+
+        self.assertTrue(observation["producer"]["producerUntrusted"])
+        self.assertTrue(observation["producer"]["artifactWriteSucceeded"])
+        self.assertEqual(artifact["name"], "gha-a5-rebuilt-dist")
+        self.assertEqual(artifact["targetBranch"], "main")
+        self.assertEqual(
+            artifact["distContent"],
+            'console.log("GHA-A5 harmless research marker");',
         )
 
 

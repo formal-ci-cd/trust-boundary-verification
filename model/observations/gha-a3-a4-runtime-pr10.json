@@ -1,0 +1,61 @@
+{
+  "id": "gha-a3-a4-runtime-pr10",
+  "platform": "github-actions",
+  "observedAt": "2026-09-23",
+  "pullRequest": {
+    "number": 10,
+    "url": "https://github.com/formal-ci-cd/trust-boundary-verification/pull/10",
+    "headSha": "a4bb3a4eb3bb90ba814a96f4f08687175d6b9314",
+    "payload": "publish=true"
+  },
+  "producer": {
+    "runId": "35823220725",
+    "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35823220725",
+    "event": "pull_request",
+    "conclusion": "success",
+    "artifact": {
+      "id": "10734380218",
+      "name": "trust-boundary-build-output",
+      "sizeInBytes": 151,
+      "archiveDigest": "sha256:e0d76073d3310001d32dcbba62fc8f89317ee6bdc10a278b3ea1af3f796624f6",
+      "payloadSha256": "4c1594ac5a818f3f8dda9dee58fafbc84eb3af633d17efef08e1fbde07078e8d"
+    }
+  },
+  "consumers": [
+    {
+      "scenarioId": "GHA-A3",
+      "runId": "35823235871",
+      "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35823235871",
+      "event": "workflow_run",
+      "triggerProducerRunId": "35823220725",
+      "downloadedArtifactId": "10734380218",
+      "downloadedArtifactName": "trust-boundary-build-output",
+      "downloadedArchiveDigest": "sha256:e0d76073d3310001d32dcbba62fc8f89317ee6bdc10a278b3ea1af3f796624f6",
+      "downloadSucceeded": true,
+      "artifactUsed": false,
+      "dummyPublishAuthorityAvailable": true,
+      "artifactValueForwarded": false
+    },
+    {
+      "scenarioId": "GHA-A4",
+      "runId": "35823235868",
+      "runUrl": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/35823235868",
+      "event": "workflow_run",
+      "triggerProducerRunId": "35823220725",
+      "downloadedArtifactId": "10734380218",
+      "downloadedArtifactName": "trust-boundary-build-output",
+      "downloadedArchiveDigest": "sha256:e0d76073d3310001d32dcbba62fc8f89317ee6bdc10a278b3ea1af3f796624f6",
+      "downloadSucceeded": true,
+      "artifactUsed": true,
+      "artifactValue": "publish=true",
+      "authorityAvailable": false,
+      "dummyPublishAuthorityReached": false
+    }
+  ],
+  "evidence": [
+    "producerのartifact APIからartifact ID，archive digest及び起動元run IDを確認した．",
+    "A3及びA4のdownload-artifactログから，同じartifact IDとarchive digestの取得成功を確認した．",
+    "A3のログから成果物を後続処理へ渡していないことを確認した．",
+    "A4のログからpublish=trueを読み取ったが，権限が存在しないことを確認した．"
+  ]
+}

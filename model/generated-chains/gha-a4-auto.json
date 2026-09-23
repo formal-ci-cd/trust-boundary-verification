@@ -4,7 +4,7 @@
     "id": "GHA-A4-AUTO",
     "platform": "GitHub Actions",
     "description": "成果物を読むが公開・更新権限を持つ処理がない安全構成．",
-    "evidenceStatus": "incomplete"
+    "evidenceStatus": "observed"
   },
   "producer": {
     "workflow": {
@@ -326,15 +326,15 @@
     },
     {
       "element": "facts.readSucceeded",
-      "sourceKind": "manual-judgment",
-      "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
-      "claim": "構成比較ではdownload-artifactが成功する場合を仮定する．"
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a3-a4-runtime-pr10.json",
+      "claim": "consumer runで起動元runの同じartifact IDを取得した．"
     },
     {
       "element": "facts.consumerUsesObject",
-      "sourceKind": "manual-judgment",
-      "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
-      "claim": "後続stepが成果物のfileを読み取る．"
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a3-a4-runtime-pr10.json",
+      "claim": "実行ログにartifact_value=publish=trueが記録された．"
     },
     {
       "element": "facts.integrityCheckPresent",
@@ -350,9 +350,9 @@
     },
     {
       "element": "facts.hasAuthority",
-      "sourceKind": "manual-judgment",
-      "source": ".github/workflows/artifact-a4-no-authority-consumer.yml",
-      "claim": "成果物を読むjobに公開・repository更新処理がない．"
+      "sourceKind": "runtime-observation",
+      "source": "model/observations/gha-a3-a4-runtime-pr10.json",
+      "claim": "実行ログにauthority_available=falseが記録された．"
     },
     {
       "element": "traceMap.start",

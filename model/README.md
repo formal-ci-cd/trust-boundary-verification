@@ -115,6 +115,9 @@ NuSMVが反例を出した場合は，`tools/explain_nusmv_trace.py`で各状態
 | --- | --- | --- | --- | --- |
 | GHA-A1 | 完全性確認なしで模擬公開判断へ使用する． | 保存，取得，利用及び模擬権限到達を確認 | 反例あり | `observed` |
 | GHA-A2 | digest一致後だけ模擬公開判断へ使用する． | 保存と取得後，digest不一致で利用を遮断 | 反例なし | `observed` |
+| GHA-A3 | 取得するが成果物の内容を利用しない． | 同じartifact IDを取得し，利用しないことを確認 | 反例なし | `observed` |
+| GHA-A4 | 成果物を読むが公開・更新権限を持たない． | 内容を読んだが権限がないことを確認 | 反例なし | `observed` |
+| GHA-A5 | 実在脆弱性を簡略化し，未検証の成果物を模擬更新へ渡す． | 同じartifact IDを取得し，模擬更新地点への到達を確認 | 反例あり | `observed` |
 
 PR #7では，producer run `32576681421`が保存した同一artifact IDを両consumerが取得した．GHA-A1の実行結果はNuSMVの反例と一致し，GHA-A2では完全性確認により利用stepがskipされた．静的解析，実行結果及び形式検証の区分は[実行結果](../results/github-actions-artifact-runtime-2026-08-22.md)に記録している．
 
@@ -157,4 +160,4 @@ python3 tools/evaluate_artifact_chains.py \
   --output results/artifact-chain-evaluation-2026-08-23.json
 ```
 
-危険構成GHA-A1には反例があり，完全性確認で遮断するGHA-A2，成果物を利用しないGHA-A3及び権限を持たないGHA-A4には反例がなかった．4件全てで期待結果と一致したが，研究用に設計した小規模な評価集合であり，一般的な検出精度を示す値ではない．また，GHA-A3及びGHA-A4は静的構成による評価で，GitHub上の実行は未確認である．
+危険構成GHA-A1及びGHA-A5には反例があり，完全性確認で遮断するGHA-A2，成果物を利用しないGHA-A3及び権限を持たないGHA-A4には反例がなかった．5件全てで期待結果と一致したが，小規模な評価集合であり，一般的な検出精度を示す値ではない．GHA-A3からGHA-A5のGitHub上の実行結果は[成果物経路GHA-A3からGHA-A5の検証](../results/artifact-case-study-2026-09-23.md)に記録している．

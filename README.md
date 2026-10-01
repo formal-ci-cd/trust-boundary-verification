@@ -4,7 +4,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 
 ## 最新の進捗
 
-[marimoの公開脆弱性を用いた比較](docs/marimo-approval-race-case-study.md)では，既存ツールが承認時刻の競合を指摘しない原本で，提案手法が同じ秒の更新から成果物を経て公開手順へ届く反例を示しました．[2026-10-02の実装・比較結果](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)も参照してください．研究全体の自動化，実際に侵害された事件での提案側の検出，モデル検査器固有の優位性は引き続き検証が必要です．
+[marimoの公開脆弱性を用いた比較](docs/marimo-approval-race-case-study.md)では，既存ツールが承認時刻の競合を指摘しない原本で，提案手法が同じ秒の更新から成果物を経て公開手順へ届く反例を示しました．[実際のUltralytics侵害への適用](docs/ultralytics-incident-cache-chain.md)では，別repositoryのActionからpip cacheを経て公開buildへ至る条件付き経路を生成し，既存ツールの関連警告も照合しました．[2026-10-02の実装・比較結果](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)も参照してください．実cacheの同一object・書込み成功やモデル検査器固有の優位性は引き続き検証が必要です．
 
 ## 研究目的
 

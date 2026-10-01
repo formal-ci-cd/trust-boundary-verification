@@ -34,4 +34,4 @@ CodeQL CLI 2.27.1，公式 `codeql/actions-queries@0.6.36` の `actions-code-sca
 
 `tools/evaluate_approval_race.py` がmanifestのchecksumを確認し，原本から対照版を生成します．`tools/verify_approval_models.py` でNuSMVとBFSの判定一致を確認します．`tools/approval_race_baselines.py` は，原本・対照版・削除版をCodeQL，zizmor，actionlintに同じ設定で渡し，全警告をSARIF等として保存します．使用版と依存関係は `codeql/approval-race-diagnostics/codeql-pack.lock.yml` および評価記録に固定しています．回帰テストは時刻の同秒/翌秒，誤ったartifact名，`needs`の不一致，OIDC権限の欠如，reusable workflowの結合を含みます．
 
-結果は `results/marimo-approval-race/` に保存します．モデル・反例・全警告・診断分類を残し，読み手が「対象の穴について警告がない」という判定を再確認できるようにします．今後は，実際に侵害されたUltralyticsのcache経路にも提案側の対応を広げる必要があります．現時点のUltralytics比較は既存ツールの警告を保存した段階で，提案側の検出成功例ではありません．
+結果は `results/marimo-approval-race/` に保存しました．モデル・反例・全警告・診断分類を残し，読み手が「対象の穴について警告がない」という判定を再確認できるようにしています．実際に侵害された[Ultralyticsのcache経路](ultralytics-incident-cache-chain.md)にも限定ルールを追加しましたが，実cache objectと権限の到達は未確認で，既存ツールも関連する危険点を警告します．この事例を提案側だけの検出としては数えません．

@@ -10,3 +10,5 @@
 
 - attest: [公開アドバイザリ](https://securitylab.github.com/advisories/GHSL-2026-225_actions_attest/)，[修正PR](https://github.com/actions/attest/pull/488)．実際の悪用は未確認．公開当時，外部PRの受付設定とbranch protectionによる制約があるため，YAMLだけで実際の任意branch書き込み成功を主張しない．
 - Ultralytics: [PyPI運営による事件分析](https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/)，[publish job分離](https://github.com/ultralytics/ultralytics/commit/e0f8eda366c7cf08a1c311a17eaaaf87914f8012)．事件前タグの静的解析であり，事件当時のcache内容・API token・runner状態を再現したものではない．
+
+Ultralyticsには，事件前の外部Actionの固定版と事件後の修正版も追加しました．`manifest.json`の`externalAction` / `externalActionFixed`は本体workflowとは異なるrepositoryから取得した原本で，`@main`の事件当日実行SHAを保証するものではありません．[二つのrepositoryを結ぶ評価](../../docs/ultralytics-incident-cache-chain.md)に入力と未確認事項を記録します．

@@ -1,0 +1,21 @@
+MODULE main
+FROZENVAR
+  same_cache : boolean;
+  write_succeeded : boolean;
+  publisher_guard_passed : boolean;
+VAR
+  phase : 0..6;
+  tainted : boolean;
+  bad : boolean;
+ASSIGN
+  init(phase) := 0;
+  init(tainted) := FALSE;
+  init(bad) := FALSE;
+  next(phase) := case phase < 6 : phase + 1; TRUE : phase; esac;
+  next(tainted) := case
+    phase = 1 : TRUE & write_succeeded;
+    phase = 2 : tainted & TRUE & same_cache;
+    TRUE : tainted;
+  esac;
+  next(bad) := bad | (phase = 5 & tainted & publisher_guard_passed & TRUE);
+CTLSPEC AG !bad

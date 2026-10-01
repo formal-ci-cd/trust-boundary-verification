@@ -73,6 +73,20 @@ python3 tools/verify_approval_models.py /path/to/marimo-evaluation \
   --nusmv /path/to/NuSMV
 ```
 
+## 実際のUltralytics侵害への適用
+
+事件前のUltralytics本体と外部Action，それぞれの対策版をSHA-256で照合し，入口からpip cache経由の公開までの候補を解析します．cache objectの同一性，書込成功，公開jobの条件通過は未確認値として残します．再現方法と既存ツールとの比較は[事例研究](ultralytics-incident-cache-chain.md)に記録しています．
+
+```sh
+docker run --rm --network none -v "$PWD:/repo:ro" -w /repo trust-boundary-analysis \
+  python3 tools/ultralytics_cache_chain.py experiments/public-cases/ultralytics \
+  --output /tmp/ultralytics-cache-chain
+python3 tools/verify_ultralytics_models.py /path/to/ultralytics-cache-chain \
+  --nusmv /path/to/NuSMV
+```
+
+`tools/materialize_ultralytics_combined.py`は，本体workflowと外部Actionの原本からCodeQL・zizmor用の入力を再構成します．その合成先は解析専用であり，実際のworkflowを実行しません．
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

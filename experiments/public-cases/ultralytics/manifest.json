@@ -5,6 +5,40 @@
   "snapshotScope": "workflow files only; vulnerable pre-incident tag, not malware",
   "preIncidentTag": "v8.3.40",
   "mitigationScope": "publish-job isolation; do not treat as a complete fix for all workflows",
+  "externalAction": {
+    "repository": "https://github.com/ultralytics/actions",
+    "commit": "eb1201bd933b9f6096c64525ccaee3684c91bf14",
+    "selectedBy": "last commit on main before the first affected PyPI release at 2024-12-04T20:51:12Z; workflow uses mutable @main, so run-time resolution is not directly observed",
+    "files": [
+      {
+        "upstreamPath": "action.yml",
+        "snapshot": "external-action-2024-12-04/action.yml",
+        "sha256": "f96e57de430c422b64aa57a78847cb6e3ac4b5e32a651ac6db92ab09065d0906"
+      },
+      {
+        "upstreamPath": "LICENSE",
+        "snapshot": "external-action-2024-12-04/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+      }
+    ]
+  },
+  "externalActionFixed": {
+    "repository": "https://github.com/ultralytics/actions",
+    "commit": "89c1f380073ace366e4fc8f41f32427b6d644c3e",
+    "scope": "2024-12-05 action.yml edit moves input variables to env and removes git pull branch expression; not a complete security fix",
+    "files": [
+      {
+        "upstreamPath": "action.yml",
+        "snapshot": "external-action-fixed-2024-12-05/action.yml",
+        "sha256": "c96bd605df81e5c5839172a46c64bce9f897cf158611ee2b07247263945825d3"
+      },
+      {
+        "upstreamPath": "LICENSE",
+        "snapshot": "external-action-fixed-2024-12-05/LICENSE",
+        "sha256": "8486a10c4393cee1c25392769ddd3b2d6c242d6ec7928e1414efff7dfb2f07ef"
+      }
+    ]
+  },
   "files": [
     {
       "variant": "pre-incident",

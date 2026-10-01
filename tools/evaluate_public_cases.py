@@ -22,7 +22,9 @@ SUITES = {
 
 def verify_manifest(case):
     manifest = json.loads((case / "manifest.json").read_text())
-    for record in manifest["files"]:
+    records = (manifest["files"] + manifest.get("externalAction", {}).get("files", [])
+               + manifest.get("externalActionFixed", {}).get("files", []))
+    for record in records:
         if (
             hashlib.sha256((case / record["snapshot"]).read_bytes()).hexdigest()
             != record["sha256"]

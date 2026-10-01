@@ -1,0 +1,40 @@
+name: Research validation
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+
+      - name: Build isolated analysis environment
+        run: docker build -f experiments/analysis.Dockerfile -t research-validation .
+
+      # 原本workflowは実行せず，解析と状態探索の回帰テストを行う．
+      - name: Test parsers, automatic rules and model baselines
+        run: |
+          docker run --rm --network none \
+            -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD:/repo:ro" -w /repo research-validation \
+            python3 -m unittest discover -s tests -v
+
+      # gitは記録専用スタブに置換し，ネットワークと実際の書込み権限を使わない．
+      - name: Replay harmless local artifact case
+        run: |
+          docker run --rm --network none \
+            -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD:/repo:ro" -w /repo research-validation \
+            python3 tools/replay_attest_case.py experiments/public-cases/actions-attest \
+            --output /tmp/local-replay.json

@@ -1,0 +1,65 @@
+[
+  {
+    "variant": "vulnerable",
+    "originalWorkflowSha256": "42d07de2fd3e4a6f1e2bdb76e6313b4d82f02dcccbd9265fbb89f9473f13e053",
+    "adaptations": [
+      "download/checkout actions replaced by fixture preparation",
+      "GitHub expressions resolved to controlled local values",
+      "git replaced by recording stub; no repository write or network"
+    ],
+    "scope": "local consumer-script replay, not GitHub exploitation",
+    "attackerBranch": "dependabot/local-demo",
+    "actualGitHubAuthorityExercised": false,
+    "dummyPushReached": true,
+    "steps": [
+      {
+        "index": 1,
+        "line": 49,
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "index": 3,
+        "line": 83,
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "index": 4,
+        "line": 92,
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      },
+      {
+        "index": 5,
+        "line": 99,
+        "exitCode": 0,
+        "stdout": "",
+        "stderr": ""
+      }
+    ],
+    "dummyPushCommands": [
+      "push origin HEAD:dependabot/local-demo"
+    ],
+    "harmlessBundleMoved": true,
+    "jobBlockedByForkOrigin": false
+  },
+  {
+    "variant": "fixed",
+    "originalWorkflowSha256": "91fc55400089a3ca572e7cd07b005dc1f7f37e9edf45899bb404e25a483b38fe",
+    "adaptations": [
+      "download/checkout actions replaced by fixture preparation",
+      "GitHub expressions resolved to controlled local values",
+      "git replaced by recording stub; no repository write or network"
+    ],
+    "scope": "local consumer-script replay, not GitHub exploitation",
+    "attackerBranch": "dependabot/local-demo",
+    "actualGitHubAuthorityExercised": false,
+    "dummyPushReached": false,
+    "steps": [],
+    "jobBlockedByForkOrigin": true
+  }
+]

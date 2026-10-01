@@ -2,6 +2,10 @@
 
 CI/CD pipelineにおける信頼境界を形式的に検証するための研究用repositoryです．
 
+## 最新の進捗
+
+[2026-10-02の実装・比較結果](docs/research-status-2026-10-02.md)に，人手注釈を使わない限定解析，YAML直接解析，順序を扱うモデルとスクリプトの比較，公開事例の結果をまとめています．[再実行方法](docs/automatic-analysis-guide.md)もあります．CodeQLに対する優位性と研究全体の自動化は，まだ実証していません．
+
 ## 研究目的
 
 未信頼なPull Request又はMerge Requestに由来するCacheやartifactが，後続の特権を持つjobやworkflowで検証されずに利用される構成を対象にします．

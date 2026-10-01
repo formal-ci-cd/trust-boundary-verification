@@ -1,0 +1,52 @@
+-- Generated from artifact-62e4104bcbad.json
+-- Scenario: artifact-62e4104bcbad
+-- TRACE start: .github/workflows/rebuild-dist.yml:rebuild:7 - Configured artifact upload
+-- TRACE object_written: .github/workflows/rebuild-dist.yml:rebuild:7 - Potential successful upload, not observed
+-- TRACE object_restored: .github/workflows/commit-dist.yml:commit:0 - Potential same artifact download, not observed
+-- TRACE integrity_checked: .github/workflows/commit-dist.yml:commit:0 - Unknown integrity validation
+-- TRACE object_used: .github/workflows/commit-dist.yml:commit:2 - Potential artifact-derived ref use
+-- TRACE authority_reached: .github/workflows/commit-dist.yml:commit:5 - Configured write capability, not observed write
+MODULE main
+FROZENVAR
+  write_authorized : boolean;
+  write_succeeded : boolean;
+  same_object : boolean;
+  read_succeeded : boolean;
+  integrity_check_present : boolean;
+  integrity_check_passed : boolean;
+VAR
+  stage : {start, object_written, object_restored, integrity_checked, object_used, authority_reached, blocked};
+  object_tainted : boolean;
+DEFINE
+  producer_untrusted := TRUE;
+  write_intent := TRUE;
+  consumer_uses_object := TRUE;
+  privileged_consumer := TRUE;
+  has_authority := TRUE;
+INVAR write_succeeded -> write_authorized
+INVAR read_succeeded -> write_succeeded
+INVAR integrity_check_passed -> integrity_check_present
+ASSIGN
+  init(stage) := start;
+  init(object_tainted) := producer_untrusted;
+  next(object_tainted) := case
+    stage = object_restored & integrity_check_present & integrity_check_passed : FALSE;
+    TRUE : object_tainted;
+  esac;
+  next(stage) := case
+    stage = start & (!producer_untrusted | !write_intent | !write_authorized | !write_succeeded) : blocked;
+    stage = start : object_written;
+    stage = object_written & same_object & read_succeeded : object_restored;
+    stage = object_written : blocked;
+    stage = object_restored & integrity_check_present & integrity_check_passed : integrity_checked;
+    stage = object_restored & integrity_check_present : blocked;
+    stage = object_restored & consumer_uses_object : object_used;
+    stage = object_restored : blocked;
+    stage = integrity_checked & consumer_uses_object : object_used;
+    stage = integrity_checked : blocked;
+    stage = object_used & privileged_consumer & has_authority : authority_reached;
+    stage = object_used : blocked;
+    TRUE : stage;
+  esac;
+
+CTLSPEC AG !(stage = authority_reached & object_tainted)

@@ -1,0 +1,112 @@
+# Consumes the artifact from `rebuild-dist.yml` and commits the rebuilt `dist/`
+# back to the Dependabot PR branch. This half is PRIVILEGED (contents: write)
+# but it never runs any code from the PR — it only moves already-built bytes and
+# git-pushes them. Because it triggers on workflow_run, the workflow definition
+# executed here is the trusted copy from the default branch.
+#
+# Everything that decides *where* this workflow writes — the eligibility checks
+# and the target branch — is read from the `workflow_run` payload, which GitHub
+# populates and the builder job cannot influence. The downloaded artifact is
+# treated purely as opaque bytes to be committed; it never steers control flow.
+#
+# NOTE: pushes made with the default GITHUB_TOKEN do NOT re-trigger `on:
+# pull_request` workflows, so `check-dist.yml` will not automatically re-verify
+# the committed dist/. The verify-head guard below is our integrity check.
+name: Commit dist
+
+on:
+  workflow_run:
+    workflows: ["Rebuild dist"]
+    types:
+      - completed
+
+permissions:
+  contents: read
+
+jobs:
+  commit:
+    name: Commit dist/
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Only proceed for successful builder runs triggered by a Dependabot pull
+    # request whose head branch lives in this repository. Fork-originated runs
+    # are rejected outright: a `pull_request` run executes the PR's own copy of
+    # `rebuild-dist.yml`, so nothing such a run produces is trustworthy.
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.head_repository.full_name == github.repository &&
+      github.event.workflow_run.actor.login == 'dependabot[bot]' &&
+      startsWith(github.event.workflow_run.head_branch, 'dependabot/')
+    steps:
+      - name: Download rebuilt dist/
+        id: download
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        continue-on-error: true
+        with:
+          name: rebuilt-dist
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+          # Download OUTSIDE the checkout workspace: the later actions/checkout
+          # step runs `git clean -ffdx`, which would delete an untracked
+          # `incoming/` dir inside the workspace before we can use it.
+          #
+          # upload-artifact roots an artifact at the least common ancestor of
+          # its input paths, so `rebuilt-dist` holds the *contents* of dist/.
+          # Extract into `incoming/dist` to restore the expected layout.
+          path: ${{ runner.temp }}/incoming/dist
+
+      # No artifact => the builder found dist/ already up to date. Nothing to do.
+      # Key off the bundle entrypoint rather than the directory: an unexpected
+      # artifact layout then no-ops instead of committing a malformed dist/.
+      - name: Check for artifact
+        id: check
+        run: |
+          if [ -f "${{ runner.temp }}/incoming/dist/index.js" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Checkout PR branch
+        if: steps.check.outputs.present == 'true'
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.workflow_run.head_branch }}
+          token: ${{ github.token }}
+
+      # Guard against a race: if the PR branch advanced after the builder ran,
+      # bail rather than committing a dist/ built from a stale tree.
+      - name: Verify head is unchanged
+        if: steps.check.outputs.present == 'true'
+        env:
+          EXPECTED_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          current="$(git rev-parse HEAD)"
+          if [ "$current" != "$EXPECTED_SHA" ]; then
+            echo "PR branch moved ($current != $EXPECTED_SHA); skipping."
+            exit 1
+          fi
+
+      - name: Apply rebuilt dist/
+        if: steps.check.outputs.present == 'true'
+        run: |
+          rm -rf dist
+          mv "${{ runner.temp }}/incoming/dist" dist
+          rm -rf "${{ runner.temp }}/incoming"
+
+      - name: Commit and push
+        if: steps.check.outputs.present == 'true'
+        env:
+          HEAD_BRANCH: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          if git diff --quiet -- dist/; then
+            echo "dist/ already current; nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/
+          git commit -m "build: rebuild dist/ for dependency bump"
+          git push origin "HEAD:refs/heads/$HEAD_BRANCH"

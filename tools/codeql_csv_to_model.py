@@ -38,6 +38,8 @@ def load_rows(input_path, workflow_name):
         ]
     if not rows:
         raise ValueError(f"workflowが見つかりません: {workflow_name}")
+    if len({row["filePath"] for row in rows}) != 1:
+        raise ValueError(f"同名のworkflowが複数のファイルにあります: {workflow_name}")
     return rows
 
 
@@ -52,6 +54,7 @@ def build_model(rows, input_path):
     jobs = {}
     expressions = []
     steps = {}
+    scripts = {}
 
     for row in rows:
         kind = row["kind"]
@@ -81,13 +84,14 @@ def build_model(rows, input_path):
                 }
             )
         elif kind == "job":
-            # 複数のrunner labelが抽出された場合，現在は後から来た値で上書きされる．
-            # 今回の4構成は単一labelなので影響しないが，一般化時には配列へ追記する必要がある．
-            jobs[job_id] = {
+            job = jobs.setdefault(job_id, {
                 "id": job_id,
-                "runnerLabels": [row["detail"].removeprefix("runs-on=")],
+                "runnerLabels": [],
                 "steps": [],
-            }
+            })
+            label = row["detail"].removeprefix("runs-on=")
+            if label not in job["runnerLabels"]:
+                job["runnerLabels"].append(label)
         # uses-stepとuses-argumentはCSV上で別行なので，同じ(jobId, stepIndex)へ統合する．
         elif kind == "uses-step":
             action, version = split_action(row["detail"])
@@ -116,14 +120,20 @@ def build_model(rows, input_path):
             )
             step["arguments"][row["name"]] = row["detail"]
         # シェルコマンドは文字列として保持する．ここでは処理の意味までは解釈しない．
-        # 現在は同じstepから複数行が出ると後の行で上書きされるため，CSVの全情報を
-        # 共通JSONへ保持できていない．シェルの自動解釈へ進む前に修正が必要である．
+        # getACommandの出力は集合であり，元スクリプトの実行順序を保証しない．
+        # 全行を保持するが，結合したcommandを実行可能なスクリプトとは扱わない．
         elif kind == "run-step":
-            steps[(job_id, step_index)] = {
+            step = steps.setdefault((job_id, step_index), {
                 "index": int(step_index),
                 "type": "run",
-                "command": row["detail"],
-            }
+                "command": "",
+                "commands": [],
+                "commandOrderKnown": False,
+            })
+            step["commands"].append({"text": row["detail"], "line": int(row["line"])})
+            step["command"] = "\n".join(item["text"] for item in step["commands"])
+        elif kind == "run-script":
+            scripts[(job_id, step_index)] = row
         elif kind == "expression":
             expressions.append(
                 {"raw": row["name"], "normalized": row["detail"], "line": int(row["line"])}
@@ -136,6 +146,11 @@ def build_model(rows, input_path):
             raise ValueError(f"event propertyの所属を特定できません: {event_name}")
         matches[0]["properties"].setdefault(property_name, []).append(value)
 
+    # 完全なrunブロックがあれば，CodeQLのコマンド集合と別に保存する．
+    for key, row in scripts.items():
+        step = steps.setdefault(key, {"index": int(key[1]), "type": "run", "commands": []})
+        step["command"] = row["detail"]
+        step["commandOrderKnown"] = True
     # step番号順に並べ，対応するjobのstepsへ格納する．
     for (job_id, _), step in sorted(steps.items(), key=lambda item: (item[0][0], int(item[0][1]))):
         if job_id in jobs:

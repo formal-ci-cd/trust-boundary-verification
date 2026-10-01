@@ -1,0 +1,136 @@
+{
+  "repository": "https://github.com/ultralytics/ultralytics",
+  "incidentSource": "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/",
+  "confirmedExploitation": true,
+  "snapshotScope": "workflow files only; vulnerable pre-incident tag, not malware",
+  "preIncidentTag": "v8.3.40",
+  "mitigationScope": "publish-job isolation; do not treat as a complete fix for all workflows",
+  "files": [
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/ci.yaml",
+      "snapshot": "pre-incident/.github/workflows/ci.yaml",
+      "sha256": "d7d471e9b883c63e5352f4dc363933571d3effe94d3fd4085cec3f7062704e06"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/cla.yml",
+      "snapshot": "pre-incident/.github/workflows/cla.yml",
+      "sha256": "cd1fb12feecafc25497d68421d6e169c3e108a83ba5003dd22f1784815c4d528"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/docker.yaml",
+      "snapshot": "pre-incident/.github/workflows/docker.yaml",
+      "sha256": "41c335c882cae1358c5a985ab96c10f44f70e753f9c69d30650fc2e57fb3dd56"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/docs.yml",
+      "snapshot": "pre-incident/.github/workflows/docs.yml",
+      "sha256": "7295e6a4b66db31eaeed45279f87873bc6a1b46e7a9e9b1f9374226631d81673"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/format.yml",
+      "snapshot": "pre-incident/.github/workflows/format.yml",
+      "sha256": "de52390226c401183722d4f0a9bfaa2df4a8299d16e2a50a69b76027c3131a61"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/links.yml",
+      "snapshot": "pre-incident/.github/workflows/links.yml",
+      "sha256": "2a9ffee1a65418d100d5221c56d3ddfc77106de38db227288ec38e02f528574c"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/merge-main-into-prs.yml",
+      "snapshot": "pre-incident/.github/workflows/merge-main-into-prs.yml",
+      "sha256": "cdc204f2c9282e4db1d68d62540a976ac2b83ef134693ded80d571fdf6d166d8"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/publish.yml",
+      "snapshot": "pre-incident/.github/workflows/publish.yml",
+      "sha256": "82064144d12ee6bfadde270351c06ecfa9906affa959b3ba32ec1c2a27d91c52"
+    },
+    {
+      "variant": "pre-incident",
+      "commit": "dbdb451512ad4b3c636e6d61ad7af31e07301ece",
+      "upstreamPath": ".github/workflows/stale.yml",
+      "snapshot": "pre-incident/.github/workflows/stale.yml",
+      "sha256": "f77266466b1a84abcca37d6baae3e522152ea70b233f8b46ff822dfa5a985ee2"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/ci.yaml",
+      "snapshot": "mitigation/.github/workflows/ci.yaml",
+      "sha256": "b7924c0e8266ddfa8c29cbb5eaf8cdffd4ca530cda7eab5a259442d236bab0c8"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/cla.yml",
+      "snapshot": "mitigation/.github/workflows/cla.yml",
+      "sha256": "cd1fb12feecafc25497d68421d6e169c3e108a83ba5003dd22f1784815c4d528"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/docker.yaml",
+      "snapshot": "mitigation/.github/workflows/docker.yaml",
+      "sha256": "41c335c882cae1358c5a985ab96c10f44f70e753f9c69d30650fc2e57fb3dd56"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/docs.yml",
+      "snapshot": "mitigation/.github/workflows/docs.yml",
+      "sha256": "53b0aeff42cd1702f6bd1d2b88a09f051fb84f1b1741fb747bcf52f4ce9b44ad"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/format.yml",
+      "snapshot": "mitigation/.github/workflows/format.yml",
+      "sha256": "cd1cc5ad340694ef3460c772636fc43567ba8ea54dbac1f363c5cd02ef46c847"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/links.yml",
+      "snapshot": "mitigation/.github/workflows/links.yml",
+      "sha256": "2a9ffee1a65418d100d5221c56d3ddfc77106de38db227288ec38e02f528574c"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/merge-main-into-prs.yml",
+      "snapshot": "mitigation/.github/workflows/merge-main-into-prs.yml",
+      "sha256": "cdc204f2c9282e4db1d68d62540a976ac2b83ef134693ded80d571fdf6d166d8"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/publish.yml",
+      "snapshot": "mitigation/.github/workflows/publish.yml",
+      "sha256": "4b23dfa997d430c1490ee901ab6ccb7a3ded6d967180d054bc84f7d4b6a77607"
+    },
+    {
+      "variant": "mitigation",
+      "commit": "e0f8eda366c7cf08a1c311a17eaaaf87914f8012",
+      "upstreamPath": ".github/workflows/stale.yml",
+      "snapshot": "mitigation/.github/workflows/stale.yml",
+      "sha256": "f77266466b1a84abcca37d6baae3e522152ea70b233f8b46ff822dfa5a985ee2"
+    }
+  ]
+}

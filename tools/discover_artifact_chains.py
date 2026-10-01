@@ -34,15 +34,18 @@ def normalize_expression(value):
 
 
 def load_models(csv_path):
-    """CodeQLのCSVをワークフロー名で分け，全ワークフローの共通モデルを作る．"""
+    """CodeQLのCSVをファイルで分け，同名workflowも別モデルとして保持する．"""
     with csv_path.open(newline="", encoding="utf-8") as source:
         grouped = defaultdict(list)
         for row in csv.DictReader(source):
-            grouped[row["workflowName"]].append(row)
-    return {
-        workflow_name: codeql_csv_to_model.build_model(rows, csv_path)
-        for workflow_name, rows in grouped.items()
-    }
+            grouped[row["filePath"]].append(row)
+    models = {}
+    names = [rows[0]["workflowName"] for rows in grouped.values()]
+    for file, rows in grouped.items():
+        name = rows[0]["workflowName"]
+        key = name if names.count(name) == 1 else f"{name}#{file}"
+        models[key] = codeql_csv_to_model.build_model(rows, csv_path)
+    return models
 
 
 def artifact_operations(models, kind):

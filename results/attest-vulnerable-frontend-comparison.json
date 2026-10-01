@@ -1,0 +1,15 @@
+{
+  "workflowCount": 2,
+  "comparedFields": [
+    "file",
+    "name",
+    "events",
+    "permissions",
+    "jobs",
+    "sharedStateOperations",
+    "runScripts"
+  ],
+  "semanticsCompared": false,
+  "equivalent": true,
+  "differences": []
+}

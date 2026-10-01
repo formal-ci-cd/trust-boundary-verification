@@ -1,0 +1,34 @@
+-- Synthetic mutable shared-file model; not GitHub artifact replacement semantics
+MODULE main
+IVAR
+  action : 0..1;
+VAR
+  bad : boolean;
+  written_0 : boolean;
+  pc_0 : 0..3;
+  shared_0 : boolean;
+  local_0 : boolean;
+  verified_0 : boolean;
+ASSIGN
+  init(bad) := FALSE;
+  next(bad) := case
+    action = 1 & pc_0 = 2 & verified_0 & shared_0 : TRUE;
+    TRUE : bad;
+  esac;
+  init(written_0) := FALSE;
+  init(shared_0) := FALSE;
+  init(local_0) := FALSE;
+  init(verified_0) := FALSE;
+  init(pc_0) := 0;
+  next(written_0) := written_0 | (action = 0 & !written_0);
+  next(shared_0) := shared_0 | (action = 0 & !written_0);
+  next(local_0) := case action = 1 & pc_0 = 0 : shared_0; TRUE : local_0; esac;
+  next(verified_0) := case action = 1 & pc_0 = 1 : !shared_0; TRUE : verified_0; esac;
+  next(pc_0) := case
+    action = 1 & pc_0 = 0 : 1;
+    action = 1 & pc_0 = 1 & !shared_0 : 2;
+    action = 1 & pc_0 = 1 : 3;
+    action = 1 & pc_0 = 2 : 3;
+    TRUE : pc_0;
+  esac;
+CTLSPEC AG !bad

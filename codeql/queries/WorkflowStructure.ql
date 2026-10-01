@@ -149,6 +149,14 @@ private predicate describeNode(AstNode node, string kind, string name, string de
     detail = command
   )
   or
+  // 全runブロックも出す．getACommandの集合から元の順序を復元する必要をなくす．
+  exists(Run step |
+    node = step and
+    kind = "run-script" and
+    name = getStepId(step) and
+    detail = step.getScript().getValue()
+  )
+  or
   // usesでもrunでもないstepが存在する場合も，位置を失わないように残す．
   exists(Step step |
     node = step and

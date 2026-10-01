@@ -72,6 +72,11 @@ def main():
                          else '-- specification AG !bad  is true')
         if expected_line not in output:
             raise ValueError(f'NuSMV and BFS differ: {variant}')
+    policy = analysis['policySensitivity']
+    if (policy['bfs']['verdict'] != 'no-path-in-supported-model'
+        or '-- specification AG !bad  is true' not in
+            (args.input / 'model/pre-incident-current-policy.nusmv.txt').read_text()):
+        raise ValueError('Current cache policy result differs from BFS or NuSMV')
     records, summary = [], {}
     args.output.mkdir(parents=True)
     for phase, variant in [('pre', 'pre-incident'), ('post', 'mitigation')]:
@@ -112,6 +117,9 @@ def main():
             record = store(args.input / 'model' / name, args.output / name)
             records.append(record)
     records.append(store(args.input / 'model/analysis.json', args.output / 'analysis.json'))
+    for extension in ('.smv', '.nusmv.txt'):
+        name = 'pre-incident-current-policy' + extension
+        records.append(store(args.input / 'model' / name, args.output / name))
     records.append(store(args.opengrep_rule,
                          args.output / 'promptpwnd-rule-2025-12-03.yaml'))
     (args.output / 'evidence-index.json').write_text(json.dumps({

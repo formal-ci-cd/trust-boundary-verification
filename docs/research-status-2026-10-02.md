@@ -1,8 +1,8 @@
 # 2026-10-02時点の実装・実験結果
 
-追記：同日，[marimoの公開脆弱性GHSL-2026-226](marimo-approval-race-case-study.md)で，対象の承認時刻競合を既存ツールが指摘しない原本を確認し，提案側の限定した自動モデルが反例を出しました．[実際のUltralytics侵害](ultralytics-incident-cache-chain.md)では外部Actionを含む条件付きcache経路を生成しました．[実際のTanStack侵害](tanstack-incident-cache-boundary.md)では事後報告にあるcache保存・復元を別証拠として照合し，事件前と対策版でfork→main cache経路を区別しました．さらに[Clineの実侵害](cline-incident-agent-cache-boundary.md)で，事件前後の全workflowに対してCodeQL・zizmor・actionlintが対象経路を指摘せず，限定モデルが事件前だけ条件付き反例を出す比較を得ました．marimoは悪用確認済みではなく，TanStackではCodeQLも事件前の入口を警告します．ClineのAIへの入口は既存のPromptPwndルールが事件前3件・対策後0件で検出したため，「既存ツール一般が見逃す」とは主張しません．モデル検査器固有の優位性も未達です．以下の表は最初の比較記録で，追試は各事例研究にまとめています．
+追記：同日，[marimoの公開脆弱性GHSL-2026-226](marimo-approval-race-case-study.md)で，対象の承認時刻競合を既存ツールが指摘しない原本を確認し，提案側の限定した自動モデルが反例を出しました．[実際のUltralytics侵害](ultralytics-incident-cache-chain.md)では外部Actionを含む条件付きcache経路を生成しました．[実際のTanStack侵害](tanstack-incident-cache-boundary.md)では事後報告にあるcache保存・復元を別証拠として照合し，事件前と対策版でfork→main cache経路を区別しました．さらに[Clineの実侵害](cline-incident-agent-cache-boundary.md)で，事件前後の全workflowに対してCodeQL・zizmor・actionlintが対象経路を指摘せず，限定モデルが事件前だけ条件付き反例を出す比較を得ました．marimoは悪用確認済みではなく，TanStackではCodeQLも事件前の入口を警告します．ClineのAIへの入口は既存のPromptPwndルールが事件前3件・対策後0件で検出し，実際の攻撃者がこの入口を使ったかも未確定です．「既存ツール一般が見逃す」または「実際の侵入経路を再構成した」とは主張しません．モデル検査器固有の優位性も未達です．以下の表は最初の比較記録で，追試は各事例研究にまとめています．
 
-今回，4つの課題に対する実装と比較実験の基礎を追加しました．Clineでは実悪用された事件の**特定の複数workflow経路**についてCodeQL・zizmor・actionlintとの検出差を得ました．一方で，Agentが指示に従うことやcache保存・実行の成否はモデル内のunknownであり，無条件に侵害を証明したわけではありません．marimoで示したのは実悪用が未確認の公開脆弱性です．UltralyticsではCodeQLの広いsuiteやzizmorが重要な警告を出し，TanStackでもCodeQL通常suiteが事件前と対策版に同じcache警告を出します．
+今回，4つの課題に対する実装と比較実験の基礎を追加しました．Clineでは実際に無断公開が起きたリポジトリに存在した**成立し得る複数workflow経路**についてCodeQL・zizmor・actionlintとの検出差を得ました．一方で，Agentが指示に従うことやcache保存・実行の成否はモデル内のunknownであり，無条件に侵害を証明したわけではありません．当該事件の初期侵入経路も未確定です．事件当時のcache権限では反例が出ますが，2026年6月以降の読取り専用権限を同じYAMLに適用するとモデル内の反例は消えます．marimoで示したのは実悪用が未確認の公開脆弱性です．UltralyticsではCodeQLの広いsuiteやzizmorが重要な警告を出し，TanStackでもCodeQL通常suiteが事件前と対策版に同じcache警告を出します．
 
 ## 何ができるようになったか
 
@@ -11,7 +11,7 @@
 | 人手の注釈をなくす | 限定したartifact metadata → step output → checkout ref → git pushの経路と，consumerのfork除外条件・設定されたcontents権限を自動で取得し，根拠付きJSON・SMVを生成 | 任意のshell，独自Action，reusable workflow，実行時の成功・artifact ID，検査の一般的な意味解析は未対応．既存A1～A5の手動注釈を全て置換したわけではない |
 | モデル検査の意義を調べる | 既存の固定事実モデルを直接判定するbaselineと比較．さらに書換え可能な共有ファイルの検査・置換・利用順序をNuSMV/BFS/無害なファイル操作で比較 | BFSでも同じ判定ができる．モデル検査の必須性・大規模な実workflowでの優位性は未証明．並行モデルはYAMLから自動生成していない |
 | YAMLを直接読む | PyYAMLによる入力経路を追加．`on`キー，全文runブロック，job/stepの条件・env・行位置を保持．CodeQL側も全文を抽出できるよう修正 | GitHubの式やActionの意味までYAMLライブラリが理解するわけではない．フロントエンドの構造一致は意味解析全般の同等性ではない |
-| 実在事例で比較する | attest，marimo，Ultralytics，TanStack，Clineの公開原本を取得．Clineは実悪用の対象経路にCodeQL・zizmor・actionlintの警告がなく，限定モデルが事件前だけ条件付き反例．TanStackは公開されたcache保存・復元記録と照合 | ClineのAI入口は既存のPromptPwndルールで検出された．モデル内のruntime条件は未観測．ツール一般に対する排他的優位性は未達 |
+| 実在事例で比較する | attest，marimo，Ultralytics，TanStack，Clineの公開原本を取得．Clineでは侵害されたリポジトリにあった候補経路にCodeQL・zizmor・actionlintの対象警告がなく，限定モデルが事件前だけ条件付き反例．TanStackは公開されたcache保存・復元記録と照合 | ClineのAI入口は既存のPromptPwndルールで検出された．モデル内のruntime条件は未観測．ツール一般に対する排他的優位性は未達 |
 
 ## 人手を使わない経路
 
@@ -60,6 +60,6 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 
 ## 確認した範囲と次の研究課題
 
-追試までにネットワーク無効Dockerで70件のunit testを確認しました．初回には，JSON Schema・根拠の検査，attest両版のCodeQL/YAML構造と全文run一致，9条件のNuSMV/BFS一致，7条件の固定事実モデル/baseline一致，原本checksum，局所再現を確認しています．一括公開事例評価CLIも4版に適用しました．[初回のGitHub CI](https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/36887435413)では標準Pythonコンテナのbuild，51件のテスト，無害な局所再現が成功しました．marimo，Ultralytics，TanStackの追試結果・実行記録は各事例研究を参照してください．NuSMV自体の再実行はローカルで行っています．
+追試までにネットワーク無効Dockerで76件のunit testを確認しました．初回には，JSON Schema・根拠の検査，attest両版のCodeQL/YAML構造と全文run一致，9条件のNuSMV/BFS一致，7条件の固定事実モデル/baseline一致，原本checksum，局所再現を確認しています．一括公開事例評価CLIも4版に適用しました．[初回のGitHub CI](https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/36887435413)では標準Pythonコンテナのbuild，51件のテスト，無害な局所再現が成功しました．marimo，Ultralytics，TanStackの追試結果・実行記録は各事例研究を参照してください．NuSMV自体の再実行はローカルで行っています．
 
-次の研究課題は，並行遷移を実workflowと実行観測から生成すること，cacheや独自Actionの意味を広げること，実行観測を自動取得してunknownを減らすこと，PromptPwndが検出した入口からcache・公開jobまでの接続を，他の専門的な検査とも比較することです．Clineでは実事件に対する対象経路の検出差を示しましたが，今回の実装は限定パターンであり，修士研究全体の完成ではありません．
+次の研究課題は，並行遷移を実workflowと実行観測から生成すること，cacheや独自Actionの意味を広げること，実行観測を自動取得してunknownを減らすこと，PromptPwndが検出した入口からcache・公開jobまでの接続を，他の専門的な検査とも比較することです．Clineでは実際に侵害されたリポジトリの候補経路について検出差を示しましたが，今回の実装は限定パターンであり，修士研究全体の完成ではありません．

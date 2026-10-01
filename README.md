@@ -4,7 +4,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 
 ## 最新の進捗
 
-[Clineの実侵害](docs/cline-incident-agent-cache-boundary.md)では，事件前後の全workflowを同条件で比較しました．CodeQL・zizmor・actionlintはIssue→AI→共有cache→公開用資格情報の対象経路を指摘せず，限定した提案モデルは事件前だけ条件付き反例を出しました．一方，既存のPromptPwndルールはAIへの入口を検出しました．優位性の主張は複数workflowの経路説明に限定します．[marimoの公開脆弱性](docs/marimo-approval-race-case-study.md)，[TanStackの実侵害](docs/tanstack-incident-cache-boundary.md)，[Ultralyticsの実侵害](docs/ultralytics-incident-cache-chain.md)も比較しています．[研究の現状](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)を参照してください．汎用的な自動化とモデル検査器固有の優位性はまだ示せていません．
+[Clineの実侵害](docs/cline-incident-agent-cache-boundary.md)では，事件前後の全workflowを同条件で比較しました．CodeQL・zizmor・actionlintはIssue→AI→共有cache→公開用資格情報の対象経路を指摘せず，限定した提案モデルは事件前だけ条件付き反例を出しました．一方，既存のPromptPwndルールはAIへの入口を検出しました．実際の攻撃者がこの入口を使ったかは未確定で，優位性の主張は複数workflowの条件付き経路説明に限定します．[marimoの公開脆弱性](docs/marimo-approval-race-case-study.md)，[TanStackの実侵害](docs/tanstack-incident-cache-boundary.md)，[Ultralyticsの実侵害](docs/ultralytics-incident-cache-chain.md)も比較しています．[研究の現状](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)を参照してください．汎用的な自動化とモデル検査器固有の優位性はまだ示せていません．
 
 ## 研究目的
 

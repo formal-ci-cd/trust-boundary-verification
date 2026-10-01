@@ -105,7 +105,7 @@ python3 tools/verify_tanstack_models.py /tmp/tanstack-analysis \
 
 ## Cline実侵害のAIトリアージ・cache境界を再実行する
 
-[Cline事例研究](cline-incident-agent-cache-boundary.md)では，事件前の全15 workflowと公式対策後の全12 workflowを保存しています．限定解析はmanifestのchecksumを確認し，workflowを実行せず，2版のJSON・SMVを生成します．事件後の観測は `incident-observation.json` に分離しています．
+[Cline事例研究](cline-incident-agent-cache-boundary.md)では，事件前の全15 workflowと公式対策後の全12 workflowを保存しています．限定解析はmanifestのchecksumを確認し，workflowを実行せず，2版と現行cache権限の感度分析についてJSON・SMVを生成します．事件後の観測は `incident-observation.json` に分離しています．実際の攻撃者がIssueトリアージを入口にしたかは未確定です．
 
 ```sh
 mkdir -p /tmp/cline-boundary-analysis
@@ -115,6 +115,7 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   --output /analysis
 NuSMV /tmp/cline-boundary-analysis/pre-incident.smv
 NuSMV /tmp/cline-boundary-analysis/mitigation.smv
+NuSMV /tmp/cline-boundary-analysis/pre-incident-current-policy.smv
 ```
 
 CodeQL CLI 2.27.1，`actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regular，actionlint 1.7.12の**全警告**とNuSMV出力は `results/cline-agent-cache-boundary/evidence-index.json` から追跡できます．既存ツールには各版の全workflowを入力し，提案側には同じworkflow原本を与えています．事件前から公開されていたAikidoのPromptPwndルールもOpengrep 1.30.0で実行し，事件前3件・対策後0件でした．入口の検出は既存手法でも可能です．

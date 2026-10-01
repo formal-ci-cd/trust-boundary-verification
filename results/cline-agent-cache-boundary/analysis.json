@@ -43,10 +43,16 @@
           "job": "publish-npm-nightly",
           "cacheKeyExpression": "${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}",
           "cachePath": "node_modules",
+          "postStepCandidate": "actions/checkout@v4",
           "secretsAtPublicationStep": [
             "NPM_RELEASE_TOKEN"
           ],
           "evidence": [
+            {
+              "file": "pre-incident/.github/workflows/npm-nightly.yaml",
+              "line": 25,
+              "role": "earlier-checkout-post-step"
+            },
             {
               "file": "pre-incident/.github/workflows/npm-nightly.yaml",
               "line": 48,
@@ -69,6 +75,7 @@
           "job": "publish",
           "cacheKeyExpression": "${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}",
           "cachePath": "node_modules",
+          "postStepCandidate": "actions/checkout@v4",
           "secretsAtPublicationStep": [
             "ERROR_SERVICE_API_KEY",
             "OTEL_EXPORTER_OTLP_ENDPOINT",
@@ -80,6 +87,11 @@
             "VSCE_PAT"
           ],
           "evidence": [
+            {
+              "file": "pre-incident/.github/workflows/publish-nightly.yml",
+              "line": 26,
+              "role": "earlier-checkout-post-step"
+            },
             {
               "file": "pre-incident/.github/workflows/publish-nightly.yml",
               "line": 43,
@@ -176,5 +188,16 @@
         "conditionalCounterexample": null
       }
     }
-  ]
+  ],
+  "policySensitivity": {
+    "workflowSnapshot": "pre-incident",
+    "policyEffectiveFrom": "2026-06-26",
+    "policySource": "https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/",
+    "publicIssueDefaultBranchCacheWriteAuthorized": false,
+    "bfs": {
+      "reachableStates": 448,
+      "verdict": "no-path-in-supported-model",
+      "conditionalCounterexample": null
+    }
+  }
 }

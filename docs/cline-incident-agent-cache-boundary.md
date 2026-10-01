@@ -4,6 +4,8 @@
 
 [Clineの公式事後報告](https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm)は，公開Issueを処理するAIトリアージがshellを使えたこと，夜間公開jobとdefault branchのcache scopeを共有したこと，公開tokenが侵害され，2026年2月17日に `cline@2.3.0` が無断公開されたことを記録しています．追加された `postinstall` はOpenClawをインストールするもので，ClineはCLI本体の悪性改変やユーザーデータ流出を認めていません．[発見者の報告](https://adnanthekhan.com/posts/clinejection/)は，研究者自身のPoCをミラー上で行い，別の人物が実リポジトリを攻撃したと区別しています．
 
+**実際の攻撃者がIssueトリアージを入口にしたかは未確定です．** 発見者は当時のcache汚染を疑う実行記録を示す一方，初期侵入経路は不明と明記しています．したがって本事例は「侵害されたリポジトリに存在した，CodeQLが対象警告を出さない条件付き経路」の検証であり，「実際の侵入経路を提案手法が再構成した」という証拠ではありません．
+
 事件前の**全15 workflow**と[公式対策PR #9211](https://github.com/cline/cline/pull/9211)のマージ時の**全12 workflow**を固定し，同じ解析設定で比較しました．CodeQL CLI 2.27.1の標準・広いsuite，zizmor 1.30.1 regular，actionlint 1.7.12の警告には，対象の **公開Issue→AIのBash→default branch cache→夜間公開jobの資格情報** という経路を指摘するものはありません．提案側の限定YAML解析は，事件前にこの経路の**条件付き反例**を作り，対策後には経路なしと判定しました．NuSMV 2.7.0と独立BFSが一致します．
 
 この差は**CodeQL・zizmor・actionlintと対象経路**についての結果です．事件前から公開されていた[AikidoのPromptPwndルール](https://github.com/AikidoSec/opengrep-rules/blob/12b001b4b1d65532b1a988b2f57a44468ad50445/rules/github_workflow_prompt_injection/github_workflow_prompt_injection.yaml)をOpengrep 1.30.0で実行すると，事件前に3件，対策後に0件を検出しました．事件前の1件はまさに `claude-issue-triage.yml:50` の入口です．従って**「既存ツール一般が見逃した」または「提案手法だけが入口を見つけられる」は誤り**です．本比較で追加できたのは，この入口と**別runの公開用cache・資格情報**を一つの条件付き反例へ接続する説明です．
@@ -12,12 +14,12 @@
 
 `experiments/public-cases/cline/manifest.json` のSHA-256とGitコミットで原本を固定しています．事件前は `7bdbf0a9a745f6abc09483fe9b08874c80fb44f3`，対策後は `84fef6fe1f38a3cb98723ed909a62258f03f21b9` です．後者は[対策PR](https://github.com/cline/cline/pull/9211)のマージコミットです．Apache-2.0の原本ライセンスも保存しました．攻撃payload，実際のcache内容，侵害tokenは取得・保存していません．
 
-`tools/agent_cache_boundary.py` はmanifestでworkflow名や危険判定を与えず，全workflowを走査します．対象とする入口は，`issues.opened`，`anthropics/claude-code-action`，非書込みユーザーの許可，Issueタイトルのprompt参照，Bash許可が同じjobにある構成です．対象とする出口は，`schedule` workflowのjobが `actions/cache` で依存物を復元し，後続の公開コマンドでsecretを使う構成です．事件前の入口1件と出口2件（`npm-nightly.yaml`，`publish-nightly.yml`）を抽出し，対策後は両方0件でした．検出対象はこのAction interfaceと公開コマンドの限定パターンであり，任意のAI Actionを理解する汎用検出器ではありません．PromptPwndはこの入口を既に検出できるため，入口検出の新規性は主張しません．
+`tools/agent_cache_boundary.py` はmanifestでworkflow名や危険判定を与えず，全workflowを走査します．対象とする入口は，`issues.opened`，`anthropics/claude-code-action`，非書込みユーザーの許可，Issueタイトルのprompt参照，Bash許可が同じjobにある構成です．対象とする出口は，夜間workflowのUbuntu jobで `actions/checkout` の後に `actions/cache` を復元し，後続の公開stepがsecretを使う構成です．事件前の入口1件と出口2件（`npm-nightly.yaml`，`publish-nightly.yml`）を抽出し，対策後は両方0件でした．[Cacheractの技術説明](https://adnanthekhan.com/2024/12/21/cacheract-the-monster-in-your-build-cache/)では細工したcacheアーカイブの展開でcheckoutの `action.yml` を上書きし，job末尾のpost stepを乗っ取ります．そのため `npm ci` が復元した `node_modules` を実行するという前提は置きません．cache対象を `docs/static-cache` に変えるだけの対照例も候補として残り，checkoutを除く対照例はこの機構の対象外になります．ただし，実際のアーカイブがcheckoutを上書きできたかは原本YAMLから分かりません．任意のAI Actionやcache展開実装を理解する汎用検出器ではありません．PromptPwndは入口を既に検出できるため，入口検出の新規性は主張しません．
 
 | 段階 | 原本から読めること | 原本だけでは分からないこと |
 |---|---|---|
 | 入口 | Issueタイトルがpromptに入り，外部ユーザーもBashを持つAgentを起動できる | 実際にAgentが悪意ある指示に従うか |
-| cache | `issues` runは当時default branchで動き，夜間workflowは`node_modules`をcache復元する | slotの空き・退避，汚染entryの保存，実効key一致と復元 |
+| cache | `issues` runは当時default branchで動き，夜間workflowはcheckout後に`node_modules`をcache復元する | slotの空き・退避，汚染entryの保存，実効key一致と復元，checkoutのpost step改変 |
 | 公開 | cache復元後の夜間jobが `NPM_RELEASE_TOKEN` またはVS Code/OpenVSXの公開secretを使用する | 汚染内容が実行され，後続の資格情報へ届くか |
 
 モデルでは，Agentの命令実行，cache枠の空き，保存成功，実効key一致，復元，汚染内容の実行を未観測の真偽値として探索します．事件前は全条件が成立する場合に `AG !bad` が偽となり，対策後は入口と公開jobのcacheがなく `AG !bad` が真です．BFSも同じ結果です．反例は**起こり得る経路**を示すもので，YAMLだけで当日の具体的な実行を証明しません．実事件の事後観測は `incident-observation.json` に，検出入力と分けて記録しました．
@@ -35,7 +37,7 @@ CodeQLは両版の全workflowを抽出しました．zizmorは `--offline --no-c
 | PromptPwnd / Opengrep | 3件 | 0件 | 事件前のIssue→AI入口を検出．cacheから公開jobまでの接続は警告に含まない |
 | 提案側の対象経路 | 条件付き反例 | 経路なし | 入口と夜間公開jobを別workflow・別runとして接続 |
 
-2026年2月のcache権限をモデル化しています．[GitHubは2026年6月に低信頼イベントのdefault branch cache tokenを読取り専用に変更](https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/)しました．この歴史的な反例を現在のGitHub Actionsで実行可能な攻撃とみなしてはいけません．また本結果は固定した現在のツール版で過去の設定を再解析した結果であり，事件当日に各ツールが導入されていた証拠ではありません．
+2026年2月のcache権限をモデル化しています．[GitHubは2026年6月に低信頼イベントのdefault branch cache tokenを読取り専用に変更](https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/)しました．同じ事件前YAMLにこの現行権限を当てる感度分析では，書込み遷移が塞がれ，NuSMVとBFSの双方で反例が消えます．これは権限仕様を追加した反実仮想であり，実際のGitHub環境を再実行した結果ではありません．この歴史的な反例を現在のGitHub Actionsで実行可能な攻撃とみなしてはいけません．また本結果は固定した現在のツール版で過去の設定を再解析した結果であり，事件当日に各ツールが導入されていた証拠ではありません．
 
 ## 再実行と残る限界
 
@@ -49,6 +51,7 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   --output /analysis
 NuSMV /tmp/cline-boundary-analysis/pre-incident.smv
 NuSMV /tmp/cline-boundary-analysis/mitigation.smv
+NuSMV /tmp/cline-boundary-analysis/pre-incident-current-policy.smv
 ```
 
-検出器はYAMLライブラリを直接使い，CodeQLの構文抽出を前処理に必要としません．ただしActionの設定値から「Agentが悪意ある指示に従い得る」という可能性を置き，キャッシュの実効同一性や攻撃成功は検証していません．**Clineの事件と設定を確認した後でこの限定規則を実装**したため，未知の事例に対する検出率を示す結果でもありません．BFSでも同じ結果が出るため，**NuSMV固有の必然性，大規模性，汎用自動化はまだ示せていません**．この事例は，実侵害でCodeQL等が指摘しなかった特定の複数workflow経路を，限定モデルで反例として説明できたことを示すものです．
+検出器はYAMLライブラリを直接使い，CodeQLの構文抽出を前処理に必要としません．ただしActionの設定値から「Agentが悪意ある指示に従い得る」という可能性を置き，細工したcacheアーカイブによるpost step改変，キャッシュの実効同一性，攻撃成功は検証していません．**Clineの事件と設定を確認した後でこの限定規則を実装**したため，未知の事例に対する検出率を示す結果でもありません．BFSでも同じ結果が出るため，**NuSMV固有の必然性，大規模性，汎用自動化はまだ示せていません**．この事例は，侵害されたリポジトリに存在した複数workflowの条件付き経路を説明します．実際の攻撃者がこの入口と経路を利用した証拠は得られていません．

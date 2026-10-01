@@ -42,6 +42,35 @@ class AgentCacheBoundaryTests(unittest.TestCase):
             self.assertEqual(row['producers'], [])
             self.assertEqual(row['staticVerdict'], 'no-path-in-supported-model')
 
+    def test_cache_directory_change_does_not_remove_archive_post_step_risk(self):
+        with tempfile.TemporaryDirectory() as directory:
+            temp = Path(directory)
+            shutil.copytree(CASE / 'pre-incident', temp / 'pre-incident')
+            for name in ('npm-nightly.yaml', 'publish-nightly.yml'):
+                workflow = temp / 'pre-incident/.github/workflows' / name
+                workflow.write_text(workflow.read_text()
+                                    .replace('path: node_modules', 'path: docs/static-cache')
+                                    .replace('path: webview-ui/node_modules',
+                                             'path: docs/static-cache'))
+            row = chain.scan(temp, 'pre-incident')
+            self.assertEqual(len(row['producers']), 1)
+            self.assertEqual(len(row['consumers']), 2)
+            self.assertEqual(row['staticVerdict'], 'conditional-path')
+
+    def test_missing_checkout_post_step_is_outside_supported_path(self):
+        with tempfile.TemporaryDirectory() as directory:
+            temp = Path(directory)
+            shutil.copytree(CASE / 'pre-incident', temp / 'pre-incident')
+            for name in ('npm-nightly.yaml', 'publish-nightly.yml'):
+                workflow = temp / 'pre-incident/.github/workflows' / name
+                workflow.write_text(workflow.read_text().replace(
+                    'uses: actions/checkout@v4',
+                    'uses: actions/upload-artifact@v4'))
+            row = chain.scan(temp, 'pre-incident')
+            self.assertEqual(len(row['producers']), 1)
+            self.assertEqual(row['consumers'], [])
+            self.assertEqual(row['staticVerdict'], 'no-path-in-supported-model')
+
     def test_changed_snapshot_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             temp = Path(directory) / 'case'
@@ -50,6 +79,13 @@ class AgentCacheBoundaryTests(unittest.TestCase):
             workflow.write_text(workflow.read_text() + '\n# changed\n')
             with self.assertRaisesRegex(ValueError, 'checksum mismatch'):
                 chain.check_manifest(temp)
+
+    def test_read_only_default_branch_cache_policy_blocks_public_issue_save(self):
+        original = chain.scan(CASE, 'pre-incident')
+        self.assertEqual(original['staticVerdict'], 'conditional-path')
+        self.assertEqual(chain.explore(False)['verdict'], 'no-path-in-supported-model')
+        self.assertIn('phase = 0 : FALSE & agent_executes_issue_instruction',
+                      chain.render(False))
 
 
 if __name__ == '__main__':

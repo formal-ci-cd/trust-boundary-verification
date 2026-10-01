@@ -22,6 +22,7 @@ SECRET = re.compile(r"secrets\.([A-Z][A-Z0-9_]*)")
 CACHE_REF = re.compile(r"^actions/cache@")
 AGENT_REF = re.compile(r"^anthropics/claude-code-action@")
 PUBLISH_COMMAND = re.compile(r'\b(?:npm publish|publish:marketplace|vsce publish|ovsx publish)\b')
+CHECKOUT_REF = re.compile(r'^actions/checkout@')
 
 
 def read_workflow(path):
@@ -86,6 +87,10 @@ def find_consumers(path, root):
         return []
     found = []
     for job_id, job in workflow.get('jobs', {}).items():
+        # The documented Cacheract mechanism targets the checkout post step
+        # on a GitHub-hosted Linux runner after a poisoned archive is restored.
+        if not str(job.get('runs-on', '')).startswith('ubuntu-'):
+            continue
         steps = job.get('steps', [])
         if not isinstance(steps, list):
             continue
@@ -96,17 +101,25 @@ def find_consumers(path, root):
             key, cache_path = str(params.get('key', '')), str(params.get('path', ''))
             if not key or not cache_path:
                 continue
+            checkout = next((earlier for earlier in steps[:index]
+                             if CHECKOUT_REF.match(str(earlier.get('uses', '')))), None)
+            if checkout is None:
+                continue
             publishing_secrets = set()
             for later in steps[index + 1:]:
-                if PUBLISH_COMMAND.search(str(later.get('run', ''))):
+                command = str(later.get('run', ''))
+                if PUBLISH_COMMAND.search(command):
                     publishing_secrets.update(SECRET.findall(json.dumps(later)))
             if not publishing_secrets:
                 continue
             found.append({
                 'workflow': path.relative_to(root).as_posix(), 'job': job_id,
                 'cacheKeyExpression': key, 'cachePath': cache_path,
+                'postStepCandidate': checkout['uses'],
                 'secretsAtPublicationStep': sorted(publishing_secrets),
                 'evidence': [
+                    source(path, root, 'uses: ' + checkout['uses'],
+                           'earlier-checkout-post-step'),
                     source(path, root, 'uses: actions/cache@', 'release-cache-restore'),
                     source(path, root, 'key: ' + key, 'release-cache-key'),
                     source(path, root, 'secrets.' + sorted(publishing_secrets)[0],
@@ -236,6 +249,14 @@ def main():
         row['bfs'] = explore(enabled)
         (args.output / f'{variant}.smv').write_text(render(enabled))
         cases.append(row)
+    current_policy_row = {
+        'workflowSnapshot': 'pre-incident',
+        'policyEffectiveFrom': '2026-06-26',
+        'policySource': 'https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/',
+        'publicIssueDefaultBranchCacheWriteAuthorized': False,
+        'bfs': explore(False),
+    }
+    (args.output / 'pre-incident-current-policy.smv').write_text(render(False))
     report = {
         'schemaVersion': 'agent-cache-boundary-0.1',
         'property': ('A public issue must not influence code in a release job '
@@ -243,6 +264,7 @@ def main():
         'method': 'Pinned YAML snapshots; bounded action-interface semantics; runtime events unknown',
         'historicalCachePolicy': 'February 2026: issues runs on default branch could write its cache scope',
         'cases': cases,
+        'policySensitivity': current_policy_row,
     }
     (args.output / 'analysis.json').write_text(json.dumps(report, indent=2) + '\n')
 

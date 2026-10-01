@@ -13,6 +13,7 @@
     "The February 9 mitigation removed AI triage workflows and publication-workflow cache use."
   ],
   "notEstablishedByRepositoryYaml": [
+    "Whether the real attacker entered through the public issue triage workflow; the discoverer explicitly says this was unclear",
     "Which public issue payload the attacker used",
     "The agent's concrete tool-call sequence in the real run",
     "The actual cache key and contents during exploitation",

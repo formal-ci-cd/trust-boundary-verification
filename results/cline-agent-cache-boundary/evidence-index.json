@@ -1471,8 +1471,18 @@
     },
     {
       "path": "analysis.json",
-      "sha256": "90ee7aa98a0044548340b03a41d4d3dcc59028900c006464aea356809dd18eb6",
-      "sourceSHA256": "90ee7aa98a0044548340b03a41d4d3dcc59028900c006464aea356809dd18eb6"
+      "sha256": "68438bd5d1236c7497e4bc6a656bb0efab269ee0d513424e8bfacaa59ef69dc2",
+      "sourceSHA256": "68438bd5d1236c7497e4bc6a656bb0efab269ee0d513424e8bfacaa59ef69dc2"
+    },
+    {
+      "path": "pre-incident-current-policy.smv",
+      "sha256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05",
+      "sourceSHA256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05"
+    },
+    {
+      "path": "pre-incident-current-policy.nusmv.txt",
+      "sha256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5",
+      "sourceSHA256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5"
     },
     {
       "path": "promptpwnd-rule-2025-12-03.yaml",

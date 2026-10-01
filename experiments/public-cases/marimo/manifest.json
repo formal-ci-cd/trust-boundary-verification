@@ -1,0 +1,464 @@
+{
+  "repository": "https://github.com/marimo-team/marimo",
+  "advisory": "https://securitylab.github.com/advisories/GHSL-2026-226_marimo-team_marimo_repository/",
+  "fix": "https://github.com/marimo-team/marimo/pull/10765",
+  "confirmedExploitation": false,
+  "scope": "All workflow and local action definitions; repository build scripts not executed; remote action dependencies not expanded.",
+  "files": [
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/actions/build-frontend/action.yaml",
+      "snapshot": "vulnerable/.github/actions/build-frontend/action.yaml",
+      "sha256": "0415213417b43ee8ff967e34484eabdacdbded3562c010aa7fc38c58261f29bf"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/actions/install/action.yaml",
+      "snapshot": "vulnerable/.github/actions/install/action.yaml",
+      "sha256": "586b118a014e843c3cdde69420b353e39fe8dc5d8446fdfb006d13ffde1daa0d"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/actions/pr-comment-on-failure/action.yaml",
+      "snapshot": "vulnerable/.github/actions/pr-comment-on-failure/action.yaml",
+      "sha256": "d6d4935df8a99d4fa5702ec0df204ba102bbaccb8d8b702b06d7d76b1e59a713"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/actions/test-python/action.yaml",
+      "snapshot": "vulnerable/.github/actions/test-python/action.yaml",
+      "sha256": "d9d3d98e475477834bd1750434ec0b460ce69be3abef49caa65afaeddc3075db"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/cla.yml",
+      "snapshot": "vulnerable/.github/workflows/cla.yml",
+      "sha256": "78560d2b44c95009a386b4ee0483b9228bdc13d1bfabff05511fa3b7cbb10b17"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/dev_build.yaml",
+      "snapshot": "vulnerable/.github/workflows/dev_build.yaml",
+      "sha256": "935b48c2b6e547bf297738e445cb33933b364bed25d82cfb26f88b6c4f0475b4"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/discord-release.yml",
+      "snapshot": "vulnerable/.github/workflows/discord-release.yml",
+      "sha256": "7d83891df977939ddfbcda0a2120367343967e619b5867e5b4f939161c086eb9"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/docs.yml",
+      "snapshot": "vulnerable/.github/workflows/docs.yml",
+      "sha256": "78f806bb6423a4f14eb4b78a99021074637244cfa55ae3af8d51a3af248830c4"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/enforce-label.yml",
+      "snapshot": "vulnerable/.github/workflows/enforce-label.yml",
+      "sha256": "e4fa4f08253eaee9a7b93d3285ed89dd35ce38a9b02946c7b6387e405ec9ed17"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/labeler.yml",
+      "snapshot": "vulnerable/.github/workflows/labeler.yml",
+      "sha256": "e73772c382b834e7177acf09006fd3da7c982d65dea9ba55857c5dce401ae767"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/link-check.yml",
+      "snapshot": "vulnerable/.github/workflows/link-check.yml",
+      "sha256": "1a23cc0da54e92d4b6b6815244133ea56dd6d2828f41782b113f58b7880478e7"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/marimo-bot.yml",
+      "snapshot": "vulnerable/.github/workflows/marimo-bot.yml",
+      "sha256": "bfb31549df6aa547c299ad95742950e3afed83d9a13418405e8264f8d9a5b8d1"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/notify-readme-owners.yml",
+      "snapshot": "vulnerable/.github/workflows/notify-readme-owners.yml",
+      "sha256": "c71ce445ce44c86a987e856978395f10063b01cad2f430822288091de2e58d34"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/pages.yml",
+      "snapshot": "vulnerable/.github/workflows/pages.yml",
+      "sha256": "f73f3bfd2cd4144f0c5d9e04acb52f089f8db1b6e617f348e11b190c8fcf43af"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/playwright.yml",
+      "snapshot": "vulnerable/.github/workflows/playwright.yml",
+      "sha256": "e28b31d1b644c0f3ab129415398ac42c71d774446dd03e889ac2dc501f59fdb6"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/publish-docker.yml",
+      "snapshot": "vulnerable/.github/workflows/publish-docker.yml",
+      "sha256": "43afa720f444d2b3045b50aa02d46f184bf78a28c8365a3be04786bd02a04acd"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/publish-npm.yml",
+      "snapshot": "vulnerable/.github/workflows/publish-npm.yml",
+      "sha256": "fad8557c12e31a3ae1351e3a980b5a62459dced88efd5c70d2ebce073532ffd5"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/release-dev.yml",
+      "snapshot": "vulnerable/.github/workflows/release-dev.yml",
+      "sha256": "43accf20f26655d8616c97271d4f6c3a361d214fafe9f578eb3cdc60217711a8"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/release-marimo-base.yml",
+      "snapshot": "vulnerable/.github/workflows/release-marimo-base.yml",
+      "sha256": "2a9e6177aeff99c9dfe54435e8d5823f7d80b18670dd532664ffea699c2c32ef"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/release-prod.yml",
+      "snapshot": "vulnerable/.github/workflows/release-prod.yml",
+      "sha256": "6071d9fbf10902b2324d39b1f209aa8997a28179186df39c90d9af1ccf023bb5"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/release-tag.yml",
+      "snapshot": "vulnerable/.github/workflows/release-tag.yml",
+      "sha256": "dfe8aa96e0ded0843b2c648ecb8024ab8f29752ef30309510e2eb96f2df4523b"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/release.yml",
+      "snapshot": "vulnerable/.github/workflows/release.yml",
+      "sha256": "e8dd1b39da5bfe984f9c2fdb3f7c29036862e7049de85518540bec2088ef1e51"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/stale.yml",
+      "snapshot": "vulnerable/.github/workflows/stale.yml",
+      "sha256": "775bbd5b57fb04a060677dbfecdd92dff4247978f627f94ae3bd41603018602f"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/sync-llm-info.yml",
+      "snapshot": "vulnerable/.github/workflows/sync-llm-info.yml",
+      "sha256": "4206649843814e907b0019b82ca5f727229a9d8dd75273d27488b0334bb2414c"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_be.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_be.yaml",
+      "sha256": "c29270e7b3cab5630e60f43e97155661472209a11da3de0155bad4251da2b8ea"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_cli.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_cli.yaml",
+      "sha256": "c0c724047b9fd1857448af86cea3044ac93a02678b4f847c78937b6f05458cc6"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_design_md.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_design_md.yaml",
+      "sha256": "369f3498eb6156665b35dfb68ab3a54aac68d62d267c406e1687acb4e8b22f6d"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_fe.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_fe.yaml",
+      "sha256": "05ce0be9e672690a968dd1d716abf04646f505b0108d3f394094267985ac91f6"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_marimo_lsp.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_marimo_lsp.yaml",
+      "sha256": "93a3ce41abd2727d9a46fc12069a2fb7fd473eaf5b2cc2f6dc61e6975c7137bd"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_no_build.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_no_build.yaml",
+      "sha256": "3eb6cb0a733799f083d8beb6c4bce5e3cdd7c60c29750b66b1e398195f97e989"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_schemas.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_schemas.yaml",
+      "sha256": "d6047a1081fb8f683bd843924f9ddb4a197da7e749719fced221fe5bdea0be73"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": ".github/workflows/test_typos.yaml",
+      "snapshot": "vulnerable/.github/workflows/test_typos.yaml",
+      "sha256": "61a2537e1897cf7ae826cd0b4101aa884592ebd12cc3dde6f01438f2460a011e"
+    },
+    {
+      "variant": "vulnerable",
+      "commit": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+      "upstreamPath": "LICENSE",
+      "snapshot": "vulnerable/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/actions/build-frontend/action.yaml",
+      "snapshot": "removed/.github/actions/build-frontend/action.yaml",
+      "sha256": "0415213417b43ee8ff967e34484eabdacdbded3562c010aa7fc38c58261f29bf"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/actions/install/action.yaml",
+      "snapshot": "removed/.github/actions/install/action.yaml",
+      "sha256": "586b118a014e843c3cdde69420b353e39fe8dc5d8446fdfb006d13ffde1daa0d"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/actions/pr-comment-on-failure/action.yaml",
+      "snapshot": "removed/.github/actions/pr-comment-on-failure/action.yaml",
+      "sha256": "d6d4935df8a99d4fa5702ec0df204ba102bbaccb8d8b702b06d7d76b1e59a713"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/actions/test-python/action.yaml",
+      "snapshot": "removed/.github/actions/test-python/action.yaml",
+      "sha256": "d9d3d98e475477834bd1750434ec0b460ce69be3abef49caa65afaeddc3075db"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/cla.yml",
+      "snapshot": "removed/.github/workflows/cla.yml",
+      "sha256": "78560d2b44c95009a386b4ee0483b9228bdc13d1bfabff05511fa3b7cbb10b17"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/dev_build.yaml",
+      "snapshot": "removed/.github/workflows/dev_build.yaml",
+      "sha256": "935b48c2b6e547bf297738e445cb33933b364bed25d82cfb26f88b6c4f0475b4"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/discord-release.yml",
+      "snapshot": "removed/.github/workflows/discord-release.yml",
+      "sha256": "7d83891df977939ddfbcda0a2120367343967e619b5867e5b4f939161c086eb9"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/docs.yml",
+      "snapshot": "removed/.github/workflows/docs.yml",
+      "sha256": "78f806bb6423a4f14eb4b78a99021074637244cfa55ae3af8d51a3af248830c4"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/enforce-label.yml",
+      "snapshot": "removed/.github/workflows/enforce-label.yml",
+      "sha256": "e4fa4f08253eaee9a7b93d3285ed89dd35ce38a9b02946c7b6387e405ec9ed17"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/labeler.yml",
+      "snapshot": "removed/.github/workflows/labeler.yml",
+      "sha256": "e73772c382b834e7177acf09006fd3da7c982d65dea9ba55857c5dce401ae767"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/link-check.yml",
+      "snapshot": "removed/.github/workflows/link-check.yml",
+      "sha256": "1a23cc0da54e92d4b6b6815244133ea56dd6d2828f41782b113f58b7880478e7"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/notify-readme-owners.yml",
+      "snapshot": "removed/.github/workflows/notify-readme-owners.yml",
+      "sha256": "c71ce445ce44c86a987e856978395f10063b01cad2f430822288091de2e58d34"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/pages.yml",
+      "snapshot": "removed/.github/workflows/pages.yml",
+      "sha256": "f73f3bfd2cd4144f0c5d9e04acb52f089f8db1b6e617f348e11b190c8fcf43af"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/playwright.yml",
+      "snapshot": "removed/.github/workflows/playwright.yml",
+      "sha256": "e28b31d1b644c0f3ab129415398ac42c71d774446dd03e889ac2dc501f59fdb6"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/publish-docker.yml",
+      "snapshot": "removed/.github/workflows/publish-docker.yml",
+      "sha256": "43afa720f444d2b3045b50aa02d46f184bf78a28c8365a3be04786bd02a04acd"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/publish-npm.yml",
+      "snapshot": "removed/.github/workflows/publish-npm.yml",
+      "sha256": "fad8557c12e31a3ae1351e3a980b5a62459dced88efd5c70d2ebce073532ffd5"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/release-dev.yml",
+      "snapshot": "removed/.github/workflows/release-dev.yml",
+      "sha256": "43accf20f26655d8616c97271d4f6c3a361d214fafe9f578eb3cdc60217711a8"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/release-marimo-base.yml",
+      "snapshot": "removed/.github/workflows/release-marimo-base.yml",
+      "sha256": "2a9e6177aeff99c9dfe54435e8d5823f7d80b18670dd532664ffea699c2c32ef"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/release-prod.yml",
+      "snapshot": "removed/.github/workflows/release-prod.yml",
+      "sha256": "6071d9fbf10902b2324d39b1f209aa8997a28179186df39c90d9af1ccf023bb5"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/release-tag.yml",
+      "snapshot": "removed/.github/workflows/release-tag.yml",
+      "sha256": "dfe8aa96e0ded0843b2c648ecb8024ab8f29752ef30309510e2eb96f2df4523b"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/release.yml",
+      "snapshot": "removed/.github/workflows/release.yml",
+      "sha256": "e8dd1b39da5bfe984f9c2fdb3f7c29036862e7049de85518540bec2088ef1e51"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/stale.yml",
+      "snapshot": "removed/.github/workflows/stale.yml",
+      "sha256": "775bbd5b57fb04a060677dbfecdd92dff4247978f627f94ae3bd41603018602f"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/sync-llm-info.yml",
+      "snapshot": "removed/.github/workflows/sync-llm-info.yml",
+      "sha256": "4206649843814e907b0019b82ca5f727229a9d8dd75273d27488b0334bb2414c"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_be.yaml",
+      "snapshot": "removed/.github/workflows/test_be.yaml",
+      "sha256": "c29270e7b3cab5630e60f43e97155661472209a11da3de0155bad4251da2b8ea"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_cli.yaml",
+      "snapshot": "removed/.github/workflows/test_cli.yaml",
+      "sha256": "c0c724047b9fd1857448af86cea3044ac93a02678b4f847c78937b6f05458cc6"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_design_md.yaml",
+      "snapshot": "removed/.github/workflows/test_design_md.yaml",
+      "sha256": "369f3498eb6156665b35dfb68ab3a54aac68d62d267c406e1687acb4e8b22f6d"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_fe.yaml",
+      "snapshot": "removed/.github/workflows/test_fe.yaml",
+      "sha256": "05ce0be9e672690a968dd1d716abf04646f505b0108d3f394094267985ac91f6"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_marimo_lsp.yaml",
+      "snapshot": "removed/.github/workflows/test_marimo_lsp.yaml",
+      "sha256": "93a3ce41abd2727d9a46fc12069a2fb7fd473eaf5b2cc2f6dc61e6975c7137bd"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_no_build.yaml",
+      "snapshot": "removed/.github/workflows/test_no_build.yaml",
+      "sha256": "3eb6cb0a733799f083d8beb6c4bce5e3cdd7c60c29750b66b1e398195f97e989"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_schemas.yaml",
+      "snapshot": "removed/.github/workflows/test_schemas.yaml",
+      "sha256": "d6047a1081fb8f683bd843924f9ddb4a197da7e749719fced221fe5bdea0be73"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": ".github/workflows/test_typos.yaml",
+      "snapshot": "removed/.github/workflows/test_typos.yaml",
+      "sha256": "61a2537e1897cf7ae826cd0b4101aa884592ebd12cc3dde6f01438f2460a011e"
+    },
+    {
+      "variant": "removed",
+      "commit": "296e39a64a1aa8bf7ba8674fa890caa36ccf61a4",
+      "upstreamPath": "LICENSE",
+      "snapshot": "removed/LICENSE",
+      "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+    }
+  ]
+}

@@ -54,6 +54,25 @@ docker run --rm --network none -v "$PWD:/repo" -w /repo trust-boundary-analysis 
 
 局所再現はDocker内に限定し，元consumerのrun処理を管理された入力とgitスタブで実行します．並行ファイルモデルの設定・性質は [順序実験](../experiments/temporal/README.md) にあります．
 
+## marimoの承認時刻競合を再実行する
+
+公開原本と一箇所だけ変更した対照版の解析・無害な再現は，ネットワーク無効のDockerで行います．`/tmp/marimo-evaluation`には生成SMV，原本run本文を使ったスタブ再現，独立BFSの結果ができます．`/tmp/marimo-control`にはCodeQL等へ入力する同一ファイル群の対照版ができます．いずれもコンテナごと破棄して構いません．必要な場合は別の空ディレクトリをmountして保存してください．
+
+```sh
+docker run --rm --network none -v "$PWD:/repo:ro" -w /repo trust-boundary-analysis \
+  python3 tools/evaluate_approval_race.py experiments/public-cases/marimo \
+  --output /tmp/marimo-evaluation --replay
+```
+
+保存済みの[全警告・反例](../results/marimo-approval-race/evidence-index.json)は，CodeQL CLI 2.27.1，`codeql/actions-queries@0.6.36`，zizmor 1.30.1，actionlint 1.7.12，NuSMV 2.7.0から作成しました．再実行用の引数と評価上の制約は[事例研究](marimo-approval-race-case-study.md)を参照してください．CodeQL・zizmor・actionlintを一括比較する場合は，公式配布の各CLIと生成した対照版を `tools/approval_race_baselines.py` に指定します．`tools/collect_approval_case.py` は全SARIFを無損失圧縮し，CodeQL databaseと実行ファイルを除いた共有用結果を作ります．
+
+NuSMVの検証は，生成した `.smv` を保存したホストで次のように行います．
+
+```sh
+python3 tools/verify_approval_models.py /path/to/marimo-evaluation \
+  --nusmv /path/to/NuSMV
+```
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

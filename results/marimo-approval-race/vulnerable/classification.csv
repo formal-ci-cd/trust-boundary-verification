@@ -1,0 +1,3 @@
+"checkout","col1","classification","dateCheck"
+"Uses Step","${{ steps.pr.outputs.head_sha }}","sha","protects-toctou"
+"Uses Step","${{ steps.pr.outputs.head_sha }}","mutable-ref","protects-toctou"

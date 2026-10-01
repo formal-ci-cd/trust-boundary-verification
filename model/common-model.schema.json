@@ -108,7 +108,10 @@
         "condition": {"type": "string"},
         "env": {"type": "object", "additionalProperties": {"type": "string"}},
         "needs": {"type": ["array", "string"]},
-        "permissionsDeclared": {"type": "boolean"}
+        "permissionsDeclared": {"type": "boolean"},
+        "uses": {"type": "string"},
+        "arguments": {"type": "object", "additionalProperties": {"type": "string"}},
+        "environment": {"type": ["string", "object", "null"]}
       },
       "additionalProperties": false
     },
@@ -139,7 +142,8 @@
         "condition": {"type": "string"},
         "env": {"type": "object", "additionalProperties": {"type": "string"}},
         "line": {"type": "integer", "minimum": 1},
-        "shell": {"type": "string"}
+        "shell": {"type": "string"},
+        "workingDirectory": {"type": "string"}
       },
       "additionalProperties": false
     },

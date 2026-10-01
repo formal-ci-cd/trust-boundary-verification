@@ -1,0 +1,434 @@
+{
+  "case": "https://github.com/marimo-team/marimo",
+  "confirmedExploitation": false,
+  "property": "Unapproved PR revision after an authorizing comment must not supply content to a publish step configured with id-token: write and no environment.",
+  "original": "b4181abaf6bd896b6b0dac5490c9cf08269b590c",
+  "intervention": "Strict -gt changed to -ge in one guard; upstream instead removed marimo-bot.yml.",
+  "controlScriptSHA256": "707c986c28797e6b4cc9cbbbc28b65266e6279486c6b59dc95eb2fc9947c3d69",
+  "removedSupportedPaths": [],
+  "variants": [
+    {
+      "variant": "original",
+      "automatic": {
+        "id": "marimo-bot-create-test-release-pr",
+        "rejectionOperator": "-gt",
+        "sourceScript": "pr=\"$(gh api /repos/${GH_REPO}/pulls/${PR_NUMBER})\"\nhead_sha=\"$(echo \"$pr\" | jq -r .head.sha)\"\npushed_at=\"$(echo \"$pr\" | jq -r .head.repo.pushed_at)\"\n\n# NB mitigate potential race condition.\nif [[ $(date -d \"$pushed_at\" +%s) -gt $(date -d \"$COMMENT_AT\" +%s) ]]; then\n    echo \"Updating is not allowed because the PR was pushed to (at $pushed_at) after the triggering comment was issued (at $COMMENT_AT)\"\n    exit 1\nfi\n\necho \"head_sha=$head_sha\" >> $GITHUB_OUTPUT\n",
+        "timestampVariables": [
+          "pushed_at",
+          "COMMENT_AT"
+        ],
+        "evidence": [
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 0,
+            "line": 48,
+            "role": "PR-fetch-and-timestamp-guard"
+          },
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 1,
+            "line": 68,
+            "role": "checkout-output-SHA"
+          },
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 3,
+            "line": 88,
+            "role": "PR-local-action"
+          }
+        ],
+        "sinks": [
+          {
+            "artifact": "wheel-test-release",
+            "configuredOIDC": true,
+            "environment": "testpypi",
+            "callerJob": "publish-test-release",
+            "consumerJob": "publish-test-release",
+            "evidence": [
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "create-test-release",
+                "step": 9,
+                "line": 124,
+                "role": "upload"
+              },
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "publish-test-release",
+                "step": 0,
+                "line": 154,
+                "role": "download"
+              },
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "publish-test-release",
+                "step": 1,
+                "line": 160,
+                "role": "publish"
+              }
+            ]
+          },
+          {
+            "artifact": "frontend-test-branch",
+            "configuredOIDC": true,
+            "environment": null,
+            "callerJob": "publish_wasm_test",
+            "consumerJob": "publish",
+            "evidence": [
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "create-test-release",
+                "step": 11,
+                "line": 137,
+                "role": "upload"
+              },
+              {
+                "file": ".github/workflows/publish-npm.yml",
+                "job": "publish",
+                "step": 1,
+                "line": 34,
+                "role": "download"
+              },
+              {
+                "file": ".github/workflows/publish-npm.yml",
+                "job": "publish",
+                "step": 2,
+                "line": 40,
+                "role": "publish"
+              }
+            ]
+          }
+        ],
+        "assumptions": [
+          "An authorized maintainer comment exists; its authorization concerns the prior PR commit.",
+          "An external PR author can update their PR after that comment within the same API timestamp second.",
+          "API timestamps have one-second resolution; fetch atomically returns head SHA and repository pushed_at.",
+          "Supported build, upload and download steps succeed; downloaded bytes belong to this run.",
+          "The PR-controlled local action can influence uploaded output; this is a capability model, not shell feasibility proof.",
+          "OIDC permission is configured; remote trust policies, environment approvals and publication success are unknown."
+        ]
+      },
+      "bfs": {
+        "verdict": "unsafe",
+        "reachableStates": 49,
+        "counterexample": [
+          {
+            "action": "attacker:update-PR",
+            "state": [
+              0,
+              0,
+              0,
+              true,
+              true,
+              false,
+              -1,
+              false,
+              false
+            ]
+          },
+          {
+            "action": "fetch-current-PR",
+            "state": [
+              1,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              false,
+              false
+            ]
+          },
+          {
+            "action": "timestamp-guard",
+            "state": [
+              2,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              false,
+              false
+            ]
+          },
+          {
+            "action": "checkout-and-build",
+            "state": [
+              3,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              false,
+              false
+            ]
+          },
+          {
+            "action": "upload",
+            "state": [
+              4,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "download",
+            "state": [
+              5,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "privileged-publish-use",
+            "state": [
+              6,
+              0,
+              0,
+              true,
+              true,
+              true,
+              0,
+              true,
+              true
+            ]
+          }
+        ]
+      },
+      "localReplay": [
+        {
+          "case": "old-commit",
+          "accepted": true,
+          "selectedSHA": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "publisherStubConsumed": "APPROVED_HARMLESS_MARKER",
+          "sourceScriptSHA256": "0b142f14e5e93758c4ad33af0d936ed70f60745218fb801f0ad2273737d78df5",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        },
+        {
+          "case": "updated-same-second",
+          "accepted": true,
+          "selectedSHA": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "publisherStubConsumed": "UNAPPROVED_HARMLESS_MARKER",
+          "sourceScriptSHA256": "0b142f14e5e93758c4ad33af0d936ed70f60745218fb801f0ad2273737d78df5",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        },
+        {
+          "case": "updated-next-second",
+          "accepted": false,
+          "selectedSHA": null,
+          "publisherStubConsumed": null,
+          "sourceScriptSHA256": "0b142f14e5e93758c4ad33af0d936ed70f60745218fb801f0ad2273737d78df5",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        }
+      ],
+      "nusmv": {
+        "verdict": "unsafe",
+        "modelSHA256": "5128d60efe54977362ec2a878d4333e111c4a7e7e9b71912f4e35e0508d37cce",
+        "version": "*** This is NuSMV 2.7.0 (compiled on Thu Oct 24 15:29:16 2024)"
+      }
+    },
+    {
+      "variant": "reject-equality-control",
+      "automatic": {
+        "id": "marimo-bot-create-test-release-pr",
+        "rejectionOperator": "-ge",
+        "sourceScript": "pr=\"$(gh api /repos/${GH_REPO}/pulls/${PR_NUMBER})\"\nhead_sha=\"$(echo \"$pr\" | jq -r .head.sha)\"\npushed_at=\"$(echo \"$pr\" | jq -r .head.repo.pushed_at)\"\n\n# NB mitigate potential race condition.\nif [[ $(date -d \"$pushed_at\" +%s) -ge $(date -d \"$COMMENT_AT\" +%s) ]]; then\n    echo \"Updating is not allowed because the PR was pushed to (at $pushed_at) after the triggering comment was issued (at $COMMENT_AT)\"\n    exit 1\nfi\n\necho \"head_sha=$head_sha\" >> $GITHUB_OUTPUT\n",
+        "timestampVariables": [
+          "pushed_at",
+          "COMMENT_AT"
+        ],
+        "evidence": [
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 0,
+            "line": 48,
+            "role": "PR-fetch-and-timestamp-guard"
+          },
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 1,
+            "line": 68,
+            "role": "checkout-output-SHA"
+          },
+          {
+            "file": ".github/workflows/marimo-bot.yml",
+            "job": "create-test-release",
+            "step": 3,
+            "line": 88,
+            "role": "PR-local-action"
+          }
+        ],
+        "sinks": [
+          {
+            "artifact": "wheel-test-release",
+            "configuredOIDC": true,
+            "environment": "testpypi",
+            "callerJob": "publish-test-release",
+            "consumerJob": "publish-test-release",
+            "evidence": [
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "create-test-release",
+                "step": 9,
+                "line": 124,
+                "role": "upload"
+              },
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "publish-test-release",
+                "step": 0,
+                "line": 154,
+                "role": "download"
+              },
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "publish-test-release",
+                "step": 1,
+                "line": 160,
+                "role": "publish"
+              }
+            ]
+          },
+          {
+            "artifact": "frontend-test-branch",
+            "configuredOIDC": true,
+            "environment": null,
+            "callerJob": "publish_wasm_test",
+            "consumerJob": "publish",
+            "evidence": [
+              {
+                "file": ".github/workflows/marimo-bot.yml",
+                "job": "create-test-release",
+                "step": 11,
+                "line": 137,
+                "role": "upload"
+              },
+              {
+                "file": ".github/workflows/publish-npm.yml",
+                "job": "publish",
+                "step": 1,
+                "line": 34,
+                "role": "download"
+              },
+              {
+                "file": ".github/workflows/publish-npm.yml",
+                "job": "publish",
+                "step": 2,
+                "line": 40,
+                "role": "publish"
+              }
+            ]
+          }
+        ],
+        "assumptions": [
+          "An authorized maintainer comment exists; its authorization concerns the prior PR commit.",
+          "An external PR author can update their PR after that comment within the same API timestamp second.",
+          "API timestamps have one-second resolution; fetch atomically returns head SHA and repository pushed_at.",
+          "Supported build, upload and download steps succeed; downloaded bytes belong to this run.",
+          "The PR-controlled local action can influence uploaded output; this is a capability model, not shell feasibility proof.",
+          "OIDC permission is configured; remote trust policies, environment approvals and publication success are unknown."
+        ]
+      },
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 41,
+        "counterexample": []
+      },
+      "localReplay": [
+        {
+          "case": "old-commit",
+          "accepted": true,
+          "selectedSHA": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "publisherStubConsumed": "APPROVED_HARMLESS_MARKER",
+          "sourceScriptSHA256": "707c986c28797e6b4cc9cbbbc28b65266e6279486c6b59dc95eb2fc9947c3d69",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        },
+        {
+          "case": "updated-same-second",
+          "accepted": false,
+          "selectedSHA": null,
+          "publisherStubConsumed": null,
+          "sourceScriptSHA256": "707c986c28797e6b4cc9cbbbc28b65266e6279486c6b59dc95eb2fc9947c3d69",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        },
+        {
+          "case": "updated-next-second",
+          "accepted": false,
+          "selectedSHA": null,
+          "publisherStubConsumed": null,
+          "sourceScriptSHA256": "707c986c28797e6b4cc9cbbbc28b65266e6279486c6b59dc95eb2fc9947c3d69",
+          "originalStage": "Get PR Info run block",
+          "substitutedStages": [
+            "GitHub API",
+            "jq field reader",
+            "checkout/build",
+            "artifact transfer",
+            "publish"
+          ]
+        }
+      ],
+      "nusmv": {
+        "verdict": "safe",
+        "modelSHA256": "9d45145d10f5db7fb727dc401ccda8d15c44731851a83380069932322ad10408",
+        "version": "*** This is NuSMV 2.7.0 (compiled on Thu Oct 24 15:29:16 2024)"
+      }
+    }
+  ]
+}

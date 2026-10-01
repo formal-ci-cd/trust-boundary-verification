@@ -38,3 +38,12 @@ jobs:
             -v "$PWD:/repo:ro" -w /repo research-validation \
             python3 tools/replay_attest_case.py experiments/public-cases/actions-attest \
             --output /tmp/local-replay.json
+
+      # 公開済みのmarimo YAMLを入力として読み，GitHub APIと公開処理はスタブ化する．
+      - name: Check the marimo approval-race counterexample
+        run: |
+          docker run --rm --network none \
+            -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD:/repo:ro" -w /repo research-validation \
+            python3 tools/evaluate_approval_race.py experiments/public-cases/marimo \
+            --output /tmp/marimo-evaluation --replay

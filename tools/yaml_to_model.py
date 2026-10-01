@@ -161,6 +161,9 @@ def load_workflow(path, root):
             env={k: text(v) for k, v in original.get("env", {}).items()},
             needs=original.get("needs", []),
             permissionsDeclared="permissions" in original,
+            uses=text(original.get("uses", "")),
+            arguments={k: text(v) for k, v in original.get("with", {}).items()},
+            environment=original.get("environment", None),
         )
         for step in job["steps"]:
             raw = original["steps"][step["index"]]
@@ -170,6 +173,7 @@ def load_workflow(path, root):
                 condition=text(raw.get("if", "")),
                 env={k: text(v) for k, v in raw.get("env", {}).items()},
                 line=step_node.start_mark.line + 1,
+                workingDirectory=text(raw.get("working-directory", original.get("defaults", {}).get("run", {}).get("working-directory", "."))),
             )
             if step["type"] == "run":
                 labels = job["runnerLabels"]

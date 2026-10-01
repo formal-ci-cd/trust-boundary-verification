@@ -55,6 +55,7 @@ def main():
     p.add_argument("--output", type=Path, required=True)
     p.add_argument("--threads", type=int, default=2)
     p.add_argument("--ram", type=int, default=6000)
+    p.add_argument("--case", help="Evaluate only this public-case directory")
     args = p.parse_args()
     root = args.root.resolve()
     output = args.output.resolve()
@@ -70,6 +71,8 @@ def main():
     subprocess.run([cli, "pack", "download", QUERY_PACK], check=True)
     summary = {"codeql": version, "queryPack": QUERY_PACK, "cases": []}
     for case in sorted((root / "experiments/public-cases").iterdir()):
+        if args.case and case.name != args.case:
+            continue
         if not (case / "manifest.json").exists():
             continue
         manifest = verify_manifest(case)

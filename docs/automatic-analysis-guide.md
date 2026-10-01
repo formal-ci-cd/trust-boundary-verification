@@ -58,4 +58,4 @@ docker run --rm --network none -v "$PWD:/repo" -w /repo trust-boundary-analysis 
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．
 
-標準PythonベースのDocker buildはDocker Hubのmetadata取得がtimeoutしたため，本検証では `--build-arg ANALYSIS_BASE=ubuntu-dev:latest` と既存の隔離用イメージでbuildしました．ベースの識別子は `sha256:41b49010e550155658f6f3c45cd6b10e1a555b6fa9892b28f3b8b7c5819ce397`，Pythonは3.12.3です．publicな標準ベースでのbuild成功は，本実行では確認していません．依存関係の固定と評価CLIは，構築したイメージで確認済みです．
+標準PythonベースのDocker buildはDocker Hubのmetadata取得がtimeoutしたため，本検証では `--build-arg ANALYSIS_BASE=ubuntu-dev:latest` と既存の隔離用イメージでbuildしました．ベースの識別子は `sha256:41b49010e550155658f6f3c45cd6b10e1a555b6fa9892b28f3b8b7c5819ce397`，Pythonは3.12.3です．その後，[GitHub CI](https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/36887435413)では標準のPython 3.12.11ベースでbuild，51件のテスト，無害な局所再現が成功しました．同CIで解決されたベースdigestは `sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7` です．依存関係の固定と一括評価CLIはローカルの解析イメージでも確認済みです．

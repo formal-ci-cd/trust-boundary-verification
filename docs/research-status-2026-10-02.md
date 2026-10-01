@@ -58,6 +58,6 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 
 ## 確認した範囲と次の研究課題
 
-51件のunit test，JSON Schema・根拠の検査，attest両版のCodeQL/YAML構造と全文run一致，9条件のNuSMV/BFS一致，7条件の固定事実モデル/baseline一致，原本checksum，局所再現を確認しました．一括公開事例評価CLIも4版に適用しました．CIにはPython回帰テストと無害な局所再現を追加しました．NuSMV自体の再実行は，今回のローカル検証で行っています．
+51件のunit test，JSON Schema・根拠の検査，attest両版のCodeQL/YAML構造と全文run一致，9条件のNuSMV/BFS一致，7条件の固定事実モデル/baseline一致，原本checksum，局所再現を確認しました．一括公開事例評価CLIも4版に適用しました．[GitHub CI](https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/36887435413)でも標準Pythonコンテナのbuild，51件のテスト，無害な局所再現が成功しました．CodeQL，zizmor，actionlintのPRチェックも成功しています．NuSMV自体の再実行は，今回のローカル検証で行っています．
 
 次の研究課題は，並行遷移を実workflowと実行観測から生成すること，cacheや独自Actionの意味を広げること，実行観測を自動取得してunknownを減らすこと，そして提案側が説明できて既存検査側が見逃す事例を同一入力条件で見つけることです．今回の実装はその比較を再実行できる基礎であり，修士研究全体の完成ではありません．

@@ -87,6 +87,22 @@ python3 tools/verify_ultralytics_models.py /path/to/ultralytics-cache-chain \
 
 `tools/materialize_ultralytics_combined.py`は，本体workflowと外部Actionの原本からCodeQL・zizmor用の入力を再構成します．その合成先は解析専用であり，実際のworkflowを実行しません．
 
+## TanStack実侵害のcache境界を再実行する
+
+[TanStack事例研究](tanstack-incident-cache-boundary.md)では，原本workflow7件と別repositoryのSetup Actionを結び，事件前と対策版を比較しています．モデル入力はYAMLだけで，事後報告から転記した保存・復元の観測値は `incident-observation.json` に別保存しています．
+
+```sh
+mkdir -p /tmp/tanstack-analysis
+docker run --rm --network none -v "$PWD:/repo:ro" \
+  -v /tmp/tanstack-analysis:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/tanstack_cache_chain.py experiments/public-cases/tanstack \
+  --output /analysis
+python3 tools/verify_tanstack_models.py /tmp/tanstack-analysis \
+  --nusmv /path/to/NuSMV
+```
+
+`tools/materialize_tanstack_combined.py experiments/public-cases/tanstack --variant pre-incident --output /tmp/tanstack-codeql-input` でCodeQL・zizmor用の合成入力を作ります．対策版は `--variant mitigation` と別の空の出力先を指定します．同じCodeQL CLI 2.27.1 / `actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regularで得た全警告とchecksumは `results/tanstack-cache-chain/evidence-index.json` に保存しました．既存の `evaluate_public_cases.py` はworkflow単体を入力にするため，この二repository事例を一括評価には含めません．
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

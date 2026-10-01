@@ -1,0 +1,247 @@
+{
+  "schemaVersion": "cross-workflow-cache-chain-0.1",
+  "property": "Fork PR code must not influence code executed in an id-token: write release job through the default-branch cache.",
+  "method": "YAML-only static path; runtime incident observations are separate",
+  "historicalPolicy": "May 2026: pull_request_target could write the base default-branch cache; pull_request fork caches were scoped to refs/pull/.../merge",
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "producer": {
+        "workflow": "pre-incident/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request_target"
+      },
+      "consumer": {
+        "workflow": "pre-incident/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "compositeActionReference": "TanStack/config/.github/setup@main",
+      "cache": {
+        "keyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "pathExpression": "${{ env.STORE_PATH }}",
+        "sameExpressionAtBothCallSitesInPinnedSnapshot": true,
+        "sameDefaultBranchScopePossibleForFork": true,
+        "effectiveKeyAndObject": "unknown from YAML"
+      },
+      "staticVerdict": "potential-cross-workflow-cache-path",
+      "unknownRuntimeFacts": {
+        "cacheSaveSucceeded": "unknown from YAML",
+        "effectiveKeysEqual": "unknown from YAML",
+        "releaseRestoredPoisonedEntry": "unknown from YAML",
+        "poisonedCodeExecuted": "unknown from YAML"
+      },
+      "evidence": [
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "verdict": "possible",
+        "reachableStates": 96,
+        "conditionalCounterexample": [
+          {
+            "step": "fork-pr-code-executes",
+            "state": [
+              1,
+              true,
+              true,
+              true,
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "step": "cache-save",
+            "state": [
+              2,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "step": "release-cache-restore",
+            "state": [
+              3,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "step": "release-code-executes",
+            "state": [
+              4,
+              true,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "step": "OIDC-authority-reached",
+            "state": [
+              5,
+              true,
+              true,
+              true,
+              true,
+              true,
+              true
+            ]
+          }
+        ]
+      },
+      "nusmv": {
+        "verdict": "possible",
+        "modelSHA256": "bf27aee30dc223a3953d881a553021d1ede431539c51ee66fd6b2bc659992719"
+      }
+    },
+    {
+      "variant": "mitigation",
+      "producer": {
+        "workflow": "mitigation/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request"
+      },
+      "consumer": {
+        "workflow": "mitigation/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "compositeActionReference": "TanStack/config/.github/setup@main",
+      "cache": {
+        "keyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "pathExpression": "${{ env.STORE_PATH }}",
+        "sameExpressionAtBothCallSitesInPinnedSnapshot": true,
+        "sameDefaultBranchScopePossibleForFork": false,
+        "effectiveKeyAndObject": "unknown from YAML"
+      },
+      "staticVerdict": "fork-cache-isolated-from-default-branch",
+      "unknownRuntimeFacts": {
+        "cacheSaveSucceeded": "unknown from YAML",
+        "effectiveKeysEqual": "unknown from YAML",
+        "releaseRestoredPoisonedEntry": "unknown from YAML",
+        "poisonedCodeExecuted": "unknown from YAML"
+      },
+      "evidence": [
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 96,
+        "conditionalCounterexample": []
+      },
+      "nusmv": {
+        "verdict": "no-path-in-supported-model",
+        "modelSHA256": "b91eea0f2b49af37ff5073938ee37ffdf2573f91a6cf86b83f2b3ec17fbf9f15"
+      }
+    }
+  ]
+}

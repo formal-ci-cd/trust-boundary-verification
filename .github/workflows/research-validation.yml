@@ -56,3 +56,12 @@ jobs:
             -v "$PWD:/repo:ro" -w /repo research-validation \
             python3 tools/ultralytics_cache_chain.py experiments/public-cases/ultralytics \
             --output /tmp/ultralytics-cache-chain
+
+      # TanStackの実事件で，事件前と対策版のfork→main cache経路を比較する．
+      - name: Check the TanStack incident cache-boundary model
+        run: |
+          docker run --rm --network none \
+            -e PYTHONDONTWRITEBYTECODE=1 \
+            -v "$PWD:/repo:ro" -w /repo research-validation \
+            python3 tools/tanstack_cache_chain.py experiments/public-cases/tanstack \
+            --output /tmp/tanstack-cache-chain

@@ -78,6 +78,13 @@ def main():
         if not (case / "manifest.json").exists():
             continue
         manifest = verify_manifest(case)
+        if manifest.get("separateCombinedInputEvaluation"):
+            if args.case == case.name:
+                raise ValueError(
+                    f"{case.name} requires external Action materialization; "
+                    "see its case study and materialize_tanstack_combined.py"
+                )
+            continue
         for variant in sorted({f["variant"] for f in manifest["files"]}):
             source = case / variant
             dest = output / (case.name + "-" + variant)

@@ -103,6 +103,22 @@ python3 tools/verify_tanstack_models.py /tmp/tanstack-analysis \
 
 `tools/materialize_tanstack_combined.py experiments/public-cases/tanstack --variant pre-incident --output /tmp/tanstack-codeql-input` でCodeQL・zizmor用の合成入力を作ります．対策版は `--variant mitigation` と別の空の出力先を指定します．同じCodeQL CLI 2.27.1 / `actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regularで得た全警告とchecksumは `results/tanstack-cache-chain/evidence-index.json` に保存しました．既存の `evaluate_public_cases.py` はworkflow単体を入力にするため，この二repository事例を一括評価には含めません．
 
+## Cline実侵害のAIトリアージ・cache境界を再実行する
+
+[Cline事例研究](cline-incident-agent-cache-boundary.md)では，事件前の全15 workflowと公式対策後の全12 workflowを保存しています．限定解析はmanifestのchecksumを確認し，workflowを実行せず，2版のJSON・SMVを生成します．事件後の観測は `incident-observation.json` に分離しています．
+
+```sh
+mkdir -p /tmp/cline-boundary-analysis
+docker run --rm --network none -v "$PWD:/repo:ro" \
+  -v /tmp/cline-boundary-analysis:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/agent_cache_boundary.py experiments/public-cases/cline \
+  --output /analysis
+NuSMV /tmp/cline-boundary-analysis/pre-incident.smv
+NuSMV /tmp/cline-boundary-analysis/mitigation.smv
+```
+
+CodeQL CLI 2.27.1，`actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regular，actionlint 1.7.12の**全警告**とNuSMV出力は `results/cline-agent-cache-boundary/evidence-index.json` から追跡できます．既存ツールには各版の全workflowを入力し，提案側には同じworkflow原本を与えています．事件前から公開されていたAikidoのPromptPwndルールもOpengrep 1.30.0で実行し，事件前3件・対策後0件でした．入口の検出は既存手法でも可能です．
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

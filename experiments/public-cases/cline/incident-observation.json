@@ -1,0 +1,21 @@
+{
+  "role": "external validation only; never an input to the detector",
+  "sources": [
+    "https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm",
+    "https://adnanthekhan.com/posts/clinejection/",
+    "https://github.com/cline/cline/pull/9211"
+  ],
+  "reportedFacts": [
+    "The public issue triage workflow let non-write users invoke a Claude action with Bash access on the default branch.",
+    "The triage run shared the default-branch cache scope with nightly publication workflows that restored node_modules.",
+    "Cline's postmortem reports that an attacker obtained a still-active npm publishing token and published cline@2.3.0 without authorization on February 17, 2026.",
+    "The unauthorized package added a postinstall command to install OpenClaw; the maintainers report that the CLI binary was otherwise unchanged and no malicious code was delivered.",
+    "The February 9 mitigation removed AI triage workflows and publication-workflow cache use."
+  ],
+  "notEstablishedByRepositoryYaml": [
+    "Which public issue payload the attacker used",
+    "The agent's concrete tool-call sequence in the real run",
+    "The actual cache key and contents during exploitation",
+    "A reproducible exploit on current GitHub Actions cache policy"
+  ]
+}

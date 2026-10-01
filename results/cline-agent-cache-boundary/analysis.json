@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "agent-cache-boundary-0.1",
+  "property": "A public issue must not influence code in a release job that later receives publication credentials through a shared cache.",
+  "method": "Pinned YAML snapshots; bounded action-interface semantics; runtime events unknown",
+  "historicalCachePolicy": "February 2026: issues runs on default branch could write its cache scope",
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "workflowCount": 15,
+      "producers": [
+        {
+          "workflow": "pre-incident/.github/workflows/claude-issue-triage.yml",
+          "job": "claude-issue-triage",
+          "event": "issues.opened",
+          "action": "anthropics/claude-code-action@v1",
+          "evidence": [
+            {
+              "file": "pre-incident/.github/workflows/claude-issue-triage.yml",
+              "line": 5,
+              "role": "public-issue-event"
+            },
+            {
+              "file": "pre-incident/.github/workflows/claude-issue-triage.yml",
+              "line": 48,
+              "role": "public-agent-access"
+            },
+            {
+              "file": "pre-incident/.github/workflows/claude-issue-triage.yml",
+              "line": 55,
+              "role": "untrusted-prompt-input"
+            },
+            {
+              "file": "pre-incident/.github/workflows/claude-issue-triage.yml",
+              "line": 50,
+              "role": "agent-shell-capability"
+            }
+          ]
+        }
+      ],
+      "consumers": [
+        {
+          "workflow": "pre-incident/.github/workflows/npm-nightly.yaml",
+          "job": "publish-npm-nightly",
+          "cacheKeyExpression": "${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}",
+          "cachePath": "node_modules",
+          "secretsAtPublicationStep": [
+            "NPM_RELEASE_TOKEN"
+          ],
+          "evidence": [
+            {
+              "file": "pre-incident/.github/workflows/npm-nightly.yaml",
+              "line": 48,
+              "role": "release-cache-restore"
+            },
+            {
+              "file": "pre-incident/.github/workflows/npm-nightly.yaml",
+              "line": 52,
+              "role": "release-cache-key"
+            },
+            {
+              "file": "pre-incident/.github/workflows/npm-nightly.yaml",
+              "line": 122,
+              "role": "later-publication-secret-use"
+            }
+          ]
+        },
+        {
+          "workflow": "pre-incident/.github/workflows/publish-nightly.yml",
+          "job": "publish",
+          "cacheKeyExpression": "${{ runner.os }}-npm-${{ hashFiles('package-lock.json') }}",
+          "cachePath": "node_modules",
+          "secretsAtPublicationStep": [
+            "ERROR_SERVICE_API_KEY",
+            "OTEL_EXPORTER_OTLP_ENDPOINT",
+            "OTEL_EXPORTER_OTLP_HEADERS",
+            "OTEL_EXPORTER_OTLP_PROTOCOL",
+            "OTEL_TELEMETRY_ENABLED",
+            "OVSX_PAT",
+            "TELEMETRY_SERVICE_API_KEY",
+            "VSCE_PAT"
+          ],
+          "evidence": [
+            {
+              "file": "pre-incident/.github/workflows/publish-nightly.yml",
+              "line": 43,
+              "role": "release-cache-restore"
+            },
+            {
+              "file": "pre-incident/.github/workflows/publish-nightly.yml",
+              "line": 47,
+              "role": "release-cache-key"
+            },
+            {
+              "file": "pre-incident/.github/workflows/publish-nightly.yml",
+              "line": 71,
+              "role": "later-publication-secret-use"
+            }
+          ]
+        }
+      ],
+      "staticVerdict": "conditional-path",
+      "bfs": {
+        "reachableStates": 448,
+        "verdict": "possible",
+        "conditionalCounterexample": {
+          "assumptions": {
+            "agentExecutesIssueInstruction": true,
+            "cacheSlotAvailable": true,
+            "poisonedCacheSaveSucceeds": true,
+            "effectiveKeyMatches": true,
+            "poisonedEntryRestored": true,
+            "poisonedBytesExecute": true
+          },
+          "trace": [
+            {
+              "step": "issue-agent-shell",
+              "state": [
+                1,
+                true,
+                false
+              ]
+            },
+            {
+              "step": "cache-slot-available",
+              "state": [
+                2,
+                true,
+                false
+              ]
+            },
+            {
+              "step": "poisoned-cache-save",
+              "state": [
+                3,
+                true,
+                false
+              ]
+            },
+            {
+              "step": "release-cache-restore",
+              "state": [
+                4,
+                true,
+                false
+              ]
+            },
+            {
+              "step": "release-code-execution",
+              "state": [
+                5,
+                true,
+                false
+              ]
+            },
+            {
+              "step": "secret-reachable",
+              "state": [
+                6,
+                true,
+                true
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "variant": "mitigation",
+      "workflowCount": 12,
+      "producers": [],
+      "consumers": [],
+      "staticVerdict": "no-path-in-supported-model",
+      "bfs": {
+        "reachableStates": 448,
+        "verdict": "no-path-in-supported-model",
+        "conditionalCounterexample": null
+      }
+    }
+  ]
+}

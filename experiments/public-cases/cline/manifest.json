@@ -1,0 +1,128 @@
+{
+  "sourceRepository": "https://github.com/cline/cline",
+  "license": "Apache-2.0",
+  "snapshots": {
+    "pre-incident": {
+      "commit": "7bdbf0a9a745f6abc09483fe9b08874c80fb44f3",
+      "workflowCount": 15
+    },
+    "mitigation": {
+      "commit": "84fef6fe1f38a3cb98723ed909a62258f03f21b9",
+      "workflowCount": 12
+    }
+  },
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "f704446a5f1271608805598b557e4288cf8580477ea038c9c3d8b361f693f6b8"
+    },
+    {
+      "path": "mitigation/.github/workflows/changeset-converter.yml",
+      "sha256": "9bc04cccce1b9dd87e5a6604935e3d1134bb86f1eb15c39d459ae49787b11fa5"
+    },
+    {
+      "path": "mitigation/.github/workflows/e2e.yml",
+      "sha256": "cdc65080350baea9d4aea22572bd2dc6dc79a51f68b3594a4e1d39f5bd9e4930"
+    },
+    {
+      "path": "mitigation/.github/workflows/label-jetbrains-issues.yml",
+      "sha256": "fa908d549d7396947fa88827ec3044af856eb304ebed3abdf0bc864e59ddc63f"
+    },
+    {
+      "path": "mitigation/.github/workflows/npm-main.yaml",
+      "sha256": "ea45848fdcddc172cd06a0384344df8ba949929c24cafb49fc411474251801f8"
+    },
+    {
+      "path": "mitigation/.github/workflows/npm-nightly.yaml",
+      "sha256": "15b03e2d52e75fd164349d047f297f6c9c9c2a7354a20b83af01965e1ab1c6f3"
+    },
+    {
+      "path": "mitigation/.github/workflows/pack-cli.yml",
+      "sha256": "b20b1db372e1d45b5f5c0a9cbab904fade92bc98ccfcff7a0fa14d9a2bb693ac"
+    },
+    {
+      "path": "mitigation/.github/workflows/publish-nightly.yml",
+      "sha256": "8aec924efe6f7a422009662511788f17ca4dc9f87f21968a8c87e8ef3e2e222c"
+    },
+    {
+      "path": "mitigation/.github/workflows/publish.yml",
+      "sha256": "ad6b3e6069abd890f0d9988e802cfac5456a212f6b3fc3988620ac23b38a8f96"
+    },
+    {
+      "path": "mitigation/.github/workflows/stale.yml",
+      "sha256": "f7048ae54e412b08498f20a40171633b9c332fd9eb6552e452faabb17e35f201"
+    },
+    {
+      "path": "mitigation/.github/workflows/test-stale.yml",
+      "sha256": "f2d3fd50716a53493cec097986f6cca90bdaf8bbda5ea546084bf0a986f243d6"
+    },
+    {
+      "path": "mitigation/.github/workflows/test.yml",
+      "sha256": "da40899572df9056e03d677512dc888da67c601745f74aef86c6387ff6a932d0"
+    },
+    {
+      "path": "mitigation/.github/workflows/trigger-jetbrains-tests.yml",
+      "sha256": "8611a68c1ac0e481dfde77b62221e3d401d115665087ea3c2bb8810555fd3e8e"
+    },
+    {
+      "path": "pre-incident/.github/workflows/changeset-converter.yml",
+      "sha256": "9bc04cccce1b9dd87e5a6604935e3d1134bb86f1eb15c39d459ae49787b11fa5"
+    },
+    {
+      "path": "pre-incident/.github/workflows/claude-issue-triage.yml",
+      "sha256": "97592d503603df4fb9f02d4a773ea7a71ef5f14a98d6037bf5d7a8947d6d1e86"
+    },
+    {
+      "path": "pre-incident/.github/workflows/claude-pr-review.yml",
+      "sha256": "eb72eb2d2a34695be7676479c7d76a34df6f3cc5d94fbc34eb43cccdf85c418e"
+    },
+    {
+      "path": "pre-incident/.github/workflows/cline-pr-review.yml",
+      "sha256": "4a7405e603b88a00fdc650ebe88731dcf8bdf92aa18734a8d03019ada0ac1433"
+    },
+    {
+      "path": "pre-incident/.github/workflows/e2e.yml",
+      "sha256": "cdc65080350baea9d4aea22572bd2dc6dc79a51f68b3594a4e1d39f5bd9e4930"
+    },
+    {
+      "path": "pre-incident/.github/workflows/label-jetbrains-issues.yml",
+      "sha256": "fa908d549d7396947fa88827ec3044af856eb304ebed3abdf0bc864e59ddc63f"
+    },
+    {
+      "path": "pre-incident/.github/workflows/npm-main.yaml",
+      "sha256": "0c798d952ef4b89190d92f55691968ebe2471ad14c2d08a9de9eb279a68f2d77"
+    },
+    {
+      "path": "pre-incident/.github/workflows/npm-nightly.yaml",
+      "sha256": "0833cd2d67c4af10784af4740f63d57b50555e69e210ecfff0c5de0edf1dc7ac"
+    },
+    {
+      "path": "pre-incident/.github/workflows/pack-cli.yml",
+      "sha256": "b20b1db372e1d45b5f5c0a9cbab904fade92bc98ccfcff7a0fa14d9a2bb693ac"
+    },
+    {
+      "path": "pre-incident/.github/workflows/publish-nightly.yml",
+      "sha256": "fdbe9a7c498d9cf15d9f4c02133c09925031962c4344d8aa997e811ab0dac247"
+    },
+    {
+      "path": "pre-incident/.github/workflows/publish.yml",
+      "sha256": "d72ac03c012d194f58ebf5493b4bc668247b3614e845d3cf2cf7a486a96eaad8"
+    },
+    {
+      "path": "pre-incident/.github/workflows/stale.yml",
+      "sha256": "f7048ae54e412b08498f20a40171633b9c332fd9eb6552e452faabb17e35f201"
+    },
+    {
+      "path": "pre-incident/.github/workflows/test-stale.yml",
+      "sha256": "f2d3fd50716a53493cec097986f6cca90bdaf8bbda5ea546084bf0a986f243d6"
+    },
+    {
+      "path": "pre-incident/.github/workflows/test.yml",
+      "sha256": "da40899572df9056e03d677512dc888da67c601745f74aef86c6387ff6a932d0"
+    },
+    {
+      "path": "pre-incident/.github/workflows/trigger-jetbrains-tests.yml",
+      "sha256": "8611a68c1ac0e481dfde77b62221e3d401d115665087ea3c2bb8810555fd3e8e"
+    }
+  ]
+}

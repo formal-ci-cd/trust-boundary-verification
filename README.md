@@ -4,7 +4,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 
 ## 最新の進捗
 
-[marimoの公開脆弱性を用いた比較](docs/marimo-approval-race-case-study.md)では，既存ツールが承認時刻の競合を指摘しない原本で，提案手法が反例を示しました．[実際のTanStack侵害への適用](docs/tanstack-incident-cache-boundary.md)では，公開されたcache保存・復元の記録と照合し，事件前と対策版のfork→main cache経路を区別しました．[Ultralytics侵害](docs/ultralytics-incident-cache-chain.md)も別repositoryのActionとpip cacheを結ぶ条件付き事例として記録しています．[研究の現状](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)を参照してください．実悪用された事件でCodeQLだけが見逃したという結果，汎用的な自動化，モデル検査器固有の優位性はまだ示せていません．
+[Clineの実侵害](docs/cline-incident-agent-cache-boundary.md)では，事件前後の全workflowを同条件で比較しました．CodeQL・zizmor・actionlintはIssue→AI→共有cache→公開用資格情報の対象経路を指摘せず，限定した提案モデルは事件前だけ条件付き反例を出しました．一方，既存のPromptPwndルールはAIへの入口を検出しました．優位性の主張は複数workflowの経路説明に限定します．[marimoの公開脆弱性](docs/marimo-approval-race-case-study.md)，[TanStackの実侵害](docs/tanstack-incident-cache-boundary.md)，[Ultralyticsの実侵害](docs/ultralytics-incident-cache-chain.md)も比較しています．[研究の現状](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)を参照してください．汎用的な自動化とモデル検査器固有の優位性はまだ示せていません．
 
 ## 研究目的
 

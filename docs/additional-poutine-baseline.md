@@ -27,4 +27,4 @@ docker run --rm --network none \
 
 TanStackの各入力では14件が「未検証作成者のAction」，1件が「pinが効きにくいAction」だった．入口の `benchmark-pr` と公開側の `release` が同じ外部Actionを参照することには警告するが，**fork PR→main cache→OIDC job**の接続や，対策後にその経路がなくなることは警告にない．Cline事件前では，AIトリアージ入口のAction参照に同じ未検証作成者の警告が1件ある．`injection` 2件は別の `publish.yml` の手動入力に対する警告で，**Issue→AI→共有cache→夜間公開job**の接続は示していない．全警告のルール・場所・内容は[無損失圧縮した結果とchecksum](../results/additional-poutine-baseline/evidence-index.json)に保存した．
 
-この比較は**対象経路を明示した警告があるか**の評価であり，「危険を示唆する警告がない」という意味ではない．とくにTanStackではzizmorが `pull_request_target` を，ClineではPromptPwndがAIへの入口を検出している．提案側の反例にも実行時の未観測条件がある．また，Poutineの今回の出力には解析済みworkflow件数が記されないため，入力ディレクトリの件数と検出されたAction参照を確認した範囲で結果を扱う．Poutineを含む**すべての既存ツール一般**に対する優位性を主張する資料ではない．
+この比較は**対象経路を明示した警告があるか**の評価であり，「危険を示唆する警告がない」という意味ではない．とくにTanStackではzizmorが `pull_request_target` を，ClineではPromptPwndがAIへの入口を検出している．提案側の反例にも実行時の未観測条件がある．また，Poutineの今回の出力には解析済みworkflow件数が記されないため，入力ディレクトリの件数と検出されたAction参照を確認した範囲で結果を扱う．Poutineを含む**すべての既存ツール一般**に対する優位性を主張する資料ではない．[事件当時のCodeQL](tanstack-incident-cache-boundary.md)はTanStackの実際のPR攻撃入口を検出するため，TanStackを排他的検出事例には数えない．

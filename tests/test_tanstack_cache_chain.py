@@ -32,6 +32,17 @@ class TanStackCacheChainTests(unittest.TestCase):
                           'privileged-use-after-restore'])
         self.assertEqual(chain.explore(True)['verdict'], 'possible')
 
+    def test_job_condition_does_not_exclude_possible_disjunctions(self):
+        self.assertTrue(chain.job_accepts_event(
+            {'if': "github.event_name == 'push' || github.event_name == 'pull_request_target'"},
+            'pull_request_target'))
+        self.assertFalse(chain.job_accepts_event(
+            {'if': "github.event_name != 'pull_request_target' && github.ref == 'refs/heads/main'"},
+            'pull_request_target'))
+        self.assertTrue(chain.job_accepts_event(
+            {'if': "github.event_name == 'push' || inputs.force"},
+            'pull_request_target'))
+
     def test_real_event_change_separates_fork_cache(self):
         fixed = chain.analyze(CASE, 'mitigation', self.manifest)
         self.assertEqual(fixed['producer']['event'], 'pull_request')
@@ -65,6 +76,36 @@ class TanStackCacheChainTests(unittest.TestCase):
             self.assertEqual(result['producer']['event'], 'pull_request_target')
             self.assertEqual(result['staticVerdict'], 'potential-cross-workflow-cache-path')
             self.assertEqual(chain.explore(True)['verdict'], 'possible')
+
+    def test_path_is_removed_by_independent_structural_controls(self):
+        mutations = {
+            'job-does-not-run-on-pr': (
+                'pre-incident/.github/workflows/bundle-size.yml',
+                "if: github.event_name == 'pull_request_target'",
+                "if: github.event_name == 'workflow_dispatch'"),
+            'checkout-does-not-read-pr': (
+                'pre-incident/.github/workflows/bundle-size.yml',
+                'ref: refs/pull/${{ github.event.pull_request.number }}/merge',
+                'ref: main'),
+            'release-has-no-oidc': (
+                'pre-incident/.github/workflows/release.yml',
+                '  id-token: write\n', ''),
+            'external-setup-has-no-cache': (
+                'external-setup/.github/setup/action.yml',
+                'uses: actions/cache@', 'uses: actions/setup-node@'),
+        }
+        for name, (relative, old, new) in mutations.items():
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
+                fixture = Path(directory) / 'case'
+                shutil.copytree(CASE, fixture)
+                path = fixture / relative
+                source = path.read_text()
+                self.assertIn(old, source)
+                path.write_text(source.replace(old, new, 1))
+                result = chain.analyze(fixture, 'pre-incident', self.manifest)
+                self.assertEqual(result['staticVerdict'], 'no-path-in-supported-model')
+                self.assertFalse(result['cache']['sameDefaultBranchScopePossibleForFork'])
+                self.assertEqual(chain.explore(False)['verdict'], 'no-path-in-supported-model')
 
     def test_dispatch_control_baselines_are_pinned_and_path_specific(self):
         comparison = json.loads((CONTROL / 'comparison.json').read_text())

@@ -10,10 +10,24 @@
     "cli": "2.27.1",
     "queryPack": "codeql/actions-queries@0.6.36",
     "extractedActionsFiles": 8,
-    "originalDefault": {"total": 1, "cachePoisoning": 1, "alertEvent": "workflow_dispatch"},
-    "controlDefault": {"total": 0, "cachePoisoning": 0},
-    "originalSecurityAndQuality": {"total": 14, "cachePoisoning": 1},
-    "controlSecurityAndQuality": {"total": 13, "cachePoisoning": 0, "untrustedCheckoutMedium": 1}
+    "originalDefault": {
+      "total": 1,
+      "cachePoisoning": 1,
+      "alertEvent": "workflow_dispatch"
+    },
+    "controlDefault": {
+      "total": 0,
+      "cachePoisoning": 0
+    },
+    "originalSecurityAndQuality": {
+      "total": 14,
+      "cachePoisoning": 1
+    },
+    "controlSecurityAndQuality": {
+      "total": 13,
+      "cachePoisoning": 0,
+      "untrustedCheckoutMedium": 1
+    }
   },
   "zizmorRegular": {
     "version": "1.30.1",
@@ -29,10 +43,26 @@
     "effectiveCacheKeySaveRestoreAndExecutionRemainUnknown": true
   },
   "files": [
-    {"path": "source.patch", "sha256": "511019d41154463a1d3a07c8538db3a079ed172f5a224478f53961efbc9837e6"},
-    {"path": "codeql-default.sarif.gz", "sha256": "187e7029327e9802ee14332620670a2893b8b7ccbb064bf5d3795590024f5fb0"},
-    {"path": "codeql-security-and-quality.sarif.gz", "sha256": "323655b097b5e83286596fe0d0500c9306f731d59f5ec6a7e72a29da581333cc"},
-    {"path": "zizmor-regular.sarif.gz", "sha256": "bbb60339dadfcb8ec18ece5cacbab2ab09fadc484086a2f3f92061abfe8d4c43"},
-    {"path": "analysis.json", "sha256": "dcac9aa0026b952c909fcbae92d559de42a3d7388c53375f4a53ea185a699cd9"}
-  ]
+    {
+      "path": "source.patch",
+      "sha256": "511019d41154463a1d3a07c8538db3a079ed172f5a224478f53961efbc9837e6"
+    },
+    {
+      "path": "codeql-default.sarif.gz",
+      "sha256": "187e7029327e9802ee14332620670a2893b8b7ccbb064bf5d3795590024f5fb0"
+    },
+    {
+      "path": "codeql-security-and-quality.sarif.gz",
+      "sha256": "323655b097b5e83286596fe0d0500c9306f731d59f5ec6a7e72a29da581333cc"
+    },
+    {
+      "path": "zizmor-regular.sarif.gz",
+      "sha256": "bbb60339dadfcb8ec18ece5cacbab2ab09fadc484086a2f3f92061abfe8d4c43"
+    },
+    {
+      "path": "analysis.json",
+      "sha256": "dcac9aa0026b952c909fcbae92d559de42a3d7388c53375f4a53ea185a699cd9"
+    }
+  ],
+  "interpretation": "Retrospective CodeQL 2.27.1 control only. Contemporaneous CodeQL 2.25.4 / actions-queries 0.6.27 warned on pull_request_target in both the original and one-line control; see results/tanstack-cache-chain/historical-codeql-2026-05/evidence-index.json. This is not evidence of incident-time detection superiority."
 }

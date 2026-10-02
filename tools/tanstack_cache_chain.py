@@ -52,8 +52,16 @@ def job_accepts_event(job, event):
     condition = str(job.get('if', ''))
     if not condition:
         return True
-    match = re.search(r"github\.event_name\s*==\s*['\"]([^'\"]+)['\"]", condition)
-    return match is None or match.group(1) == event
+    # A disjunction with an unknown predicate cannot prove a job impossible.
+    # This deliberately over-approximates expressions outside the supported subset.
+    if '||' in condition:
+        return True
+    comparisons = re.findall(
+        r"github\.event_name\s*(==|!=)\s*['\"]([^'\"]+)['\"]", condition)
+    for operator, expected in comparisons:
+        if (operator == '==' and event != expected) or (operator == '!=' and event == expected):
+            return False
+    return True
 
 
 def action_cache(action):
@@ -88,6 +96,27 @@ def action_use_index(steps, reference):
                  if step.get('uses') == reference), None)
 
 
+def no_supported_path(variant, reference, cache, producers, consumers, reason):
+    return {
+        'variant': variant,
+        'producerCandidates': len(producers) if cache else None,
+        'consumerCandidates': len(consumers) if cache else None,
+        'producer': None,
+        'consumer': None,
+        'compositeActionReference': reference,
+        'cache': {
+            'keyExpression': cache['keyExpression'] if cache else None,
+            'pathExpression': cache['pathExpression'] if cache else None,
+            'sameExpressionAtBothCallSitesInPinnedSnapshot': False,
+            'sameDefaultBranchScopePossibleForFork': False,
+            'effectiveKeyAndObject': 'not evaluated without a supported path',
+        },
+        'staticVerdict': 'no-path-in-supported-model',
+        'reason': reason,
+        'evidence': [],
+    }
+
+
 def analyze(root, variant, manifest):
     workflow_root = root / variant / '.github/workflows'
     action_record = manifest['externalAction']
@@ -95,7 +124,8 @@ def analyze(root, variant, manifest):
     action_path = root / 'external-setup/.github/setup/action.yml'
     cache = action_cache(load(action_path))
     if cache is None:
-        raise ValueError('Referenced composite Action has no supported cache step')
+        return no_supported_path(variant, reference, None, [], [],
+                                 'Referenced composite Action has no supported cache step')
     producers = []
     consumers = []
     for path in sorted(workflow_root.glob('*.yml')):
@@ -125,8 +155,11 @@ def analyze(root, variant, manifest):
                 and any('pnpm' in str(s.get('run', '')) for s in steps[setup_index + 1:])):
                 consumers.append({'workflow': path, 'job': job_id,
                                   'setupIndex': setup_index})
+    if not producers or not consumers:
+        return no_supported_path(variant, reference, cache, producers, consumers,
+                                 'No matching producer or OIDC consumer in supported subset')
     if len(producers) != 1 or len(consumers) != 1:
-        raise ValueError('Expected exactly one supported producer and OIDC consumer')
+        raise ValueError('Ambiguous supported producer or OIDC consumer')
     producer, consumer = producers[0], consumers[0]
     # May 2026 event semantics: fork pull_request caches are scoped to the PR
     # merge ref; pull_request_target ran in the base default-branch namespace.

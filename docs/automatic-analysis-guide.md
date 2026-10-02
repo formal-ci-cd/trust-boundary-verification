@@ -101,7 +101,7 @@ python3 tools/verify_tanstack_models.py /tmp/tanstack-analysis \
   --nusmv /path/to/NuSMV
 ```
 
-`tools/materialize_tanstack_combined.py experiments/public-cases/tanstack --variant pre-incident --output /tmp/tanstack-codeql-input` でCodeQL・zizmor用の合成入力を作ります．対策版は `--variant mitigation` と別の空の出力先を指定します．同じCodeQL CLI 2.27.1 / `actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regularで得た全警告とchecksumは `results/tanstack-cache-chain/evidence-index.json` に保存しました．既存の `evaluate_public_cases.py` はworkflow単体を入力にするため，この二repository事例を一括評価には含めません．
+`tools/materialize_tanstack_combined.py experiments/public-cases/tanstack --variant pre-incident --output /tmp/tanstack-codeql-input` でCodeQL・zizmor用の合成入力を作ります．対策版は `--variant mitigation` と別の空の出力先を指定します．同じCodeQL CLI 2.27.1 / `actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regularで得た全警告とchecksumは `results/tanstack-cache-chain/evidence-index.json` に保存しました．**事件当時との比較には，別途CodeQL CLI 2.25.4と`actions-queries@0.6.27`を組み合わせ，新規databaseを作成する必要があります．** Linux x64公式CLI配布物のSHA-256，3入力の全SARIF，警告起点は[当時の比較索引](../results/tanstack-cache-chain/historical-codeql-2026-05/evidence-index.json)に保存しました．CLIとquery packを混在させた結果は当時の性能として扱いません．既存の `evaluate_public_cases.py` はworkflow単体を入力にするため，この二repository事例を一括評価には含めません．
 
 ## Cline実侵害のAIトリアージ・cache境界を再実行する
 

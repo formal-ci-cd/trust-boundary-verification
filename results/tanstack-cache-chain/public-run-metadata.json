@@ -1,0 +1,230 @@
+{
+  "observationDate": "2026-10-02",
+  "purpose": "Public GitHub Actions job-step metadata for the two release runs described in the TanStack postmortem",
+  "source": "GitHub REST API, run attempt jobs; payload reduced to job id/name/status/conclusion and step name/conclusion/times",
+  "logs": "GET /actions/runs/25613093674/logs returned HTTP 410 on 2026-10-02; no detailed log, cache object identity or external Action resolved SHA verified from this metadata",
+  "runs": [
+    {
+      "runId": 25613093674,
+      "attempt": 4,
+      "apiURL": "https://api.github.com/repos/TanStack/router/actions/runs/25613093674/attempts/4/jobs",
+      "githubRunURL": "https://github.com/TanStack/router/actions/runs/25613093674/attempts/4",
+      "job": {
+        "conclusion": "failure",
+        "id": 75429692202,
+        "name": "Release",
+        "status": "completed",
+        "steps": [
+          {
+            "completed_at": "2026-05-11T19:15:53Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "started_at": "2026-05-11T19:15:50Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:16:02Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "started_at": "2026-05-11T19:15:53Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:16:02Z",
+            "conclusion": "success",
+            "name": "Check for changesets",
+            "started_at": "2026-05-11T19:16:02Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:16:20Z",
+            "conclusion": "success",
+            "name": "Start Nx Agents",
+            "started_at": "2026-05-11T19:16:02Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:17:32Z",
+            "conclusion": "success",
+            "name": "Setup Tools",
+            "started_at": "2026-05-11T19:16:20Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:31Z",
+            "conclusion": "failure",
+            "name": "Run Tests",
+            "started_at": "2026-05-11T19:17:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "success",
+            "name": "Stop Nx Agents",
+            "started_at": "2026-05-11T19:20:31Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Enter Pre-Release Mode",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Version Packages",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Commit and Push Version Changes",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Determine dist-tag",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Publish Packages",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "skipped",
+            "name": "Create GitHub Release",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:32Z",
+            "conclusion": "success",
+            "name": "Post Setup Tools",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:44Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "started_at": "2026-05-11T19:20:32Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:20:44Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "started_at": "2026-05-11T19:20:44Z"
+          }
+        ]
+      },
+      "scratchResponseSHA256": "87d27cf8a8f4579cbe7387ac54fcbb6c70fce7dea3c18c7b745ed94cb290cb5e"
+    },
+    {
+      "runId": 25691781302,
+      "attempt": 1,
+      "apiURL": "https://api.github.com/repos/TanStack/router/actions/runs/25691781302/attempts/1/jobs",
+      "githubRunURL": "https://github.com/TanStack/router/actions/runs/25691781302/attempts/1",
+      "job": {
+        "conclusion": "failure",
+        "id": 75430579447,
+        "name": "Release",
+        "status": "completed",
+        "steps": [
+          {
+            "completed_at": "2026-05-11T19:20:59Z",
+            "conclusion": "success",
+            "name": "Set up job",
+            "started_at": "2026-05-11T19:20:57Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:21:07Z",
+            "conclusion": "success",
+            "name": "Checkout",
+            "started_at": "2026-05-11T19:20:59Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:21:07Z",
+            "conclusion": "success",
+            "name": "Check for changesets",
+            "started_at": "2026-05-11T19:21:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:21:17Z",
+            "conclusion": "success",
+            "name": "Start Nx Agents",
+            "started_at": "2026-05-11T19:21:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:21:55Z",
+            "conclusion": "success",
+            "name": "Setup Tools",
+            "started_at": "2026-05-11T19:21:17Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:06Z",
+            "conclusion": "failure",
+            "name": "Run Tests",
+            "started_at": "2026-05-11T19:21:55Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "success",
+            "name": "Stop Nx Agents",
+            "started_at": "2026-05-11T19:26:06Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Enter Pre-Release Mode",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Version Packages",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Commit and Push Version Changes",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Determine dist-tag",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Publish Packages",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "skipped",
+            "name": "Create GitHub Release",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:07Z",
+            "conclusion": "success",
+            "name": "Post Setup Tools",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:20Z",
+            "conclusion": "success",
+            "name": "Post Checkout",
+            "started_at": "2026-05-11T19:26:07Z"
+          },
+          {
+            "completed_at": "2026-05-11T19:26:20Z",
+            "conclusion": "success",
+            "name": "Complete job",
+            "started_at": "2026-05-11T19:26:20Z"
+          }
+        ]
+      },
+      "scratchResponseSHA256": "8811e22a9d77c83ed86d629b5cb3e5733b2518984af5367a9397450839ce5c0f"
+    }
+  ]
+}

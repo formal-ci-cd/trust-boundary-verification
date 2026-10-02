@@ -21,6 +21,27 @@
   "unresolvedBySavedYAML": [
     "the exact commit resolved by TanStack/config/.github/setup@main in each historical run",
     "the exact bytes and internal object ID of the poisoned cache",
-    "the complete historical runner logs and all attacker actions"
-  ]
+    "the complete historical runner logs and all attacker actions",
+    "public detailed run logs now return HTTP 410; GitHub step metadata remains available"
+  ],
+  "publicJobMetadata": {
+    "source": "GitHub REST API run-attempt jobs; saved separately at results/tanstack-cache-chain/public-run-metadata.json",
+    "checkedUTCDate": "2026-10-02",
+    "runs": [
+      {
+        "id": 25613093674,
+        "attempt": 4
+      },
+      {
+        "id": 25691781302,
+        "attempt": 1
+      }
+    ],
+    "independentlyObservedInBothRuns": {
+      "Setup Tools": "success",
+      "Run Tests": "failure",
+      "Publish Packages": "skipped"
+    },
+    "evidenceLimit": "Step metadata does not show cache key/object, restored bytes, external Action SHA, malware behavior or direct OIDC publish"
+  }
 }

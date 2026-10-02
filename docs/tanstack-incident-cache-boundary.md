@@ -46,6 +46,8 @@ zizmor 1.30.1 regularは事件前50件，対策後49件で，事件前の `pull_
 
 提案モデルは「cache保存成功」「実効key一致」「公開側で汚染entry復元」「汚染コード実行」をunknownのまま探索します．事件前は四条件が成立する実行で `AG !bad` が偽となり，対策後はPRのcache scopeが分離され `AG !bad` が真です．各96状態の独立BFSとも一致しました．事後報告にある `Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11` の11:29 UTC保存，二つのrelease runでの復元と悪性公開は，事件前反例の外部条件を裏付けます．詳細は `incident-observation.json` に**検出入力とは別に**記録しました．
 
+GitHubの公開[job 75429692202](https://github.com/TanStack/router/actions/runs/25613093674/attempts/4)と[job 75430579447](https://github.com/TanStack/router/actions/runs/25691781302/attempts/1)のREST APIメタデータも別途取得しました．両方で `Setup Tools` は成功，`Run Tests` は失敗，通常の `Publish Packages` はskipでした．これは事後報告のstep到達順序を独立に裏付けますが，**通常の公開stepを通らずに悪性公開が起きたこと自体の証明は事後報告に依拠**します．公開[jobメタデータの保存結果](../results/tanstack-cache-chain/public-run-metadata.json)には各stepの結果と時刻を残しています．詳細ログのAPIは2026年10月2日時点でHTTP 410となり，cache entryの実体・復元ログ・外部Actionの実行時SHAはこの追加調査では確認できませんでした．
+
 この事例は，複数workflowと外部Actionにまたがる信頼境界を，守りたい性質と反例として説明できることを示します．BFSも同じ判定を出すため，NuSMVという製品固有の必須性や大規模性はまだ示していません．実runner上で攻撃を再実行した結果でもありません．
 
 ## 再実行

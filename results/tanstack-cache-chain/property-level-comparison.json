@@ -1,0 +1,531 @@
+{
+  "property": "Fork PR code must not influence code executed in an id-token: write release job through the default-branch cache.",
+  "scope": "Fixed TanStack incident and mitigation snapshots; only the listed SARIF runs and saved model output",
+  "interpretation": "A zero same-finding count describes these emitted SARIF results, not inability to implement a custom query or absence of local warnings. Model counterexample is conditional on runtime facts; incident observations are separate.",
+  "producerFile": "bundle-size.yml",
+  "consumerFile": "release.yml",
+  "model": {
+    "pre-incident": {
+      "staticVerdict": "potential-cross-workflow-cache-path",
+      "formalVerdict": "possible",
+      "evidenceFiles": [
+        "action.yml",
+        "bundle-size.yml",
+        "release.yml"
+      ],
+      "conditionalCounterexampleSteps": [
+        "fork-pr-code-executes",
+        "cache-save",
+        "release-cache-restore",
+        "release-code-executes",
+        "OIDC-authority-reached"
+      ]
+    },
+    "mitigation": {
+      "staticVerdict": "fork-cache-isolated-from-default-branch",
+      "formalVerdict": "no-path-in-supported-model",
+      "evidenceFiles": [
+        "action.yml",
+        "bundle-size.yml",
+        "release.yml"
+      ],
+      "conditionalCounterexampleSteps": []
+    }
+  },
+  "tools": {
+    "codeql-incident-available-default": {
+      "pre-incident": {
+        "input": "results/tanstack-cache-chain/historical-codeql-2026-05/pre-incident-default.sarif.gz",
+        "inputSHA256": "245e8ff0ab13e04cf236d11dc9c6c1867541ec5efdb767650ebc47994f4e2ba5",
+        "findingCount": 1,
+        "producerFindingCount": 1,
+        "consumerFindingCount": 0,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      },
+      "mitigation": {
+        "input": "results/tanstack-cache-chain/historical-codeql-2026-05/mitigation-default.sarif.gz",
+        "inputSHA256": "a2e139d2bfe41b839eaa5d1965a001a3baafed29f26c1328fceb1cfc70b1fa48",
+        "findingCount": 0,
+        "producerFindingCount": 0,
+        "consumerFindingCount": 0,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": []
+      }
+    },
+    "codeql-current-security-and-quality": {
+      "pre-incident": {
+        "input": "results/tanstack-cache-chain/pre-incident/codeql-security-and-quality.sarif.gz",
+        "inputSHA256": "236ed39ce03f8967235f2b855cd2f6f5851a8fb021ce63673449d08133683b1e",
+        "findingCount": 14,
+        "producerFindingCount": 4,
+        "consumerFindingCount": 1,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/untrusted-checkout/medium",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      },
+      "mitigation": {
+        "input": "results/tanstack-cache-chain/mitigation/codeql-security-and-quality.sarif.gz",
+        "inputSHA256": "33ed97f4d2ec5a355d4d3ef4920700ee224d3ae37dbbfee5807a690793b3d553",
+        "findingCount": 14,
+        "producerFindingCount": 4,
+        "consumerFindingCount": 1,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/untrusted-checkout/medium",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      }
+    },
+    "zizmor-current-regular": {
+      "pre-incident": {
+        "input": "results/tanstack-cache-chain/pre-incident/zizmor-regular.sarif.gz",
+        "inputSHA256": "2fc4839ea07d9ba1176b4411d70dffa53a640aea4cc0535f324fa69bb3924d5f",
+        "findingCount": 50,
+        "producerFindingCount": 8,
+        "consumerFindingCount": 4,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "zizmor/artipacked",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/artipacked",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      },
+      "mitigation": {
+        "input": "results/tanstack-cache-chain/mitigation/zizmor-regular.sarif.gz",
+        "inputSHA256": "bb5f6c73824ec86b3660724a6ce6ed394438750f0b91e1b15548fc40f14ac770",
+        "findingCount": 49,
+        "producerFindingCount": 7,
+        "consumerFindingCount": 4,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "zizmor/artipacked",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/artipacked",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      }
+    },
+    "sisakulint-current": {
+      "pre-incident": {
+        "input": "results/additional-sisakulint-baseline/tanstack-pre-incident.sarif.gz",
+        "inputSHA256": "8b8908c94f2f32839895ed04922c22e67dd506e9807af5b7d2c45b024d53ba5a",
+        "findingCount": 49,
+        "producerFindingCount": 8,
+        "consumerFindingCount": 4,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "dependabot-github-actions",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "untrusted-checkout",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "artipacked",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "dependabot-github-actions",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "artipacked",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      },
+      "mitigation": {
+        "input": "results/additional-sisakulint-baseline/tanstack-mitigation.sarif.gz",
+        "inputSHA256": "aea7f132c468e28135c824099d9111031f608cd901cef14e224e2bfecc4eb5c4",
+        "findingCount": 48,
+        "producerFindingCount": 7,
+        "consumerFindingCount": 4,
+        "sameFindingLinksProducerAndConsumer": 0,
+        "producerFindingMentionsConsumer": 0,
+        "findingsAtProducerOrConsumer": [
+          {
+            "rule": "dependabot-github-actions",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "artipacked",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "bundle-size.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "dependabot-github-actions",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "artipacked",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          },
+          {
+            "rule": "commit-sha",
+            "files": [
+              "release.yml"
+            ],
+            "mentionsConsumerInMessage": false
+          }
+        ]
+      }
+    }
+  }
+}

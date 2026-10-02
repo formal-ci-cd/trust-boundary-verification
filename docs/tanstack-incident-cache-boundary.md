@@ -32,6 +32,10 @@
 
 **したがってTanStackを「CodeQLが実際の攻撃入口を見逃し，提案手法だけが検出した事例」とすることはできません．** 提案モデルが追加するのは，CodeQLが警告した入口と，別workflow・別runのcache復元およびOIDC権限を一つの条件付き経路としてつなぐ説明です．
 
+この差を[再計算可能な比較表](../results/tanstack-cache-chain/property-level-comparison.json)にしました．[比較スクリプト](../tools/compare_tanstack_outputs.py)は各SARIF resultの主位置・関連位置・code flowにあるファイルを数え，入口 `bundle-size.yml` と公開側 `release.yml` を**同一の結果が指すか**を検査します．事件前の当時版CodeQL通常suiteは「入口を指す結果1件，公開側0件，同一結果0件」です．現在版CodeQLの広いsuiteは「入口4件，公開側1件，同一結果0件」，zizmor regularは「8件，4件，0件」，sisakulintは「8件，4件，0件」です．提案側の条件付き反例は入口・外部Setup Action・公開側の3ファイルを根拠に持ちます．対策後は提案側の対象反例がなく，当時版CodeQLの入口警告も0件です．
+
+**同一SARIF結果0件は，保存した版・入力・suiteの出力に関する観測**です．各ファイルを指す警告の件数は位置だけの集計で，それぞれが対象のcache経路を警告した件数ではありません．複数の警告を人が総合して危険を推測できないことや，既存ツールに独自query・ruleを追加して同じ性質を検査できないことを意味しません．また，提案側の反例も実行時のcache同一性などを未知とした条件付き判定です．この比較は「入口を発見したか」と「別workflowの権限まで経路として提示したか」を別の評価項目にします．
+
 固定した現在のCodeQL CLI 2.27.1 / `actions-queries@0.6.36` でも同じ原本を再評価しました．事件前・対策版とも通常suiteは1件で，警告の起点は対象jobの条件が許さない `workflow_dispatch` でした．1行対照では0件です．広いsuiteは順に14・14・13件で，入口workflowの別種の警告は残ります．これは**現在の解析器・query packによる過去設定の再評価**です．当時のCodeQLが攻撃入口を見逃した証拠として扱いません．[GitHubは2026年6月に低信頼イベントのcache書込みを制限](https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/)し，[CodeQLも同年8月に関連queryを変更](https://github.blog/changelog/2026-08-19-codeql-2-26-3-improves-github-actions-queries-and-javascript-modeling/)しています．古いquery packだけを新しいCLIのdatabaseに適用しても手動起動由来の警告となったため，CLIに含まれる抽出器とquery packを**当時の組合せで揃える必要**がありました．変更理由をその一要因だけへ断定しません．
 
 zizmor 1.30.1 regularは事件前50件，対策後49件で，事件前の `pull_request_target` に危険なtrigger警告を出します．[Poutine 1.1.6](additional-poutine-baseline.md)は両版とも15件で外部Action参照等を指摘します．[sisakulint 0.3.7](additional-sisakulint-baseline.md)も事件前の未信頼checkoutを警告し，対策後にはその警告が消えました（全警告49件・48件）．これらのツールは攻撃入口を検出しますが，保存された出力には対象の**fork PR→main cache→OIDC job**を一つの経路として接続する警告はありません．zizmorの全SARIFと現在のCodeQLの全SARIFは[比較索引](../results/tanstack-cache-chain/evidence-index.json)に，sisakulintの全SARIFは[追加比較索引](../results/additional-sisakulint-baseline/tanstack-evidence-index.json)に保存しました．Poutineとsisakulintのこの版は事件後の公開版なので遡及的な比較です．

@@ -122,6 +122,23 @@ CodeQL CLI 2.27.1，`actions-queries@0.6.36` の通常・広いsuite，zizmor 1.
 
 追加の既存スキャナPoutineによるTanStackとClineの比較条件・全警告は[追加比較](additional-poutine-baseline.md)に記録しています．
 
+## SpotBugs実侵害の条件付きcheckoutを再実行する
+
+[原本と外部Actionのmanifest](../experiments/public-cases/spotbugs-chain/manifest.json)のSHA-256を照合したうえで，ネットワーク無効のDocker内で静的解析します．外部Actionの可変タグが事件当時に指したSHAは不明です．以下は固定したAction実体が使用された場合の潜在経路を示し，workflowもActionも実行しません．
+
+```sh
+mkdir -p /tmp/spotbugs-analysis
+docker run --rm --network none -v "$PWD:/repo:ro" \
+  -v /tmp/spotbugs-analysis:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/conditional_checkout_chain.py \
+  experiments/public-cases/spotbugs-chain \
+  experiments/public-cases/spotbugs-chain/external-action-cond \
+  --external-name haya14busa/action-cond --external-version v1 \
+  --output /analysis/conditional-chain-analysis.json
+```
+
+CodeQLとの比較では，まず原本workflowだけを入力した通常suite・広いsuiteを実行します．加えて外部Actionの `action.yml` と `dist/index.js` を `.github/actions/action-cond/` に置いた合成入力を用います．合成入力でもworkflowの `uses: haya14busa/action-cond@v1` は書き換えません．CodeQL Actionsが抽出したのは2件のYAMLで，JSファイルの意味解析まで確認したものではありません．両入力の完全なSARIFと条件は[比較索引](../results/spotbugs-screening/evidence-index.json)に保存しました．
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

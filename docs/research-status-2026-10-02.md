@@ -11,7 +11,7 @@
 | 人手の注釈をなくす | 限定したartifact metadata → step output → checkout ref → git pushの経路と，consumerのfork除外条件・設定されたcontents権限を自動で取得し，根拠付きJSON・SMVを生成 | 任意のshell，独自Action，reusable workflow，実行時の成功・artifact ID，検査の一般的な意味解析は未対応．既存A1～A5の手動注釈を全て置換したわけではない |
 | モデル検査の意義を調べる | 既存の固定事実モデルを直接判定するbaselineと比較．さらに書換え可能な共有ファイルの検査・置換・利用順序をNuSMV/BFS/無害なファイル操作で比較 | BFSでも同じ判定ができる．モデル検査の必須性・大規模な実workflowでの優位性は未証明．並行モデルはYAMLから自動生成していない |
 | YAMLを直接読む | PyYAMLによる入力経路を追加．`on`キー，全文runブロック，job/stepの条件・env・行位置を保持．CodeQL側も全文を抽出できるよう修正 | GitHubの式やActionの意味までYAMLライブラリが理解するわけではない．フロントエンドの構造一致は意味解析全般の同等性ではない |
-| 実在事例で比較する | attest，marimo，Ultralytics，TanStack，Clineの公開原本を取得．Clineでは無断公開が起きたプロジェクトの対策前設定にあった候補経路にCodeQL・zizmor・actionlintの対象警告がなく，限定モデルが事件前だけ条件付き反例．TanStackは公開されたcache保存・復元記録と照合 | ClineのAI入口は既存のPromptPwndルールで検出された．モデル内のruntime条件は未観測．ツール一般に対する排他的優位性は未達 |
+| 実在事例で比較する | attest，marimo，Ultralytics，TanStack，Cline，SpotBugsの公開原本を取得．Clineでは無断公開が起きたプロジェクトの対策前設定にあった候補経路にCodeQL・zizmor・actionlintの対象警告がなく，限定モデルが事件前だけ条件付き反例．TanStackは公開されたcache保存・復元記録と照合．SpotBugsではCodeQL通常suiteの警告0件に対し，限定解析が実攻撃入口からsecretを設定した実行stepまでを接続 | ClineのAI入口はPromptPwndが，SpotBugsの未信頼checkoutはsisakulintが警告．モデル内のruntime条件は未観測．ツール一般に対する排他的優位性は未達 |
 
 ## 人手を使わない経路
 
@@ -66,4 +66,4 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 
 次の研究課題は，並行遷移を実workflowと実行観測から生成すること，cacheや独自Actionの意味を広げること，実行観測を自動取得してunknownを減らすこと，PromptPwndが検出した入口からcache・公開jobまでの接続を，他の専門的な検査とも比較することです．Clineでは無断公開が起きたプロジェクトの対策前設定にあった候補経路について検出差を示しましたが，今回の実装は限定パターンであり，修士研究全体の完成ではありません．
 
-[SpotBugsからreviewdogへの実侵害](incident-candidate-screening.md)も追加確認しました．攻撃直前の対象1 workflowを事後のCodeQL 2版で解析すると，両版とも1/1ファイル抽出，通常suiteの警告0件でした．一方，sisakulintは未信頼checkoutを警告します．提案実装は外部Actionの出力を介したcheckoutと実行の経路を自動判定しないため，この実侵害を提案手法の検出成功例には数えません．また，攻撃日はCodeQLのActions解析public preview開始前です．
+[SpotBugsからreviewdogへの実侵害](incident-candidate-screening.md)も追加確認しました．攻撃直前の対象1 workflowを事後のCodeQL 2版で解析すると，両版とも1/1ファイル抽出，通常suiteの警告0件，広いsuiteは未固定タグ警告1件でした．現在版に外部ActionのYAMLと配布JSも与えた再解析でも，Actionsファイル2/2抽出，通常suiteは0件，広いsuiteは同じタグ警告1件です．提案側の限定静的解析は，外部Actionの条件付き出力からPR側checkoutとsecret付きの `./mvnw` までを接続し，PR参照だけ変えた対照版では対象経路0件でした．これはCodeQLとの**遡及的かつ性質を限定した**差です．攻撃日はCodeQL Actions解析のpublic preview開始前で，sisakulintは未信頼checkoutを警告します．外部Actionの可変タグが攻撃当時に指したコミットは未確認であり，この静的解析単体はモデル検査器の必須性を示しません．

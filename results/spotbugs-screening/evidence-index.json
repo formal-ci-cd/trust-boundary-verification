@@ -5,7 +5,7 @@
   "sourceFile": ".github/workflows/sonarqube.yml",
   "sourceBlobSHA": "176cd5cd4cbd7c7a05f1e9730c1e40542ebe64c9",
   "sourceSHA256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
-  "scope": "Only attack-triggered sonarqube.yml, not whole repository; scans after incident; offline Docker",
+  "scope": "Original attacked workflow, plus a separate current-CodeQL combined-input check containing the same workflow and fixed external Action YAML/JavaScript; all scans retrospective and offline",
   "codeqlSuite": "actions-code-scanning.qls",
   "files": [
     {
@@ -129,8 +129,78 @@
           "line": 59
         }
       ]
+    },
+    {
+      "file": "codeql-2.25.4-security-and-quality.sarif.gz",
+      "suite": "actions-security-and-quality.qls",
+      "codeqlVersion": "2.25.4",
+      "queryPackVersion": "0.6.27",
+      "uncompressedSHA256": "790399a81f50341fecbef87eeec4455dbd901b743687ebff15fceed96f534b19",
+      "compressedSHA256": "4457478dc32c742248feb1d2d3328e4b6e6ddd900d0e430eec3db8f7d1ced127",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-security-and-quality.sarif.gz",
+      "suite": "actions-security-and-quality.qls",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "uncompressedSHA256": "34743c0bc2a739f7f0e279eb1a9820b6d90aff62a2dd241a3b79d9c386c64cd4",
+      "compressedSHA256": "49d465f91eac72a6d79bbd393d062a82e71f621f1f4856badd8b0f8ba2d0ba36",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-combined-default.sarif.gz",
+      "input": "workflow plus fixed external action YAML and bundled JavaScript",
+      "extractedActionsFiles": "2/2",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "suite": "actions-code-scanning.qls",
+      "uncompressedSHA256": "1bd249055256e083942ef8c0968cfec95d4ef2b4224fc15434c1d1b57becb24e",
+      "compressedSHA256": "970c4988983cf39377de1d50de06357c5cdceef1c71268d4671ab6d12535fa95",
+      "findingCount": 0,
+      "findings": [],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-combined-security-and-quality.sarif.gz",
+      "input": "workflow plus fixed external action YAML and bundled JavaScript",
+      "extractedActionsFiles": "2/2",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "suite": "actions-security-and-quality.qls",
+      "uncompressedSHA256": "1d2ad9b32f5e600ffd9439bbd556aa2fcb7b1d7ac879c7702a09fe892753968f",
+      "compressedSHA256": "4c9acf9397eba4698b29f72d3385c90811602579bb841a50e8fe3f05d1a9f85c",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
     }
   ],
   "proposalResult": "conditional-chain-analysis.json",
-  "proposalResultSHA256": "b3bbe773e72aee1448aae980fb8eb9ebb09687a827bbfdcfa0928aebce2c8b52"
+  "proposalResultSHA256": "b3bbe773e72aee1448aae980fb8eb9ebb09687a827bbfdcfa0928aebce2c8b52",
+  "combinedInput": {
+    "workflow": "experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml",
+    "externalActionYAML": "experiments/public-cases/spotbugs-chain/external-action-cond/action.yml",
+    "externalActionBundledJS": "experiments/public-cases/spotbugs-chain/external-action-cond/index.js",
+    "codeqlActionsExtractedFiles": "2/2 YAML files; bundled JavaScript is present but not extracted as an Actions file",
+    "sourceDigests": "experiments/public-cases/spotbugs-chain/manifest.json"
+  }
 }

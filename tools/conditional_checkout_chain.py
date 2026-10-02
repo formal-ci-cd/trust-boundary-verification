@@ -53,10 +53,15 @@ def discover(workflow_root, external_root, external_name, external_version):
     if not action_semantics(action_yml, source):
         return dict(status='unsupported-external-action', findings=[])
     findings = []
+    unsupported_jobs = []
     for file, model in yaml_to_model.load_models(workflow_root).items():
         if not any(event['name'] == 'pull_request_target' for event in model['workflow']['events']):
             continue
         for job in model['workflow']['jobs']:
+            if job.get('environment'):
+                unsupported_jobs.append(dict(file=file, job=job['id'],
+                                             reason='job environment selection or approval is not modeled'))
+                continue
             steps = job['steps']
             for selector in steps:
                 if (selector.get('action') != external_name
@@ -105,9 +110,13 @@ def discover(workflow_root, external_root, external_name, external_version):
                                 'The local executable runs successfully and receives the configured secret environment.',
                                 'No claim is made about exfiltration, actual secret value availability, or later lateral movement.'
                             ]))
-    return dict(status='analyzed' if findings else 'no-supported-path', findings=findings,
-                externalAction=external_name + '@' + external_version,
-                externalActionSourceSHA256=hashlib.sha256(source.read_bytes()).hexdigest())
+    result = dict(status='analyzed' if findings else
+                  'unsupported-environment-gate' if unsupported_jobs else 'no-supported-path',
+                  findings=findings, externalAction=external_name + '@' + external_version,
+                  externalActionSourceSHA256=hashlib.sha256(source.read_bytes()).hexdigest())
+    if unsupported_jobs:
+        result['unsupportedJobs'] = unsupported_jobs
+    return result
 
 
 def main():

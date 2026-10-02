@@ -28,6 +28,8 @@ def extract(root, external, external_name, external_version):
         if 'pull_request_target' not in events:
             continue
         for job in model['workflow']['jobs']:
+            if job.get('environment'):
+                continue  # Approval and environment selection are outside this model.
             if not re.fullmatch(r"github\.repository == '[\w-]+/[\w-]+'", job.get('condition', '')):
                 continue
             steps = job['steps']
@@ -70,6 +72,13 @@ def extract(root, external, external_name, external_version):
                                               chain.evidence(file, job, checkout, 'checkout'),
                                               chain.evidence(file, job, sink, 'local-executable')])
     return None
+
+
+def unsupported_environment_jobs(root):
+    return [dict(file=file, job=job['id'])
+            for file, model in yaml_to_model.load_models(root).items()
+            if any(e['name'] == 'pull_request_target' for e in model['workflow']['events'])
+            for job in model['workflow']['jobs'] if job.get('environment')]
 
 
 def successors(state, pr_ref):
@@ -154,7 +163,12 @@ def main():
     config = extract(args.workflow_root, args.external_root,
                      args.external_name, args.external_version)
     args.output.mkdir(parents=True, exist_ok=True)
-    result = dict(status='analyzed' if config else 'no-supported-path', config=config)
+    unsupported = unsupported_environment_jobs(args.workflow_root)
+    result = dict(status='analyzed' if config else
+                  'unsupported-environment-gate' if unsupported else 'no-supported-path',
+                  config=config)
+    if unsupported:
+        result['unsupportedJobs'] = unsupported
     if config:
         result['property'] = ('PR-controlled local executable never runs with a '
                               'configured secret in a pull_request_target job.')

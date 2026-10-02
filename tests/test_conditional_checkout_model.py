@@ -10,9 +10,11 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import conditional_checkout_model as model
+import conditional_checkout_chain as chain
 
 CASE = ROOT / 'experiments/public-cases/spotbugs-chain'
 EXTERNAL = CASE / 'external-action-cond'
+UPSTREAM = ROOT / 'experiments/public-cases/spotbugs-upstream-change'
 
 
 class ConditionalCheckoutModelTests(unittest.TestCase):
@@ -87,6 +89,30 @@ class ConditionalCheckoutModelTests(unittest.TestCase):
                                  record['rules'], tool)
                 normalized.append(json.dumps(hits, sort_keys=True).replace(path, 'WORKFLOW'))
             self.assertEqual(normalized[0], normalized[1], tool)
+
+    def test_actual_upstream_change_is_not_misreported_as_proven_safe(self):
+        manifest = json.loads((UPSTREAM / 'manifest.json').read_text())
+        for record in manifest['files']:
+            path = UPSTREAM / record['localPath']
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(),
+                             record['sha256'])
+        before = UPSTREAM / 'before'
+        after = UPSTREAM / 'after'
+        self.assertIsNone(model.extract(before, EXTERNAL, 'haya14busa/action-cond', 'v1'))
+        self.assertEqual(model.unsupported_environment_jobs(before),
+                         [{'file': '.github/workflows/sonarqube.yml', 'job': 'build'}])
+        self.assertEqual(model.unsupported_environment_jobs(after), [])
+        self.assertEqual(chain.discover(before, EXTERNAL, 'haya14busa/action-cond', 'v1')['status'],
+                         'unsupported-environment-gate')
+        self.assertEqual(chain.discover(after, EXTERNAL, 'haya14busa/action-cond', 'v1')['status'],
+                         'no-supported-path')
+        saved = ROOT / 'results/spotbugs-upstream-change'
+        for variant, status in [('before', 'unsupported-environment-gate'),
+                                ('after', 'no-supported-path')]:
+            self.assertEqual(json.loads((saved / (variant + '-static.json')).read_text())['status'],
+                             status)
+            self.assertEqual(json.loads((saved / (variant + '-model/analysis.json')).read_text())['status'],
+                             status)
 
 
 if __name__ == '__main__':

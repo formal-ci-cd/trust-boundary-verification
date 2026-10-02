@@ -1,0 +1,172 @@
+{
+  "schemaVersion": "tanstack-n-consumers-0.1",
+  "scope": "One YAML-derived producer; N synthetic consumers except N=2 public-run count; clean initial cache; no eviction",
+  "consumers": 8,
+  "frozenUnknownFacts": false,
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "cacheScopeCompatible": true,
+      "sourceEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "consumers": 8,
+        "frozenUnknownFacts": false,
+        "reachableStates": 416869,
+        "possible": true,
+        "witnessFacts": {
+          "save": true,
+          "key1": true,
+          "restore1": true,
+          "execute1": true,
+          "key2": true,
+          "restore2": true,
+          "execute2": true,
+          "key3": true,
+          "restore3": true,
+          "execute3": true,
+          "key4": true,
+          "restore4": true,
+          "execute4": true,
+          "key5": true,
+          "restore5": true,
+          "execute5": true,
+          "key6": true,
+          "restore6": true,
+          "execute6": true,
+          "key7": true,
+          "restore7": true,
+          "execute7": true,
+          "key8": true,
+          "restore8": true,
+          "execute8": true
+        },
+        "seconds": 1.696
+      },
+      "nusmv": {
+        "possible": true,
+        "modelSHA256": "5fab00e687b4bfe26a2e9b225afd2fb9519573f6260127a53f89e0a81ccdb617",
+        "seconds": 0.168
+      }
+    },
+    {
+      "variant": "mitigation",
+      "cacheScopeCompatible": false,
+      "sourceEvidence": [
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "consumers": 8,
+        "frozenUnknownFacts": false,
+        "reachableStates": 32805,
+        "possible": false,
+        "witnessFacts": null,
+        "seconds": 0.148
+      },
+      "nusmv": {
+        "possible": false,
+        "modelSHA256": "6487ec0cb8c4b76f49ab7634912e92d2fc228ce08cbe1a6834e950b8566010f1",
+        "seconds": 0.009
+      }
+    }
+  ]
+}

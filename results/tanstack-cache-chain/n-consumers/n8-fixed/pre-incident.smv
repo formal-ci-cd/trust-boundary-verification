@@ -1,0 +1,120 @@
+-- One YAML-derived producer and 8 independent consumers.
+-- Counts other than two are synthetic sensitivity experiments.
+-- EVIDENCE fork-pr-event: pre-incident/.github/workflows/bundle-size.yml:7
+-- EVIDENCE untrusted-pr-checkout: pre-incident/.github/workflows/bundle-size.yml:38
+-- EVIDENCE producer-external-setup: pre-incident/.github/workflows/bundle-size.yml:43
+-- EVIDENCE shared-action-cache: external-setup/.github/setup/action.yml:18
+-- EVIDENCE cache-key-expression: external-setup/.github/setup/action.yml:21
+-- EVIDENCE untrusted-install: external-setup/.github/setup/action.yml:26
+-- EVIDENCE untrusted-build: pre-incident/.github/workflows/bundle-size.yml:46
+-- EVIDENCE oidc-authority: pre-incident/.github/workflows/release.yml:17
+-- EVIDENCE consumer-external-setup: pre-incident/.github/workflows/release.yml:43
+-- EVIDENCE privileged-use-after-restore: pre-incident/.github/workflows/release.yml:46
+MODULE main
+IVAR
+  actor : {producer, consumer1, consumer2, consumer3, consumer4, consumer5, consumer6, consumer7, consumer8};
+VAR
+  producer_pc : 0..4;
+  consumer1_pc : 0..2;
+  consumer2_pc : 0..2;
+  consumer3_pc : 0..2;
+  consumer4_pc : 0..2;
+  consumer5_pc : 0..2;
+  consumer6_pc : 0..2;
+  consumer7_pc : 0..2;
+  consumer8_pc : 0..2;
+  cache_tainted : boolean;
+  restored1 : boolean;
+  restored2 : boolean;
+  restored3 : boolean;
+  restored4 : boolean;
+  restored5 : boolean;
+  restored6 : boolean;
+  restored7 : boolean;
+  restored8 : boolean;
+  bad1 : boolean;
+  bad2 : boolean;
+  bad3 : boolean;
+  bad4 : boolean;
+  bad5 : boolean;
+  bad6 : boolean;
+  bad7 : boolean;
+  bad8 : boolean;
+ASSIGN
+  init(producer_pc) := 0;
+  init(consumer1_pc) := 0;
+  init(consumer2_pc) := 0;
+  init(consumer3_pc) := 0;
+  init(consumer4_pc) := 0;
+  init(consumer5_pc) := 0;
+  init(consumer6_pc) := 0;
+  init(consumer7_pc) := 0;
+  init(consumer8_pc) := 0;
+  init(cache_tainted) := FALSE;
+  init(restored1) := FALSE;
+  init(restored2) := FALSE;
+  init(restored3) := FALSE;
+  init(restored4) := FALSE;
+  init(restored5) := FALSE;
+  init(restored6) := FALSE;
+  init(restored7) := FALSE;
+  init(restored8) := FALSE;
+  init(bad1) := FALSE;
+  init(bad2) := FALSE;
+  init(bad3) := FALSE;
+  init(bad4) := FALSE;
+  init(bad5) := FALSE;
+  init(bad6) := FALSE;
+  init(bad7) := FALSE;
+  init(bad8) := FALSE;
+  next(producer_pc) := case actor = producer & producer_pc < 4 : producer_pc + 1; TRUE : producer_pc; esac;
+  next(consumer1_pc) := case actor = consumer1 & consumer1_pc < 2 : consumer1_pc + 1; TRUE : consumer1_pc; esac;
+  next(consumer2_pc) := case actor = consumer2 & consumer2_pc < 2 : consumer2_pc + 1; TRUE : consumer2_pc; esac;
+  next(consumer3_pc) := case actor = consumer3 & consumer3_pc < 2 : consumer3_pc + 1; TRUE : consumer3_pc; esac;
+  next(consumer4_pc) := case actor = consumer4 & consumer4_pc < 2 : consumer4_pc + 1; TRUE : consumer4_pc; esac;
+  next(consumer5_pc) := case actor = consumer5 & consumer5_pc < 2 : consumer5_pc + 1; TRUE : consumer5_pc; esac;
+  next(consumer6_pc) := case actor = consumer6 & consumer6_pc < 2 : consumer6_pc + 1; TRUE : consumer6_pc; esac;
+  next(consumer7_pc) := case actor = consumer7 & consumer7_pc < 2 : consumer7_pc + 1; TRUE : consumer7_pc; esac;
+  next(consumer8_pc) := case actor = consumer8 & consumer8_pc < 2 : consumer8_pc + 1; TRUE : consumer8_pc; esac;
+  next(cache_tainted) := cache_tainted | (actor = producer & producer_pc = 3 & TRUE & TRUE);
+  next(restored1) := case
+    actor = consumer1 & consumer1_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored1;
+  esac;
+  next(bad1) := bad1 | (actor = consumer1 & consumer1_pc = 1 & restored1 & TRUE);
+  next(restored2) := case
+    actor = consumer2 & consumer2_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored2;
+  esac;
+  next(bad2) := bad2 | (actor = consumer2 & consumer2_pc = 1 & restored2 & TRUE);
+  next(restored3) := case
+    actor = consumer3 & consumer3_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored3;
+  esac;
+  next(bad3) := bad3 | (actor = consumer3 & consumer3_pc = 1 & restored3 & TRUE);
+  next(restored4) := case
+    actor = consumer4 & consumer4_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored4;
+  esac;
+  next(bad4) := bad4 | (actor = consumer4 & consumer4_pc = 1 & restored4 & TRUE);
+  next(restored5) := case
+    actor = consumer5 & consumer5_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored5;
+  esac;
+  next(bad5) := bad5 | (actor = consumer5 & consumer5_pc = 1 & restored5 & TRUE);
+  next(restored6) := case
+    actor = consumer6 & consumer6_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored6;
+  esac;
+  next(bad6) := bad6 | (actor = consumer6 & consumer6_pc = 1 & restored6 & TRUE);
+  next(restored7) := case
+    actor = consumer7 & consumer7_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored7;
+  esac;
+  next(bad7) := bad7 | (actor = consumer7 & consumer7_pc = 1 & restored7 & TRUE);
+  next(restored8) := case
+    actor = consumer8 & consumer8_pc = 0 : cache_tainted & TRUE & TRUE;
+    TRUE : restored8;
+  esac;
+  next(bad8) := bad8 | (actor = consumer8 & consumer8_pc = 1 & restored8 & TRUE);
+CTLSPEC AG !(bad1 | bad2 | bad3 | bad4 | bad5 | bad6 | bad7 | bad8)

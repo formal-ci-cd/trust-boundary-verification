@@ -11,6 +11,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 import conditional_checkout_model as model
 import conditional_checkout_chain as chain
+import verify_conditional_action_runtime as runtime
 
 CASE = ROOT / 'experiments/public-cases/spotbugs-chain'
 EXTERNAL = CASE / 'external-action-cond'
@@ -113,6 +114,16 @@ class ConditionalCheckoutModelTests(unittest.TestCase):
                              status)
             self.assertEqual(json.loads((saved / (variant + '-model/analysis.json')).read_text())['status'],
                              status)
+
+    def test_saved_external_action_runtime_matches_pinned_bundle(self):
+        result = json.loads((ROOT / 'results/spotbugs-screening/external-action-runtime.json').read_text())
+        bundle = EXTERNAL / 'index.js'
+        self.assertEqual(result['bundleSha256'], hashlib.sha256(bundle.read_bytes()).hexdigest())
+        self.assertEqual(result['status'], 'matched')
+        self.assertEqual(result['observed'],
+                         {'true': 'refs/pull/1116/merge', 'false': 'refs/heads/master'})
+        self.assertEqual(runtime.parse_output(
+            'value<<marker\nrefs/pull/1116/merge\nmarker\n'), 'refs/pull/1116/merge')
 
 
 if __name__ == '__main__':

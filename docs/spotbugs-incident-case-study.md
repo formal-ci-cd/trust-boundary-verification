@@ -7,6 +7,7 @@
 | 根拠 | 確認した事実 | 限界 |
 |---|---|---|
 | [固定workflowとmanifest](../experiments/public-cases/spotbugs-chain/manifest.json) | `pull_request_target` →条件付きPR merge ref→checkout→secret付き`./mvnw` | `haya14busa/action-cond@v1` の事件時SHAは未確認 |
+| [固定外部Actionの隔離実行](../results/spotbugs-screening/external-action-runtime.json) | 配布JSをdigest固定のNode 20コンテナでダミー入力により実行すると，条件真でPR merge ref，偽でbase refを出力 | 固定したJSの動作確認であり，事件当日の可変タグの指先は証明しない |
 | [攻撃PRの公開差分](../experiments/public-cases/spotbugs-chain/attack-pr-files.json)と[自動照合](../results/spotbugs-screening/attack-pr-alignment.json) | 変更された唯一のファイルが `mvnw` で，冒頭付近に外部スクリプトを取得して `bash` に渡す無条件の行が追加された | 外部スクリプト本文と当時のCIログは取得できない．差分内の命令は実行していない |
 | [形式モデルの原本結果](../results/spotbugs-screening/model-original/analysis.json) | 固定した外部Action実体と実行成功を仮定すると，NuSMVと独立BFSはともにPR側の実行ファイルへsecretが渡る反例を出す | 実際の実行・漏洩をモデル単体が証明した結果ではない |
 

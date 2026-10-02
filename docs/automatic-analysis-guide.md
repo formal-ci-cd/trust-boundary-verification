@@ -142,7 +142,9 @@ CodeQL CLI 2.27.1，`actions-queries@0.6.36` の通常・広いsuite，zizmor 1.
 
 ## SpotBugs実侵害の条件付きcheckoutを再実行する
 
-[原本と外部Actionのmanifest](../experiments/public-cases/spotbugs-chain/manifest.json)のSHA-256を照合したうえで，ネットワーク無効のDocker内で静的解析します．外部Actionの可変タグが事件当時に指したSHAは不明です．以下は固定したAction実体が使用された場合の潜在経路を示し，workflowもActionも実行しません．
+[原本と外部Actionのmanifest](../experiments/public-cases/spotbugs-chain/manifest.json)のSHA-256を照合したうえで，ネットワーク無効のDocker内で静的解析します．外部Actionの可変タグが事件当時に指したSHAは不明です．以下の静的解析は固定したAction実体が使用された場合の潜在経路を示し，workflowもActionも実行しません．
+
+固定したAction配布JSの分岐だけを観測する別実験は，事前取得したdigest固定の公式Node 20イメージを使い，ネットワーク無効・読取専用・秘密情報なしのコンテナで実行します．`tools/verify_conditional_action_runtime.py experiments/public-cases/spotbugs-chain/external-action-cond/index.js --output <新規出力先>` が条件真・偽のダミー入力を検査します．保存済みの[結果](../results/spotbugs-screening/external-action-runtime.json)と比較できます．これは攻撃PRのコードも第三者のCIも実行しません．
 
 ```sh
 mkdir -p /tmp/spotbugs-analysis

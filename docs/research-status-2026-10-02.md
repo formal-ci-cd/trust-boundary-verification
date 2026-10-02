@@ -62,7 +62,7 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 
 この実験で言えるのは「検査をしたという固定フラグだけでは，検査後の置換を表現できない」です．BFSも反例を出せるため，「NuSMVでなければ不可能」とは言えません．今後の比較軸は，性質の記述，状態管理，反例の説明，モデル変更の負担と規模です．
 
-実際の[TanStack原本](tanstack-incident-cache-boundary.md)から検出したproducer・consumerとcache scopeを使い，二つのrunを独立に進める追加モデルも生成しました．事件前はNuSMV/BFSとも条件付き反例あり，対策版は反例なしです．未知条件を同じ値に固定しても，producerのcache保存がconsumerの復元より先なら到達し，復元が先ならそのrunでは到達しません．これは「両workflowに同じcache key式がある」という固定条件に欠ける**順序情報**の必要性を示します．探索対象は一組のPR runとrelease runで，初期cacheは清浄，第三のrunやcache削除は未対応です．244/240状態の小規模実験であり，BFSでも判定が一致するためモデル検査器固有の必要性や性能優位は示しません．
+実際の[TanStack原本](tanstack-incident-cache-boundary.md)から検出したproducer・consumerとcache scopeを使い，二つのrunを独立に進める追加モデルも生成しました．事件前はNuSMV/BFSとも条件付き反例あり，対策版は反例なしです．未知条件を同じ値に固定しても，producerのcache保存がconsumerの復元より先なら到達し，復元が先ならそのrunでは到達しません．これは「両workflowに同じcache key式がある」という固定条件に欠ける**順序情報**の必要性を示します．探索対象は一組のPR runとrelease runで，初期cacheは清浄，第三のrunやcache削除は未対応です．244/240状態の小規模実験であり，BFSでも判定が一致するためモデル検査器固有の必要性や性能優位は示しません．TanStack事後報告の公開側2 runに合わせた追加モデルでは，各runのcache復元と汚染コード実行を別の未知値にし，1件のPR側保存との順序を探索しました．事件前は5,968状態で条件付き反例，対策版は5,760状態で反例なしとなり，NuSMVとBFSが一致します．保存が二つの復元の間なら後のrunだけが到達します．この増分もNuSMV固有の必須性や大規模性能を示すものではありません．
 
 ## 確認した範囲と次の研究課題
 

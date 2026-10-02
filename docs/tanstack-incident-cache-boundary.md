@@ -60,6 +60,18 @@ GitHubの公開[job 75429692202](https://github.com/TanStack/router/actions/runs
 
 [生成モデルとNuSMV/BFSの結果](../results/tanstack-cache-chain/interleaving/evidence-index.json)では，事件前原本で244状態を探索し `AG !bad` に反例，対策版で240状態を探索し反例なしとなりました．独立BFSとNuSMVの判定は一致します．四つの未知条件をすべて成立させても，**PR側が保存してからrelease側が復元すると到達**し，**release側が先に復元するとそのrunでは到達しません**．前者が事後報告で記録された保存・復元の順序と整合しますが，モデルが実行時刻やcache実体を発見したわけではありません．これにより，単に「両workflowに同じkey式がある」という固定条件だけでは結果を決められず，run間の順序を表す必要があることを示しました．一方，探索スクリプトでも同じ結果を出せるため，NuSMVの必須性・性能優位・大規模workflowへの一般化は依然として主張しません．
 
+### 公開側2件を独立に進める追加検査
+
+[TanStackの事後報告](https://tanstack.com/blog/npm-supply-chain-compromise-postmortem)には，汚染cacheの保存後に復元した公開側runが2件記録されている．そこで，検出器が実YAMLから得たproducer・consumerの役割を保ち，公開側だけを2インスタンスに増やした[有界モデル](../tools/tanstack_two_consumers.py)を生成した．各公開側runの実効key一致・復元成功・汚染コード実行を**別々の未知値**とし，PR側の保存成否は共有する．実際のrun時刻やcache内容を判定入力には渡していない．
+
+| 固定した全成功条件での順序 | 事件前モデルの到達 | 対策版モデルの到達 |
+|---|---|---|
+| PR側の保存→両公開側の復元 | 1件目・2件目とも到達 | ともになし |
+| 1件目の復元→PR側の保存→2件目の復元 | 2件目のみ到達 | ともになし |
+| 両公開側の復元→PR側の保存 | ともになし | ともになし |
+
+[モデル・反例・全状態探索の結果](../results/tanstack-cache-chain/two-consumers/analysis-native.json)では，事件前はNuSMVの `AG !(bad1 | bad2)` が偽，対策版は真で，独立BFSと一致した．到達状態はそれぞれ5,968・5,760状態である．事後報告の保存時刻11:29 UTCと二つの復元runは1行目の順序に整合する．ただし，2件をモデル化しても各runの実cache entryや悪性コードの実行をモデルが観測したわけではなく，個別runの実行結果の立証は事後報告と公開jobメタデータに依拠する．この追加検査は**複数runを別々の状態として扱う必要性**を具体化するが，BFSも同じ判定を出すためNuSMV自体の不可欠性は示さない．
+
 ## 再実行
 
 原本を実行せず，ネットワーク無効の解析用Dockerでモデルを生成します．NuSMV 2.7.0の確認は生成物に対してホストで行います．
@@ -79,6 +91,14 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   python3 tools/tanstack_interleaving.py experiments/public-cases/tanstack \
   --output /analysis
 python3 tools/verify_tanstack_interleaving.py /tmp/tanstack-interleaving \
+  --nusmv /path/to/NuSMV
+
+mkdir -p /tmp/tanstack-two-consumers
+docker run --rm --network none -v "$PWD:/repo:ro" \
+  -v /tmp/tanstack-two-consumers:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/tanstack_two_consumers.py experiments/public-cases/tanstack \
+  --output /analysis
+python3 tools/verify_tanstack_two_consumers.py /tmp/tanstack-two-consumers \
   --nusmv /path/to/NuSMV
 ```
 

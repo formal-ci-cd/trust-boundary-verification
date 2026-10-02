@@ -1,0 +1,806 @@
+{
+  "schemaVersion": "cross-run-two-consumers-0.1",
+  "scope": "One PR producer and two release consumers from the same YAML-derived roles; initial cache clean; no eviction or third producer",
+  "property": "Neither release run executes PR-tainted bytes in its OIDC-enabled job",
+  "source": "YAML-derived roles; incident observations used only to choose two consumers, not to decide the verdict",
+  "unknownFacts": [
+    "save",
+    "key1",
+    "restore1",
+    "execute1",
+    "key2",
+    "restore2",
+    "execute2"
+  ],
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "producer": {
+        "workflow": "pre-incident/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request_target"
+      },
+      "consumer": {
+        "workflow": "pre-incident/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "cacheScopeCompatible": true,
+      "sourceEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "model": "pre-incident.smv",
+      "bfs": {
+        "verdict": "possible",
+        "reachableStates": 5968,
+        "witnessFacts": {
+          "save": true,
+          "key1": false,
+          "restore1": false,
+          "execute1": false,
+          "key2": true,
+          "restore2": true,
+          "execute2": true
+        },
+        "conditionalCounterexample": [
+          {
+            "actor": "producer",
+            "producerPC": 1,
+            "consumer1PC": 0,
+            "consumer2PC": 0,
+            "cacheTainted": false,
+            "restored1": false,
+            "restored2": false,
+            "bad1": false,
+            "bad2": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 2,
+            "consumer1PC": 0,
+            "consumer2PC": 0,
+            "cacheTainted": false,
+            "restored1": false,
+            "restored2": false,
+            "bad1": false,
+            "bad2": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 3,
+            "consumer1PC": 0,
+            "consumer2PC": 0,
+            "cacheTainted": false,
+            "restored1": false,
+            "restored2": false,
+            "bad1": false,
+            "bad2": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 4,
+            "consumer1PC": 0,
+            "consumer2PC": 0,
+            "cacheTainted": true,
+            "restored1": false,
+            "restored2": false,
+            "bad1": false,
+            "bad2": false
+          },
+          {
+            "actor": "consumer2",
+            "producerPC": 4,
+            "consumer1PC": 0,
+            "consumer2PC": 1,
+            "cacheTainted": true,
+            "restored1": false,
+            "restored2": true,
+            "bad1": false,
+            "bad2": false
+          },
+          {
+            "actor": "consumer2",
+            "producerPC": 4,
+            "consumer1PC": 0,
+            "consumer2PC": 2,
+            "cacheTainted": true,
+            "restored1": false,
+            "restored2": true,
+            "bad1": false,
+            "bad2": true
+          }
+        ]
+      },
+      "fixedFactSchedules": {
+        "saveBeforeBothRestores": {
+          "bad1": true,
+          "bad2": true,
+          "trace": [
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": true,
+              "restored1": true,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": true,
+              "restored2": true,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": true,
+              "restored2": true,
+              "bad1": true,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": true,
+              "restored1": true,
+              "restored2": true,
+              "bad1": true,
+              "bad2": true
+            }
+          ]
+        },
+        "saveBetweenRestores": {
+          "bad1": false,
+          "bad2": true,
+          "trace": [
+            {
+              "actor": "consumer1",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": true,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": true,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": true,
+              "bad1": false,
+              "bad2": true
+            }
+          ]
+        },
+        "saveAfterBothRestores": {
+          "bad1": false,
+          "bad2": false,
+          "trace": [
+            {
+              "actor": "consumer1",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": true,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "variant": "mitigation",
+      "producer": {
+        "workflow": "mitigation/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request"
+      },
+      "consumer": {
+        "workflow": "mitigation/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "cacheScopeCompatible": false,
+      "sourceEvidence": [
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "model": "mitigation.smv",
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 5760,
+        "witnessFacts": null,
+        "conditionalCounterexample": []
+      },
+      "fixedFactSchedules": {
+        "saveBeforeBothRestores": {
+          "bad1": false,
+          "bad2": false,
+          "trace": [
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 0,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            }
+          ]
+        },
+        "saveBetweenRestores": {
+          "bad1": false,
+          "bad2": false,
+          "trace": [
+            {
+              "actor": "consumer1",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            }
+          ]
+        },
+        "saveAfterBothRestores": {
+          "bad1": false,
+          "bad2": false,
+          "trace": [
+            {
+              "actor": "consumer1",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 0,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 0,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumer1PC": 1,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer1",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 1,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            },
+            {
+              "actor": "consumer2",
+              "producerPC": 4,
+              "consumer1PC": 2,
+              "consumer2PC": 2,
+              "cacheTainted": false,
+              "restored1": false,
+              "restored2": false,
+              "bad1": false,
+              "bad2": false
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

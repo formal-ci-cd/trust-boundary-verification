@@ -6,6 +6,8 @@
 
 **実際の攻撃者がIssueトリアージを入口にしたかは未確定です．** 発見者は当時のcache汚染を疑う実行記録を示す一方，初期侵入経路は不明と明記しています．[Clineの公式報告](https://cline.bot/blog/post-mortem-unauthorized-cline-cli-npm)によればソースリポジトリ自体は侵害されていません．本事例は「無断公開が起きたプロジェクトの対策前設定に存在した，CodeQLが対象警告を出さない条件付き経路」の検証であり，「実際の侵入経路を提案手法が再構成した」という証拠ではありません．
 
+2026年10月2日に公開GitHub Actions APIも再確認しました．研究者が異常を報告した1月31日～2月3日の期間には，[2月3日の夜間公開失敗run](https://github.com/cline/cline/actions/runs/21629559332/attempts/2)と[2月2日のnpm夜間公開失敗run](https://github.com/cline/cline/actions/runs/21601946486/attempts/1)などのrunメタデータが残っています．しかし，前者のjob APIではstep一覧が空で，詳細ログはHTTP 410でした．後者もjob APIのstep一覧は空です．従って公開APIから当時の `Post Checkout` 異常やcache復元を独立に再検証できず，失敗runの存在だけを侵害の証拠にはしません．この限界は発見者の画像による観測と区別します．
+
 2月9日の対策前の**全15 workflow**と[公式対策PR #9211](https://github.com/cline/cline/pull/9211)のマージ時の**全12 workflow**を固定し，同じ解析設定で比較しました．CodeQL CLI 2.27.1の標準・広いsuite，zizmor 1.30.1 regular，actionlint 1.7.12の警告には，対象の **公開Issue→AIのBash→default branch cache→夜間公開jobの資格情報** という経路を指摘するものはありません．提案側の限定YAML解析は，事件前にこの経路の**条件付き反例**を作り，対策後には経路なしと判定しました．NuSMV 2.7.0と独立BFSが一致します．
 
 事件前に利用可能だった**CodeQL CLI 2.24.1（2026年2月5日公開）と対応する `codeql/actions-queries@0.6.19`** でも同じ原本を再解析しました．標準suiteの警告数は事件前・対策後とも1件，広いsuiteでは8件・6件で，現在版と同じ対象外の規則・位置です．両suiteとも候補経路を結ぶ警告はありません．これは当時**利用可能だった版による遡及検査**であり，事件当日にClineがCodeQLを導入・実行していたことを意味しません．[完全なSARIFと検査条件](../results/cline-agent-cache-boundary/historical-codeql-2026-02/evidence-index.json)を保存しました．

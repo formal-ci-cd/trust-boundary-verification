@@ -10,7 +10,7 @@
 
 `experiments/public-cases/tanstack/manifest.json` は，事件前の `TanStack/router` コミット `b1c061aff9185cdf5fdc08c0136382a9dce0302f` と，対策後の `5d92d5aea3020e9db90b872a8c394c6fd0847c6d` から，各7 workflowとLICENSEを保存します．別repository `TanStack/config` の `.github/setup/action.yml` は，事件前の公開履歴上で最新だったmainコミット `1ba8c18d3eb01c208a59fc27c3076c9d10bdc9a8` の定義です．Actionファイルの最後の変更は `d8cef73c4209d91ca578274ce6f83770f64752d3` で，両コミットの内容が同じことを確認しました．ただし `@main` は可変参照で，事件当日の実行ログによる厳密な解決SHAは未確認です．全原本をSHA-256で照合します．攻撃payloadや汚染cacheの中身は保存していません．
 
-`tools/tanstack_cache_chain.py` は，manifestで対象として指定した `bundle-size.yml` と `release.yml` から，イベント・job条件・PR merge refへのcheckout・外部Action呼出し・Action内のcache key式とinstall・公開jobのOIDC権限と後続コマンドを読みます．リスクの有無をmanifestで注釈することはありませんが，**対象workflowの選択と外部Actionの原本取得には人手が残ります**．任意のActionやシェルの意味解析を行う汎用検出器ではありません．
+`tools/tanstack_cache_chain.py` は，両版の**全7 workflow**を走査し，イベント・job条件・PR merge refへのcheckout・外部Action呼出し・Action内のcache key式とinstall・公開jobのOIDC権限と後続コマンドから入口と出口を見つけます．manifestから対象workflow名の指定を削除し，名前を変えた対照例でも入口を発見することを確認しました．ただし，**外部Actionの原本取得と参照先の対応付けには人手が残ります**．任意のActionやシェルの意味解析を行う汎用検出器ではありません．
 
 | 段階 | YAMLから得られる事実 | YAMLだけでは不明なこと |
 |---|---|---|
@@ -26,12 +26,20 @@
 
 | ツール・評価 | 事件前 | 対策後 | 対象の読み取り |
 |---|---:|---:|---|
-| CodeQL default | 1件 | 1件 | 両版とも `bundle-size.yml:45` のcache poisoning警告 |
+| CodeQL default | 1件 | 1件 | 両版とも `bundle-size.yml:45` のcache poisoning警告．警告の起点は `workflow_dispatch` |
 | CodeQL security-and-quality | 14件 | 14件 | 両版とも対象workflowの同じcache警告とuntrusted checkout警告 |
 | zizmor regular | 50件 | 49件 | 事件前の `pull_request_target` に危険なtrigger警告．対象workflowへのcache poisoning警告は両版とも0件 |
 | 提案側の対象経路 | 条件付き反例あり | 対象経路なし | fork PRからmainのcacheを介してOIDC jobへ届く性質を区別 |
 
-CodeQLは事件前の危険な入口を**検出しています**．「CodeQLが見逃した実侵害」とは主張しません．一方で，対策後も同一のcache警告が残り，対象とした**fork→main cache→OIDC job**という性質について両版を区別しません．zizmorは危険なtriggerの有無を区別しますが，対象のcache経路自体は警告に含めていません．これが本事例で示せた追加の説明力です．CodeQLの警告は別の性質について有用な場合があるため，対策後の警告全体を誤検知とは扱いません．
+CodeQLは事件前の入口workflowのcheckout・cache利用箇所に**警告を出しています**．従って「CodeQL警告0件の実侵害」とは主張しません．ただし，保存済みSARIFのcache警告が示す起点は，実際の攻撃で用いられた `pull_request_target` ではなく，両版にある `workflow_dispatch` です．`benchmark-pr` jobの `if` は事件前には `github.event_name == 'pull_request_target'`，対策後には `github.event_name == 'pull_request'` なので，手動起動はこのjobの対象ではありません．CodeQLは対策後も同一のcache警告を出し，対象とした**fork→main cache→OIDC job**という性質について両版を区別しません．zizmorは危険なtriggerの有無を区別しますが，対象のcache経路自体は警告に含めていません．CodeQLの別の警告は別の性質について有用な場合があるため，対策後の警告全体を誤検知とは扱いません．
+
+### 無関係な手動起動イベントを除いた対照実験
+
+事件前の全7 workflowと外部Actionを保ち，`bundle-size.yml` の `workflow_dispatch:` **1行だけ**を削除した対照例を生成しました．これはupstreamの版ではありません．PRの `pull_request_target`，`benchmark-pr` jobの条件，PR merge refへのcheckout，cacheを使う外部Action，公開側のOIDC jobはすべて不変です．[生成器](../tools/materialize_tanstack_combined.py)に `--without-dispatch-control` を指定すると同じ入力を再作成でき，変更内容は[差分](../results/tanstack-cache-chain/without-workflow-dispatch-control/source.patch)にも保存しています．
+
+CodeQL CLI 2.27.1 / `actions-queries@0.6.36` は対照例でもActionsファイル8件をすべて抽出しました．通常suiteの警告は**1件から0件**，広いsuiteは**14件から13件**となり，対象のcache poisoning警告が消えました．広いsuiteには `untrusted-checkout/medium` など別の警告が残ります．zizmor regularは両入力50件で，対照例でも `dangerous-triggers` を入口workflowに出します．[全警告とchecksum](../results/tanstack-cache-chain/without-workflow-dispatch-control/comparison.json)を保存しました．
+
+提案モデルでは事件前原本と対照例の両方で，`pull_request_target`→main cache→OIDC jobの**同じ条件付き反例**が残ります．SMVのSHA-256も一致し，NuSMVとBFSは `AG !bad` が偽で一致しました．この1行対照は，固定したCodeQL通常suiteの警告が実際に悪用されたPR経路を追跡していなかったことを示します．ただし対照例でもzizmorは危険なtriggerを警告し，キャッシュの実際の保存・復元や任意の未対応経路まで証明したわけではありません．
 
 ## 反例と実事件の照合
 

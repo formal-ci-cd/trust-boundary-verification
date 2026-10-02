@@ -7,8 +7,6 @@
   "mitigationCommit": "5d92d5aea3020e9db90b872a8c394c6fd0847c6d",
   "snapshotScope": "all 7 workflow files and license at each repository commit; external setup Action pinned separately; no attacker payload",
   "separateCombinedInputEvaluation": true,
-  "incidentEntryWorkflow": "bundle-size.yml",
-  "incidentAuthorityWorkflow": "release.yml",
   "externalAction": {
     "repository": "https://github.com/TanStack/config",
     "workflowReference": "TanStack/config/.github/setup@main",

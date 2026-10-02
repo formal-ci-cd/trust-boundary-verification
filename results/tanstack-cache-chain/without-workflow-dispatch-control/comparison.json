@@ -1,0 +1,38 @@
+{
+  "purpose": "Test whether CodeQL's original cache warning follows the exploited fork pull_request_target path or an unrelated workflow_dispatch event.",
+  "source": "The pinned pre-incident TanStack workflow plus one deleted workflow_dispatch event line; this control is not an upstream revision or an incident observation.",
+  "controlGenerator": "tools/materialize_tanstack_combined.py --variant pre-incident --without-dispatch-control",
+  "changedFile": ".github/workflows/bundle-size.yml",
+  "originalSHA256": "bf76e0e879713dbfe808a06a43555376466175f29731d1fcaf34f41f5db355f4",
+  "controlSHA256": "6c7ac246a3fd3d99fbeddef626a35e45c398cefb0c8e4c1253b02791f084c9e8",
+  "incidentEntryRetained": "pull_request_target and its benchmark-pr job are unchanged",
+  "codeql": {
+    "cli": "2.27.1",
+    "queryPack": "codeql/actions-queries@0.6.36",
+    "extractedActionsFiles": 8,
+    "originalDefault": {"total": 1, "cachePoisoning": 1, "alertEvent": "workflow_dispatch"},
+    "controlDefault": {"total": 0, "cachePoisoning": 0},
+    "originalSecurityAndQuality": {"total": 14, "cachePoisoning": 1},
+    "controlSecurityAndQuality": {"total": 13, "cachePoisoning": 0, "untrustedCheckoutMedium": 1}
+  },
+  "zizmorRegular": {
+    "version": "1.30.1",
+    "originalTotal": 50,
+    "controlTotal": 50,
+    "controlDangerousTriggersOnEntryWorkflow": 1
+  },
+  "proposedModel": {
+    "originalVerdict": "possible",
+    "controlVerdict": "possible",
+    "conditionalCounterexampleInBoth": true,
+    "modelSHA256InBoth": "bf27aee30dc223a3953d881a553021d1ede431539c51ee66fd6b2bc659992719",
+    "effectiveCacheKeySaveRestoreAndExecutionRemainUnknown": true
+  },
+  "files": [
+    {"path": "source.patch", "sha256": "511019d41154463a1d3a07c8538db3a079ed172f5a224478f53961efbc9837e6"},
+    {"path": "codeql-default.sarif.gz", "sha256": "187e7029327e9802ee14332620670a2893b8b7ccbb064bf5d3795590024f5fb0"},
+    {"path": "codeql-security-and-quality.sarif.gz", "sha256": "323655b097b5e83286596fe0d0500c9306f731d59f5ec6a7e72a29da581333cc"},
+    {"path": "zizmor-regular.sarif.gz", "sha256": "bbb60339dadfcb8ec18ece5cacbab2ab09fadc484086a2f3f92061abfe8d4c43"},
+    {"path": "analysis.json", "sha256": "dcac9aa0026b952c909fcbae92d559de42a3d7388c53375f4a53ea185a699cd9"}
+  ]
+}

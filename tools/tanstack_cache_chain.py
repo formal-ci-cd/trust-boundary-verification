@@ -99,9 +99,6 @@ def analyze(root, variant, manifest):
     producers = []
     consumers = []
     for path in sorted(workflow_root.glob('*.yml')):
-        if path.name not in {manifest['incidentEntryWorkflow'],
-                             manifest['incidentAuthorityWorkflow']}:
-            continue
         workflow = load(path)
         for job_id, job in workflow.get('jobs', {}).items():
             if not isinstance(job, dict):

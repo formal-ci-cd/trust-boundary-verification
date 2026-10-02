@@ -1,0 +1,71 @@
+{
+  "codeql": {
+    "historical": {
+      "cli": "2.24.1",
+      "pack": "codeql/actions-queries@0.6.19",
+      "availableBeforeIncident": true
+    },
+    "current": {
+      "cli": "2.27.1",
+      "pack": "codeql/actions-queries@0.6.36",
+      "availableBeforeIncident": false
+    }
+  },
+  "cases": {
+    "historical-original": {
+      "sarif": "historical-original.sarif.gz",
+      "sha256": "ce05dae1c61989fe9efee95f0f1af7418e1a7764d08cf9557a0d8cf95ce1c954",
+      "extractedActionsFiles": 3,
+      "totalAlerts": 7,
+      "targetWorkflowAlerts": [
+        {
+          "rule": "actions/cache-poisoning/poisonable-step",
+          "line": 24
+        },
+        {
+          "rule": "actions/cache-poisoning/poisonable-step",
+          "line": 27
+        }
+      ],
+      "rules": {
+        "actions/cache-poisoning/poisonable-step": 4,
+        "actions/missing-workflow-permissions": 1,
+        "actions/untrusted-checkout/critical": 2
+      }
+    },
+    "historical-fork-control": {
+      "sarif": "historical-fork-control.sarif.gz",
+      "sha256": "7cf41aeb493e3eba5c22605c9b4947a02781c9ce3d50890a7ab13dd44cb56082",
+      "extractedActionsFiles": 3,
+      "totalAlerts": 5,
+      "targetWorkflowAlerts": [],
+      "rules": {
+        "actions/cache-poisoning/poisonable-step": 2,
+        "actions/missing-workflow-permissions": 1,
+        "actions/untrusted-checkout/critical": 2
+      }
+    },
+    "current-original": {
+      "sarif": "current-original.sarif.gz",
+      "sha256": "c6a802ca69b82edac90c39f4e90835ed027c530929130520ace5d05c3dab9d37",
+      "extractedActionsFiles": 3,
+      "totalAlerts": 2,
+      "targetWorkflowAlerts": [],
+      "rules": {
+        "actions/missing-workflow-permissions": 1,
+        "actions/untrusted-checkout/critical": 1
+      }
+    },
+    "current-fork-control": {
+      "sarif": "current-fork-control.sarif.gz",
+      "sha256": "2f1ca3d0b95b0bde35082bff07a20296b73ee7ed5683c55a705bc1fe625af4ac",
+      "extractedActionsFiles": 3,
+      "totalAlerts": 2,
+      "targetWorkflowAlerts": [],
+      "rules": {
+        "actions/missing-workflow-permissions": 1,
+        "actions/untrusted-checkout/critical": 1
+      }
+    }
+  }
+}

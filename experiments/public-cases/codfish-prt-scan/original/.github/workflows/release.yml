@@ -1,0 +1,45 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+      - alpha
+      - beta
+      - canary
+      - next
+      - next-major
+      - '[0-9]+.x'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # to be able to publish a GitHub release
+      issues: write # to be able to comment on released issues
+      pull-requests: write # to be able to comment on released pull requests
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: codfish/actions/setup-node-and-install@v3
+        with:
+          node-version: lts/*
+          # Required until all ESLint plugins update their peer dependencies to support ESLint 10
+          install-options: --legacy-peer-deps
+
+      - name: validate & build before release
+        run: |
+          npm install --no-save --legacy-peer-deps
+          npm run lint
+          npm run typecheck
+          npm run build
+        env:
+          CI: true
+
+      - name: semantic release
+        uses: docker://ghcr.io/codfish/semantic-release-action@sha256:c6a4e05d93f73f2870887434c1286df7a23a55770be16cb826b6e2432f92e650
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

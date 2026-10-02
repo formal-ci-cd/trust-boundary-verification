@@ -24,6 +24,14 @@ CodeQL CLI 2.27.1 / `codeql/actions-queries@0.6.36` はこの1ファイルを抽
 
 事件前に公開済みのCodeQL CLI **2.24.1**（[2026年2月5日公開](https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.24.1/)）とActions query pack **0.6.19**の通常suiteで，この1 workflowをネットワーク無効のDockerで解析しました．1/1ファイルを抽出し，local `setup-go` Actionの64行目を `actions/untrusted-checkout/critical` と警告しました．CLI 2.27.1 / pack 0.6.36でも59行目のPR側checkoutを同じ規則で警告しました．[両版の完全なSARIF](../results/trivy-screening/evidence-index.json)を保存しました．実際の攻撃がどのjob stepまで達したかをSARIFだけで立証するものではありませんが，入口が無警告の実侵害例ではないため，排他的検出候補から除外します．
 
+## codfishのPR版npm公開：当時のCodeQLが危険な入口とfork除外を区別
+
+[Wizの2026年4月の調査](https://www.wiz.io/blog/six-accounts-one-actor-inside-the-prt-scan-supply-chain-campaign)は，`prt-scan` 攻撃で `@codfish/eslint-config` と `@codfish/actions` の少なくとも2パッケージに計106版が公開されたと報告する．`codfish/eslint-config` の事件前コミット `684a1bd3849a470662952cb8f6d6fcfcc022bd2d` にある[全3 workflowの固定原本](../experiments/public-cases/codfish-prt-scan/manifest.json)を確認した．`pr.yml` は `pull_request_target` でPR側をcheckoutし，`build` jobでtarballをuploadし，別の `publish` jobがそれをdownloadして `codfish/actions/npm-publish-pr@v3` に `NPM_TOKEN` を渡す．外部Actionも事件前コミット `a63e69e03fa870a3056f9a5bd0729d12f4e0138e` から固定したが，**可変タグ `v3` が攻撃時にこの実体を指した証拠はない**．具体的な攻撃PRと当該npm版の対応も公開APIから独立に特定できていない．
+
+forkからのPRを除外する `if: github.event.pull_request.head.repo.full_name == github.repository` を `build` jobに**1行だけ加えた研究用対照**を作り，固定原本と同じ3 workflowをネットワーク無効のDockerで解析した．事件前に利用可能だったCodeQL CLI **2.24.1** / `actions-queries@0.6.19` の通常suiteは原本3/3ファイルを抽出し，**対象 `pr.yml` のビルドstepに `actions/cache-poisoning/poisonable-step` 2件**を報告した．対照の対象workflowでは0件になった．全警告数は原本7件，対照5件であり，残りは別の `validate.yml` を指す．後年のCLI 2.27.1 / pack 0.6.36では対象workflowの警告は原本・対照とも0件だったが，この版だけの差を事件当時の優位性と扱わない．[4入力の完全なSARIFとchecksum](../results/codfish-prt-scan-screening/evidence-index.json)を保存した．
+
+当時版CodeQLの警告はtarballを受け取る公開側jobまで一つの経路として示すものではない．しかし，**実際に外部PRを処理する入口を警告し，有効なfork除外対照ではその警告を消している**．よって「当時のCodeQLがこの実侵害設定を検出できず，提案手法だけが危険と安全を区別した」という候補には採用しない．また，Wizが報告した公開版すべてが保存したPR jobから生じたことを，ここで独立に立証したわけではない．
+
 ## SpotBugsからreviewdogへの侵害：CodeQL通常suiteには警告なし，提案側は条件付き経路を検出
 
 結果と限界を[独立した事例資料](spotbugs-incident-case-study.md)にも整理した．

@@ -155,6 +155,22 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   --output /analysis/conditional-chain-analysis.json
 ```
 
+同じ入力から有限状態モデルを作る場合は，次をネットワーク無効のコンテナ内で実行します．研究用対照版は `safe-ref-control/` に保存した1箇所だけ変更したYAMLです．生成後，ホストのNuSMVで `.smv` を実行し，保存済みの[原本](../results/spotbugs-screening/model-original/nusmv-output.txt)・[対照版](../results/spotbugs-screening/model-safe-ref-control/nusmv-output.txt)と比較できます．
+
+```sh
+mkdir -p /tmp/spotbugs-model-original /tmp/spotbugs-model-control
+docker run --rm --network none -v "$PWD:/repo:ro" -v /tmp/spotbugs-model-original:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/conditional_checkout_model.py experiments/public-cases/spotbugs-chain \
+  experiments/public-cases/spotbugs-chain/external-action-cond \
+  --external-name haya14busa/action-cond --external-version v1 --output /analysis
+docker run --rm --network none -v "$PWD:/repo:ro" -v /tmp/spotbugs-model-control:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/conditional_checkout_model.py experiments/public-cases/spotbugs-chain/safe-ref-control \
+  experiments/public-cases/spotbugs-chain/external-action-cond \
+  --external-name haya14busa/action-cond --external-version v1 --output /analysis
+NuSMV /tmp/spotbugs-model-original/conditional-checkout.smv
+NuSMV /tmp/spotbugs-model-control/conditional-checkout.smv
+```
+
 CodeQLとの比較では，まず原本workflowだけを入力した通常suite・広いsuiteを実行します．加えて外部Actionの `action.yml` と `dist/index.js` を `.github/actions/action-cond/` に置いた合成入力を用います．合成入力でもworkflowの `uses: haya14busa/action-cond@v1` は書き換えません．CodeQL Actionsが抽出したのは2件のYAMLで，JSファイルの意味解析まで確認したものではありません．両入力の完全なSARIFと条件は[比較索引](../results/spotbugs-screening/evidence-index.json)に保存しました．
 
 ## 今回の実行環境

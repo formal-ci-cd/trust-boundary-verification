@@ -1,0 +1,49 @@
+{
+  "status": "analyzed",
+  "config": {
+    "file": ".github/workflows/sonarqube.yml",
+    "job": "build",
+    "event": "pull_request_target",
+    "prRefSelected": false,
+    "selectorRef": "${{ github.sha }}",
+    "localCommand": "./mvnw",
+    "configuredSecrets": [
+      "PAT_TO_FORK",
+      "SONAR_TOKEN"
+    ],
+    "evidence": [
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 35,
+        "step": 0,
+        "role": "selector"
+      },
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 42,
+        "step": 1,
+        "role": "checkout"
+      },
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 59,
+        "step": 4,
+        "role": "local-executable"
+      }
+    ]
+  },
+  "property": "PR-controlled local executable never runs with a configured secret in a pull_request_target job.",
+  "assumptions": [
+    "The mutable external Action tag resolves to the supplied implementation at run time.",
+    "The job repository condition holds; PR merge ref exists; checkout and local command may succeed.",
+    "The configured secret may be available. This model does not assert exfiltration or actual CI execution."
+  ],
+  "bfs": {
+    "verdict": "safe",
+    "reachableStates": 160,
+    "counterexample": []
+  }
+}

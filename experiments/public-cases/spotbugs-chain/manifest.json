@@ -11,6 +11,11 @@
   "currentTagTarget": "94f77f7a80cd666cb3155084e428254fea4281fd",
   "taggerDate": "2024-02-09T14:19:27Z",
   "historicalRuntimeTarget": "unknown; mutable tag could have moved after the incident",
+  "researchControl": {
+    "path": "safe-ref-control/.github/workflows/sonarqube.yml",
+    "sha256": "23ca67ac199341c3a1e13e11ec1f93e31ed450d41e9a246dd8c163f8748b6280",
+    "edit": "Only if_true changes from the PR merge ref to ${{ github.sha }}; this is not an upstream fix"
+  },
   "files": [
     {
       "repository": "spotbugs/sonar-findbugs",

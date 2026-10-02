@@ -68,6 +68,26 @@ class ConditionalCheckoutModelTests(unittest.TestCase):
             self.assertEqual(details['original']['alerts'],
                              details['safeRefControl']['alerts'], suite)
 
+    def test_saved_other_scanners_control_comparison(self):
+        results = ROOT / 'results/spotbugs-screening'
+        comparison = json.loads((results / 'additional-control-scanners-comparison.json').read_text())
+        original = 'experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml'
+        control = 'experiments/public-cases/spotbugs-chain/safe-ref-control/.github/workflows/sonarqube.yml'
+        for tool, details in comparison['tools'].items():
+            normalized = []
+            for variant, path in [('original', original), ('control', control)]:
+                record = details['variants'][variant]
+                archive = results / record['path']
+                self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),
+                                 record['sha256'])
+                with gzip.open(archive, 'rt') as f:
+                    hits = json.load(f)['runs'][0]['results']
+                self.assertEqual(len(hits), record['count'], tool)
+                self.assertEqual(sorted(item['ruleId'] for item in hits),
+                                 record['rules'], tool)
+                normalized.append(json.dumps(hits, sort_keys=True).replace(path, 'WORKFLOW'))
+            self.assertEqual(normalized[0], normalized[1], tool)
+
 
 if __name__ == '__main__':
     unittest.main()

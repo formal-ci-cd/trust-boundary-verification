@@ -1,0 +1,96 @@
+{
+  "scope": "Pinned SpotBugs workflow and one-edit research control; retrospective offline comparison",
+  "inputs": {
+    "originalSha256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+    "controlSha256": "23ca67ac199341c3a1e13e11ec1f93e31ed450d41e9a246dd8c163f8748b6280"
+  },
+  "tools": {
+    "zizmor": {
+      "version": "1.30.1",
+      "variants": {
+        "original": {
+          "path": "zizmor-1.30.1-control-rerun-original.sarif.gz",
+          "sha256": "c12df24fb0f7616ec47560eafb3d2ebfe606979e26372a80d8a4aff3fec69c01",
+          "count": 8,
+          "rules": [
+            "zizmor/artipacked",
+            "zizmor/cache-poisoning",
+            "zizmor/cache-poisoning",
+            "zizmor/dangerous-triggers",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses"
+          ]
+        },
+        "control": {
+          "path": "zizmor-1.30.1-safe-ref-control.sarif.gz",
+          "sha256": "76cf6333872e82b1e1cd1da57b566fb242a412eaf91ed0cc3d9c64c91bf169f1",
+          "count": 8,
+          "rules": [
+            "zizmor/artipacked",
+            "zizmor/cache-poisoning",
+            "zizmor/cache-poisoning",
+            "zizmor/dangerous-triggers",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses"
+          ]
+        }
+      },
+      "sameResultsAfterPathNormalization": true
+    },
+    "sisakulint": {
+      "version": "0.3.7",
+      "variants": {
+        "original": {
+          "path": "sisakulint-0.3.7-control-rerun-original.sarif.gz",
+          "sha256": "e4c823ed8dff0c8a19ca6ed8933c209f5bc8fc6f6cf866350b5b1698aa219646",
+          "count": 15,
+          "rules": [
+            "artipacked",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning-poisonable-step",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "dangerous-triggers-critical",
+            "dependabot-ecosystem",
+            "dependabot-github-actions",
+            "deprecated-node-runtime",
+            "deprecated-node-runtime",
+            "untrusted-checkout"
+          ]
+        },
+        "control": {
+          "path": "sisakulint-0.3.7-safe-ref-control.sarif.gz",
+          "sha256": "25a1df525e5a28852a8aba0c6e226da3f0799f27d1b54bb53511fd3f42264324",
+          "count": 15,
+          "rules": [
+            "artipacked",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning-poisonable-step",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "dangerous-triggers-critical",
+            "dependabot-ecosystem",
+            "dependabot-github-actions",
+            "deprecated-node-runtime",
+            "deprecated-node-runtime",
+            "untrusted-checkout"
+          ]
+        }
+      },
+      "sameResultsAfterPathNormalization": true
+    }
+  },
+  "interpretation": "CodeQL 2.27.1, zizmor 1.30.1 regular, and sisakulint 0.3.7 produce the same alerts for the original and one-edit control after only the input path is normalized. sisakulint explicitly warns about untrusted checkout and a poisonable local step on both inputs; this comparison supports property-specific discrimination, not exclusive detection of a dangerous workflow."
+}

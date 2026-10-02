@@ -72,6 +72,8 @@ GitHubの公開[job 75429692202](https://github.com/TanStack/router/actions/runs
 
 [モデル・反例・全状態探索の結果](../results/tanstack-cache-chain/two-consumers/analysis-native.json)では，事件前はNuSMVの `AG !(bad1 | bad2)` が偽，対策版は真で，独立BFSと一致した．到達状態はそれぞれ5,968・5,760状態である．事後報告の保存時刻11:29 UTCと二つの復元runは1行目の順序に整合する．ただし，2件をモデル化しても各runの実cache entryや悪性コードの実行をモデルが観測したわけではなく，個別runの実行結果の立証は事後報告と公開jobメタデータに依拠する．この追加検査は**複数runを別々の状態として扱う必要性**を具体化するが，BFSも同じ判定を出すためNuSMV自体の不可欠性は示さない．
 
+観測記録を検出入力から分けたまま，`tools/verify_tanstack_observation_alignment.py` で[事後報告と公開stepメタデータの照合](../results/tanstack-cache-chain/two-consumers/observation-alignment.json)も自動化した．報告されたcache保存は11:29 UTC，公開stepメタデータの `Setup Tools` 開始は二つのrunで19:16:20 UTCと19:21:17 UTCで，両runとも保存後に始まった．同stepは両方成功し，`Run Tests` は失敗，通常の `Publish Packages` はskipだった．これは**時系列とstep結果がモデルの条件付き実行に整合する**ことを示す．stepメタデータだけでは，実際にどのcache entryを復元したか，汚染byteを実行したか，OIDCを使って直接公開したかは独立に確認できない．
+
 ## 再実行
 
 原本を実行せず，ネットワーク無効の解析用Dockerでモデルを生成します．NuSMV 2.7.0の確認は生成物に対してホストで行います．
@@ -100,6 +102,11 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   --output /analysis
 python3 tools/verify_tanstack_two_consumers.py /tmp/tanstack-two-consumers \
   --nusmv /path/to/NuSMV
+python3 tools/verify_tanstack_observation_alignment.py \
+  /tmp/tanstack-two-consumers/analysis-native.json \
+  experiments/public-cases/tanstack/incident-observation.json \
+  results/tanstack-cache-chain/public-run-metadata.json \
+  --output /tmp/tanstack-two-consumers/observation-alignment.json
 ```
 
 比較用のSARIFとそのchecksum・警告内訳は `results/tanstack-cache-chain/evidence-index.json` に記録しています．既存ツールへ渡した入力は原本workflow7件と外部Action定義1件を同じバイト列で解析専用ディレクトリに配置したものです．

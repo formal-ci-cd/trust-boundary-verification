@@ -20,6 +20,7 @@ class AttackPRAlignmentTests(unittest.TestCase):
         self.assertEqual(result['status'], 'aligned')
         self.assertEqual(result['alignment'][0]['changedFile'], 'mvnw')
         self.assertEqual(result['alignment'][0]['sinkCommand'], './mvnw')
+        self.assertTrue(result['alignment'][0]['addedUnconditionalRemoteShellBeforeMaven'])
 
     def case_with_metadata_change(self, change):
         with tempfile.TemporaryDirectory() as temp:
@@ -27,6 +28,7 @@ class AttackPRAlignmentTests(unittest.TestCase):
             shutil.copy(CASE / 'manifest.json', root / 'manifest.json')
             shutil.copytree(CASE / '.github', root / '.github')
             shutil.copytree(CASE / 'external-action-cond', root / 'external-action-cond')
+            shutil.copy(CASE / 'attack-pr-files.json', root / 'attack-pr-files.json')
             data = json.loads((CASE / 'attack-pr-metadata.json').read_text())
             change(data)
             (root / 'attack-pr-metadata.json').write_text(json.dumps(data))
@@ -47,6 +49,19 @@ class AttackPRAlignmentTests(unittest.TestCase):
         changed['findings'] = []
         with self.assertRaisesRegex(ValueError, 'analysis'):
             alignment.verify(CASE, changed)
+
+    def test_attack_diff_digest_is_required(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            shutil.copy(CASE / 'manifest.json', root / 'manifest.json')
+            shutil.copy(CASE / 'attack-pr-metadata.json', root / 'attack-pr-metadata.json')
+            shutil.copy(CASE / 'attack-pr-files.json', root / 'attack-pr-files.json')
+            shutil.copytree(CASE / '.github', root / '.github')
+            shutil.copytree(CASE / 'external-action-cond', root / 'external-action-cond')
+            p = root / 'attack-pr-files.json'
+            p.write_text(p.read_text().replace('gist.githubusercontent.com', 'example.invalid'))
+            with self.assertRaisesRegex(ValueError, 'digest'):
+                alignment.verify(root, ANALYSIS)
 
 
 if __name__ == '__main__':

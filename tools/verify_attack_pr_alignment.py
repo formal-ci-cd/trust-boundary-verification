@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Join public PR file metadata to a detected local-executable path.
+"""Join a public attack PR diff to a detected local-executable path.
 
-This checks the attacker's changed filename, not payload behavior or CI runtime.
+The diff is untrusted input. It is inspected as text and never executed;
+remote script contents and CI runtime are outside this check.
 """
 import argparse
 import hashlib
@@ -14,6 +15,12 @@ import conditional_checkout_chain
 def verify(case, analysis):
     manifest = json.loads((case / 'manifest.json').read_text())
     pr = json.loads((case / manifest['attackPR']['metadataFile']).read_text())
+    files_path = case / manifest['attackPR']['filesFile']
+    if hashlib.sha256(files_path.read_bytes()).hexdigest() != manifest['attackPR']['filesSha256']:
+        raise ValueError('Pinned attack PR files digest mismatch')
+    pr_files = json.loads(files_path.read_text())
+    if len(pr_files) != 1 or len(pr['changedFiles']) != 1:
+        raise ValueError('Expected exactly one attack PR changed file')
     for source in manifest['files']:
         digest = hashlib.sha256((case / source['localPath']).read_bytes()).hexdigest()
         if digest != source['sha256']:
@@ -44,17 +51,33 @@ def verify(case, analysis):
                         and f['status'] == 'modified'
                         and re.fullmatch(r'[0-9a-f]{40}', f['sha'])), None)
         if changed:
+            diff = pr_files[0]
+            if (diff['filename'] != changed['filename'] or diff['sha'] != changed['sha']
+                    or diff['status'] != 'modified'):
+                raise ValueError('Attack PR diff does not match file metadata')
+            patch = diff.get('patch', '')
+            added = [line[1:] for line in patch.splitlines()
+                     if line.startswith('+') and not line.startswith('+++')]
+            piped_shell = [line for line in added if re.fullmatch(
+                r'curl\s+-sSfL\s+https://gist\.githubusercontent\.com/\S+\s+\|\s+bash\s*>\s*/dev/null\s+2>&1',
+                line)]
+            if len(piped_shell) != 1 or patch.index('+' + piped_shell[0]) > patch.index(' if [ -z "$MAVEN_SKIP_RC" ]; then'):
+                raise ValueError('No matching added command before the Maven launcher body')
             joined.append(dict(prNumber=pr['number'], prHead=pr['head']['sha'],
                                changedFile=changed['filename'], changedBlob=changed['sha'],
                                workflowCommit=workflow['commit'],
                                sinkCommand=command,
-                               sinkEvidence=finding['evidence'][-1]))
+                               sinkEvidence=finding['evidence'][-1],
+                               prDiffSha256=manifest['attackPR']['filesSha256'],
+                               addedUnconditionalRemoteShellBeforeMaven=True,
+                               remoteHost='gist.githubusercontent.com'))
     return dict(status='aligned' if joined else 'no-attack-file-alignment',
                 alignment=joined,
-                interpretation=('The attack PR changed the exact local executable '
-                                'on the detected conditional path. This does not '
-                                'prove the external Action tag target, CI execution, '
-                                'secret availability, or exfiltration.'))
+                interpretation=('The attack PR added a remote shell download piped to bash '
+                                'near the start of the exact local executable on the detected '
+                                'conditional path. Remote contents were not fetched. This does '
+                                'not prove the external Action tag target, CI execution, secret '
+                                'availability, or exfiltration.'))
 
 
 def main():

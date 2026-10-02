@@ -3,7 +3,10 @@
   "attackPR": {
     "number": 1116,
     "metadataFile": "attack-pr-metadata.json",
-    "source": "https://github.com/spotbugs/sonar-findbugs/pull/1116"
+    "source": "https://github.com/spotbugs/sonar-findbugs/pull/1116",
+    "filesFile": "attack-pr-files.json",
+    "filesSha256": "8cf2f9ada130673afeadcd7d6e7f34a5471f2226937e667e9079fbf23407f1e1",
+    "filesSource": "https://api.github.com/repos/spotbugs/sonar-findbugs/pulls/1116/files"
   },
   "workflowLicenseDeclaration": "https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/pom.xml#L22-L28",
   "externalActionTag": "v1",

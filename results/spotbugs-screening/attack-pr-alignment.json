@@ -14,8 +14,11 @@
         "line": 59,
         "step": 4,
         "role": "local-executable-with-secrets"
-      }
+      },
+      "prDiffSha256": "8cf2f9ada130673afeadcd7d6e7f34a5471f2226937e667e9079fbf23407f1e1",
+      "addedUnconditionalRemoteShellBeforeMaven": true,
+      "remoteHost": "gist.githubusercontent.com"
     }
   ],
-  "interpretation": "The attack PR changed the exact local executable on the detected conditional path. This does not prove the external Action tag target, CI execution, secret availability, or exfiltration."
+  "interpretation": "The attack PR added a remote shell download piped to bash near the start of the exact local executable on the detected conditional path. Remote contents were not fetched. This does not prove the external Action tag target, CI execution, secret availability, or exfiltration."
 }

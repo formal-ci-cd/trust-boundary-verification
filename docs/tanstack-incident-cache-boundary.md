@@ -54,6 +54,12 @@ GitHubの公開[job 75429692202](https://github.com/TanStack/router/actions/runs
 
 この事例は，複数workflowと外部Actionにまたがる信頼境界を，守りたい性質と反例として説明できることを示します．BFSも同じ判定を出すため，NuSMVという製品固有の必須性や大規模性はまだ示していません．実runner上で攻撃を再実行した結果でもありません．
 
+### 二つのrunの順序を独立に探索する追加モデル
+
+従来のモデルは「PR側の保存→release側の復元」を固定順序としていました．追加した [`tanstack_interleaving.py`](../tools/tanstack_interleaving.py) は，同じ固定YAMLから抽出したproducer・consumerとcache scopeを使い，**一つのPR runと一つのrelease runを別々に進める**NuSMVモデルを生成します．PR側はcheckout・Setup・build・終了時のcache保存，release側はcache復元・コード利用の進行点を持ちます．保存成功を含む汚染entryの作成，実効key一致，復元成功，汚染コード実行は未知の真偽値のままです．初期cacheは清浄で，cacheの削除や別runからの書込みは扱いません．
+
+[生成モデルとNuSMV/BFSの結果](../results/tanstack-cache-chain/interleaving/evidence-index.json)では，事件前原本で244状態を探索し `AG !bad` に反例，対策版で240状態を探索し反例なしとなりました．独立BFSとNuSMVの判定は一致します．四つの未知条件をすべて成立させても，**PR側が保存してからrelease側が復元すると到達**し，**release側が先に復元するとそのrunでは到達しません**．前者が事後報告で記録された保存・復元の順序と整合しますが，モデルが実行時刻やcache実体を発見したわけではありません．これにより，単に「両workflowに同じkey式がある」という固定条件だけでは結果を決められず，run間の順序を表す必要があることを示しました．一方，探索スクリプトでも同じ結果を出せるため，NuSMVの必須性・性能優位・大規模workflowへの一般化は依然として主張しません．
+
 ## 再実行
 
 原本を実行せず，ネットワーク無効の解析用Dockerでモデルを生成します．NuSMV 2.7.0の確認は生成物に対してホストで行います．
@@ -65,6 +71,14 @@ docker run --rm --network none -v "$PWD:/repo:ro" \
   python3 tools/tanstack_cache_chain.py experiments/public-cases/tanstack \
   --output /analysis
 python3 tools/verify_tanstack_models.py /tmp/tanstack-analysis \
+  --nusmv /path/to/NuSMV
+
+mkdir -p /tmp/tanstack-interleaving
+docker run --rm --network none -v "$PWD:/repo:ro" \
+  -v /tmp/tanstack-interleaving:/analysis -w /repo trust-boundary-analysis \
+  python3 tools/tanstack_interleaving.py experiments/public-cases/tanstack \
+  --output /analysis
+python3 tools/verify_tanstack_interleaving.py /tmp/tanstack-interleaving \
   --nusmv /path/to/NuSMV
 ```
 

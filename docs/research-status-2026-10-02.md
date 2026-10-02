@@ -9,7 +9,7 @@
 | 課題 | 今回できたこと | 残る課題 |
 |---|---|---|
 | 人手の注釈をなくす | 限定したartifact metadata → step output → checkout ref → git pushの経路と，consumerのfork除外条件・設定されたcontents権限を自動で取得し，根拠付きJSON・SMVを生成 | 任意のshell，独自Action，reusable workflow，実行時の成功・artifact ID，検査の一般的な意味解析は未対応．既存A1～A5の手動注釈を全て置換したわけではない |
-| モデル検査の意義を調べる | 既存の固定事実モデルを直接判定するbaselineと比較．さらに書換え可能な共有ファイルの検査・置換・利用順序をNuSMV/BFS/無害なファイル操作で比較 | BFSでも同じ判定ができる．モデル検査の必須性・大規模な実workflowでの優位性は未証明．並行モデルはYAMLから自動生成していない |
+| モデル検査の意義を調べる | 既存の固定事実モデルを直接判定するbaselineと比較．書換え可能な共有ファイルの検査・置換・利用順序をNuSMV/BFS/無害なファイル操作で比較．TanStackでは固定YAMLから得た二つのrunの役割を使って保存・復元の順序を探索 | BFSでも同じ判定ができる．モデル検査の必須性・大規模な実workflowでの優位性は未証明．一般的な並行モデルのYAML自動生成には未対応 |
 | YAMLを直接読む | PyYAMLによる入力経路を追加．`on`キー，全文runブロック，job/stepの条件・env・行位置を保持．CodeQL側も全文を抽出できるよう修正 | GitHubの式やActionの意味までYAMLライブラリが理解するわけではない．フロントエンドの構造一致は意味解析全般の同等性ではない |
 | 実在事例で比較する | attest，marimo，Ultralytics，TanStack，Cline，SpotBugsの公開原本を取得．Clineでは無断公開が起きたプロジェクトの対策前設定にあった候補経路にCodeQL・zizmor・actionlintの対象警告がなく，限定モデルが事件前だけ条件付き反例．TanStackは公開されたcache保存・復元記録と照合．SpotBugsではCodeQL通常suiteの警告0件に対し，限定解析が実攻撃入口からsecretを設定した実行stepまでを接続 | ClineのAI入口はPromptPwndが，SpotBugsの未信頼checkoutはsisakulintが警告．モデル内のruntime条件は未観測．ツール一般に対する排他的優位性は未達 |
 
@@ -57,6 +57,8 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 `restore → verify → replace → use` の順序で違反に到達します．同じsnapshotを検査・利用する構成と，利用時に再検査する構成では，このモデル上の違反はありません．1～3 object・3方式の計9条件でNuSMVと独立BFSの判定が一致し，mutable方式の反例は実際の無害なファイル操作でも再生できました．最大で1,662状態の探索なので，大規模性はまだ主張できません．
 
 この実験で言えるのは「検査をしたという固定フラグだけでは，検査後の置換を表現できない」です．BFSも反例を出せるため，「NuSMVでなければ不可能」とは言えません．今後の比較軸は，性質の記述，状態管理，反例の説明，モデル変更の負担と規模です．
+
+実際の[TanStack原本](tanstack-incident-cache-boundary.md)から検出したproducer・consumerとcache scopeを使い，二つのrunを独立に進める追加モデルも生成しました．事件前はNuSMV/BFSとも条件付き反例あり，対策版は反例なしです．未知条件を同じ値に固定しても，producerのcache保存がconsumerの復元より先なら到達し，復元が先ならそのrunでは到達しません．これは「両workflowに同じcache key式がある」という固定条件に欠ける**順序情報**の必要性を示します．探索対象は一組のPR runとrelease runで，初期cacheは清浄，第三のrunやcache削除は未対応です．244/240状態の小規模実験であり，BFSでも判定が一致するためモデル検査器固有の必要性や性能優位は示しません．
 
 ## 確認した範囲と次の研究課題
 

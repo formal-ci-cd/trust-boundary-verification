@@ -1,0 +1,430 @@
+{
+  "schemaVersion": "cross-run-interleaving-0.1",
+  "scope": "One fork PR run and one release run; four unknown facts; no cache eviction or third run",
+  "property": "PR-tainted bytes are not executed in the OIDC-enabled release job",
+  "source": "YAML-derived roles via tanstack_cache_chain.analyze; incident observations not used as inputs",
+  "modelAssumptions": [
+    "A completed producer build can produce a tainted cache entry if its post-job save succeeds.",
+    "The consumer restores only the cache state present at its restore step.",
+    "The consumer does not re-restore or revalidate before its local code use.",
+    "Action success, effective key equality, restored entry and code execution remain unconstrained Boolean facts."
+  ],
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "producer": {
+        "workflow": "pre-incident/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request_target"
+      },
+      "consumer": {
+        "workflow": "pre-incident/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "cacheScopeCompatible": true,
+      "sourceEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "model": "pre-incident.smv",
+      "bfs": {
+        "verdict": "possible",
+        "reachableStates": 244,
+        "witnessFacts": {
+          "tainted_cache_saved": true,
+          "same_effective_key": true,
+          "poisoned_entry_restored": true,
+          "poisoned_code_invoked": true
+        },
+        "conditionalCounterexample": [
+          {
+            "actor": "producer",
+            "producerPC": 1,
+            "consumerPC": 0,
+            "cacheTainted": false,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 2,
+            "consumerPC": 0,
+            "cacheTainted": false,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 3,
+            "consumerPC": 0,
+            "cacheTainted": false,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 4,
+            "consumerPC": 0,
+            "cacheTainted": true,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "consumer",
+            "producerPC": 4,
+            "consumerPC": 1,
+            "cacheTainted": true,
+            "restoredTainted": true,
+            "bad": false
+          },
+          {
+            "actor": "consumer",
+            "producerPC": 4,
+            "consumerPC": 2,
+            "cacheTainted": true,
+            "restoredTainted": true,
+            "bad": true
+          }
+        ]
+      },
+      "fixedFactSchedules": {
+        "producerSavesBeforeConsumerRestore": {
+          "bad": true,
+          "trace": [
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumerPC": 0,
+              "cacheTainted": true,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 1,
+              "cacheTainted": true,
+              "restoredTainted": true,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 2,
+              "cacheTainted": true,
+              "restoredTainted": true,
+              "bad": true
+            }
+          ]
+        },
+        "consumerRestoresBeforeProducerSave": {
+          "bad": false,
+          "trace": [
+            {
+              "actor": "consumer",
+              "producerPC": 0,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumerPC": 1,
+              "cacheTainted": true,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 2,
+              "cacheTainted": true,
+              "restoredTainted": false,
+              "bad": false
+            }
+          ]
+        }
+      }
+    },
+    {
+      "variant": "mitigation",
+      "producer": {
+        "workflow": "mitigation/.github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "event": "pull_request"
+      },
+      "consumer": {
+        "workflow": "mitigation/.github/workflows/release.yml",
+        "job": "release",
+        "permission": "id-token: write"
+      },
+      "cacheScopeCompatible": false,
+      "sourceEvidence": [
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "model": "mitigation.smv",
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 240,
+        "witnessFacts": null,
+        "conditionalCounterexample": []
+      },
+      "fixedFactSchedules": {
+        "producerSavesBeforeConsumerRestore": {
+          "bad": false,
+          "trace": [
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumerPC": 0,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 2,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            }
+          ]
+        },
+        "consumerRestoresBeforeProducerSave": {
+          "bad": false,
+          "trace": [
+            {
+              "actor": "consumer",
+              "producerPC": 0,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 1,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 2,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 3,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "producer",
+              "producerPC": 4,
+              "consumerPC": 1,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            },
+            {
+              "actor": "consumer",
+              "producerPC": 4,
+              "consumerPC": 2,
+              "cacheTainted": false,
+              "restoredTainted": false,
+              "bad": false
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

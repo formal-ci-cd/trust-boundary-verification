@@ -38,6 +38,18 @@ GitHubの[イベント仕様](https://docs.github.com/en/actions/reference/workf
 
 精度確認として，job条件を `github.event.pull_request.head.repo.full_name == github.repository` にする**もう1箇所の合成対照**も加えた．これはfork PRを除外する条件であり，CodeQL通常suiteは原本と同じ0件だった．提案側は原本を条件付き経路あり，この対照を `fork-excluded`・反例モデル生成なしとして区別した．[対照の静的解析結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-analysis.json)と[モデル生成結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json)を保存した．現行実装が確実に認識するのは，job条件全体がこの同一repository比較である限定形だけで，任意の論理式や追加の承認条件を安全と判定するものではない．同一repositoryからの悪意ある書込み権限者は，ここで扱う外部fork脅威の外に置いている．
 
+同じ原本・有効なfork除外対照をzizmor 1.30.1 regular，sisakulint 0.3.7，Poutine 1.1.6にもネットワーク無効で渡した．SARIFを出す前2者のresultと，PoutineのJSON findingは，各ツールで原本と対照の間で同一だった．
+
+| 検査 | 実攻撃時の原本 | 有効なfork除外対照 | 外部forkからsecret付き実行への対象経路を区別 |
+|---|---|---|---|
+| CodeQL 2.27.1 通常suite | 0件 | 0件 | しない |
+| zizmor 1.30.1 regular | 8件 | 同じ8件 | しない |
+| sisakulint 0.3.7 | 15件 | 同じ15件 | しない |
+| Poutine 1.1.6 | 2件 | 同じ2件 | しない |
+| 提案側の限定解析 | `potential-risk` | `fork-excluded` | する |
+
+[zizmor・sisakulintの全SARIF，Poutineの全JSONとchecksum](../results/spotbugs-screening/fork-guard-baselines/evidence-index.json)を保存した．sisakulintは**両方**に `untrusted-checkout` と後続local scriptを警告し，Poutineも**両方**に `untrusted_checkout_exec` とsecret名を報告し，zizmorも危険なtriggerやcacheを警告する．従って「既存ツールに危険の指摘がない」という意味ではない．この比較が示すのは，保存された既存警告が**この1箇所のfork除外による対象経路の消失**を表さない一方，提案側はそれを区別するという，性質を限定した差である．sisakulintの比較には `.git` と `.github/workflows` を持つ使い捨て入力ディレクトリを用い，元のworkflowバイト列は変えていない．
+
 ## 解釈の境界
 
 このCodeQL比較は**事後の遡及実験**である．CodeQL Actions解析の[公開プレビューは2024年12月17日](https://github.blog/changelog/2024-12-17-find-and-fix-actions-workflows-vulnerabilities-with-codeql-public-preview/)に始まり，攻撃日の後である．従って「当時のCodeQLが見逃した」という歴史的主張はしない．現在の公開APIで攻撃PRの[check-run](../results/spotbugs-screening/attack-pr-head-check-runs.json)と攻撃日の[対象workflow run](../results/spotbugs-screening/attack-day-public-runs.json)は確認できず，0件という現在の応答を当時未実行だった証拠にはしない．漏洩の歴史的事実はUnit 42と保守者の調査に依拠する．

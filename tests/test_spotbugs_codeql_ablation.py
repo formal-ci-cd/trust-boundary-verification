@@ -49,6 +49,37 @@ class SpotBugsCodeQLAblationTest(unittest.TestCase):
         self.assertEqual(json.loads((control / 'gate-correct-fork-model/analysis.json').read_text())['status'],
                          'fork-excluded')
 
+    def test_other_scanners_do_not_distinguish_true_fork_control(self):
+        root = Path(__file__).resolve().parents[1]
+        index = json.loads((root / 'results/spotbugs-screening/fork-guard-baselines/evidence-index.json').read_text())
+        expected_counts = {'zizmor': 8, 'sisakulint': 15}
+        for tool, count in expected_counts.items():
+            outputs = []
+            for variant in ('original', 'correctForkGuard'):
+                record = index['variants'][variant]
+                self.assertEqual(hashlib.sha256((root / record['source']).read_bytes()).hexdigest(),
+                                 record['sourceSha256'])
+                baseline = record['tools'][tool]
+                archive = root / baseline['sarif']
+                self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),
+                                 baseline['sarifGzipSha256'])
+                outputs.append(json.loads(gzip.decompress(archive.read_bytes()))['runs'][0]['results'])
+                self.assertEqual(len(outputs[-1]), count)
+            self.assertEqual(outputs[0], outputs[1])
+            self.assertTrue(index['sameResults'][tool])
+        outputs = []
+        for variant in ('original', 'correctForkGuard'):
+            baseline = index['variants'][variant]['tools']['poutine']
+            archive = root / baseline['output']
+            self.assertEqual(hashlib.sha256(archive.read_bytes()).hexdigest(),
+                             baseline['outputGzipSha256'])
+            findings = json.loads(gzip.decompress(archive.read_bytes()))['findings']
+            self.assertEqual(len(findings), 2)
+            outputs.append(findings)
+        self.assertEqual(outputs[0], outputs[1])
+        self.assertIn('untrusted_checkout_exec', [hit['rule_id'] for hit in outputs[0]])
+        self.assertTrue(index['sameResults']['poutine'])
+
 
 if __name__ == '__main__':
     unittest.main()

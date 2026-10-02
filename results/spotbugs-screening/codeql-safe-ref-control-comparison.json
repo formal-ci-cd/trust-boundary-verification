@@ -1,0 +1,48 @@
+{
+  "scope": "One pinned SpotBugs workflow and synthetic one-edit safe-ref control; retrospective CodeQL comparison",
+  "codeqlCli": "2.27.1",
+  "queryPack": "codeql/actions-queries@0.6.36",
+  "network": "disabled",
+  "inputExtractedFiles": "1/1 for control",
+  "originalSha256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+  "controlSha256": "23ca67ac199341c3a1e13e11ec1f93e31ed450d41e9a246dd8c163f8748b6280",
+  "variants": {
+    "default": {
+      "original": {
+        "count": 0,
+        "alerts": []
+      },
+      "safeRefControl": {
+        "count": 0,
+        "alerts": []
+      },
+      "originalSarif": "codeql-2.27.1-default.sarif.gz",
+      "controlSarif": "codeql-2.27.1-safe-ref-control-default.sarif.gz",
+      "controlSarifSha256": "8811d9f2ada04f9ae942e9bdd8eb5d390fe6363f59e48b46fc79aadaf5fc20c1"
+    },
+    "security-and-quality": {
+      "original": {
+        "count": 1,
+        "alerts": [
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 36
+          }
+        ]
+      },
+      "safeRefControl": {
+        "count": 1,
+        "alerts": [
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 36
+          }
+        ]
+      },
+      "originalSarif": "codeql-2.27.1-security-and-quality.sarif.gz",
+      "controlSarif": "codeql-2.27.1-safe-ref-control-security-and-quality.sarif.gz",
+      "controlSarifSha256": "0e8dfe82bcfc822582774c16779616512c63dfdd12194bc9309ffd86090f7108"
+    }
+  },
+  "interpretation": "CodeQL output is identical across this one-edit control: no default alerts and one unpinned-tag alert in the broad suite. This is a property-specific observation, not proof that all existing tools miss the unsafe checkout or that the control is safe under arbitrary external Action implementations."
+}

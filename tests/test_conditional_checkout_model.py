@@ -1,4 +1,5 @@
 import hashlib
+import gzip
 import json
 from pathlib import Path
 import shutil
@@ -51,6 +52,21 @@ class ConditionalCheckoutModelTests(unittest.TestCase):
         for action in ('select-ref', 'checkout-ref', 'run-local-executable'):
             state = dict(model.successors(state, True))[action]
         self.assertFalse(state[-1])
+
+    def test_saved_codeql_control_comparison(self):
+        results = ROOT / 'results/spotbugs-screening'
+        comparison = json.loads((results / 'codeql-safe-ref-control-comparison.json').read_text())
+        self.assertEqual(comparison['controlSha256'], hashlib.sha256(
+            (CASE / 'safe-ref-control/.github/workflows/sonarqube.yml').read_bytes()
+        ).hexdigest())
+        for suite, details in comparison['variants'].items():
+            for variant, filename in [('original', details['originalSarif']),
+                                      ('safeRefControl', details['controlSarif'])]:
+                with gzip.open(results / filename, 'rt') as f:
+                    saved = json.load(f)['runs'][0]['results']
+                self.assertEqual(len(saved), details[variant]['count'], suite)
+            self.assertEqual(details['original']['alerts'],
+                             details['safeRefControl']['alerts'], suite)
 
 
 if __name__ == '__main__':

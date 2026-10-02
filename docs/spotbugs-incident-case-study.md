@@ -34,7 +34,9 @@ GitHubの[イベント仕様](https://docs.github.com/en/actions/reference/workf
 | 条件を `true` に変更 | 外部Action出力 | `actions/untrusted-checkout/critical` 1件 |
 | 条件を `true` に変更 | PR merge refを直接指定 | 同じ規則1件 |
 
-[4版の原本・全SARIF・checksum](../results/spotbugs-screening/codeql-ablation/evidence-index.json)を保存した．これは**研究用の合成対照**で，上流の実変更や攻撃時の実行結果ではない．結果から，この版のCodeQLは外部Action出力を全く追えないわけではなく，**原本のrepository条件が警告抑止に効いている**ことが分かる．CodeQLの公開ルール実装も `pull_request_target` のrepository条件を保護条件として扱う．しかし[GitHubのイベント仕様](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request_target)では `pull_request_target` はbase repositoryの文脈で実行されるため，そのrepository名が `spotbugs/sonar-findbugs` であることはfork PRの排除を意味しない．本提案モデルはこの条件をfork除外と解釈せず，PR参照とsecret付き実行stepの接続を残した．このアブレーションは特定版・入力で警告抑止の**観測上の原因**を分離するもので，CodeQL全版や他のリポジトリ条件への一般化ではない．
+[原本・各対照例の全SARIF・checksum](../results/spotbugs-screening/codeql-ablation/evidence-index.json)を保存した．これは**研究用の合成対照**で，上流の実変更や攻撃時の実行結果ではない．結果から，この版のCodeQLは外部Action出力を全く追えないわけではなく，**原本のrepository条件が警告抑止に効いている**ことが分かる．CodeQLの公開ルール実装も `pull_request_target` のrepository条件を保護条件として扱う．しかし[GitHubのイベント仕様](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request_target)では `pull_request_target` はbase repositoryの文脈で実行されるため，そのrepository名が `spotbugs/sonar-findbugs` であることはfork PRの排除を意味しない．本提案モデルはこの条件をfork除外と解釈せず，PR参照とsecret付き実行stepの接続を残した．このアブレーションは特定版・入力で警告抑止の**観測上の原因**を分離するもので，CodeQL全版や他のリポジトリ条件への一般化ではない．
+
+精度確認として，job条件を `github.event.pull_request.head.repo.full_name == github.repository` にする**もう1箇所の合成対照**も加えた．これはfork PRを除外する条件であり，CodeQL通常suiteは原本と同じ0件だった．提案側は原本を条件付き経路あり，この対照を `fork-excluded`・反例モデル生成なしとして区別した．[対照の静的解析結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-analysis.json)と[モデル生成結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json)を保存した．現行実装が確実に認識するのは，job条件全体がこの同一repository比較である限定形だけで，任意の論理式や追加の承認条件を安全と判定するものではない．同一repositoryからの悪意ある書込み権限者は，ここで扱う外部fork脅威の外に置いている．
 
 ## 解釈の境界
 

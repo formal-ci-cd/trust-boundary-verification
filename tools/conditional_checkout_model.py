@@ -81,6 +81,12 @@ def unsupported_environment_jobs(root):
             for job in model['workflow']['jobs'] if job.get('environment')]
 
 
+def fork_excluded_jobs(root, external, external_name, external_version):
+    result = chain.discover(root, external, external_name, external_version)
+    return [dict(file=record['file'], job=record['job'])
+            for record in result.get('forkExcludedJobs', [])]
+
+
 def successors(state, pr_ref):
     # pc, event is PR, selector chooses PR, checkout contains PR,
     # merge exists, checkout succeeds, secret available, command succeeds, bad
@@ -164,11 +170,16 @@ def main():
                      args.external_name, args.external_version)
     args.output.mkdir(parents=True, exist_ok=True)
     unsupported = unsupported_environment_jobs(args.workflow_root)
+    excluded = fork_excluded_jobs(args.workflow_root, args.external_root,
+                                  args.external_name, args.external_version)
     result = dict(status='analyzed' if config else
-                  'unsupported-environment-gate' if unsupported else 'no-supported-path',
+                  'unsupported-environment-gate' if unsupported else
+                  'fork-excluded' if excluded else 'no-supported-path',
                   config=config)
     if unsupported:
         result['unsupportedJobs'] = unsupported
+    if excluded:
+        result['forkExcludedJobs'] = excluded
     if config:
         result['property'] = ('PR-controlled local executable never runs with a '
                               'configured secret in a pull_request_target job.')

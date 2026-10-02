@@ -77,3 +77,5 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 2026年10月3日の追加holdoutでは，[MongoDBの承認後mutable PR参照とSPIREのartifact上書き](holdout-candidates-2026-10-02.md)を既存解析器を変えずに評価した．前者は提案側 `no-supported-path`・CodeQL通常suiteが未信頼checkoutを警告，後者は提案側 `unknown`・CodeQL通常suiteがartifact poisoningを警告した．両例とも提案手法の汎化や排他的優位性を裏付けず，未対応の実測として保持する．
 
 同日，[SpotBugsの追加アブレーション](spotbugs-incident-case-study.md#codeqlが原本で警告しない条件の切り分け)でCodeQLの差を詳しく調べた．外部Action出力をPR merge refの直接指定へ変えても通常suiteは0件だが，原本の `github.repository == 'spotbugs/sonar-findbugs'` job条件だけを外すと，外部Action出力のままでも `untrusted-checkout/critical` が1件出た．現行版CodeQLは外部Action出力を一律に追えないのではなく，このjob条件を保護条件と扱うことが原本での警告抑止に効いている．`pull_request_target` ではその条件はfork PRを除外しない．提案側がこの差を区別する根拠が明確になったが，事後版による遡及実験であることと，他の既存ツールの未信頼checkout警告は変わらない．
+
+精度の対照として，同じjob条件を実際にfork PRを除外する `github.event.pull_request.head.repo.full_name == github.repository` に変えた版も固定した．CodeQL通常suiteは原本・対照とも0件だが，提案側は原本の条件付き経路と対照の `fork-excluded` を区別した．解析器はこの限定された同一repository比較だけを安全側として認識し，任意の論理式や承認条件まで証明していない．

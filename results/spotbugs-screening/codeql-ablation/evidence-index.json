@@ -45,6 +45,15 @@
           "line": 42
         }
       ]
+    },
+    "gate-correct-fork": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-correct-fork/.github/workflows/sonarqube.yml",
+      "sourceSha256": "f112a4555b0e1fa5c7c34477fb92c3ae103a1254e2a3945fe01e0a4c04099b3c",
+      "sarif": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-default.sarif.gz",
+      "sarifGzipSha256": "9a891abe6cb394f24e065bc19f19ee5f3cf6ab7ded50175d3b4aa48e5e036574",
+      "findings": []
     }
-  }
+  },
+  "proposalControlAnalysis": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-analysis.json",
+  "proposalControlModel": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json"
 }

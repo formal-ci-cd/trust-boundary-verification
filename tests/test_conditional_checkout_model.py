@@ -47,6 +47,18 @@ class ConditionalCheckoutModelTests(unittest.TestCase):
                 'ref: ${{ steps.condval.outputs.value }}', 'ref: ${{ github.sha }}'))
             self.assertIsNone(model.extract(root, EXTERNAL, 'haya14busa/action-cond', 'v1'))
 
+    def test_true_fork_guard_is_reported_separately(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            shutil.copytree(CASE / '.github', root / '.github')
+            path = root / '.github/workflows/sonarqube.yml'
+            path.write_text(path.read_text().replace(
+                "github.repository == 'spotbugs/sonar-findbugs'",
+                'github.event.pull_request.head.repo.full_name == github.repository'))
+            self.assertIsNone(model.extract(root, EXTERNAL, 'haya14busa/action-cond', 'v1'))
+            self.assertEqual(model.fork_excluded_jobs(root, EXTERNAL, 'haya14busa/action-cond', 'v1'),
+                             [{'file': '.github/workflows/sonarqube.yml', 'job': 'build'}])
+
     def test_unrecognized_external_action_is_not_treated_as_safe(self):
         self.assertIsNone(model.extract(CASE, EXTERNAL, 'haya14busa/action-cond', 'v2'))
 

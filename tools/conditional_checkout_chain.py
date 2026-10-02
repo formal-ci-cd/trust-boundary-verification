@@ -47,6 +47,22 @@ def evidence(file, job, step, role):
     return dict(file=file, job=job['id'], line=step['line'], step=step['index'], role=role)
 
 
+def excludes_external_fork(condition):
+    """Recognize only a direct same-repository PR-head equality guard.
+
+    github.repository is the base repository under pull_request_target, so a
+    comparison with a fixed repository name is not a fork exclusion.
+    """
+    condition = condition.strip()
+    if condition.startswith('${{') and condition.endswith('}}'):
+        condition = condition[3:-2].strip()
+    return bool(re.fullmatch(
+        r'github\.event\.pull_request\.head\.repo\.full_name\s*==\s*github\.repository'
+        r'|github\.repository\s*==\s*github\.event\.pull_request\.head\.repo\.full_name',
+        condition,
+    ))
+
+
 def discover(workflow_root, external_root, external_name, external_version):
     action_yml = external_root / 'action.yml'
     source = external_root / 'index.js'
@@ -54,6 +70,7 @@ def discover(workflow_root, external_root, external_name, external_version):
         return dict(status='unsupported-external-action', findings=[])
     findings = []
     unsupported_jobs = []
+    fork_excluded_jobs = []
     for file, model in yaml_to_model.load_models(workflow_root).items():
         if not any(event['name'] == 'pull_request_target' for event in model['workflow']['events']):
             continue
@@ -62,6 +79,7 @@ def discover(workflow_root, external_root, external_name, external_version):
                 unsupported_jobs.append(dict(file=file, job=job['id'],
                                              reason='job environment selection or approval is not modeled'))
                 continue
+            external_fork_excluded = excludes_external_fork(job.get('condition', ''))
             steps = job['steps']
             for selector in steps:
                 if (selector.get('action') != external_name
@@ -92,6 +110,12 @@ def discover(workflow_root, external_root, external_name, external_version):
                                           for name in SECRET.findall(value)})
                         if not secrets:
                             continue
+                        if external_fork_excluded:
+                            record = dict(file=file, job=job['id'],
+                                          reason='PR head repository must equal the base repository')
+                            if record not in fork_excluded_jobs:
+                                fork_excluded_jobs.append(record)
+                            continue
                         findings.append(dict(
                             property='PR-controlled checkout bytes cannot reach a local executable with configured secrets under pull_request_target',
                             status='potential-risk',
@@ -111,11 +135,14 @@ def discover(workflow_root, external_root, external_name, external_version):
                                 'No claim is made about exfiltration, actual secret value availability, or later lateral movement.'
                             ]))
     result = dict(status='analyzed' if findings else
-                  'unsupported-environment-gate' if unsupported_jobs else 'no-supported-path',
+                  'unsupported-environment-gate' if unsupported_jobs else
+                  'fork-excluded' if fork_excluded_jobs else 'no-supported-path',
                   findings=findings, externalAction=external_name + '@' + external_version,
                   externalActionSourceSHA256=hashlib.sha256(source.read_bytes()).hexdigest())
     if unsupported_jobs:
         result['unsupportedJobs'] = unsupported_jobs
+    if fork_excluded_jobs:
+        result['forkExcludedJobs'] = fork_excluded_jobs
     return result
 
 

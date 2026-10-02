@@ -68,6 +68,30 @@ class ConditionalCheckoutChainTests(unittest.TestCase):
                     "github.event_name != 'pull_request_target'")
         self.assertEqual(self.findings(), [])
 
+    def test_real_fork_exclusion_suppresses_external_fork_path(self):
+        self.modify("github.repository == 'spotbugs/sonar-findbugs'",
+                    'github.event.pull_request.head.repo.full_name == github.repository')
+        result = chain.discover(self.root, self.external, 'haya14busa/action-cond', 'v1')
+        self.assertEqual(result['status'], 'fork-excluded')
+        self.assertEqual(result['findings'], [])
+        self.assertEqual(result['forkExcludedJobs'][0]['job'], 'build')
+
+    def test_repository_identity_is_not_fork_exclusion(self):
+        self.assertFalse(chain.excludes_external_fork("github.repository == 'spotbugs/sonar-findbugs'"))
+        self.assertFalse(chain.excludes_external_fork(
+            'github.event.pull_request.head.repo.full_name == github.repository || true'))
+        self.assertTrue(chain.excludes_external_fork(
+            '${{ github.repository == github.event.pull_request.head.repo.full_name }}'))
+
+    def test_unrelated_guard_is_not_reported_as_excluded_candidate(self):
+        self.modify("github.repository == 'spotbugs/sonar-findbugs'",
+                    'github.event.pull_request.head.repo.full_name == github.repository')
+        self.modify('if_true: refs/pull/${{ github.event.pull_request.number }}/merge',
+                    'if_true: ${{ github.sha }}')
+        result = chain.discover(self.root, self.external, 'haya14busa/action-cond', 'v1')
+        self.assertEqual(result['status'], 'no-supported-path')
+        self.assertNotIn('forkExcludedJobs', result)
+
 
 if __name__ == '__main__':
     unittest.main()

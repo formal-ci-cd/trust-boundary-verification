@@ -83,6 +83,13 @@ class ConditionalCheckoutChainTests(unittest.TestCase):
         self.assertTrue(chain.excludes_external_fork(
             '${{ github.repository == github.event.pull_request.head.repo.full_name }}'))
 
+    def test_bypassable_or_guard_keeps_external_path(self):
+        self.modify("github.repository == 'spotbugs/sonar-findbugs'",
+                    'github.event.pull_request.head.repo.full_name == github.repository || true')
+        result = chain.discover(self.root, self.external, 'haya14busa/action-cond', 'v1')
+        self.assertEqual(result['status'], 'analyzed')
+        self.assertEqual(len(result['findings']), 1)
+
     def test_unrelated_guard_is_not_reported_as_excluded_candidate(self):
         self.modify("github.repository == 'spotbugs/sonar-findbugs'",
                     'github.event.pull_request.head.repo.full_name == github.repository')

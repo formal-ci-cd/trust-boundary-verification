@@ -52,8 +52,16 @@
       "sarif": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-default.sarif.gz",
       "sarifGzipSha256": "9a891abe6cb394f24e065bc19f19ee5f3cf6ab7ded50175d3b4aa48e5e036574",
       "findings": []
+    },
+    "gate-bypassable-or": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-bypassable-or/.github/workflows/sonarqube.yml",
+      "sourceSha256": "4868775548158c05a1bafa1b5f1ca76fd47218acaa98b9a80a4dfc858ae8659b",
+      "sarif": "results/spotbugs-screening/codeql-ablation/gate-bypassable-or-default.sarif.gz",
+      "sarifGzipSha256": "69e646f5adff57b7eb08598f6c774b193586710973a0889e99b7b3fa5a66026d",
+      "findings": []
     }
   },
   "proposalControlAnalysis": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-analysis.json",
-  "proposalControlModel": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json"
+  "proposalControlModel": "results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json",
+  "proposalBypassableGuardAnalysis": "results/spotbugs-screening/codeql-ablation/gate-bypassable-or-analysis.json"
 }

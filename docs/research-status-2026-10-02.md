@@ -81,3 +81,5 @@ attestの局所再現は，原本consumerのrun本文に対して，download/che
 精度の対照として，同じjob条件を実際にfork PRを除外する `github.event.pull_request.head.repo.full_name == github.repository` に変えた版も固定した．CodeQL通常suiteは原本・対照とも0件だが，提案側は原本の条件付き経路と対照の `fork-excluded` を区別した．解析器はこの限定された同一repository比較だけを安全側として認識し，任意の論理式や承認条件まで証明していない．
 
 同じ対照をzizmor 1.30.1，sisakulint 0.3.7，Poutine 1.1.6でも比較した．原本と有効なfork除外対照で各8件・15件のSARIF resultと2件のPoutine findingが同一で，提案側だけが対象経路の消失を明示した．ただしzizmorはtrigger等，sisakulintは未信頼checkoutとlocal script等，Poutineはsecret付きの未信頼checkout実行を両方で警告しており，既存ツールが危険をまったく指摘しないという結果ではない．[完全な比較記録](spotbugs-incident-case-study.md#codeqlが原本で警告しない条件の切り分け)に対象の性質と制限を記した．
+
+有効なfork除外条件の末尾に `|| true` を足した研究用対照では，提案側の限定静的解析が外部fork候補を残し，CodeQL 2.27.1通常suiteは0件だった．ただしこの条件は現行の有限状態モデル生成器が対応しないため，モデル検査による追加優位性には数えない．

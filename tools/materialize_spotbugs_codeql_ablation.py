@@ -7,6 +7,7 @@ from pathlib import Path
 ORIGINAL_GATE = "if: github.repository == 'spotbugs/sonar-findbugs'"
 OPEN_GATE = 'if: ${{ true }}'
 FORK_GUARD = 'if: github.event.pull_request.head.repo.full_name == github.repository'
+BYPASSABLE_GUARD = FORK_GUARD + ' || true'
 INDIRECT_REF = 'ref: ${{ steps.condval.outputs.value }}'
 INLINE_REF = 'ref: refs/pull/${{ github.event.pull_request.number }}/merge'
 
@@ -20,6 +21,7 @@ def variants(source):
         'gate-off-inline': source.replace(ORIGINAL_GATE, OPEN_GATE).replace(
             INDIRECT_REF, INLINE_REF),
         'gate-correct-fork': source.replace(ORIGINAL_GATE, FORK_GUARD),
+        'gate-bypassable-or': source.replace(ORIGINAL_GATE, BYPASSABLE_GUARD),
     }
 
 

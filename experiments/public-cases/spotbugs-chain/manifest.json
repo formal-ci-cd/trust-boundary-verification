@@ -1,5 +1,10 @@
 {
   "purpose": "Retrospective analysis of the confirmed 2024-12-06 SpotBugs attack path; no third-party workflow execution.",
+  "attackPR": {
+    "number": 1116,
+    "metadataFile": "attack-pr-metadata.json",
+    "source": "https://github.com/spotbugs/sonar-findbugs/pull/1116"
+  },
   "workflowLicenseDeclaration": "https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/pom.xml#L22-L28",
   "externalActionTag": "v1",
   "currentAnnotatedTagObject": "d0c3785880c08a358711ee8047f593cbcf1cdcfd",

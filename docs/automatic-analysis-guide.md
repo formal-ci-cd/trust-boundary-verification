@@ -22,6 +22,8 @@ YAML単独の抽出は `tools/yaml_to_model.py ROOT --output FILE`，CodeQL表�
 
 外部複合Action内で時刻検査をする[Jupyterの対策前後](jupyter-composite-approval-race-case-study.md)は，`tools/composite_approval_race.py` に各 `upstream-before` / `upstream-fixed` を入力し，`--output` に新規ディレクトリを指定する．`--replay-guard` を付けるとネットワークを使わず時刻述語だけを実行する．入力の固定SHAとハッシュはmanifestで照合する．
 
+SpotBugsの実際の攻撃PR #1116について，`tools/verify_attack_pr_alignment.py experiments/public-cases/spotbugs-chain results/spotbugs-screening/conditional-chain-analysis.json --output <新規出力先>` は，保存した公開PRメタデータのbase SHA・変更ファイルとモデルのlocal executableを照合する．攻撃コードは読み込まず，CI実行の成否も判定しない．
+
 ## CodeQLと原本の一括比較
 
 Linux環境用CodeQL CLI **2.27.1** を別途用意します．公式配布物のchecksumを確認し，query pack **0.6.36** を使います．CodeQLとそのquery packの利用条件に従ってください．ツールは巨大なCLI本体・databaseをGitに入れません．

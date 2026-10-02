@@ -1,5 +1,5 @@
 {
-  "purpose": "Retrospective one-workflow screening of the confirmed SpotBugs initial attack path; no proposal-side detection claim",
+  "purpose": "Retrospective one-workflow comparison of existing tools and a conditional proposal-side path analyzer; historical external-action runtime target unverified",
   "incident": "2024-12-06 attack PR spotbugs/sonar-findbugs#1116",
   "sourceCommit": "e240bc1aca68337b2b40e100fb24552d27eeb8cc",
   "sourceFile": ".github/workflows/sonarqube.yml",
@@ -130,5 +130,7 @@
         }
       ]
     }
-  ]
+  ],
+  "proposalResult": "conditional-chain-analysis.json",
+  "proposalResultSHA256": "b3bbe773e72aee1448aae980fb8eb9ebb09687a827bbfdcfa0928aebce2c8b52"
 }

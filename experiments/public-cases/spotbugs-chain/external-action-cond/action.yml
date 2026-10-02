@@ -1,0 +1,24 @@
+name: 'Conditional value - missing expression for GitHub Actions'
+description: 'Conditional value - missing expression for GitHub Actions'
+author: 'haya14busa'
+inputs:
+  cond:
+    description: 'condition. [true,false]'
+    required: true
+  if_true:
+    description: 'output value if cond is true'
+    default: ''
+  if_false:
+    description: 'output value if cond is false'
+    default: ''
+outputs:
+  value:
+    description: 'output value'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+# Ref: https://haya14busa.github.io/github-action-brandings/
+branding:
+  icon: 'help-circle'
+  color: 'white'

@@ -38,6 +38,8 @@ GitHubの[イベント仕様](https://docs.github.com/en/actions/reference/workf
 
 精度確認として，job条件を `github.event.pull_request.head.repo.full_name == github.repository` にする**もう1箇所の合成対照**も加えた．これはfork PRを除外する条件であり，CodeQL通常suiteは原本と同じ0件だった．提案側は原本を条件付き経路あり，この対照を `fork-excluded`・反例モデル生成なしとして区別した．[対照の静的解析結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-analysis.json)と[モデル生成結果](../results/spotbugs-screening/codeql-ablation/gate-correct-fork-model/analysis.json)を保存した．現行実装が確実に認識するのは，job条件全体がこの同一repository比較である限定形だけで，任意の論理式や追加の承認条件を安全と判定するものではない．同一repositoryからの悪意ある書込み権限者は，ここで扱う外部fork脅威の外に置いている．
 
+この2種類のgateを，`pull_request_target` では `github.repository` がbase側を表すというイベント仕様に従って[同じ有限状態モデル](../tools/spotbugs_fork_gate_model.py)にも入れた．外部forkか否かを固定した未知値とし，PR参照の選択，checkout成否，secret有無，local実行を遷移で扱う．`AG !(external_fork & bad)` は原本で偽，正しいfork除外対照で真となり，独立BFSもそれぞれ128状態で一致した．[元のYAML・対照との差分とNuSMVの出力](../results/spotbugs-screening/fork-gate-model/analysis.json)を保存した．これは**公開仕様をモデルの前提とした条件付き経路の検査**であり，事件当日のAction実体やsecret漏洩をモデル単体で確認した結果ではない．
+
 さらに，同じ比較の末尾に `|| true` を加えた**無効なguardの合成対照**では，外部forkを除外できない．提案側の限定静的解析は候補1件を維持したが，CodeQL 2.27.1通常suiteは0件だった．[固定入力・CodeQL SARIF](../results/spotbugs-screening/codeql-ablation/evidence-index.json)と[提案側の静的結果](../results/spotbugs-screening/codeql-ablation/gate-bypassable-or-analysis.json)を保存した．これは論理和の一般的な意味解析を実装した証拠ではなく，「直接の同一repository比較だけをfork除外と認める」という保守的なルールの結果である．**有限状態モデル生成器はこのOR条件に未対応**なので，この対照についてNuSMVの反例を得たとは主張しない．
 
 同じ原本・有効なfork除外対照をzizmor 1.30.1 regular，sisakulint 0.3.7，Poutine 1.1.6にもネットワーク無効で渡した．SARIFを出す前2者のresultと，PoutineのJSON findingは，各ツールで原本と対照の間で同一だった．

@@ -18,6 +18,12 @@ CodeQL CLI 2.27.1 / `codeql/actions-queries@0.6.36` はこの1ファイルを抽
 
 事件前に公開済みだったCodeQL CLI **2.25.4** / `codeql/actions-queries@0.6.27` の通常suiteで，この**攻撃対象1 workflowだけ**をネットワーク無効のDockerで解析しました．1/1ファイルを抽出し，44行と47行を `actions/untrusted-checkout/critical` として警告し，14行には権限の警告を出しました．[完全なSARIFと条件](../results/asyncapi-screening/evidence-index.json)を保存しました．これは全repositoryや提案モデルとの比較ではありません．少なくとも「攻撃対象の入口をCodeQLが警告しない」事例ではないため，排他的検出の候補から除外します．
 
+## Trivy 2026年2月の初期侵入：事件当時のCodeQLが入口を警告
+
+[Trivy保守者の事後報告](https://github.com/aquasecurity/trivy/discussions/10462)は，2026年2月27日に `pull_request_target` workflowが悪用され，組織・repositoryの秘密情報が流出したと記録しています．対象と報告された `API Diff Check` workflowは[対策PR #10259](https://github.com/aquasecurity/trivy/pull/10259)で削除されました．攻撃日より前の最後の変更コミット `ccf5a5ad09e482bb1b3f2ef5a0334182ec300ac2`（2月26日）の[原本](https://github.com/aquasecurity/trivy/blob/ccf5a5ad09e482bb1b3f2ef5a0334182ec300ac2/.github/workflows/apidiff.yaml)と，削除PRのbase commit `2a140f1202fb2d5928348e6a1acc78ca5b7d9998` の同ファイルはGit blobとSHA-256が一致しました．原本とライセンスは[manifest](../experiments/public-cases/trivy-screening/manifest.json)に固定しています．攻撃PRやworkflowは実行していません．
+
+事件前に公開済みのCodeQL CLI **2.24.1**（[2026年2月5日公開](https://codeql.github.com/docs/codeql-overview/codeql-changelog/codeql-cli-2.24.1/)）とActions query pack **0.6.19**の通常suiteで，この1 workflowをネットワーク無効のDockerで解析しました．1/1ファイルを抽出し，local `setup-go` Actionの64行目を `actions/untrusted-checkout/critical` と警告しました．CLI 2.27.1 / pack 0.6.36でも59行目のPR側checkoutを同じ規則で警告しました．[両版の完全なSARIF](../results/trivy-screening/evidence-index.json)を保存しました．実際の攻撃がどのjob stepまで達したかをSARIFだけで立証するものではありませんが，入口が無警告の実侵害例ではないため，排他的検出候補から除外します．
+
 ## SpotBugsからreviewdogへの侵害：CodeQL通常suiteには警告なし，提案側は条件付き経路を検出
 
 [Unit 42の調査](https://unit42.paloaltonetworks.com/github-actions-supply-chain-attack/)と[攻撃者のPR #1116](https://github.com/spotbugs/sonar-findbugs/pull/1116)によれば，2024年12月6日に攻撃者は `spotbugs/sonar-findbugs` の `mvnw` を変更しました．PR直前のbase commit `e240bc1aca68337b2b40e100fb24552d27eeb8cc` にある [`sonarqube.yml`](https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/.github/workflows/sonarqube.yml) は，`pull_request_target` でPR側のmerge refを `haya14busa/action-cond@v1` の出力を介してcheckoutし，続く `./mvnw` にPAT等のsecretを渡します．Unit 42は，このPRで漏れたPATが後の `spotbugs/spotbugs` への侵入に使われたことを保守者に確認しています．公開原本はGit blob `176cd5cd4cbd7c7a05f1e9730c1e40542ebe64c9`，SHA-256 `e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74` で固定しました．攻撃payloadは実行していません．
@@ -32,7 +38,7 @@ CodeQL CLI 2.27.1 / `codeql/actions-queries@0.6.36` はこの1ファイルを抽
 
 この結果は，**実侵害の攻撃対象workflowでCodeQL通常suiteが0件，広いsuiteでも対象経路の警告0件だった一方，提案側の限定解析が攻撃入口から秘密情報を設定した実行stepまでを提示した**という遡及的な優位性を示します．ただし，事件当時にCodeQL Actions解析はまだ公開プレビュー前であり，当時のツール間競争としては扱えません．また，`haya14busa/action-cond@v1` は可変タグです．現在のタグが指すコミットと2024年2月のタグ作成日時は確認しましたが，**2024年12月の実行時に同じコミットを指した証拠は未取得**です．実行されたActionの意味とsecretの実値，漏洩，横展開までをモデルが実証したわけではありません．sisakulintが入口を警告するので「既存ツール一般が見逃した」とも言えません．この段階の検出器は限定した静的経路解析であり，モデル検査器固有の優位性の証拠には数えません．
 
-ElementaryとAsyncAPIは実侵害であっても，既存ツールの対象警告があるため，排他的検出の証拠には使えません．[TanStack](tanstack-incident-cache-boundary.md)も実侵害ですが，事件当時に公開済みだったCodeQLは実際のPR攻撃入口を警告し，対策版では警告しません．現在のCodeQL版だけによる1行対照例の差は，当時の検出優位性の証拠に使えません．[Cline](cline-incident-agent-cache-boundary.md)ではCodeQL等が複数workflowの候補経路を指摘しないものの，PromptPwndが入口を検出し，実際の攻撃者がその入口を使ったかは未確定です．[marimo](marimo-approval-race-case-study.md)は対象の時刻競合について既存ツールとの差がありますが，実悪用は未確認です．SpotBugsはCodeQLの通常・広いsuiteとも対象経路の警告がなく，提案側は経路を提示しましたが，sisakulintは入口を検出しています．現状，「実際に使われた経路を既存ツール一般が見逃し，提案手法だけが検出した」という条件を満たす事例は確認できていません．
+Elementary，AsyncAPI，Trivyは実侵害であっても，CodeQLの対象警告があるため，排他的検出の証拠には使えません．[TanStack](tanstack-incident-cache-boundary.md)も実侵害ですが，事件当時に公開済みだったCodeQLは実際のPR攻撃入口を警告し，対策版では警告しません．現在のCodeQL版だけによる1行対照例の差は，当時の検出優位性の証拠に使えません．[Cline](cline-incident-agent-cache-boundary.md)ではCodeQL等が複数workflowの候補経路を指摘しないものの，PromptPwndが入口を検出し，実際の攻撃者がその入口を使ったかは未確定です．[marimo](marimo-approval-race-case-study.md)は対象の時刻競合について既存ツールとの差がありますが，実悪用は未確認です．SpotBugsはCodeQLの通常・広いsuiteとも対象経路の警告がなく，提案側は経路を提示しましたが，sisakulintは入口を検出しています．現状，「実際に使われた経路を既存ツール一般が見逃し，提案手法だけが検出した」という条件を満たす事例は確認できていません．
 
 ## Jupyter Notebookの承認時刻競合：当初の未対応範囲を拡張
 

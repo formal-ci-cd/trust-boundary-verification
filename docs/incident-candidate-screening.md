@@ -18,4 +18,12 @@ CodeQL CLI 2.27.1 / `codeql/actions-queries@0.6.36` はこの1ファイルを抽
 
 事件前に公開済みだったCodeQL CLI **2.25.4** / `codeql/actions-queries@0.6.27` の通常suiteで，この**攻撃対象1 workflowだけ**をネットワーク無効のDockerで解析しました．1/1ファイルを抽出し，44行と47行を `actions/untrusted-checkout/critical` として警告し，14行には権限の警告を出しました．[完全なSARIFと条件](../results/asyncapi-screening/evidence-index.json)を保存しました．これは全repositoryや提案モデルとの比較ではありません．少なくとも「攻撃対象の入口をCodeQLが警告しない」事例ではないため，排他的検出の候補から除外します．
 
+## SpotBugsからreviewdogへの侵害：CodeQLには警告なし，提案側は未対応
+
+[Unit 42の調査](https://unit42.paloaltonetworks.com/github-actions-supply-chain-attack/)と[攻撃者のPR #1116](https://github.com/spotbugs/sonar-findbugs/pull/1116)によれば，2024年12月6日に攻撃者は `spotbugs/sonar-findbugs` の `mvnw` を変更しました．PR直前のbase commit `e240bc1aca68337b2b40e100fb24552d27eeb8cc` にある [`sonarqube.yml`](https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/.github/workflows/sonarqube.yml) は，`pull_request_target` でPR側のmerge refを `haya14busa/action-cond@v1` の出力を介してcheckoutし，続く `./mvnw` にPAT等のsecretを渡します．Unit 42は，このPRで漏れたPATが後の `spotbugs/spotbugs` への侵入に使われたことを保守者に確認しています．公開原本はGit blob `176cd5cd4cbd7c7a05f1e9730c1e40542ebe64c9`，SHA-256 `e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74` で固定しました．攻撃payloadは実行していません．
+
+この**対象1ファイル**をネットワーク無効のDockerで解析すると，CodeQL CLI 2.25.4 / `codeql/actions-queries@0.6.27` とCLI 2.27.1 / pack 0.6.36の通常suiteはいずれも1/1ファイルを抽出しましたが，警告は0件でした．ただし，これは**事件後の遡及比較**です．[GitHubの公開記録](https://github.blog/changelog/2024-12-17-find-and-fix-actions-workflows-vulnerabilities-with-codeql-public-preview/)ではActions解析のpublic preview開始が2024年12月17日で，攻撃日の後です．「事件当時のCodeQLが見逃した」とは言いません．
+
+同じ原本に対し，zizmor 1.30.1 regularは `dangerous-triggers` など8件，sisakulint 0.3.7は45行目の `untrusted-checkout` を含む15件を出しました．いずれも2026年の遡及比較で，総警告数を検出精度とは扱いません．[完全なSARIFと条件](../results/spotbugs-screening/evidence-index.json)を保存しました．現行の提案実装はYAML構造を抽出できますが，外部 `action-cond` の出力からcheckout refへの伝播と `./mvnw` の実行を自動で結ぶ規則を持ちません．したがって，**CodeQL通常suiteの見逃しを確認した実侵害**ではあるものの，現時点で「提案手法が検出した」事例ではなく，既存ツール一般に対する排他的検出例でもありません．
+
 ElementaryとAsyncAPIは実侵害であっても，既存ツールの対象警告があるため，排他的な検出優位性の証拠には使えません．[TanStack](tanstack-incident-cache-boundary.md)も実侵害ですが，事件当時に公開済みだったCodeQLは実際のPR攻撃入口を警告し，対策版では警告しません．現在のCodeQL版だけによる1行対照例の差は，当時の検出優位性の証拠に使えません．[Cline](cline-incident-agent-cache-boundary.md)ではCodeQL等が複数workflowの候補経路を指摘しないものの，PromptPwndが入口を検出し，実際の攻撃者がその入口を使ったかは未確定です．[marimo](marimo-approval-race-case-study.md)は対象の時刻競合について既存ツールとの差がありますが，実悪用は未確認です．現状，「実際に使われた経路を既存ツール一般が見逃し，提案手法だけが検出した」という条件を満たす事例は確認できていません．

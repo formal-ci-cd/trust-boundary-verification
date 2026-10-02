@@ -1,0 +1,35 @@
+{
+  "purpose": "Screening of the attack-targeted AsyncAPI workflow from the July 14 2026 real supply-chain incident",
+  "sourceManifest": "experiments/public-cases/asyncapi-screening/manifest.json",
+  "codeqlCLI": "2.25.4",
+  "cliReleaseDate": "2026-05-07",
+  "queryPack": "codeql/actions-queries@0.6.27",
+  "environment": "Docker linux/amd64 ubuntu:24.04 --network none; x64 CLI and Actions extractor",
+  "suite": "actions-code-scanning.qls",
+  "extractedActionsFiles": 1,
+  "scope": "Only manual-netlify-preview.yml; finding on this file suffices to exclude exclusive entry detection, but this is not a full-repository baseline",
+  "sarif": "codeql-default.sarif.gz",
+  "sarifSHA256": "124cbd5087b350655375424204e6a8f96cadc00cbc17658c4616c23ceb17672b",
+  "sourceSARIFSHA256": "818db53cd8013adf7866b04207e570502ecae8a83199900163e7863c265a75a5",
+  "findingCount": 3,
+  "findings": [
+    {
+      "rule": "actions/missing-workflow-permissions",
+      "file": ".github/workflows/manual-netlify-preview.yml",
+      "line": 14,
+      "message": "Actions job or workflow does not limit the permissions of the GITHUB_TOKEN. Consider setting an explicit permissions block, using the following as a minimal starting point: {{contents: read}}"
+    },
+    {
+      "rule": "actions/untrusted-checkout/critical",
+      "file": ".github/workflows/manual-netlify-preview.yml",
+      "line": 44,
+      "message": "Potential execution of untrusted code on a privileged workflow ([pull_request_target](1))"
+    },
+    {
+      "rule": "actions/untrusted-checkout/critical",
+      "file": ".github/workflows/manual-netlify-preview.yml",
+      "line": 47,
+      "message": "Potential execution of untrusted code on a privileged workflow ([pull_request_target](1))"
+    }
+  ]
+}

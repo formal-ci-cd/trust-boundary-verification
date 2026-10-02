@@ -1,0 +1,95 @@
+{
+  "case": "GHSL-2026-203",
+  "method": "Pinned upstream caller+composite Action snapshots, network-disabled Docker static baselines; no upstream code executed",
+  "tools": {
+    "codeql": "2.27.1 / codeql/actions-queries 0.6.36",
+    "zizmor": "1.30.1 regular",
+    "sisakulint": "0.3.7",
+    "actionlint": "1.7.12",
+    "NuSMV": "2.7.0"
+  },
+  "variants": {
+    "upstream-before": {
+      "status": "potential-risk",
+      "bfs": "unsafe",
+      "reachableStates": 48,
+      "nusmvVerdict": "-- specification AG !bad  is false",
+      "baselines": {
+        "codeql-default": {
+          "total": 0,
+          "rules": {}
+        },
+        "codeql-broad": {
+          "total": 8,
+          "rules": {
+            "actions/code-injection/medium": 7,
+            "actions/untrusted-checkout/medium": 1
+          }
+        },
+        "zizmor": {
+          "total": 2,
+          "rules": {
+            "zizmor/artipacked": 1,
+            "zizmor/self-repository": 1
+          }
+        },
+        "sisakulint": {
+          "total": 0,
+          "rules": {}
+        },
+        "actionlint": 0
+      },
+      "filesSHA256": {
+        "codeql-default.sarif.gz": "e2ae28eae21338da5fb6fe20fb51e374342b12e4f6c2aed8698cb31fa227ee39",
+        "codeql-broad.sarif.gz": "77baddb436d4ba5d899c9434f45fc4cb66eda7ba9ce81e8ebfec25f3271295b5",
+        "sisakulint.sarif.gz": "184b0ed78346662ff236e8f054617a51829ea5204e69cce3d23d0e67fe43710b",
+        "zizmor.sarif.gz": "fd5bda8b944bad40664653b6355f73fd3cc68e481ac6c4393e52e529e811a26c",
+        "playwright-update-update-snapshots-pr.smv": "ff23ab6e9df3666c5e7a91677a990a12383985827671400ac8ba1cb818985ce8",
+        "analysis.json": "69fa02a968a1ad3992500c717e15f7aac47524a3e8fd9eee6bde4e11b0584839",
+        "nusmv-verdict.txt": "5ea0e0f01da9875cf8c70b0183aa67b22c0cfbc610cc91276a910dc9e18ef878",
+        "actionlint.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    },
+    "upstream-fixed": {
+      "status": "safe-in-supported-model",
+      "bfs": "safe",
+      "reachableStates": 42,
+      "nusmvVerdict": "-- specification AG !bad  is true",
+      "baselines": {
+        "codeql-default": {
+          "total": 0,
+          "rules": {}
+        },
+        "codeql-broad": {
+          "total": 8,
+          "rules": {
+            "actions/code-injection/medium": 7,
+            "actions/untrusted-checkout/medium": 1
+          }
+        },
+        "zizmor": {
+          "total": 2,
+          "rules": {
+            "zizmor/artipacked": 1,
+            "zizmor/self-repository": 1
+          }
+        },
+        "sisakulint": {
+          "total": 0,
+          "rules": {}
+        },
+        "actionlint": 0
+      },
+      "filesSHA256": {
+        "codeql-default.sarif.gz": "cf35fe92333d5246a1700c6e56baf5ebf6ec61cfb7b816d47b43dec18e5e8123",
+        "codeql-broad.sarif.gz": "386ef71ed2ec1a765c79696f2de660ae31089a59e18e3bb873d7dec5cf94c601",
+        "sisakulint.sarif.gz": "184b0ed78346662ff236e8f054617a51829ea5204e69cce3d23d0e67fe43710b",
+        "zizmor.sarif.gz": "e7bf63f744608246c6ec8f67878003b043651e5ee405af1aba13c3387be29d98",
+        "playwright-update-update-snapshots-pr.smv": "f71c2a3865b8ed399f3f28bd68a6c436408dab9e94319fffe95cc941fcc63395",
+        "analysis.json": "4d4dbcac62557db114427233396b0cfa05a84f47bb3da9fb59602d621a58a38e",
+        "nusmv-verdict.txt": "1f81326222720997041f7a631e9334ad83f162655f002f7c6b6bb06086635d08",
+        "actionlint.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+      }
+    }
+  }
+}

@@ -23,6 +23,36 @@ GUARD = re.compile(
 )
 
 
+def parse_timestamp_guard(step):
+    """Recognize the supported GitHub PR timestamp guard in a run step.
+
+    Both workflow and composite-Action callers use this parser. It does not
+    interpret arbitrary Bash or prove the PR API response is genuine.
+    """
+    if (step.get('type') != 'run' or not step.get('id')
+            or step.get('condition') or not re.match(r'^(bash|sh)(?:\s|$)', step.get('shell', ''))):
+        return None
+    command = step.get('command', '')
+    guard = GUARD.search(command)
+    if not guard or 'exit 1' not in guard['body']:
+        return None
+    pushed, comment = guard[1], guard[3]
+    if step.get('env', {}).get(comment) != '${{ github.event.comment.created_at }}':
+        return None
+    if not re.search(r'gh api /repos/\$\{\w+\}/pulls/\$\{\w+\}', command):
+        return None
+    head = re.search(r'(\w+)="\$\(echo "\$(\w+)" \| jq -r \.head.sha\)"', command)
+    stamp = re.search(r'(\w+)="\$\(echo "\$(\w+)" \| jq -r \.head.repo.pushed_at\)"', command)
+    if not head or not stamp or stamp[1] != pushed or head[2] != stamp[2]:
+        return None
+    output = re.search(r'echo "([\w-]+)=\$' + re.escape(head[1]) + r'" >> \$GITHUB_OUTPUT', command)
+    if not output or command.index(output[0]) < guard.end():
+        return None
+    return {'operator': guard[2], 'variables': [pushed, comment],
+            'outputRef': '${{ steps.' + step['id'] + '.outputs.' + output[1] + ' }}',
+            'script': command}
+
+
 def evidence(file, job, step, role):
     return dict(file=file, job=job['id'], step=step['index'],
                 line=step['line'], role=role)
@@ -117,26 +147,10 @@ def discover(root):
             if 'github.event.comment.author_association' not in job.get('condition', ''):
                 continue
             for step in job['steps']:
-                if step.get('type') != 'run' or step.get('shell') not in ['bash', 'sh']:
+                parsed = parse_timestamp_guard(step)
+                if not parsed:
                     continue
-                command = step.get('command', '')
-                guard = GUARD.search(command)
-                if not guard or 'exit 1' not in guard['body'] or step.get('condition'):
-                    continue
-                pushed, comment = guard[1], guard[3]
-                if step.get('env', {}).get(comment) != '${{ github.event.comment.created_at }}':
-                    continue
-                # Restrict to literal gh-api PR fetch, jq fields and one output.
-                if not re.search(r'gh api /repos/\$\{\w+\}/pulls/\$\{\w+\}', command):
-                    continue
-                head = re.search(r'(\w+)="\$\(echo "\$(\w+)" \| jq -r \.head.sha\)"', command)
-                stamp = re.search(r'(\w+)="\$\(echo "\$(\w+)" \| jq -r \.head.repo.pushed_at\)"', command)
-                if not head or not stamp or stamp[1] != pushed or head[2] != stamp[2]:
-                    continue
-                output = re.search(r'echo "([\w-]+)=\$' + re.escape(head[1]) + r'" >> \$GITHUB_OUTPUT', command)
-                if not output or command.index(output[0]) < guard.end():
-                    continue
-                ref = '${{ steps.' + step['id'] + '.outputs.' + output[1] + ' }}'
+                ref = parsed['outputRef']
                 checkouts = [s for s in job['steps'] if s['index'] > step['index']
                              and s.get('action') == 'actions/checkout'
                              and s.get('arguments', {}).get('ref') == ref and not s.get('condition')]
@@ -154,8 +168,8 @@ def discover(root):
                     continue
                 candidates.append(dict(
                     id=f"{Path(file).stem}-{job['id']}-{step['id']}",
-                    rejectionOperator=guard[2], sourceScript=command,
-                    timestampVariables=[pushed, comment],
+                    rejectionOperator=parsed['operator'], sourceScript=parsed['script'],
+                    timestampVariables=parsed['variables'],
                     evidence=[evidence(file, job, step, 'PR-fetch-and-timestamp-guard'),
                               evidence(file, job, checkout, 'checkout-output-SHA'),
                               evidence(file, job, builds[0], 'PR-local-action')],

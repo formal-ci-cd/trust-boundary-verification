@@ -20,6 +20,8 @@ docker run --rm --network none -v "$PWD:/repo" -w /repo trust-boundary-analysis 
 
 YAML単独の抽出は `tools/yaml_to_model.py ROOT --output FILE`，CodeQL表との比較は `tools/compare_frontends.py ROOT TABLE.csv --output FILE` です．YAML readerは安全なloaderを使用し，`on`をboolにしません．重複キーを拒否し，run本文を一つのブロックとして保持します．GitHub YAML全仕様の代替検証器ではありません．mergeによる重複overrideや未対応構造は入力エラーになることがあります．式の値・Actionの内部挙動の評価はしません．
 
+外部複合Action内で時刻検査をする[Jupyterの対策前後](jupyter-composite-approval-race-case-study.md)は，`tools/composite_approval_race.py` に各 `upstream-before` / `upstream-fixed` を入力し，`--output` に新規ディレクトリを指定する．`--replay-guard` を付けるとネットワークを使わず時刻述語だけを実行する．入力の固定SHAとハッシュはmanifestで照合する．
+
 ## CodeQLと原本の一括比較
 
 Linux環境用CodeQL CLI **2.27.1** を別途用意します．公式配布物のchecksumを確認し，query pack **0.6.36** を使います．CodeQLとそのquery packの利用条件に従ってください．ツールは巨大なCLI本体・databaseをGitに入れません．

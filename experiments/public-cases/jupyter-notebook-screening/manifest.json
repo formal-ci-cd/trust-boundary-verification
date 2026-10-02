@@ -1,5 +1,27 @@
 {
   "purpose": "Held-out scope check of unchanged approval-race analyzer; these two files originate in separate repositories.",
+  "upstreamPairedComparison": {
+    "upstream-before": {
+      "workflowRepository": "jupyter/notebook",
+      "workflowCommit": "5e8eecdb666fee5f6d503f93dcc558042e543072",
+      "workflowPath": ".github/workflows/playwright-update.yml",
+      "workflowSHA256": "b0b0ecb491176306053533245781792d5d7afca4fb526276a5324a551080f0d2",
+      "actionRepository": "jupyterlab/maintainer-tools",
+      "actionRef": "jupyterlab/maintainer-tools/.github/actions/update-snapshots-checkout@94b14ddfbdd1ed651e9f9343ae2409ab5c73a6a8",
+      "actionPath": ".github/actions/update-snapshots-checkout/action.yml",
+      "actionSHA256": "0819a351e98c36f5fb8f222b41a66c122c5ec3ab9946b853b83575d06eecae09"
+    },
+    "upstream-fixed": {
+      "workflowRepository": "jupyter/notebook",
+      "workflowCommit": "937519a9d7ed0b1a7b6eaf0fedb57dc6e3004a3e",
+      "workflowPath": ".github/workflows/playwright-update.yml",
+      "workflowSHA256": "bc14b8669e69c0dcf29678d5e6713fac6d640ab8a3603461aa8d1137af21ebc1",
+      "actionRepository": "jupyterlab/maintainer-tools",
+      "actionRef": "jupyterlab/maintainer-tools/.github/actions/update-snapshots-checkout@21b1cac622018fd37ec13a1c8081da814e10d94e",
+      "actionPath": ".github/actions/update-snapshots-checkout/action.yml",
+      "actionSHA256": "92f79079d85dc2a1246b4e5cc3dd89a207411f88e2fb27aeb4a78f4e79728f05"
+    }
+  },
   "files": [
     {
       "repository": "jupyter/notebook",

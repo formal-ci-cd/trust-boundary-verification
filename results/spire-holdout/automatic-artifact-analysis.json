@@ -1,0 +1,686 @@
+{
+  "scope": "external-fork artifact metadata-to-git-ref rule only; not a repository safety verdict",
+  "coverage": {
+    "workflowCount": 2,
+    "artifactCandidates": 1,
+    "unsupportedResources": [],
+    "emptyCandidateMeaning": "unknown/unsupported; never safe"
+  },
+  "models": {
+    ".github/workflows/assign_reviewer_review_apply.yaml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "/input/.github/workflows/assign_reviewer_review_apply.yaml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "assign-reviewer-review-apply",
+        "file": ".github/workflows/assign_reviewer_review_apply.yaml",
+        "events": [
+          {
+            "name": "workflow_run",
+            "externallyTriggerable": true,
+            "privileged": true,
+            "properties": {
+              "workflows": [
+                "assign-reviewer-review-capture"
+              ],
+              "types": [
+                "completed"
+              ]
+            }
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "contents",
+            "access": "read"
+          },
+          {
+            "jobId": "apply",
+            "scope": "contents",
+            "access": "read"
+          },
+          {
+            "jobId": "apply",
+            "scope": "issues",
+            "access": "write"
+          },
+          {
+            "jobId": "apply",
+            "scope": "pull-requests",
+            "access": "write"
+          },
+          {
+            "jobId": "apply",
+            "scope": "actions",
+            "access": "read"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "apply",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "arguments": {
+                  "persist-credentials": "false",
+                  "sparse-checkout": ".github/workflows/scripts"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 63,
+                "workingDirectory": "."
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/download-artifact",
+                "version": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+                "arguments": {
+                  "name": "assign-reviewer-review",
+                  "run-id": "${{ github.event.workflow_run.id }}",
+                  "github-token": "${{ github.token }}"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 67,
+                "workingDirectory": "."
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "actions/github-script",
+                "version": "3a2844b7e9c422d3c10d287c895573f7108da1b3",
+                "arguments": {
+                  "script": "const fs = require('fs');\nconst courtLib = require('./.github/workflows/scripts/assign_reviewer_lib.js');\nconst court = await courtLib({ github, context, core });\nconst { owner, repo } = context.repo;\n\n// The artifact comes from a fork-triggered run; treat it as\n// untrusted and validate every field before use.\nlet raw;\ntry {\n  raw = JSON.parse(fs.readFileSync('review.json', 'utf8'));\n} catch (e) {\n  core.warning(`Could not read captured review data: ${e.message}`);\n  return;\n}\nconst prNumber = Number(raw.pr_number);\nconst state = String(raw.review_state || '').toLowerCase();\nconst submitter = String(raw.submitter || '');\nif (!Number.isInteger(prNumber) || prNumber <= 0) {\n  core.warning('Captured pr_number is not a positive integer; ignoring.');\n  return;\n}\nif (!['approved', 'changes_requested', 'commented'].includes(state)) {\n  core.info(`Review state \"${state}\" does not change the court; nothing to do.`);\n  return;\n}\n\n// Re-fetch the PR so we act on its current author and assignees.\nconst { data: pr } = await github.rest.pulls.get({\n  owner, repo, pull_number: prNumber,\n});\nconst author = pr.user.login;\n\n// Bind the artifact to the PR that actually triggered the capture\n// run. pull_request_review runs the PR's own copy of the capture\n// workflow, so a fork can ship a modified capture that uploads an\n// arbitrary pr_number; the field validation above only checks it is\n// a positive integer. Requiring the re-fetched PR's head to equal\n// the triggering run's head SHA limits any forged artifact to the\n// attacker's own PR (whose head is the only one that can match),\n// rather than letting it act on a victim PR. A legitimate apply that\n// races a fresh push is skipped and reconciles on the next event.\nif (pr.head.sha !== context.payload.workflow_run.head_sha) {\n  core.info(`PR #${prNumber} head does not match the capture run head; ignoring (forged or stale artifact).`);\n  return;\n}\n\n// Skip bot-authored PRs (for example Dependabot); they are owned by\n// the auto-merge workflow and do not take part in the rotation.\nif (court.isBot(pr.user)) {\n  core.info(`PR #${prNumber} authored by bot ${author}; skipping.`);\n  return;\n}\n\n// The apply is asynchronous, so the PR may have closed in between.\nif (pr.state !== 'open') {\n  core.info(`PR #${prNumber} is ${pr.state}; leaving court unchanged.`);\n  return;\n}\n\n// Reviews drive the court only when submitted by a pool member or\n// by the PR author (inline replies create an implicit \"commented\"\n// review).\nif (!court.inPool(submitter) && !court.eq(submitter, author)) {\n  core.info(`Review by ${submitter} is not from a flow participant, leaving court unchanged.`);\n  return;\n}\n\n// Confirm the claimed review actually exists. The capture is\n// fork-modifiable, so without this a forged artifact could fabricate\n// a pool member's review on the attacker's own PR. Require a real\n// review by `submitter` in `state` before acting on it.\nconst reviews = await github.paginate(github.rest.pulls.listReviews, {\n  owner, repo, pull_number: prNumber, per_page: 100,\n});\nconst reviewExists = reviews.some(r =>\n  r.user && court.eq(r.user.login, submitter) &&\n  (r.state || '').toLowerCase() === state);\nif (!reviewExists) {\n  core.info(`No ${state} review by ${submitter} on PR #${prNumber}; ignoring (forged or stale artifact).`);\n  return;\n}\n\n// The author reviewed their own PR. GitHub only allows \"commented\"\n// self-reviews, and they mostly carry inline replies to review\n// threads, so hand the ball back to the pool member who reviewed\n// most recently, mirroring the push and conversation-comment\n// handlers in assign_reviewer.yaml. Like there, the flip only\n// happens while the author holds the ball, so manual assignee\n// changes are never overridden.\nif (court.eq(submitter, author)) {\n  if (state !== 'commented') {\n    core.info(`Unexpected ${state} self-review on PR #${prNumber}, leaving court unchanged.`);\n    return;\n  }\n  const holder = court.courtHolder(pr);\n  if (holder === null || !court.eq(holder, author)) {\n    core.info(`Author does not hold the ball on PR #${prNumber}, leaving court unchanged.`);\n    return;\n  }\n  const reviewer = await court.lastPoolReviewer(pr, reviews);\n  if (reviewer === null) {\n    core.info(`No pool member has reviewed PR #${prNumber} yet, leaving court unchanged.`);\n    return;\n  }\n  await court.setCourt(pr, reviewer);\n  return;\n}\n\n// A pool member reviewed. Approve keeps the reviewer assigned (a\n// maintainer merges); otherwise the author owns it.\nconst target = state === 'approved' ? submitter : author;\nawait court.setCourt(pr, target);\n"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 72,
+                "workingDirectory": "."
+              }
+            ],
+            "condition": "github.event.workflow_run.conclusion == 'success'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": true,
+            "uses": "",
+            "arguments": {},
+            "environment": null
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [
+        {
+          "id": "artifact-read:apply:1",
+          "kind": "artifactReadIntent",
+          "jobId": "apply",
+          "stepIndex": 1,
+          "key": null,
+          "path": null,
+          "name": "assign-reviewer-review",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      ],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/assign_reviewer_review_capture.yaml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "/input/.github/workflows/assign_reviewer_review_capture.yaml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "assign-reviewer-review-capture",
+        "file": ".github/workflows/assign_reviewer_review_capture.yaml",
+        "events": [
+          {
+            "name": "pull_request_review",
+            "externallyTriggerable": true,
+            "privileged": false,
+            "properties": {
+              "types": [
+                "submitted"
+              ]
+            }
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "contents",
+            "access": "read"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "capture",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/github-script",
+                "version": "3a2844b7e9c422d3c10d287c895573f7108da1b3",
+                "arguments": {
+                  "script": "const fs = require('fs');\nconst review = context.payload.review;\nconst data = {\n  pr_number: context.payload.pull_request.number,\n  review_state: (review.state || '').toLowerCase(),\n  submitter: review.user.login,\n};\nfs.writeFileSync('review.json', JSON.stringify(data));\ncore.info(`Captured ${data.review_state} review by ${data.submitter} on PR #${data.pr_number}.`);\n"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 30,
+                "workingDirectory": "."
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/upload-artifact",
+                "version": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+                "arguments": {
+                  "name": "assign-reviewer-review",
+                  "path": "review.json",
+                  "retention-days": "1",
+                  "if-no-files-found": "error"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 42,
+                "workingDirectory": "."
+              }
+            ],
+            "condition": "",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false,
+            "uses": "",
+            "arguments": {},
+            "environment": null
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [
+        {
+          "id": "artifact-write:capture:1",
+          "kind": "artifactWriteIntent",
+          "jobId": "capture",
+          "stepIndex": 1,
+          "key": null,
+          "path": "review.json",
+          "name": "assign-reviewer-review",
+          "runId": null
+        }
+      ],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    }
+  },
+  "candidates": [
+    {
+      "candidate": {
+        "id": "artifact-ff0834b3508c",
+        "pairingStatus": "unique",
+        "producer": {
+          "workflow": "assign-reviewer-review-capture",
+          "file": ".github/workflows/assign_reviewer_review_capture.yaml",
+          "operationId": "artifact-write:capture:1"
+        },
+        "consumer": {
+          "workflow": "assign-reviewer-review-apply",
+          "file": ".github/workflows/assign_reviewer_review_apply.yaml",
+          "operationId": "artifact-read:apply:1"
+        },
+        "sharedObject": {
+          "kind": "artifact",
+          "name": "assign-reviewer-review",
+          "consumerRunSelector": "github.event.workflow_run.id",
+          "triggerWorkflow": "assign-reviewer-review-capture"
+        },
+        "matchBasis": [
+          "artifact nameが一致する．",
+          "取得側が起動元workflow_runのrun IDを指定する．",
+          "workflow_runのworkflows指定が保存側workflow名と一致する．"
+        ]
+      },
+      "status": "unknown",
+      "configuredAuthority": "false",
+      "forkSourceExcluded": false,
+      "flows": [],
+      "unresolved": [
+        "download path is not a supported literal/runner.temp path"
+      ],
+      "runtimeVerified": false,
+      "chain": {
+        "schemaVersion": "0.3.0",
+        "scenario": {
+          "id": "artifact-ff0834b3508c",
+          "platform": "GitHub Actions",
+          "description": "Automatically derived static over-approximation; no runtime success claimed",
+          "evidenceStatus": "incomplete"
+        },
+        "producer": {
+          "workflow": {
+            "name": "assign-reviewer-review-capture",
+            "file": ".github/workflows/assign_reviewer_review_capture.yaml",
+            "event": "pull_request_review"
+          },
+          "operation": {
+            "id": "artifact-write:capture:1",
+            "kind": "artifactWriteIntent",
+            "jobId": "capture",
+            "stepIndex": 1,
+            "name": "assign-reviewer-review",
+            "path": "review.json",
+            "runId": null
+          }
+        },
+        "consumer": {
+          "workflow": {
+            "name": "assign-reviewer-review-apply",
+            "file": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "event": "workflow_run"
+          },
+          "operation": {
+            "id": "artifact-read:apply:1",
+            "kind": "artifactReadIntent",
+            "jobId": "apply",
+            "stepIndex": 1,
+            "name": "assign-reviewer-review",
+            "path": null,
+            "runId": "${{ github.event.workflow_run.id }}"
+          }
+        },
+        "sharedObject": {
+          "kind": "artifact",
+          "name": "assign-reviewer-review",
+          "producerRunSelector": "current producer run",
+          "consumerRunSelector": "github.event.workflow_run.id",
+          "identityBasis": [
+            "static name/workflow/run-selector match only"
+          ]
+        },
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "unknown",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "traceMap": {
+          "start": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_capture.yaml",
+            "workflowName": "assign-reviewer-review-capture",
+            "jobId": "capture",
+            "stepIndex": 1,
+            "meaning": "Configured artifact upload"
+          },
+          "object_written": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_capture.yaml",
+            "workflowName": "assign-reviewer-review-capture",
+            "jobId": "capture",
+            "stepIndex": 1,
+            "meaning": "Potential successful upload, not observed"
+          },
+          "object_restored": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "workflowName": "assign-reviewer-review-apply",
+            "jobId": "apply",
+            "stepIndex": 1,
+            "meaning": "Potential same artifact download, not observed"
+          },
+          "integrity_checked": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "workflowName": "assign-reviewer-review-apply",
+            "jobId": "apply",
+            "stepIndex": 1,
+            "meaning": "Unknown integrity validation"
+          },
+          "object_used": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "workflowName": "assign-reviewer-review-apply",
+            "jobId": "apply",
+            "stepIndex": 1,
+            "meaning": "Potential artifact-derived ref use"
+          },
+          "authority_reached": {
+            "workflowFile": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "workflowName": "assign-reviewer-review-apply",
+            "jobId": "apply",
+            "stepIndex": 1,
+            "meaning": "Configured write capability, not observed write"
+          }
+        },
+        "evidence": [
+          {
+            "kind": "static",
+            "source": "/input/.github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited metadata/source-policy rules"
+          },
+          {
+            "kind": "inference",
+            "source": "chain_to_nusmv.py",
+            "claim": "Potential execution under unknown facts; not confirmed exploitation"
+          }
+        ],
+        "provenance": [
+          {
+            "element": "facts.producerUntrusted",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.writeIntent",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.writeAuthorized",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.writeSucceeded",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.sameObject",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.readSucceeded",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.consumerUsesObject",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.integrityCheckPresent",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.integrityCheckPassed",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.privilegedConsumer",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.hasAuthority",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "consumer.operation.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.jobId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.path",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.runId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.stepIndex",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.event",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.file",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.jobId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.path",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.runId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.stepIndex",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.event",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.file",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.description",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.evidenceStatus",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.platform",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.consumerRunSelector",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.identityBasis",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.producerRunSelector",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.authority_reached",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.integrity_checked",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_restored",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_used",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_written",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.start",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/assign_reviewer_review_apply.yaml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+  "schemaVersion": "approval-race-0.1",
+  "scope": "Limited Bash timestamp idiom and one-level local reusable workflow; no arbitrary shell proof",
+  "status": "no-supported-path",
+  "candidates": []
+}

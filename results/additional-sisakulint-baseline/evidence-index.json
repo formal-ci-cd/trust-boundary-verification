@@ -1,0 +1,116 @@
+{
+  "tool": "sisakulint",
+  "version": "0.3.7",
+  "releaseDate": "2026-08-31T14:52:19Z",
+  "releaseURL": "https://github.com/sisaku-security/sisakulint/releases/tag/v0.3.7",
+  "linuxArm64ArchiveSHA256": "f911b7b516fc6cb0159e12ba1143beeaa901b7a2b2b6231e67e89b0dbfba2423",
+  "command": "sisakulint -fix off -format {{sarif .}} [target]; no network; read-only input",
+  "environment": "Docker linux/arm64 ubuntu:24.04 --network none; local scratch copy with initialized .git; source files unchanged",
+  "scope": {
+    "marimo": "Only pinned marimo-bot.yml in the vulnerable version and a synthetic one-token -gt to -ge guard control; local .github/actions definitions copied but source repository outside .github was not included",
+    "cline": "All pinned Cline pre 15 / post 12 workflow files; repository files outside .github were not included; Dependabot-related findings may reflect omitted repository metadata"
+  },
+  "interpretation": "Marimo target file has 13 findings in both variants with identical rule, location, and message signatures; this tool does not differentiate the same-second approval property in this test. Cline pre has AI-action entry findings which disappear after mitigation. Neither finding set by itself proves the Cline attacker used the candidate path or connects cache to publication credentials. These are retrospective tests of v0.3.7, not incident-time baselines.",
+  "cases": [
+    {
+      "case": "marimo-vulnerable",
+      "file": "marimo-vulnerable.sarif.gz",
+      "sha256": "25557b04d4299ab5b4d35d2a8679525e597e179fbc51c0df966bb8e6e9a9a82d",
+      "sourceSHA256": "325ac6f3899d6bec28919210491a9853b0cdca3d2d004588eb524fb95b4495bb",
+      "findingCount": 13,
+      "rules": {
+        "artipacked": 2,
+        "cache-poisoning": 1,
+        "cache-poisoning-poisonable-step": 3,
+        "deprecated-node-runtime": 6,
+        "untrusted-checkout": 1
+      },
+      "findingSignatureSHA256": "156ef1d2b5cc217358a91a8761c4400c4965f6b3b73441691685c1ef87f3d443",
+      "clineIssueTriageFindings": []
+    },
+    {
+      "case": "marimo-control",
+      "file": "marimo-control.sarif.gz",
+      "sha256": "25557b04d4299ab5b4d35d2a8679525e597e179fbc51c0df966bb8e6e9a9a82d",
+      "sourceSHA256": "325ac6f3899d6bec28919210491a9853b0cdca3d2d004588eb524fb95b4495bb",
+      "findingCount": 13,
+      "rules": {
+        "artipacked": 2,
+        "cache-poisoning": 1,
+        "cache-poisoning-poisonable-step": 3,
+        "deprecated-node-runtime": 6,
+        "untrusted-checkout": 1
+      },
+      "findingSignatureSHA256": "156ef1d2b5cc217358a91a8761c4400c4965f6b3b73441691685c1ef87f3d443",
+      "clineIssueTriageFindings": []
+    },
+    {
+      "case": "cline-pre",
+      "file": "cline-pre.sarif.gz",
+      "sha256": "4e7abbe5f9721e7200de9dd83e732f2c7287de49c17c0de949c09e69345f5b03",
+      "sourceSHA256": "07a034ae0826e7309ab4fc5ee8c6474c9f3157cf63e8a9b1b91bb1514357cbb4",
+      "findingCount": 166,
+      "rules": {
+        "ai-action-excessive-tools": 1,
+        "ai-action-prompt-injection": 1,
+        "ai-action-unrestricted-trigger": 2,
+        "artifact-poisoning-critical": 2,
+        "artipacked": 13,
+        "cache-poisoning": 19,
+        "commit-sha": 55,
+        "dependabot-ecosystem": 9,
+        "dependabot-github-actions": 15,
+        "deprecated-node-runtime": 48,
+        "permissions": 1
+      },
+      "findingSignatureSHA256": "6263848aa8a57b450b035d65d0619929048a36dc50070aff0624f9e45a1b9b0f",
+      "clineIssueTriageFindings": [
+        {
+          "rule": "ai-action-unrestricted-trigger",
+          "file": ".github/workflows/claude-issue-triage.yml",
+          "line": 42,
+          "message": "action \"anthropics/claude-code-action@v1\" has \"allowed_non_write_users: \\\"*\\\"\" which allows any GitHub user to trigger AI agent execution with full tool access. Restrict to specific users or organization members."
+        },
+        {
+          "rule": "ai-action-excessive-tools",
+          "file": ".github/workflows/claude-issue-triage.yml",
+          "line": 42,
+          "message": "action \"anthropics/claude-code-action@v1\" grants dangerous tools [Bash, Write, Edit] via claude_args in a workflow triggered by untrusted events (issues, issue_comment, discussion, pull_request_target, workflow_run). This enables Clinejection attacks where malicious users can inject instructions. Use read-only tools (Read, Glob, Grep) instead."
+        },
+        {
+          "rule": "ai-action-prompt-injection",
+          "file": ".github/workflows/claude-issue-triage.yml",
+          "line": 42,
+          "message": "action \"anthropics/claude-code-action@v1\" has untrusted input \"github.event.issue.title\" directly interpolated into \"prompt\" parameter. This enables prompt injection attacks (Clinejection). Pass untrusted values through environment variables instead of embedding them in the prompt."
+        }
+      ]
+    },
+    {
+      "case": "cline-post",
+      "file": "cline-post.sarif.gz",
+      "sha256": "0dcf3025a806b3badfa102fe463217d792b32988339ef0e8948f26a4f0dfbb66",
+      "sourceSHA256": "1ac09dc838b72acf3f27ef332c056b8f4fbd9e9a5cddd445e3a046d38f03e083",
+      "findingCount": 126,
+      "rules": {
+        "artifact-poisoning-critical": 2,
+        "artipacked": 10,
+        "cache-poisoning": 12,
+        "commit-sha": 43,
+        "dependabot-ecosystem": 8,
+        "dependabot-github-actions": 12,
+        "deprecated-node-runtime": 38,
+        "permissions": 1
+      },
+      "findingSignatureSHA256": "b60db287ce9da6aabf24cc0f45ab5690b20ff4b1040ab9917f60f3be041c2614",
+      "clineIssueTriageFindings": []
+    }
+  ],
+  "marimoSameSecondControl": {
+    "sourceChange": "Only -gt to -ge in marimo-bot.yml timestamp guard",
+    "findingSignaturesEqual": true,
+    "sourceSHA256": {
+      "vulnerable": "bfb31549df6aa547c299ad95742950e3afed83d9a13418405e8264f8d9a5b8d1",
+      "control": "299dc356a6e55bc08fe60e01bd1eec7a67c017d148e8615bf151fb9d2bd1bdb9"
+    }
+  }
+}

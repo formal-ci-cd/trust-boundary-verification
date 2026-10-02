@@ -18,6 +18,8 @@
 | `-ge` 対照版 | 2 / 5件．原本と同じ警告 | 110件．原本と同じ警告 | 0件 | 上記の反例なし |
 | 削除版 `296e39a` | 2 / 5件．他workflowの同じ警告 | 103件 | 0件 | 対象経路なし |
 
+追加の[sisakulint v0.3.7比較](additional-sisakulint-baseline.md)では，対象の `marimo-bot.yml` だけを脆弱版と `-ge` 対照版で解析しました．checkoutやcacheの警告は両版に13件あり，規則・行・メッセージまで一致します．この比較で時刻判定の修正を区別できたのは提案モデルです．これは対象性質の差であり，sisakulintが一般的な危険を警告しなかったという意味ではありません．
+
 CodeQL CLI 2.27.1，公式 `codeql/actions-queries@0.6.36` の `actions-code-scanning.qls` と `actions-security-and-quality.qls` を，省略なしの原本ファイル群へ適用しました．原本と対照版のdefault警告2件は別workflowの権限宣言不足，広いsuiteの追加3件も別workflowの式展開です．zizmor 1.30.1は`--offline --no-config --no-ignores`でregular，auditor，pedanticを実行しました．原本と対照版の `marimo-bot.yml` に出た警告は，credential保存，権限過大，式展開，local Action指定に関するものです．承認時刻の同秒問題を指摘する警告はありません．zizmorの総警告数が0だったという主張ではありません．actionlint 1.7.12はshellcheckとpyflakesを無効にした構文検査です．
 
 公式Actionsライブラリと同じ `codeql/actions-all@0.6.2` を使った診断クエリでは，原本・対照版のcheckout ref `${{ steps.pr.outputs.head_sha }}` がともに `MutableRefCheckoutStep` / `SHACheckoutStep` と分類され，先行する時刻比較が `untrusted-checkout-toctou` を保護すると評価されました．[公式TOCTOUクエリ](https://github.com/github/codeql/blob/main/actions/ql/src/Security/CWE-367/UntrustedCheckoutTOCTOUCritical.ql) は，この保護があると警告しません．診断は公式クエリの結果を改変せず，その分類を観測したものです．このライブラリ版の時刻検査認識は `-gt` と `-ge` の意味の差を見ていません．

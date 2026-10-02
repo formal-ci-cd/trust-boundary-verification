@@ -37,10 +37,11 @@ CodeQLは両版の全workflowを抽出しました．事件当時版はLinux x64
 | zizmor regular | 128件 | 109件 | 入口workflowの警告はcheckout認証残存と未固定Actionだけ．3件のcache警告は別の `publish.yml`．対象経路0件 |
 | actionlint | 2件 | 2件 | 古いActionと未定義step参照．対象経路0件 |
 | Poutine 1.1.6 | 13件 | 11件 | 入口の外部Action参照は警告．Issue→AI→cache→公開jobの接続は指摘せず |
+| sisakulint 0.3.7 | 166件 | 126件 | 事件後の版による追試．入口のprompt・権限・ツール許可を直接警告．候補の複数run経路への接続は警告に含まない |
 | PromptPwnd / Opengrep | 3件 | 0件 | 事件前のIssue→AI入口を検出．cacheから公開jobまでの接続は警告に含まない |
 | 提案側の対象経路 | 条件付き反例 | 経路なし | 入口と夜間公開jobを別workflow・別runとして接続 |
 
-Poutineの[完全な出力と評価条件](additional-poutine-baseline.md)は別に保存しました．これは既存の4ツール比較に対する後日の追加追試です．
+Poutineの[完全な出力と評価条件](additional-poutine-baseline.md)と[sisakulintの追加比較](additional-sisakulint-baseline.md)は別に保存しました．sisakulintの総数には原本に含まないrepository設定を要求する警告も入るため，件数の大小を検出性能とみなしません．いずれも事件後の版による追試です．
 
 2026年2月のcache権限をモデル化しています．[GitHubは2026年6月に低信頼イベントのdefault branch cache tokenを読取り専用に変更](https://github.blog/changelog/2026-06-26-read-only-actions-cache-for-untrusted-triggers/)しました．同じ事件前YAMLにこの現行権限を当てる感度分析では，書込み遷移が塞がれ，NuSMVとBFSの双方で反例が消えます．これは権限仕様を追加した反実仮想であり，実際のGitHub環境を再実行した結果ではありません．この歴史的な反例を現在のGitHub Actionsで実行可能な攻撃とみなしてはいけません．事件当時版CodeQLの追試を含め，過去の設定を後から再解析した結果であり，事件当日に各ツールが導入されていた証拠ではありません．
 

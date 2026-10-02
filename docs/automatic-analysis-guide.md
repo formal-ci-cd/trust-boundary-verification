@@ -120,6 +120,8 @@ NuSMV /tmp/cline-boundary-analysis/pre-incident-current-policy.smv
 
 CodeQL CLI 2.27.1，`actions-queries@0.6.36` の通常・広いsuite，zizmor 1.30.1 regular，actionlint 1.7.12の**全警告**とNuSMV出力は `results/cline-agent-cache-boundary/evidence-index.json` から追跡できます．既存ツールには各版の全workflowを入力し，提案側には同じworkflow原本を与えています．事件前から公開されていたAikidoのPromptPwndルールもOpengrep 1.30.0で実行し，事件前3件・対策後0件でした．入口の検出は既存手法でも可能です．
 
+追加の既存スキャナPoutineによるTanStackとClineの比較条件・全警告は[追加比較](additional-poutine-baseline.md)に記録しています．
+
 ## 今回の実行環境
 
 Python解析・CodeQLはLinux arm64 Docker内，NuSMVは既存のmacOS arm64版2.7.0を使用しました．ホストのPythonへ依存関係は追加していません．

@@ -29,6 +29,7 @@
 | CodeQL default | 1件 | 1件 | 両版とも `bundle-size.yml:45` のcache poisoning警告．警告の起点は `workflow_dispatch` |
 | CodeQL security-and-quality | 14件 | 14件 | 両版とも対象workflowの同じcache警告とuntrusted checkout警告 |
 | zizmor regular | 50件 | 49件 | 事件前の `pull_request_target` に危険なtrigger警告．対象workflowへのcache poisoning警告は両版とも0件 |
+| Poutine 1.1.6 | 15件 | 15件 | 外部Action参照等を警告．対象の複数workflow経路は指摘せず |
 | 提案側の対象経路 | 条件付き反例あり | 対象経路なし | fork PRからmainのcacheを介してOIDC jobへ届く性質を区別 |
 
 CodeQLは事件前の入口workflowのcheckout・cache利用箇所に**警告を出しています**．従って「CodeQL警告0件の実侵害」とは主張しません．ただし，保存済みSARIFのcache警告が示す起点は，実際の攻撃で用いられた `pull_request_target` ではなく，両版にある `workflow_dispatch` です．`benchmark-pr` jobの `if` は事件前には `github.event_name == 'pull_request_target'`，対策後には `github.event_name == 'pull_request'` なので，手動起動はこのjobの対象ではありません．CodeQLは対策後も同一のcache警告を出し，対象とした**fork→main cache→OIDC job**という性質について両版を区別しません．zizmorは危険なtriggerの有無を区別しますが，対象のcache経路自体は警告に含めていません．CodeQLの別の警告は別の性質について有用な場合があるため，対策後の警告全体を誤検知とは扱いません．
@@ -38,6 +39,8 @@ CodeQLは事件前の入口workflowのcheckout・cache利用箇所に**警告を
 事件前の全7 workflowと外部Actionを保ち，`bundle-size.yml` の `workflow_dispatch:` **1行だけ**を削除した対照例を生成しました．これはupstreamの版ではありません．PRの `pull_request_target`，`benchmark-pr` jobの条件，PR merge refへのcheckout，cacheを使う外部Action，公開側のOIDC jobはすべて不変です．[生成器](../tools/materialize_tanstack_combined.py)に `--without-dispatch-control` を指定すると同じ入力を再作成でき，変更内容は[差分](../results/tanstack-cache-chain/without-workflow-dispatch-control/source.patch)にも保存しています．
 
 CodeQL CLI 2.27.1 / `actions-queries@0.6.36` は対照例でもActionsファイル8件をすべて抽出しました．通常suiteの警告は**1件から0件**，広いsuiteは**14件から13件**となり，対象のcache poisoning警告が消えました．広いsuiteには `untrusted-checkout/medium` など別の警告が残ります．zizmor regularは両入力50件で，対照例でも `dangerous-triggers` を入口workflowに出します．[全警告とchecksum](../results/tanstack-cache-chain/without-workflow-dispatch-control/comparison.json)を保存しました．
+
+[Poutineの追加比較](additional-poutine-baseline.md)では，事件前・対策後・対照例のいずれも15件で，対象のfork PR→cache→OIDC job経路を結ぶ警告はありませんでした．外部Action参照の警告は残ります．
 
 提案モデルでは事件前原本と対照例の両方で，`pull_request_target`→main cache→OIDC jobの**同じ条件付き反例**が残ります．SMVのSHA-256も一致し，NuSMVとBFSは `AG !bad` が偽で一致しました．この1行対照は，固定したCodeQL通常suiteの警告が実際に悪用されたPR経路を追跡していなかったことを示します．ただし対照例でもzizmorは危険なtriggerを警告し，キャッシュの実際の保存・復元や任意の未対応経路まで証明したわけではありません．
 

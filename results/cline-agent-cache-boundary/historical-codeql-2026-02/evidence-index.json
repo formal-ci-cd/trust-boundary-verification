@@ -1,0 +1,142 @@
+{
+  "purpose": "CodeQL baseline available before the February 17 2026 Cline compromise, run on full pinned workflow snapshots",
+  "cliVersion": "2.24.1",
+  "cliReleaseDate": "2026-02-05",
+  "cliReleaseURL": "https://github.com/github/codeql-cli-binaries/releases/tag/v2.24.1",
+  "linux64ArchiveSHA256": "ae57503abbb269e8c0eddd6f54df977444490ba32a229c34ffcbd8fc205bc18a",
+  "queryPack": "codeql/actions-queries@0.6.19",
+  "queryPackTag": "github/codeql@codeql-cli/v2.24.1",
+  "environment": "Docker linux/amd64 ubuntu:24.04 --network none; official x64 CLI and bundled Actions extractor; pinned query pack",
+  "input": "Cline pre-incident 15 workflows and official mitigation 12 workflows from experiments/public-cases/cline/manifest.json",
+  "interpretation": "Neither contemporaneously available default nor security-and-quality CodeQL suite reports the candidate Issue→AI→cache→release path. This does not show actual use of this path by the attacker, nor exclusive detection over all existing tools; PromptPwnd detects the AI entry.",
+  "cases": [
+    {
+      "case": "pre",
+      "suite": "default",
+      "file": "pre-default.sarif.gz",
+      "sha256": "545aa357d4da392cdc284fd99e530aba2cd658c896717f7dda7b7a19cef9f4b3",
+      "sourceSHA256": "1d2cee09d58b73f249e20694929496566f2c909e428d73b8eab6c97def9cbd21",
+      "extractedActionsFiles": 15,
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/missing-workflow-permissions",
+          "file": ".github/workflows/e2e.yml",
+          "line": 17
+        }
+      ],
+      "issueToAiCacheReleaseFinding": false
+    },
+    {
+      "case": "pre",
+      "suite": "security-and-quality",
+      "file": "pre-security-and-quality.sarif.gz",
+      "sha256": "327b3c3c454720984211d25103292bd4df5bc2ef1303c4391abcba77a8a47a62",
+      "sourceSHA256": "2ddde53979076c3fe9f6278a31eb28ced5cf72a39377d7bd45c873c8ae0ad68a",
+      "extractedActionsFiles": 15,
+      "findingCount": 8,
+      "findings": [
+        {
+          "rule": "actions/missing-workflow-permissions",
+          "file": ".github/workflows/e2e.yml",
+          "line": 17
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/changeset-converter.yml",
+          "line": 74
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/claude-issue-triage.yml",
+          "line": 44
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/claude-pr-review.yml",
+          "line": 64
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/publish.yml",
+          "line": 138
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 192
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 201
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 220
+        }
+      ],
+      "issueToAiCacheReleaseFinding": false
+    },
+    {
+      "case": "post",
+      "suite": "default",
+      "file": "post-default.sarif.gz",
+      "sha256": "252d98660ce287ba4fabdfaba482d18e6c85785430802e6358c707bfac688545",
+      "sourceSHA256": "3a7b81574722b77f2ba83a9dca1349f11a87f0d88da6598bf9d602ceb6477ccd",
+      "extractedActionsFiles": 12,
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/missing-workflow-permissions",
+          "file": ".github/workflows/e2e.yml",
+          "line": 17
+        }
+      ],
+      "issueToAiCacheReleaseFinding": false
+    },
+    {
+      "case": "post",
+      "suite": "security-and-quality",
+      "file": "post-security-and-quality.sarif.gz",
+      "sha256": "e58f20ba82d30fe80c2472cf14765c86b2fd8f5f413cd9adc444912f5e5d8f0d",
+      "sourceSHA256": "455341a241ee20c726d12e72989a3bdb194ebbaa7b7d1532e891b0805ee9a6a6",
+      "extractedActionsFiles": 12,
+      "findingCount": 6,
+      "findings": [
+        {
+          "rule": "actions/missing-workflow-permissions",
+          "file": ".github/workflows/e2e.yml",
+          "line": 17
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/changeset-converter.yml",
+          "line": 74
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/publish.yml",
+          "line": 120
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 192
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 201
+        },
+        {
+          "rule": "actions/unpinned-tag",
+          "file": ".github/workflows/test.yml",
+          "line": 220
+        }
+      ],
+      "issueToAiCacheReleaseFinding": false
+    }
+  ]
+}

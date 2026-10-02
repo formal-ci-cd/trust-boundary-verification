@@ -1,0 +1,50 @@
+{
+  "sourceCommit": "e240bc1aca68337b2b40e100fb24552d27eeb8cc",
+  "codeqlCLI": "2.27.1",
+  "queryPack": "codeql/actions-queries@0.6.36",
+  "suite": "actions-code-scanning.qls",
+  "analysisScope": "one workflow, no external Action implementation",
+  "generatedBy": "tools/materialize_spotbugs_codeql_ablation.py",
+  "variants": {
+    "gate-on-indirect": {
+      "source": "experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml",
+      "sourceSha256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+      "sarif": "results/spotbugs-screening/codeql-2.27.1-default.sarif.gz",
+      "sarifGzipSha256": "3b4f5fcf2d451563ca675547e36302528036025312649036c81c99ae2f3e77f3",
+      "findings": []
+    },
+    "gate-on-inline": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-on-inline/.github/workflows/sonarqube.yml",
+      "sourceSha256": "46f420088a71a5f225341af9394a2c0037036faff35269a87a6eee8b6e161635",
+      "sarif": "results/spotbugs-screening/codeql-ablation/gate-on-inline-default.sarif.gz",
+      "sarifGzipSha256": "14faa7fe3b916a6af56feba89a4f8a142a23024c29ff1ac2b00c70d4d84952d4",
+      "findings": []
+    },
+    "gate-off-indirect": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-off-indirect/.github/workflows/sonarqube.yml",
+      "sourceSha256": "a9bcdf1a51e37339552ad3fd9466b968602949d4dbbdd74765a282c9afcc6217",
+      "sarif": "results/spotbugs-screening/codeql-ablation/gate-off-indirect-default.sarif.gz",
+      "sarifGzipSha256": "699a53281342f93a87b967378197acd8901b86629baa2adc040e7cd7755fd473",
+      "findings": [
+        {
+          "ruleId": "actions/untrusted-checkout/critical",
+          "uri": ".github/workflows/sonarqube.yml",
+          "line": 42
+        }
+      ]
+    },
+    "gate-off-inline": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-off-inline/.github/workflows/sonarqube.yml",
+      "sourceSha256": "fcda9b0fd2275ec9d77df1490dd2ee79f2fdcfcac3c5c1b2c7c9f694b93ab346",
+      "sarif": "results/spotbugs-screening/codeql-ablation/gate-off-inline-default.sarif.gz",
+      "sarifGzipSha256": "19f50c2e8d28cfb56f64057d690360f3ab7a06b86b3c67d72c96760f8a2ad147",
+      "findings": [
+        {
+          "ruleId": "actions/untrusted-checkout/critical",
+          "uri": ".github/workflows/sonarqube.yml",
+          "line": 42
+        }
+      ]
+    }
+  }
+}

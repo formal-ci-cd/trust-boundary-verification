@@ -23,6 +23,19 @@ GitHubの[イベント仕様](https://docs.github.com/en/actions/reference/workf
 
 [CodeQLの完全なSARIFと比較](../results/spotbugs-screening/codeql-safe-ref-control-comparison.json)，[zizmor・sisakulintの完全なSARIFと比較](../results/spotbugs-screening/additional-control-scanners-comparison.json)を保存した．sisakulintは**両方**に未信頼checkoutと後続local scriptへの警告を出す．この比較が示すのは，検査した既存ツールのこの版・設定が区別しなかった**PR参照選択による対象経路の差**を，提案側が区別したことである．危険な設定の入口を提案側だけが発見した，とは主張しない．
 
+### CodeQLが原本で警告しない条件の切り分け
+
+追加の2因子アブレーションでは，原本の `ref: ${{ steps.condval.outputs.value }}` をPR merge refの直接指定にする変更と，job条件 `github.repository == 'spotbugs/sonar-findbugs'` を `true` にする変更を独立に適用した．[生成器](../tools/materialize_spotbugs_codeql_ablation.py)は各置換が原本でちょうど1回だけ成立することを検査する．同じCodeQL CLI 2.27.1 / Actions pack 0.6.36の通常suiteで，全版1/1ファイルを抽出した．
+
+| jobのrepository条件 | checkout ref | CodeQL通常suite |
+|---|---|---|
+| 原本の条件あり | 外部Action出力（原本） | 0件 |
+| 原本の条件あり | PR merge refを直接指定 | 0件 |
+| 条件を `true` に変更 | 外部Action出力 | `actions/untrusted-checkout/critical` 1件 |
+| 条件を `true` に変更 | PR merge refを直接指定 | 同じ規則1件 |
+
+[4版の原本・全SARIF・checksum](../results/spotbugs-screening/codeql-ablation/evidence-index.json)を保存した．これは**研究用の合成対照**で，上流の実変更や攻撃時の実行結果ではない．結果から，この版のCodeQLは外部Action出力を全く追えないわけではなく，**原本のrepository条件が警告抑止に効いている**ことが分かる．CodeQLの公開ルール実装も `pull_request_target` のrepository条件を保護条件として扱う．しかし[GitHubのイベント仕様](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#pull_request_target)では `pull_request_target` はbase repositoryの文脈で実行されるため，そのrepository名が `spotbugs/sonar-findbugs` であることはfork PRの排除を意味しない．本提案モデルはこの条件をfork除外と解釈せず，PR参照とsecret付き実行stepの接続を残した．このアブレーションは特定版・入力で警告抑止の**観測上の原因**を分離するもので，CodeQL全版や他のリポジトリ条件への一般化ではない．
+
 ## 解釈の境界
 
 このCodeQL比較は**事後の遡及実験**である．CodeQL Actions解析の[公開プレビューは2024年12月17日](https://github.blog/changelog/2024-12-17-find-and-fix-actions-workflows-vulnerabilities-with-codeql-public-preview/)に始まり，攻撃日の後である．従って「当時のCodeQLが見逃した」という歴史的主張はしない．現在の公開APIで攻撃PRの[check-run](../results/spotbugs-screening/attack-pr-head-check-runs.json)と攻撃日の[対象workflow run](../results/spotbugs-screening/attack-day-public-runs.json)は確認できず，0件という現在の応答を当時未実行だった証拠にはしない．漏洩の歴史的事実はUnit 42と保守者の調査に依拠する．

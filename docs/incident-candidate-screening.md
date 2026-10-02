@@ -26,6 +26,8 @@ CodeQL CLI 2.27.1 / `codeql/actions-queries@0.6.36` はこの1ファイルを抽
 
 ## SpotBugsからreviewdogへの侵害：CodeQL通常suiteには警告なし，提案側は条件付き経路を検出
 
+結果と限界を[独立した事例資料](spotbugs-incident-case-study.md)にも整理した．
+
 [Unit 42の調査](https://unit42.paloaltonetworks.com/github-actions-supply-chain-attack/)と[攻撃者のPR #1116](https://github.com/spotbugs/sonar-findbugs/pull/1116)によれば，2024年12月6日に攻撃者は `spotbugs/sonar-findbugs` の `mvnw` を変更しました．PR直前のbase commit `e240bc1aca68337b2b40e100fb24552d27eeb8cc` にある [`sonarqube.yml`](https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/.github/workflows/sonarqube.yml) は，`pull_request_target` でPR側のmerge refを `haya14busa/action-cond@v1` の出力を介してcheckoutし，続く `./mvnw` にPAT等のsecretを渡します．Unit 42は，このPRで漏れたPATが後の `spotbugs/spotbugs` への侵入に使われたことを保守者に確認しています．公開原本はGit blob `176cd5cd4cbd7c7a05f1e9730c1e40542ebe64c9`，SHA-256 `e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74` で固定しました．攻撃payloadは実行していません．
 
 [GitHubの公開PRメタデータ](../experiments/public-cases/spotbugs-chain/attack-pr-metadata.json)でbase SHAは固定workflowのコミットと一致し，変更ファイルは `mvnw` の1件です．さらに[公開PR差分](../experiments/public-cases/spotbugs-chain/attack-pr-files.json)を固定し，[自動照合結果](../results/spotbugs-screening/attack-pr-alignment.json)で，その `mvnw` の冒頭付近に外部スクリプトを取得して `bash` に渡す無条件の行が追加され，秘密情報付きの実行step `./mvnw` が同じファイルを呼ぶことを確認しました．差分は文字列として検査しただけで，参照先スクリプトの本文は取得・実行していません．これは攻撃者が変更した**実際の実行対象と追加命令**まで対応付けますが，Actionタグの事件時SHA，CI実行ログ，秘密情報の漏洩は補いません．公開APIで現在確認できる攻撃PRのcheck-runと攻撃日の `pull_request_target` runはいずれも0件でした．これは当時実行されなかった証拠ではありません．

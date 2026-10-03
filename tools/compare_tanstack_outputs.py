@@ -55,7 +55,21 @@ def location_files(result):
     return sorted(found)
 
 
-def summarize_sarif(path):
+def property_level_class(producer_count, consumer_count, same_count):
+    if same_count:
+        # Two locations in one SARIF result alone do not prove the intermediate
+        # cache object or authority dependence.
+        return 'same-finding-two-endpoints; full-path semantics require review'
+    if producer_count and consumer_count:
+        return '入口と出口を別findingとして検出'
+    if producer_count:
+        return '入口のみ'
+    if consumer_count:
+        return '出口のみ'
+    return '対象findingなし'
+
+
+def summarize_sarif(path, tool_name):
     compressed = path.read_bytes()
     sarif = json.loads(gzip.decompress(compressed))
     results = [result for run in sarif["runs"] for result in run.get("results", [])]
@@ -69,15 +83,31 @@ def summarize_sarif(path):
                 "mentionsConsumerInMessage": CONSUMER in result.get("message", {}).get("text", ""),
             }
         )
+    producer_count = sum(PRODUCER in item["files"] for item in entries)
+    consumer_count = sum(CONSUMER in item["files"] for item in entries)
+    same_count = sum(PRODUCER in item["files"] and CONSUMER in item["files"]
+                     for item in entries)
+    entry_rules = {
+        'codeql-incident-available-default': {'actions/cache-poisoning/poisonable-step',
+                                               'actions/untrusted-checkout/medium'},
+        'codeql-current-security-and-quality': {'actions/cache-poisoning/poisonable-step',
+                                               'actions/untrusted-checkout/medium'},
+        'zizmor-current-regular': {'zizmor/dangerous-triggers'},
+        'sisakulint-current': {'untrusted-checkout'},
+    }[tool_name]
+    target_entry = sum(PRODUCER in item['files'] and item['rule'] in entry_rules
+                       for item in entries)
+    target_exit = 0  # No saved rule identifies this cache-derived privileged sink.
     return {
         "inputSHA256": hashlib.sha256(compressed).hexdigest(),
         "findingCount": len(entries),
-        "producerFindingCount": sum(PRODUCER in item["files"] for item in entries),
-        "consumerFindingCount": sum(CONSUMER in item["files"] for item in entries),
-        "sameFindingLinksProducerAndConsumer": sum(
-            PRODUCER in item["files"] and CONSUMER in item["files"]
-            for item in entries
-        ),
+        "targetEntryFindingCount": target_entry,
+        "targetExitFindingCount": target_exit,
+        "endpointLocationClass": property_level_class(producer_count, consumer_count, same_count),
+        "producerFindingCount": producer_count,
+        "consumerFindingCount": consumer_count,
+        "sameFindingLinksProducerAndConsumer": same_count,
+        "propertyLevelClass": property_level_class(target_entry, target_exit, 0),
         "producerFindingMentionsConsumer": sum(
             PRODUCER in item["files"] and item["mentionsConsumerInMessage"]
             for item in entries
@@ -86,6 +116,29 @@ def summarize_sarif(path):
             item for item in entries if PRODUCER in item["files"] or CONSUMER in item["files"]
         ],
     }
+
+
+def summarize_poutine(path, expected_sha256):
+    compressed = path.read_bytes()
+    if hashlib.sha256(compressed).hexdigest() != expected_sha256:
+        raise ValueError(f'Poutine evidence checksum mismatch: {path}')
+    data = json.loads(gzip.decompress(compressed))
+    entries = [{'rule': item['rule_id'],
+                'files': [Path(item.get('meta', {}).get('path', '')).name]}
+               for item in data['findings']]
+    producer_count = sum(PRODUCER in item['files'] for item in entries)
+    consumer_count = sum(CONSUMER in item['files'] for item in entries)
+    same_count = sum(PRODUCER in item['files'] and CONSUMER in item['files']
+                     for item in entries)
+    return {'inputSHA256': expected_sha256, 'findingCount': len(entries),
+            'producerFindingCount': producer_count,
+            'consumerFindingCount': consumer_count,
+            'sameFindingLinksProducerAndConsumer': same_count,
+            'endpointLocationClass': property_level_class(producer_count, consumer_count, same_count),
+            'propertyLevelClass': '対象findingなし',
+            'classificationBasis': 'Poutine unverified-creator warnings on both files do not assert the PR-to-cache entry or privileged sink',
+            'findingsAtProducerOrConsumer': [item for item in entries
+                                              if PRODUCER in item['files'] or CONSUMER in item['files']]}
 
 
 def compare(root):
@@ -108,11 +161,43 @@ def compare(root):
                 item["step"] for item in case["bfs"]["conditionalCounterexample"]
             ],
         }
+    common_subset = {}
+    for variant, directory in [('pre-incident', 'common-path-pre'),
+                               ('mitigation', 'common-path-mitigation')]:
+        path = root / 'results/tanstack-cache-chain' / directory / 'analysis.json'
+        report = json.loads(path.read_text())
+        matching = [item for item in report['results']
+                    if Path(item['producer']['file']).name == PRODUCER
+                    and item['producer']['job'] == 'benchmark-pr'
+                    and Path(item['consumer']['file']).name == CONSUMER]
+        if len(matching) != 1:
+            raise ValueError(f'Expected one common cache path: {variant}: {len(matching)}')
+        item = matching[0]
+        files = sorted({Path(e['file']).name for e in item['evidence']})
+        if not {PRODUCER, CONSUMER, 'action.yml'}.issubset(files):
+            raise ValueError(f'Common cache path lacks evidence: {variant}')
+        common_subset[variant] = {
+            'input': str(path.relative_to(root)), 'status': item['status'],
+            'property': 'Untrusted cache bytes do not reach an explicit repository-write sink in a distinct release run',
+            'evidenceFiles': files, 'sameObject': item['sharedObject']['sameObject'],
+            'unknownAssumptions': item['unknownAssumptions'],
+            'counterexampleLength': len(item['order']['counterexample']),
+            'scope': 'per-path finite model; actual bytes, execution and write success unobserved',
+        }
     tools = {}
     for name, paths in INPUTS.items():
         tools[name] = {}
         for variant, relative in paths.items():
-            tools[name][variant] = {"input": relative, **summarize_sarif(root / relative)}
+            tools[name][variant] = {"input": relative, **summarize_sarif(root / relative, name)}
+    poutine_index = json.loads((root / 'results/additional-poutine-baseline/evidence-index.json').read_text())
+    poutine = {}
+    for variant, case_name in [('pre-incident', 'tanstack-pre'),
+                               ('mitigation', 'tanstack-mitigation')]:
+        record = next(case for case in poutine_index['cases'] if case['name'] == case_name)
+        relative = 'results/additional-poutine-baseline/' + record['result']
+        poutine[variant] = {'input': relative,
+                            **summarize_poutine(root / relative, record['sha256'])}
+    tools['poutine-1.1.6-retrospective'] = poutine
     return {
         "property": analysis["property"],
         "scope": "Fixed TanStack incident and mitigation snapshots; only the listed SARIF runs and saved model output",
@@ -120,6 +205,7 @@ def compare(root):
         "producerFile": PRODUCER,
         "consumerFile": CONSUMER,
         "model": model,
+        "commonSubset": common_subset,
         "tools": tools,
     }
 

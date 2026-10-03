@@ -13,15 +13,15 @@
 | Privileged Authority | workflow/jobの明示`permissions`と，既知の`git push`等のsink候補．TanStack専用解析は`id-token: write`の設定を抽出 | 権限設定だけではOIDC発行・publish成功を証明しない．外部token，環境保護，secret参照の実効権限はunknown |
 | Order／property | `chain_to_nusmv.py`は保存→復元→利用→権限到達の有限状態モデルと`AG !bad`を生成．TanStack専用モデルはrun間順序を展開 | 一般の並行run全体，実際のsave/restore時刻，第三者Actionの時点依存挙動 |
 
-YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A5の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，artifact metadata→step output→模擬更新markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA1・A5に条件付き反例，A2～A4に対象反例なし．A5のYAMLにある文字種チェックは完全性照合ではない．実repository writeは行わない．`tanstack_cache_chain.py` と複数runモデルは**固定事例専用**であり，共通操作inventoryだけから完全なCache経路を判定できるとは読んではならない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
+YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A5の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，artifact metadata→step output→模擬更新markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA1・A5に条件付き反例，A2～A4に対象反例なし．A5のYAMLにある文字種チェックは完全性照合ではない．実repository writeは行わない．`tanstack_cache_chain.py` の事例専用結果は保存する．新しい限定Cache経路解析は複数workflowのPR・Cache・明示repository write地点を再構成するが，実効Cache objectと実被害の因果関係は証明しない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
 
 ## 現在主張できるSupported Subset
 
 - YAML frontendは`.github/workflows/*.yml`／`*.yaml`を安全なloaderで読み，`on`，job，step，`if`，`permissions`，`env`，`uses`，`with`，複数行`run`とstep元行を保持する．式全体を評価するとは主張しない．
 - 中心artifact評価器は`pull_request`の暗黙ref checkout，`actions/upload-artifact`，`workflow_run.workflows`で指定された別workflow，`${{ github.event.workflow_run.id }}`を渡す`actions/download-artifact`，一致するliteral artifact nameを候補結合する．artifact ID，digest，取得成功は静的にはunknownである．
-- shellはA1～A4に現れる**限定した形**だけを認識する．artifact pathを指す`ARTIFACT_FILE`からの`tr`読取り，literal digestに対する`sha256sum`と`verified` output，そのoutputを条件とする後続use，summary-only出力，研究用`dummy_publish_authority_reached` markerを扱う．guardに余分なコマンドがあれば検証済みとみなさない．模擬markerは実publish権限ではない．
+- shellはA1～A5に現れる**限定した形**だけを認識する．artifact pathを指す`ARTIFACT_FILE`からの`tr`読取り，literal digestに対する`sha256sum`と`verified` output，そのoutputを条件とする後続use，summary-only出力，研究用`dummy_publish_authority_reached` markerを扱う．guardに余分なコマンドがあれば検証済みとみなさない．模擬markerは実publish権限ではない．
 - `contents: write`／`id-token: write`等の明示permissionは構造として取得できるが，権限の**使用**と同一視しない．`git push`は既存の限定metadata flowで候補とする．secret，外部token，外部認可の成功はunknownである．
-- Cacheは[共通操作inventory](../tools/extract_shared_operations.py)で，既知の`actions/cache`／`save`／`restore`と照合済みComposite Action snapshot内の操作を全workflowから抽出し，key式を比較した候補対を列挙する．[TanStack原本の候補](../results/tanstack-cache-chain/common-inventory-pre.json)にはPR側とrelease側が含まれる．現段階では，候補対からSource・use・privileged sinkまでを汎用的に構成する処理は未完成である．可変tagの時点の内容，実効key，scope，version，復元entryはunknownである．
+- Cacheは[共通操作inventory](../tools/extract_shared_operations.py)で，既知の`actions/cache`／`save`／`restore`と照合済みComposite Action snapshot内の操作を全workflowから抽出し，key式を比較した候補対を列挙する．[TanStack原本の候補](../results/tanstack-cache-chain/common-inventory-pre.json)にはPR側とrelease側が含まれる．さらに[限定Cache経路解析](../tools/evaluate_cache_subset.py)は，PR checkout→Cache操作→別runの復元→固定Composite Action内`pnpm install`→明示`git push`を結び，repository write地点への条件付き反例を構成する．[事件前](../results/tanstack-cache-chain/common-path-pre/analysis.json)と[対策版](../results/tanstack-cache-chain/common-path-mitigation/analysis.json)を同じpropertyで比較する．これはこのコマンド・Action contractの部分集合に限り，任意のCache利用・publish・OIDC使用の汎用解析ではない．可変tagの時点の内容，実効key，scope，version，復元entryはunknownである．
 - `pull_request_target`のfork入力は単なるevent存在で確定しない．限定したcheckout refと有効なfork除外を追加評価する必要がある．任意の`if`式，JavaScript／Docker Action，任意Bash，固定できないComposite Actionはunsupportedとして扱う．
 
 ## 限定拡張の設計契約
@@ -43,6 +43,6 @@ YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`o
 | A3 | 固定YAMLの限定的なsummary-only shellを認識して対象反例なし．実行時にも利用なし | 全shellの非利用証明ではない |
 | A4 | 固定YAMLの読取りと模擬publish=falseを認識して対象反例なし．実行時にも権限なし | 研究用dummy権限の範囲 |
 | A5 | 固定YAMLからmetadata→step output→模擬repository更新地点を注釈なしで結合し条件付き反例．同一ID／digestを観測 | 旧モデル入力には人手対応が残る．自動評価は模擬markerまでで，実権限は推論しない．[一境界ずつのモデル対照](../results/core-boundary-controls.json)は検査済み |
-| TanStack | 事件前に条件付きCache反例，実対策版で対象経路なし．保存／復元順序を複数runモデルで区別．CodeQL等は入口を警告 | 対策版は複数変更を含む．既存テストにはjob条件，checkout ref，OIDC設定，外部ActionのCacheを各一箇所変えた構造対照があるが，実効Cache key／復元byteは未観測 |
+| TanStack | 事件前に条件付きCache反例，実対策版で対象経路なし．保存／復元順序を複数runモデルで区別．CodeQL等は入口を警告 | 共通解析では事件前のPR→Cache→releaseの明示`git push`地点に条件付き反例，対策版では同じpropertyに反例なし．ただし，2026年5月のscope規則を入力とし，実効key／復元byte，npm公開への実際の因果経路は未観測．既存テストにはjob条件，checkout ref，OIDC設定，外部ActionのCacheを各一箇所変えた構造対照がある |
 
 A1／A5については[研究用の一境界対照](../results/core-boundary-controls.json)で，各原本と八つの遮断条件の合計18構成をNuSMVと独立した事実列挙で照合した．保存許可と保存成功など，因果上同時に変えるべき事実は一つの**境界条件**として扱う．これはJSON事実モデルの感度検査であり，YAML抽出精度，実行時のsave／restore，又は実際の対策効果を検証したものではない．TanStackは[既存の構造対照テスト](../tests/test_tanstack_cache_chain.py)で四つの独立変更を扱う．順序，完全性検証，実効Cache entryの全組合せを実証済みとは言わない．

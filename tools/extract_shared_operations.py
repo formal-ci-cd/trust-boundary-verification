@@ -45,9 +45,50 @@ def load_contracts(path):
         body = yaml.load(source.read_text(), Loader=yaml_to_model.WorkflowLoader)
         if body.get('runs', {}).get('using') != 'composite':
             raise ValueError(f'Not a composite Action: {source}')
+        ast = yaml.compose(source.read_text(), Loader=yaml_to_model.WorkflowLoader)
+        def child(node, key):
+            return next((v for k, v in node.value if k.value == key), None)
+        step_nodes = child(child(ast, 'runs'), 'steps').value
         contracts[reference] = {'body': body, 'path': str(source), 'sha256': actual,
+                                'stepLines': [node.start_mark.line + 1 for node in step_nodes],
                                 'runtimeIdentity': 'unknown; snapshot is not proof of runtime tag resolution'}
     return contracts
+
+
+def expand_reference(reference, arguments, origin, contracts, unsupported, stack=()):
+    """Expand known contracts and exact supplied composite references only."""
+    action = split_action(reference)
+    direct = contract_operations(action, arguments, origin,
+                                 'known-action-contract' if not stack else
+                                 'supplied-composite-snapshot; runtime identity unknown')
+    if direct:
+        return direct
+    contract = contracts.get(reference)
+    if contract is None:
+        if action != 'actions/checkout':
+            unsupported.append({'location': origin, 'action': reference,
+                                'reason': 'no supplied composite contract or known threat-model action contract'})
+        return []
+    if reference in stack or len(stack) >= 8:
+        unsupported.append({'location': origin, 'action': reference,
+                            'reason': 'composite recursion cycle or depth limit'})
+        return []
+    operations = []
+    for index, inner in enumerate(contract['body']['runs']['steps']):
+        inner_reference = str(inner.get('uses', ''))
+        inner_loc = dict(origin,
+                         compositeFile=contract['path'], compositeStep=index,
+                         compositeLine=contract['stepLines'][index],
+                         compositeSHA256=contract['sha256'],
+                         compositeStack=list(stack + (reference,)))
+        if not inner_reference:
+            # Shell inside a composite is a separate semantic boundary. The
+            # cache inventory records operations only; it does not infer use.
+            continue
+        inner_args = {k: str(v) for k, v in inner.get('with', {}).items()}
+        operations.extend(expand_reference(inner_reference, inner_args, inner_loc,
+                                           contracts, unsupported, stack + (reference,)))
+    return operations
 
 
 def extract(models, contracts):
@@ -57,32 +98,10 @@ def extract(models, contracts):
             for step in job['steps']:
                 if step['type'] != 'uses':
                     continue
-                reference = step.get('actionReference', '') or step.get('command', '')
-                # The common model normalizes the action name separately.
-                action = step.get('action', '')
-                loc = source_location(model, job, step)
-                args = step.get('arguments', {})
-                direct = contract_operations(action, args, loc, 'known-action-contract')
-                if direct:
-                    operations.extend(direct)
-                    continue
-                raw_uses = step.get('uses', '') or step.get('actionRaw', '')
-                # Resolve by exact workflow reference, never by an action name alone.
-                if not raw_uses:
-                    raw_uses = action + '@' + step.get('version', '')
-                contract = contracts.get(raw_uses)
-                if not contract:
-                    if action not in {'actions/checkout'}:
-                        unsupported.append({'location': loc, 'action': raw_uses,
-                                            'reason': 'no supplied composite contract; unrelated actions may be outside the threat model'})
-                    continue
-                for index, inner in enumerate(contract['body']['runs']['steps']):
-                    inner_action = split_action(str(inner.get('uses', '')))
-                    inner_loc = dict(loc, compositeFile=contract['path'], compositeStep=index,
-                                     compositeSHA256=contract['sha256'])
-                    inner_args = {k: str(v) for k,v in inner.get('with', {}).items()}
-                    operations.extend(contract_operations(inner_action, inner_args, inner_loc,
-                                                          'supplied-composite-snapshot; runtime identity ' + contract['runtimeIdentity']))
+                reference = step.get('action', '') + '@' + step.get('version', '')
+                operations.extend(expand_reference(reference, step.get('arguments', {}),
+                                                   source_location(model, job, step),
+                                                   contracts, unsupported))
     return {'operations': operations, 'unsupportedActions': unsupported}
 
 

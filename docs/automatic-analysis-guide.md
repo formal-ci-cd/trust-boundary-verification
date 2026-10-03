@@ -26,6 +26,20 @@ PYTHONPATH=/path/to/installed/dependencies python3 tools/extract_shared_operatio
 
 [原本の保存結果](../results/tanstack-cache-chain/common-inventory-pre.json)と[対策版](../results/tanstack-cache-chain/common-inventory-mitigation.json)を比較できる．
 
+## 限定Cache経路を二つのrunで検査
+
+[共通操作inventory](../tools/extract_shared_operations.py)を使い，PR checkout，Cache保存候補，別runの復元，固定Composite Action内の限定`pnpm install`，後続の明示`git push`と`contents: write`を接続する．2026年5月のCache scope規則を明示入力にし，NuSMVと独立BFSで同じpropertyを検査する．実効key，保存・復元成功，Action `@main`の事件時内容，キャッシュbyteの使用，sinkの実行はunknownのままにする．
+
+```sh
+PYTHONPATH=/path/to/installed/dependencies python3 tools/evaluate_cache_subset.py \
+  experiments/public-cases/tanstack/pre-incident \
+  --composites experiments/public-cases/tanstack/composite-contracts.json \
+  --policy historical-pre-2026-06-26 --nusmv /path/to/NuSMV \
+  --output /tmp/cache-path-pre
+```
+
+対策版は入力ディレクトリを`experiments/public-cases/tanstack/mitigation`に変更する．[事件前の保存結果](../results/tanstack-cache-chain/common-path-pre/analysis.json)と[対策版](../results/tanstack-cache-chain/common-path-mitigation/analysis.json)を比較する．`--policy unknown`では対策版も安全と確定しない．`safe-within-model`は**そのCache候補と明示repository write地点だけ**の結論で，repository全体の安全性や実際のnpm公開経路の証明ではない．
+
 ## Python解析
 
 依存関係は `requirements-analysis.txt`，隔離環境は `experiments/analysis.Dockerfile` です．

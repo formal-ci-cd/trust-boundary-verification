@@ -31,7 +31,13 @@ class TanStackOutputComparisonTests(unittest.TestCase):
         codeql = report["tools"]["codeql-incident-available-default"]
         self.assertEqual(codeql["pre-incident"]["producerFindingCount"], 1)
         self.assertEqual(codeql["pre-incident"]["sameFindingLinksProducerAndConsumer"], 0)
+        self.assertEqual(codeql["pre-incident"]["propertyLevelClass"], "入口のみ")
         self.assertEqual(report["model"]["pre-incident"]["formalVerdict"], "possible")
+        self.assertEqual(report["commonSubset"]["pre-incident"]["status"], "unsafe-counterexample")
+        self.assertEqual(report["commonSubset"]["mitigation"]["status"], "safe-within-model")
+        self.assertEqual(report["commonSubset"]["pre-incident"]["sameObject"], "unknown")
+        self.assertEqual(report["tools"]["poutine-1.1.6-retrospective"]["pre-incident"]["sameFindingLinksProducerAndConsumer"], 0)
+        self.assertEqual(report["tools"]["poutine-1.1.6-retrospective"]["pre-incident"]["propertyLevelClass"], "対象findingなし")
         self.assertEqual(
             report["model"]["mitigation"]["formalVerdict"],
             "no-path-in-supported-model",

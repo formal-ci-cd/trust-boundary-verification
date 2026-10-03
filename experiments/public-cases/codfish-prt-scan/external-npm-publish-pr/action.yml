@@ -1,0 +1,362 @@
+name: npm-pr-version
+
+description:
+  Publishes package with PR-specific version (0.0.0-PR-123--abc1234) using detected package manager (npm/yarn/pnpm) or
+  OIDC trusted publishing, and automatically comments on PR
+
+inputs:
+  npm-token:
+    required: false
+    description:
+      Registry authentication token with publish permissions. If not provided, OIDC trusted publishing will be used.
+  tarball:
+    required: false
+    description:
+      Path to pre-built tarball to publish (e.g., '*.tgz'). When provided, publishes the tarball with --ignore-scripts
+      for security. Recommended for pull_request_target workflows to prevent execution of malicious lifecycle scripts.
+  comment:
+    required: false
+    default: 'true'
+    description: Whether to comment on the PR with the published version (true/false)
+  comment-tag:
+    required: false
+    default: npm-publish-pr
+    description: Tag to use for PR comments (for comment identification and updates)
+  dev:
+    required: false
+    default: 'false'
+    description: If true, use dev dependency install syntax in the PR comment (e.g. npm install -D, pnpm add -D).
+
+outputs:
+  version:
+    description: Generated PR-specific version number (0.0.0-PR-{number}--{short-sha})
+    value: '${{ steps.publish.outputs.version }}'
+  package-name:
+    description: Package name from package.json
+    value: '${{ steps.publish.outputs.package-name }}'
+  error-message:
+    description: Error message if publish fails
+    value: '${{ steps.publish.outputs.error-message }}'
+
+runs:
+  using: composite
+
+  steps:
+    - uses: codfish/actions/comment@v3
+      if: inputs.comment == 'true'
+      with:
+        message: ⏳ Publishing PR version...
+        upsert: true
+        tag: ${{ inputs.comment-tag }}
+
+    - name: Validate and publish to registry
+      id: publish
+      shell: bash
+      run: |
+        set +e # Don't exit on error so we can handle failures
+
+        # Initialize outputs for error handling
+        error_message=""
+        package_name=""
+        version=""
+        package_manager="npm"
+        tarball_mode=false
+        NPMRC_AUTH_FILE=""
+        REPACK_DIR=""
+
+        # Clean up on exit: remove temp auth file (never touch project .npmrc), temp files, repack dir
+        cleanup() {
+          local exit_code=$?
+          [ -n "$NPMRC_AUTH_FILE" ] && rm -f "$NPMRC_AUTH_FILE" 2>/dev/null || true
+          [ -n "$temp_pkg_json" ] && rm -f "$temp_pkg_json" 2>/dev/null || true
+          [ -n "$REPACK_DIR" ] && rm -rf "$REPACK_DIR" 2>/dev/null || true
+          return $exit_code
+        }
+        trap cleanup EXIT
+
+        # Detect if tarball mode is being used
+        if [ -n "$INPUT_TARBALL" ]; then
+          tarball_mode=true
+          echo "🔒 SECURE MODE: Using pre-built tarball (lifecycle scripts will NOT execute)"
+
+          # Expand glob patterns (e.g., *.tgz) to actual filename
+          shopt -s nullglob
+          tarball_files=($INPUT_TARBALL)
+          shopt -u nullglob
+
+          if [ ${#tarball_files[@]} -eq 0 ]; then
+            error_message="❌ ERROR: No tarball files found matching pattern: $INPUT_TARBALL"
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          elif [ ${#tarball_files[@]} -gt 1 ]; then
+            error_message="❌ ERROR: Multiple tarball files found matching pattern: $INPUT_TARBALL (found: ${tarball_files[*]}). Please specify a single tarball file."
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Use the resolved tarball path
+          INPUT_TARBALL="${tarball_files[0]}"
+          echo "📦 Resolved tarball: $INPUT_TARBALL"
+        fi
+
+        # Function to extract relevant error message from npm output
+        extract_error() {
+          local output="$1"
+
+          # Extract npm error lines (lines starting with "npm error")
+          local error_lines=$(echo "$output" | grep "^npm error" | head -5)
+
+          # If we found error lines, use those
+          if [ -n "$error_lines" ]; then
+            echo "$error_lines" | tr '\n' ' ' | tr -s ' '
+          else
+            # Otherwise, take the last few lines (likely contains the error)
+            echo "$output" | tail -10 | tr '\n' ' ' | tr -s ' ' | cut -c1-500
+          fi
+        }
+
+        # Standardized publish error handler
+        handle_publish_error() {
+          local manager_name="$1"
+          local publish_output="$2"
+          local extracted_error=""
+
+          extracted_error=$(extract_error "$publish_output")
+          error_message="❌ Failed to publish with ${manager_name}: ${extracted_error}"
+          echo "Full output: $publish_output"
+          echo "Error message: $error_message"
+          echo "error-message=$error_message" >> $GITHUB_OUTPUT
+          exit 1
+        }
+
+        # In tarball mode: unpack, inject PR version, repack (so we publish a unique version)
+        # In normal mode, validate package.json
+        if [ "$tarball_mode" = true ]; then
+          # Validate tarball exists
+          if [ ! -f "$INPUT_TARBALL" ]; then
+            error_message="❌ ERROR: Tarball not found at path: $INPUT_TARBALL"
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          echo "📦 Unpacking tarball and injecting PR version: $INPUT_TARBALL"
+
+          # Unpack to temp dir (npm pack format: top-level "package/" with package.json inside)
+          repack_dir=$(mktemp -d)
+          REPACK_DIR="$repack_dir"
+          tar -xzf "$INPUT_TARBALL" -C "$repack_dir"
+
+          if [ ! -f "$repack_dir/package/package.json" ]; then
+            error_message="❌ ERROR: Could not extract package.json from tarball (expected package/package.json)"
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          package_name=$(jq -r '.name // empty' "$repack_dir/package/package.json")
+          if [ -z "$package_name" ] || [ "$package_name" = "null" ]; then
+            error_message="❌ ERROR: Tarball's package.json must have a 'name' field"
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Generate PR-specific version (same format as normal mode) so we don't overwrite published versions
+          version="0.0.0-PR-${PR}--$(echo ${SHA} | cut -c -7)"
+          jq --arg v "$version" '.version = $v' "$repack_dir/package/package.json" > "$repack_dir/package/package.json.tmp" && mv "$repack_dir/package/package.json.tmp" "$repack_dir/package/package.json"
+
+          # Repack for publish (still secure: --ignore-scripts used when publishing)
+          (cd "$repack_dir" && tar -czf repack.tgz package)
+          TARBALL_TO_PUBLISH="$repack_dir/repack.tgz"
+
+          echo "📦 Tarball package: $package_name@$version (PR version)"
+          echo "package-name=$package_name" >> $GITHUB_OUTPUT
+          echo "version=$version" >> $GITHUB_OUTPUT
+        else
+          # Normal mode: validate package.json exists in current directory
+          if [ ! -f "package.json" ]; then
+            error_message="❌ ERROR: package.json not found in current directory. Make sure you're running this action in a directory with a package.json file"
+            echo "$error_message"
+            echo "error-message=$(extract_error "$error_message")" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Validate package.json is valid JSON
+          if ! jq empty package.json 2>/dev/null; then
+            error_message="❌ ERROR: package.json is not valid JSON"
+            echo "$error_message"
+            echo "error-message=$(extract_error "$error_message")" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Check if package has a name
+          package_name=$(jq -r '.name // empty' package.json)
+          if [ -z "$package_name" ] || [ "$package_name" = "null" ]; then
+            error_message="❌ ERROR: package.json must have a 'name' field"
+            echo "$error_message"
+            echo "error-message=$(extract_error "$error_message")" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+
+          # Output package name for use in error handling
+          echo "package-name=$package_name" >> $GITHUB_OUTPUT
+        fi
+
+        # Detect authentication mode and package manager
+        if [ -z "$INPUT_NPM_TOKEN" ]; then
+          echo "🔐 Using OIDC trusted publishing (no npm-token provided)"
+          echo "📦 Using npm for OIDC (--provenance requires npm)"
+
+          if [ -z "$ACTIONS_ID_TOKEN_REQUEST_URL" ]; then
+            error_message="❌ ERROR: OIDC token not available. Add 'permissions: { id-token: write }' to your workflow"
+            echo "$error_message"
+            echo "error-message=$error_message" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+        fi
+
+        if [ "$INPUT_NPM_TOKEN" ]; then
+          echo "🔐 Using token-based authentication"
+
+          # Token mode: use a temp userconfig file so we never overwrite or delete the project's .npmrc.
+          # npm merges NPM_CONFIG_USERCONFIG with project .npmrc, so custom registry/scoped config is preserved.
+          export NODE_AUTH_TOKEN="$INPUT_NPM_TOKEN"
+          NPMRC_AUTH_FILE=$(mktemp)
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > "$NPMRC_AUTH_FILE"
+          export NPM_CONFIG_USERCONFIG="$NPMRC_AUTH_FILE"
+
+          # Detect package manager for token-based publishing
+          if [ -f "./yarn.lock" ]; then
+            package_manager="yarn"
+            echo "📦 Detected package manager: yarn"
+          elif [ -f "./pnpm-lock.yaml" ]; then
+            package_manager="pnpm"
+            echo "📦 Detected package manager: pnpm"
+          else
+            package_manager="npm"
+            echo "📦 Detected package manager: npm"
+          fi
+        fi
+
+        # Generate version (skip in tarball mode - already extracted)
+        if [ "$tarball_mode" = false ]; then
+          version="0.0.0-PR-${PR}--$(echo ${SHA} | cut -c -7)"
+          echo "📦 Publishing $package_name@$version with $package_manager"
+          echo "version=$version" >> $GITHUB_OUTPUT
+
+          # Update package.json version (all package managers support npm version)
+          version_output=$(npm version $version --no-git-tag-version 2>&1)
+          version_exit_code=$?
+          if [ $version_exit_code -ne 0 ]; then
+            error_message="❌ ERROR: Failed to update package version. Check if the version format is valid. Error: $version_output"
+            echo "$error_message"
+            echo "error-message=$(extract_error "$error_message")" >> $GITHUB_OUTPUT
+            exit 1
+          fi
+        else
+          echo "📦 Publishing $package_name@$version from tarball"
+        fi
+
+        # Publish package
+        if [ "$tarball_mode" = true ]; then
+          # SECURE TARBALL MODE: Publish repacked tarball (PR version injected) with --ignore-scripts
+          echo "🔒 Publishing tarball with --ignore-scripts (secure mode)"
+
+          if [ -z "$INPUT_NPM_TOKEN" ]; then
+            # OIDC mode with tarball
+            publish_output=$(npm publish "$TARBALL_TO_PUBLISH" --access public --tag pr --provenance --ignore-scripts 2>&1)
+            publish_exit_code=$?
+
+            if [ $publish_exit_code -ne 0 ]; then
+              handle_publish_error "OIDC (tarball)" "$publish_output"
+            fi
+            echo "✅ Successfully published $package_name@$version using OIDC (secure tarball mode)"
+          else
+            # Token mode with tarball - always use npm for tarball publishing
+            publish_output=$(npm publish "$TARBALL_TO_PUBLISH" --access public --tag pr --ignore-scripts 2>&1)
+            publish_exit_code=$?
+
+            if [ $publish_exit_code -ne 0 ]; then
+              handle_publish_error "npm (tarball)" "$publish_output"
+            fi
+            echo "✅ Successfully published $package_name@$version using npm (secure tarball mode)"
+          fi
+        else
+          # NORMAL MODE: Traditional publishing (INSECURE for pull_request_target)
+          if [ -z "$INPUT_NPM_TOKEN" ]; then
+            echo "📦 Publishing with OIDC trusted publishing..."
+
+            publish_output=$(npm publish --access public --tag pr --provenance 2>&1)
+            publish_exit_code=$?
+
+            if [ $publish_exit_code -ne 0 ]; then
+              handle_publish_error "OIDC" "$publish_output"
+            fi
+            echo "✅ Successfully published $package_name@$version using OIDC"
+          else
+            # Token mode: use detected package manager
+            case "$package_manager" in
+              "yarn")
+                publish_output=$(yarn publish --access public --tag pr --new-version $version --no-git-tag-version --skip-check-working-tree 2>&1)
+                publish_exit_code=$?
+                if [ $publish_exit_code -ne 0 ]; then
+                  handle_publish_error "yarn" "$publish_output"
+                fi
+                ;;
+              "pnpm")
+                publish_output=$(pnpm publish --no-git-checks --access public --tag pr 2>&1)
+                publish_exit_code=$?
+                if [ $publish_exit_code -ne 0 ]; then
+                  handle_publish_error "pnpm" "$publish_output"
+                fi
+                ;;
+              *)
+                publish_output=$(npm publish --access public --tag pr 2>&1)
+                publish_exit_code=$?
+                if [ $publish_exit_code -ne 0 ]; then
+                  handle_publish_error "npm" "$publish_output"
+                fi
+                ;;
+            esac
+            echo "✅ Successfully published $package_name@$version using $package_manager"
+          fi
+        fi
+      env:
+        # CRITICAL: Use INPUT_NPM_TOKEN instead of NPM_TOKEN here to avoid
+        # setting NPM_TOKEN in the environment when empty (which could break OIDC)
+        INPUT_NPM_TOKEN: ${{ inputs.npm-token }}
+        INPUT_TARBALL: ${{ inputs.tarball }}
+        PR: ${{ github.event.number }}
+        SHA: ${{ github.event.pull_request.head.sha }}
+
+    - uses: codfish/actions/comment@v3
+      if: failure() && inputs.comment == 'true'
+      with:
+        message: |
+          ❌ **PR package publish failed!**
+
+          Error: ${{ steps.publish.outputs.error-message }}
+
+          📋 [View workflow logs](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}) for more details.
+        upsert: true
+        tag: ${{ inputs.comment-tag }}
+
+    - uses: codfish/actions/comment@v3
+      if: success() && inputs.comment == 'true'
+      with:
+        message: |
+          ✅ **PR package published successfully!**
+
+          Install:
+
+              ${{ inputs.dev == 'true' && 'pnpm add -D ' || 'pnpm add ' }}${{ steps.publish.outputs.package-name }}@${{ steps.publish.outputs.version }}
+              ${{ inputs.dev == 'true' && 'npm install -D ' || 'npm install ' }}${{ steps.publish.outputs.package-name }}@${{ steps.publish.outputs.version }}
+              ${{ inputs.dev == 'true' && 'yarn add -D ' || 'yarn add ' }}${{ steps.publish.outputs.package-name }}@${{ steps.publish.outputs.version }}
+              ${{ inputs.dev == 'true' && 'bun add -d ' || 'bun add ' }}${{ steps.publish.outputs.package-name }}@${{ steps.publish.outputs.version }}
+
+          View on npm: https://www.npmjs.com/package/${{ steps.publish.outputs.package-name }}/v/${{ steps.publish.outputs.version }}
+        upsert: true
+        tag: ${{ inputs.comment-tag }}

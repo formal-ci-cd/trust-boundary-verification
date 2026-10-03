@@ -1,0 +1,378 @@
+{
+  "scope": "A1-A5 artifact property; fixed local outputs, not a general capability claim",
+  "versions": {
+    "zizmor": "1.30.1",
+    "sisakulint": "0.3.7",
+    "poutine": "1.1.6",
+    "codeql": "2.27.1",
+    "codeqlQueryPack": "codeql/actions-queries@0.6.36"
+  },
+  "codeqlMacOSArchiveSHA256": "412c600764a7835f9548af120d0bdadea1040c6f68b8f6bf04ec72a664891f63",
+  "inputs": "CodeQL, zizmor and sisakulint: seven artifact-a*.yml workflows; Poutine: entire local research repository",
+  "inputSHA256": {
+    "artifact-a1-pr-producer.yml": "d478ad4dddad26d719ea192996cf250c6ef377925873aebe7847e83681758c26",
+    "artifact-a1-unsafe-consumer.yml": "ef9ec77563f847c78f5930de7ee76993aedc09073a751b5248dc4fe979faac20",
+    "artifact-a2-safe-consumer.yml": "2f9a0ca5248e0adde869970a036525e72aad11f4fb152d4f3d53ae0ea92bb20d",
+    "artifact-a3-download-only-consumer.yml": "b5d3c980f3cba70de8c728b4e63a74e10062ec0fffe5b58be01ac5ed20c5ca5e",
+    "artifact-a4-no-authority-consumer.yml": "77001a96e31ba0737d17ccf0c5ec6d3b67e79841aea88107b8207e425c442e17",
+    "artifact-a5-attest-consumer.yml": "706a9938d1449b4e4660b0c15918ef66957fcba46e041bfa24de1deeb1d77fe8",
+    "artifact-a5-attest-producer.yml": "048785c276cb3219a76c07ca6b93262756e8417d6ef4c46802c229a0428d03fc"
+  },
+  "commands": {
+    "zizmor": "zizmor --offline --format sarif <seven artifact workflows>",
+    "sisakulint": "sisakulint -fix off -format '{{sarif .}}' <seven artifact workflows>",
+    "poutine": "poutine analyze_local <research repository> --disable-version-check --format json",
+    "codeql-default": "codeql database create --language=actions <seven-workflow source>; codeql database analyze codeql/actions-queries@0.6.36:codeql-suites/actions-code-scanning.qls",
+    "codeql-broad": "codeql database analyze same database codeql/actions-queries@0.6.36:codeql-suites/actions-security-and-quality.qls"
+  },
+  "limitations": [
+    "This is a reviewed rule-and-location classification of saved output, not a proof of tool incapability.",
+    "zizmor dangerous-triggers warns at workflow_run consumers but does not link a producer or artifact in one result.",
+    "zizmor template-injection warnings in A5 concern a different property.",
+    "sisakulint reported no GitHub token; online API checks may be limited.",
+    "Poutine was scanned with full repository context, while the other tools received only seven workflow files.",
+    "CodeQL's zero results describe these two fixed suites and inputs only, not all possible custom queries."
+  ],
+  "outputs": {
+    "zizmor": {
+      "output": "zizmor.json.gz",
+      "rawSHA256": "e2799ad4dd9313cc6038b6ec026b683b64c7ecc756a6e3f8e3e32db3df221831",
+      "compressedSHA256": "e85f7296e62ec9e22f6233ac95a42910f669f043ea7f63e2734ee777486c0a83",
+      "totalFindings": 7
+    },
+    "sisakulint": {
+      "output": "sisakulint.json.gz",
+      "rawSHA256": "dd7c7ab1bd38fff8a5792b7bf434baa37794975b6187958f21a27e90a60dbbba",
+      "compressedSHA256": "d811a90648ac4c558fe30420b2948020353cc2cab266a26efb1862ce5b9a5dc0",
+      "totalFindings": 9
+    },
+    "poutine": {
+      "output": "poutine.json.gz",
+      "rawSHA256": "46d9557f6120aa4ebb3ebd31f8ad13f6785c20e65cc87ca1b5316eaf83a5ac58",
+      "compressedSHA256": "6e113eca512a4205c3bfcb5fcfa76869c4a8a654e255a1559328b3a785a1045a",
+      "totalFindings": 19
+    },
+    "codeql-default": {
+      "output": "codeql-default.json.gz",
+      "rawSHA256": "3f88bcbe77cf49dbe44fc9362b8e249b921b287aa6cb0d640fae50c279b52cb6",
+      "compressedSHA256": "69a5e03c86ed92cdc2f6a4022748fca0233de5ab67936e60ba33094dc230212b",
+      "totalFindings": 0
+    },
+    "codeql-broad": {
+      "output": "codeql-broad.json.gz",
+      "rawSHA256": "657eb1c9b82343a82e083b0d1aaecf033336cb4ab546e3861e03bed8dc767378",
+      "compressedSHA256": "997d8dc1fa9a156c8b39d106e763f99eb07dbd654226deef0fe68f948cfc4c38",
+      "totalFindings": 0
+    }
+  },
+  "cases": {
+    "A1": {
+      "zizmor": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a1-unsafe-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a1-unsafe-consumer.yml"
+          }
+        ],
+        "propertyLevelClass": "入口のみ",
+        "classificationDetail": "consumer側workflow_run triggerの局所警告",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "sisakulint": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-unsafe-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "poutine": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-default": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-broad": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      }
+    },
+    "A2": {
+      "zizmor": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a2-safe-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a2-safe-consumer.yml"
+          }
+        ],
+        "propertyLevelClass": "入口のみ",
+        "classificationDetail": "consumer側workflow_run triggerの局所警告",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "sisakulint": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a2-safe-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "poutine": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-default": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-broad": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      }
+    },
+    "A3": {
+      "zizmor": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a3-download-only-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a3-download-only-consumer.yml"
+          }
+        ],
+        "propertyLevelClass": "入口のみ",
+        "classificationDetail": "consumer側workflow_run triggerの局所警告",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "sisakulint": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a3-download-only-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "poutine": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-default": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-broad": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      }
+    },
+    "A4": {
+      "zizmor": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a4-no-authority-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a4-no-authority-consumer.yml"
+          }
+        ],
+        "propertyLevelClass": "入口のみ",
+        "classificationDetail": "consumer側workflow_run triggerの局所警告",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "sisakulint": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a1-pr-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a4-no-authority-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "poutine": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-default": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-broad": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      }
+    },
+    "A5": {
+      "zizmor": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a5-attest-consumer.yml"
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "file": ".github/workflows/artifact-a5-attest-producer.yml"
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "file": ".github/workflows/artifact-a5-attest-producer.yml"
+          }
+        ],
+        "targetRelatedFindings": [
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "file": ".github/workflows/artifact-a5-attest-consumer.yml"
+          }
+        ],
+        "propertyLevelClass": "入口のみ",
+        "classificationDetail": "consumer側workflow_run triggerの局所警告",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "sisakulint": {
+        "allFindingsAtEndpoints": [
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a5-attest-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a5-attest-producer.yml"
+          },
+          {
+            "rule": "deprecated-node-runtime",
+            "file": ".github/workflows/artifact-a5-attest-consumer.yml"
+          }
+        ],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "poutine": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-default": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      },
+      "codeql-broad": {
+        "allFindingsAtEndpoints": [],
+        "targetRelatedFindings": [],
+        "propertyLevelClass": "対象findingなし",
+        "classificationDetail": "対象propertyのfindingなし",
+        "sameFindingLinksProducerSharedObjectConsumerAuthority": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "purpose": "Retrospective specialist static-tool comparison for confirmed TanStack compromise",
+  "tool": "sisakulint 0.3.7",
+  "environment": "Linux arm64 Docker, --network none, read-only source and binary, -fix off",
+  "scope": "All seven TanStack/router workflow files from each fixed snapshot, with separately pinned TanStack/config Setup Action present under .github/setup; explicit scan of action.yml also saved",
+  "sourceManifest": "experiments/public-cases/tanstack/manifest.json",
+  "entries": [
+    {
+      "name": "tanstack-pre-incident",
+      "file": "tanstack-pre-incident.sarif.gz",
+      "sha256": "8b8908c94f2f32839895ed04922c22e67dd506e9807af5b7d2c45b024d53ba5a",
+      "uncompressedSHA256": "5171eb14910e95d35a76d4b66683080445a3d23c3f2ea2e8dfeb9db18258b054",
+      "findingCount": 49,
+      "rules": [
+        "artipacked",
+        "commit-sha",
+        "dependabot-ecosystem",
+        "dependabot-github-actions",
+        "deprecated-node-runtime",
+        "untrusted-checkout"
+      ]
+    },
+    {
+      "name": "tanstack-mitigation",
+      "file": "tanstack-mitigation.sarif.gz",
+      "sha256": "aea7f132c468e28135c824099d9111031f608cd901cef14e224e2bfecc4eb5c4",
+      "uncompressedSHA256": "dc83868b90e02043307e650b508ece9fcad8f5e6e45e5994748e17068832dc5f",
+      "findingCount": 48,
+      "rules": [
+        "artipacked",
+        "commit-sha",
+        "dependabot-ecosystem",
+        "dependabot-github-actions",
+        "deprecated-node-runtime"
+      ]
+    },
+    {
+      "name": "tanstack-external-action",
+      "file": "tanstack-external-action.sarif.gz",
+      "sha256": "43e86c212abf59c7a687fa6ebc902473a8c3c801ba7e00a40f4bcfa4d2255864",
+      "uncompressedSHA256": "2d4d7d45342063b4548b33e8ebbe19cfac09b0b0089c95ba3759e306e8c3d704",
+      "findingCount": 0,
+      "rules": []
+    }
+  ]
+}

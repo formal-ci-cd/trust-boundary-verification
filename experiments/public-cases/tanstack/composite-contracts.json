@@ -1,0 +1,6 @@
+{
+  "TanStack/config/.github/setup@main": {
+    "path": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+    "sha256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "purpose": "Exclude a confirmed Trivy intrusion from exclusive-detection claims because incident-time CodeQL flags the entry. Workflow source is never executed.",
+  "incidentDate": "2026-02-27",
+  "incidentReport": "https://github.com/aquasecurity/trivy/discussions/10462",
+  "workflowLastChangedCommit": "ccf5a5ad09e482bb1b3f2ef5a0334182ec300ac2",
+  "workflowLastChangedAt": "2026-02-26T06:45:44Z",
+  "deletionPullRequest": "https://github.com/aquasecurity/trivy/pull/10259",
+  "deletionPRBaseCommit": "2a140f1202fb2d5928348e6a1acc78ca5b7d9998",
+  "workflowSameAtDeletionPRBase": true,
+  "files": [
+    {
+      "path": ".github/workflows/apidiff.yaml",
+      "sha256": "5b1e3e725406e511b93ef4fc238ad304590e7b29f1dfbd2f3bdecbc26f16e034",
+      "gitBlob": "4891d3f178cdb7c74e90afc243d710a3ff6025e5",
+      "source": "https://github.com/aquasecurity/trivy/blob/ccf5a5ad09e482bb1b3f2ef5a0334182ec300ac2/.github/workflows/apidiff.yaml"
+    },
+    {
+      "path": "LICENSE",
+      "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+      "source": "https://github.com/aquasecurity/trivy/blob/ccf5a5ad09e482bb1b3f2ef5a0334182ec300ac2/LICENSE"
+    }
+  ]
+}

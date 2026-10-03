@@ -1,0 +1,10 @@
+--- a/.github/workflows/bundle-size.yml
++++ b/.github/workflows/bundle-size.yml
+@@ -13,7 +13,6 @@
+     paths:
+       - 'packages/**'
+       - 'benchmarks/**'
+-  workflow_dispatch:
+ 
+ concurrency:
+   group: ${{ github.workflow }}-${{ github.event.number || github.ref }}

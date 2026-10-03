@@ -19,7 +19,7 @@
       "type": "object",
       "required": ["type", "file", "staticAnalysisOnly"],
       "properties": {
-        "type": {"const": "codeqlTable"},
+        "type": {"enum": ["codeqlTable", "yamlLibrary"]},
         "file": {"type": "string"},
         "staticAnalysisOnly": {"const": true}
       },
@@ -46,7 +46,9 @@
         "expressions": {
           "type": "array",
           "items": {"$ref": "#/$defs/expression"}
-        }
+        },
+        "permissionsDeclared": {"type": "boolean"},
+        "env": {"type": "object", "additionalProperties": {"type": "string"}}
       },
       "additionalProperties": false
     },
@@ -102,7 +104,14 @@
         "steps": {
           "type": "array",
           "items": {"$ref": "#/$defs/step"}
-        }
+        },
+        "condition": {"type": "string"},
+        "env": {"type": "object", "additionalProperties": {"type": "string"}},
+        "needs": {"type": ["array", "string"]},
+        "permissionsDeclared": {"type": "boolean"},
+        "uses": {"type": "string"},
+        "arguments": {"type": "object", "additionalProperties": {"type": "string"}},
+        "environment": {"type": ["string", "object", "null"]}
       },
       "additionalProperties": false
     },
@@ -115,7 +124,26 @@
         "action": {"type": "string"},
         "version": {"type": "string"},
         "arguments": {"type": "object", "additionalProperties": {"type": "string"}},
-        "command": {"type": "string"}
+        "command": {"type": "string"},
+        "commands": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["text", "line"],
+            "properties": {
+              "text": {"type": "string"},
+              "line": {"type": "integer", "minimum": 1}
+            },
+            "additionalProperties": false
+          }
+        },
+        "commandOrderKnown": {"type": "boolean"},
+        "id": {"type": "string"},
+        "condition": {"type": "string"},
+        "env": {"type": "object", "additionalProperties": {"type": "string"}},
+        "line": {"type": "integer", "minimum": 1},
+        "shell": {"type": "string"},
+        "workingDirectory": {"type": "string"}
       },
       "additionalProperties": false
     },

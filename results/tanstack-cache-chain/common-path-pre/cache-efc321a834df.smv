@@ -1,0 +1,59 @@
+-- One producer run and one consumer run. No runtime success is inferred.
+-- SameObject is an object identity fact, never key-string equality.
+-- EVIDENCE untrusted-pr-event: .github/workflows/client-nav-benchmarks.yml:11
+-- EVIDENCE untrusted-pr-checkout: .github/workflows/client-nav-benchmarks.yml:41
+-- EVIDENCE producer-cache-write-call: .github/workflows/client-nav-benchmarks.yml:44
+-- EVIDENCE consumer-cache-read-call: .github/workflows/release.yml:42
+-- EVIDENCE repository-write-sink: .github/workflows/release.yml:57
+-- EVIDENCE candidate-pr-influenced-cache-store: experiments/public-cases/tanstack/external-setup/.github/setup/action.yml:24
+-- EVIDENCE candidate-cache-derived-use: experiments/public-cases/tanstack/external-setup/.github/setup/action.yml:24
+MODULE main
+IVAR
+  actor : {producer, consumer};
+FROZENVAR
+  writeAuthorized : boolean;
+  writeSucceeded : boolean;
+  producerTaintsCache : boolean;
+  consumerCallEnabled : boolean;
+  readSucceeded : boolean;
+  producerActionMatches : boolean;
+  consumerActionMatches : boolean;
+  useSucceeded : boolean;
+  integrityVerified : boolean;
+  sinkReachable : boolean;
+VAR
+  producer_pc : 0..2;
+  consumer_pc : 0..3;
+  cache_tainted : boolean;
+  restored_tainted : boolean;
+  bad : boolean;
+DEFINE
+  producerCallEnabled := TRUE;
+  sameObject := FALSE;
+  hasAuthority := TRUE;
+INVAR writeSucceeded -> writeAuthorized
+ASSIGN
+  init(producer_pc) := 0;
+  init(consumer_pc) := 0;
+  init(cache_tainted) := FALSE;
+  init(restored_tainted) := FALSE;
+  init(bad) := FALSE;
+  next(producer_pc) := case
+    actor = producer & producer_pc < 2 : producer_pc + 1;
+    TRUE : producer_pc;
+  esac;
+  next(consumer_pc) := case
+    actor = consumer & consumer_pc < 3 : consumer_pc + 1;
+    TRUE : consumer_pc;
+  esac;
+  next(cache_tainted) := case
+    actor = producer & producer_pc = 1 : cache_tainted | (writeAuthorized & writeSucceeded & producerTaintsCache & producerCallEnabled & producerActionMatches);
+    TRUE : cache_tainted;
+  esac;
+  next(restored_tainted) := case
+    actor = consumer & consumer_pc = 0 : cache_tainted & consumerCallEnabled & sameObject & readSucceeded & consumerActionMatches;
+    actor = consumer & consumer_pc = 1 : restored_tainted & useSucceeded & !integrityVerified;
+    TRUE : restored_tainted;
+  esac;
+  next(bad) := bad | (actor = consumer & consumer_pc = 2 & restored_tainted & hasAuthority & sinkReachable);
+CTLSPEC AG !bad

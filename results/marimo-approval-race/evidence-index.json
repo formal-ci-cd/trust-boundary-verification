@@ -1,0 +1,124 @@
+{
+  "description": "Full baseline SARIF compressed losslessly; no CodeQL databases or executables bundled.",
+  "files": [
+    {
+      "path": "summary.json",
+      "sha256": "b4e8b19a9f303edcd74dd0df85bac01a60a4ebad8a6c8851071429fd8d77d0f5"
+    },
+    {
+      "path": "temporal/evaluation.json",
+      "sha256": "7c834792ef403d4a96ade0fa244f05d03408c9708b0527109e33b0519d9c799f"
+    },
+    {
+      "path": "temporal/original.smv",
+      "sha256": "5128d60efe54977362ec2a878d4333e111c4a7e7e9b71912f4e35e0508d37cce"
+    },
+    {
+      "path": "temporal/original-nusmv.txt",
+      "sha256": "68f92f8b15e5322b793b0ea4530a7ebcad06d83e6a6aee6e0e39b33404eb2f18"
+    },
+    {
+      "path": "temporal/reject-equality-control.smv",
+      "sha256": "9d45145d10f5db7fb727dc401ccda8d15c44731851a83380069932322ad10408"
+    },
+    {
+      "path": "temporal/reject-equality-control-nusmv.txt",
+      "sha256": "a3ed70d291a44a52ea83e49b76ad3bd4055298e7f73bc86e713af741f00b8ffc"
+    },
+    {
+      "path": "vulnerable/default.sarif.gz",
+      "sha256": "dba7d6aa26782a0b5410c2acd40e7da03d50c9272643f94c18551d5e01c401cd",
+      "originalSHA256": "f0e743c7ce0ed0427a1f5b27207120826efc8ed46ebd5d9941c73af23accd583"
+    },
+    {
+      "path": "vulnerable/security-and-quality.sarif.gz",
+      "sha256": "c56a455fbc0bb08ba07be3df662213a427e079583ebc24e065befea950e8c2b3",
+      "originalSHA256": "4d07fbb51ac443d0991b15f5aa474a2bec76c592f1601510b3bf8b1d266c3b5c"
+    },
+    {
+      "path": "vulnerable/zizmor-regular.sarif.gz",
+      "sha256": "505f5d8050332aa69a85aae9a41ea354036d5a006faba8d32d5ed8de3bc03549",
+      "originalSHA256": "4bf3215556032ede42ba8b8a1832326f554bb48bde4ed48286398515d7d744af"
+    },
+    {
+      "path": "vulnerable/zizmor-auditor.sarif.gz",
+      "sha256": "308380174681f00bfb5e8367f71525f17747bbbc43d001b90335665438dbdfb9",
+      "originalSHA256": "9e73193359f49328b91c79aaf5f1462aaa51ae1cbd18db24ce3772220343d9d3"
+    },
+    {
+      "path": "vulnerable/zizmor-pedantic.sarif.gz",
+      "sha256": "b40c430cc685ca665109ab71ee46626b4f795cb948e35383cb69dafef0035d6b",
+      "originalSHA256": "dd69a8de460b084783c796d6effad7afb5c6129c8c63a7b5d0a784a8d0867e2f"
+    },
+    {
+      "path": "vulnerable/actionlint.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "vulnerable/classification.csv",
+      "sha256": "ff26e8400126d76a3fd4a5b0191f6ffef5b2bb123a917a09898edae837a99fa2"
+    },
+    {
+      "path": "reject-equality-control/default.sarif.gz",
+      "sha256": "12cb8e9262279b3568de5f06ed5babcf66369ad96d081fc32ceea029ace036ed",
+      "originalSHA256": "ae7d1dc144d4d7168f1b7186dd745d321464957cb64a1a19e1e220b292227f51"
+    },
+    {
+      "path": "reject-equality-control/security-and-quality.sarif.gz",
+      "sha256": "399049f5d7c5a3d0a695f59c8bc106c3db08b1e4e3806e2cab643f728a3cad69",
+      "originalSHA256": "bb79c46e11a77914c7a0c588622f791dcad1d1f74c05497c5fd171d023113b97"
+    },
+    {
+      "path": "reject-equality-control/zizmor-regular.sarif.gz",
+      "sha256": "f28e5bea4e552578653d6e0efa535a259f8889f7d3d3218fda654182d9ecfcc1",
+      "originalSHA256": "2c239985a83349e45945054b503fa22f0575b31296ef53f576ff81ac0c5d6a0d"
+    },
+    {
+      "path": "reject-equality-control/zizmor-auditor.sarif.gz",
+      "sha256": "ea352d0815aa0fb82af803eb0051e61ef0940d31ee03d15064dfc24569a4055b",
+      "originalSHA256": "a7b350f9f9735c01781f367f49568c689454b4bcb76d5ebfad5aa5253b538cdf"
+    },
+    {
+      "path": "reject-equality-control/zizmor-pedantic.sarif.gz",
+      "sha256": "b5b7d56dc1b5cec5655073aacb06b8b39a157bbe89da45c72a9fcb91f808c6a5",
+      "originalSHA256": "b321bedba53c581fb1cd9b68fe7692fcd788d9078e9bb8db2f8870ca45a5ae0f"
+    },
+    {
+      "path": "reject-equality-control/actionlint.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    },
+    {
+      "path": "reject-equality-control/classification.csv",
+      "sha256": "ff26e8400126d76a3fd4a5b0191f6ffef5b2bb123a917a09898edae837a99fa2"
+    },
+    {
+      "path": "removed/default.sarif.gz",
+      "sha256": "f31791b856ac2fc9e8274160e9962b3fe4d1a63f0535d2f922155690b9bea102",
+      "originalSHA256": "ab7c7893ee551a8d996638105c84434fb9b456a8046a24c6b2c93bbb3749fccf"
+    },
+    {
+      "path": "removed/security-and-quality.sarif.gz",
+      "sha256": "72f7c1d4e3d43cf08ac033c72a61f4437cdea4adf9bbfd6ba951f64b6d647890",
+      "originalSHA256": "6fdbb85d87403cfa165ece0470fddd89c57c5f43df85df37d9f00d552f83bd48"
+    },
+    {
+      "path": "removed/zizmor-regular.sarif.gz",
+      "sha256": "0e5239431fc14526042654f115023b2e820e9a432445cdc8c3811b09c8dcf54c",
+      "originalSHA256": "9175f0af6a08bd20ad0f9be396bf78041bee3a74571a3c574723e6f9df295789"
+    },
+    {
+      "path": "removed/zizmor-auditor.sarif.gz",
+      "sha256": "69c041e22a4be15c9e13d1cf9dc8051d180a2b76a04158bac59ec087d2ee922d",
+      "originalSHA256": "84ab80480df0779b9b957390c8ae53bbc593a8fdbcc1f1ae63e56ff5cfdff057"
+    },
+    {
+      "path": "removed/zizmor-pedantic.sarif.gz",
+      "sha256": "6b22539d5146f23d1e0b3881760ef9aac3699f8c8d23b208908494e645a239dd",
+      "originalSHA256": "7308e94c41c50b448eb28e2330a8abd04e14829f5c8c330f9fb4e59401e2f8ff"
+    },
+    {
+      "path": "removed/actionlint.json",
+      "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+    }
+  ]
+}

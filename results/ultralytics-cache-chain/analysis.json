@@ -1,0 +1,278 @@
+{
+  "schemaVersion": "ultralytics-cache-chain-0.1",
+  "property": "Untrusted PR code must not influence bytes used by the package build through a shared pip cache before publishing.",
+  "modelStatus": "conditional reachability; cache object identity and publisher guard unknown",
+  "confirmedIncident": true,
+  "cases": [
+    {
+      "repositoryVariant": "pre-incident",
+      "actionVariant": "external-action-2024-12-04",
+      "entryCapable": true,
+      "publisherCachePath": true,
+      "configuredPublisher": {
+        "job": "publish",
+        "guard": "github.repository == 'ultralytics/ultralytics' && github.actor == 'glenn-jocher'",
+        "cacheStep": 2,
+        "installStep": 3,
+        "buildStep": 5,
+        "publishStep": 6
+      },
+      "status": "potential-chain",
+      "staticEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/format.yml",
+          "line": 12,
+          "role": "external-PR-trigger"
+        },
+        {
+          "file": "pre-incident/.github/workflows/format.yml",
+          "line": 21,
+          "role": "mutable-external-action-call"
+        },
+        {
+          "file": "external-action-2024-12-04/action.yml",
+          "line": 216,
+          "role": "unquoted-branch-expression"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 38,
+          "role": "implicit-pip-cache-restore"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 42,
+          "role": "dependency-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 57,
+          "role": "build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 61,
+          "role": "publish"
+        }
+      ],
+      "unknownExternalFacts": {
+        "sameCacheObject": "unknown: setup-python key and actual cache object were not observed",
+        "cacheWriteSucceeded": "unknown: writer activity is not specified in YAML",
+        "publisherGuardPassed": "unknown: actor/branch checks and any later workflow modification need runtime evidence",
+        "releaseSucceeded": "unknown from configuration; confirm separately from PyPI provenance"
+      },
+      "historicalAssumption": "2024 GitHub Actions runtime cache capability after code execution; the current platform policy must not be projected backwards",
+      "sources": [
+        "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/",
+        "https://archive.fosdem.org/2025/events/attachments/fosdem-2025-6543-hunting-for-github-actions-bugs-with-zizmor/slides/238286/fosdem-20_6UrKP8W.pdf"
+      ],
+      "bfs": {
+        "verdict": "possible",
+        "reachableStates": 56,
+        "conditionalCounterexample": [
+          {
+            "action": "untrusted-PR-runs-external-action",
+            "state": [
+              1,
+              true,
+              true,
+              true,
+              false,
+              false
+            ]
+          },
+          {
+            "action": "attacker-cache-write",
+            "state": [
+              2,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "publisher-cache-restore",
+            "state": [
+              3,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "pip-install",
+            "state": [
+              4,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "package-build",
+            "state": [
+              5,
+              true,
+              true,
+              true,
+              true,
+              false
+            ]
+          },
+          {
+            "action": "publish-use",
+            "state": [
+              6,
+              true,
+              true,
+              true,
+              true,
+              true
+            ]
+          }
+        ]
+      },
+      "nusmv": {
+        "verdict": "possible",
+        "modelSHA256": "a9aa4a7819dc21e7e9fc6aff51def20d348b22f1a5bf50cb411925b39cb8138f"
+      }
+    },
+    {
+      "repositoryVariant": "pre-incident",
+      "actionVariant": "external-action-fixed-2024-12-05",
+      "entryCapable": false,
+      "publisherCachePath": true,
+      "configuredPublisher": {
+        "job": "publish",
+        "guard": "github.repository == 'ultralytics/ultralytics' && github.actor == 'glenn-jocher'",
+        "cacheStep": 2,
+        "installStep": 3,
+        "buildStep": 5,
+        "publishStep": 6
+      },
+      "status": "no-supported-entry",
+      "staticEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/format.yml",
+          "line": 12,
+          "role": "external-PR-trigger"
+        },
+        {
+          "file": "pre-incident/.github/workflows/format.yml",
+          "line": 21,
+          "role": "mutable-external-action-call"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 38,
+          "role": "implicit-pip-cache-restore"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 42,
+          "role": "dependency-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 57,
+          "role": "build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/publish.yml",
+          "line": 61,
+          "role": "publish"
+        }
+      ],
+      "unknownExternalFacts": {
+        "sameCacheObject": "unknown: setup-python key and actual cache object were not observed",
+        "cacheWriteSucceeded": "unknown: writer activity is not specified in YAML",
+        "publisherGuardPassed": "unknown: actor/branch checks and any later workflow modification need runtime evidence",
+        "releaseSucceeded": "unknown from configuration; confirm separately from PyPI provenance"
+      },
+      "historicalAssumption": "2024 GitHub Actions runtime cache capability after code execution; the current platform policy must not be projected backwards",
+      "sources": [
+        "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/",
+        "https://archive.fosdem.org/2025/events/attachments/fosdem-2025-6543-hunting-for-github-actions-bugs-with-zizmor/slides/238286/fosdem-20_6UrKP8W.pdf"
+      ],
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 56,
+        "conditionalCounterexample": []
+      },
+      "nusmv": {
+        "verdict": "no-path-in-supported-model",
+        "modelSHA256": "c73dccf06bfc9daf6e474cf08d7c6b82b2f22773050195c037bb35390bb78802"
+      }
+    },
+    {
+      "repositoryVariant": "mitigation",
+      "actionVariant": "external-action-2024-12-04",
+      "entryCapable": false,
+      "publisherCachePath": false,
+      "configuredPublisher": null,
+      "status": "no-supported-entry",
+      "staticEvidence": [
+        {
+          "file": "external-action-2024-12-04/action.yml",
+          "line": 216,
+          "role": "unquoted-branch-expression"
+        }
+      ],
+      "unknownExternalFacts": {
+        "sameCacheObject": "unknown: setup-python key and actual cache object were not observed",
+        "cacheWriteSucceeded": "unknown: writer activity is not specified in YAML",
+        "publisherGuardPassed": "unknown: actor/branch checks and any later workflow modification need runtime evidence",
+        "releaseSucceeded": "unknown from configuration; confirm separately from PyPI provenance"
+      },
+      "historicalAssumption": "2024 GitHub Actions runtime cache capability after code execution; the current platform policy must not be projected backwards",
+      "sources": [
+        "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/",
+        "https://archive.fosdem.org/2025/events/attachments/fosdem-2025-6543-hunting-for-github-actions-bugs-with-zizmor/slides/238286/fosdem-20_6UrKP8W.pdf"
+      ],
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 56,
+        "conditionalCounterexample": []
+      },
+      "nusmv": {
+        "verdict": "no-path-in-supported-model",
+        "modelSHA256": "b198f85cdc4a4b41451e36a620ba28fe40cef40c26c239b7287b7b7433f4ee64"
+      }
+    },
+    {
+      "repositoryVariant": "mitigation",
+      "actionVariant": "external-action-fixed-2024-12-05",
+      "entryCapable": false,
+      "publisherCachePath": false,
+      "configuredPublisher": null,
+      "status": "no-supported-entry",
+      "staticEvidence": [],
+      "unknownExternalFacts": {
+        "sameCacheObject": "unknown: setup-python key and actual cache object were not observed",
+        "cacheWriteSucceeded": "unknown: writer activity is not specified in YAML",
+        "publisherGuardPassed": "unknown: actor/branch checks and any later workflow modification need runtime evidence",
+        "releaseSucceeded": "unknown from configuration; confirm separately from PyPI provenance"
+      },
+      "historicalAssumption": "2024 GitHub Actions runtime cache capability after code execution; the current platform policy must not be projected backwards",
+      "sources": [
+        "https://blog.pypi.org/posts/2024-12-11-ultralytics-attack-analysis/",
+        "https://archive.fosdem.org/2025/events/attachments/fosdem-2025-6543-hunting-for-github-actions-bugs-with-zizmor/slides/238286/fosdem-20_6UrKP8W.pdf"
+      ],
+      "bfs": {
+        "verdict": "no-path-in-supported-model",
+        "reachableStates": 56,
+        "conditionalCounterexample": []
+      },
+      "nusmv": {
+        "verdict": "no-path-in-supported-model",
+        "modelSHA256": "b198f85cdc4a4b41451e36a620ba28fe40cef40c26c239b7287b7b7433f4ee64"
+      }
+    }
+  ]
+}

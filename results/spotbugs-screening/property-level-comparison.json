@@ -1,0 +1,213 @@
+{
+  "property": "PR-controlled checkout bytes cannot reach a local executable with configured secrets under pull_request_target",
+  "scope": "Saved retrospective SARIF results for fixed SpotBugs workflow; listed combined CodeQL input also contains fixed external Action files",
+  "interpretation": "Zero full-path results means no single emitted SARIF result links selector, checkout and secret-bearing local execution. Separate entry warnings exist; custom rules or human correlation could find the route.",
+  "stageLines": {
+    "selector": [
+      35,
+      41
+    ],
+    "checkout": [
+      42,
+      45
+    ],
+    "secretSink": [
+      59,
+      74
+    ]
+  },
+  "proposed": {
+    "originalPathCount": 1,
+    "safeRefControlPathCount": 0,
+    "evidence": [
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 35,
+        "step": 0,
+        "role": "conditional-PR-merge-ref"
+      },
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 42,
+        "step": 1,
+        "role": "checkout-conditional-output"
+      },
+      {
+        "file": ".github/workflows/sonarqube.yml",
+        "job": "build",
+        "line": 59,
+        "step": 4,
+        "role": "local-executable-with-secrets"
+      }
+    ]
+  },
+  "baselines": {
+    "codeql-2.25.4-default.sarif.gz": {
+      "compressedSHA256": "a611eeb7989a89aec87dcbff1f7fb909b676623b1ebc3baa792f6d8fd06a007e",
+      "findingCount": 0,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 0,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": []
+    },
+    "codeql-2.27.1-default.sarif.gz": {
+      "compressedSHA256": "3b4f5fcf2d451563ca675547e36302528036025312649036c81c99ae2f3e77f3",
+      "findingCount": 0,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 0,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": []
+    },
+    "zizmor-1.30.1.sarif.gz": {
+      "compressedSHA256": "c2e0892b6091ce4a6bd801e3cc798deb220e3f9f0cc9dd9a790d0e813a621ed9",
+      "findingCount": 8,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 1,
+        "checkout": 2,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": [
+        {
+          "rule": "zizmor/artipacked",
+          "stages": [
+            "checkout"
+          ]
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "stages": [
+            "selector"
+          ]
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "stages": [
+            "checkout"
+          ]
+        }
+      ]
+    },
+    "sisakulint-0.3.7.sarif.gz": {
+      "compressedSHA256": "4877ef28ff2009feeaea0e9d9f4b0264d9e9d29a6d4d509258b270a15d3e4b10",
+      "findingCount": 15,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 1,
+        "checkout": 4,
+        "secretSink": 1
+      },
+      "findingsAtPathStages": [
+        {
+          "rule": "commit-sha",
+          "stages": [
+            "selector"
+          ]
+        },
+        {
+          "rule": "commit-sha",
+          "stages": [
+            "checkout"
+          ]
+        },
+        {
+          "rule": "artipacked",
+          "stages": [
+            "checkout"
+          ]
+        },
+        {
+          "rule": "deprecated-node-runtime",
+          "stages": [
+            "checkout"
+          ]
+        },
+        {
+          "rule": "untrusted-checkout",
+          "stages": [
+            "checkout"
+          ]
+        },
+        {
+          "rule": "cache-poisoning-poisonable-step",
+          "stages": [
+            "secretSink"
+          ]
+        }
+      ]
+    },
+    "codeql-2.25.4-security-and-quality.sarif.gz": {
+      "compressedSHA256": "4457478dc32c742248feb1d2d3328e4b6e6ddd900d0e430eec3db8f7d1ced127",
+      "findingCount": 1,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 1,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": [
+        {
+          "rule": "actions/unpinned-tag",
+          "stages": [
+            "selector"
+          ]
+        }
+      ]
+    },
+    "codeql-2.27.1-security-and-quality.sarif.gz": {
+      "compressedSHA256": "49d465f91eac72a6d79bbd393d062a82e71f621f1f4856badd8b0f8ba2d0ba36",
+      "findingCount": 1,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 1,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": [
+        {
+          "rule": "actions/unpinned-tag",
+          "stages": [
+            "selector"
+          ]
+        }
+      ]
+    },
+    "codeql-2.27.1-combined-default.sarif.gz": {
+      "compressedSHA256": "970c4988983cf39377de1d50de06357c5cdceef1c71268d4671ab6d12535fa95",
+      "findingCount": 0,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 0,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": []
+    },
+    "codeql-2.27.1-combined-security-and-quality.sarif.gz": {
+      "compressedSHA256": "4c9acf9397eba4698b29f72d3385c90811602579bb841a50e8fe3f05d1a9f85c",
+      "findingCount": 1,
+      "sameFindingLinksAllStages": 0,
+      "stageFindingCounts": {
+        "selector": 1,
+        "checkout": 0,
+        "secretSink": 0
+      },
+      "findingsAtPathStages": [
+        {
+          "rule": "actions/unpinned-tag",
+          "stages": [
+            "selector"
+          ]
+        }
+      ]
+    }
+  }
+}

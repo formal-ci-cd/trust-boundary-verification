@@ -1,0 +1,31 @@
+{
+  "scope": "The single historically exploited update_pylon_issue.yml workflow; candidate exclusion only",
+  "codeqlCLI": "2.27.1",
+  "codeqlQueryPack": "codeql/actions-queries@0.6.36",
+  "codeqlExtractedActionsFiles": 1,
+  "codeqlDefault": {
+    "count": 2,
+    "rules": [
+      {"id": "actions/code-injection/critical", "line": 17},
+      {"id": "actions/missing-workflow-permissions", "line": 9}
+    ]
+  },
+  "codeqlSecurityAndQuality": {
+    "count": 2,
+    "rules": [
+      {"id": "actions/code-injection/critical", "line": 17},
+      {"id": "actions/missing-workflow-permissions", "line": 9}
+    ]
+  },
+  "zizmor": {
+    "version": "1.30.1",
+    "configuration": "--offline --no-config --no-ignores --persona regular",
+    "count": 5,
+    "targetFinding": {"id": "template-injection", "line": 17}
+  },
+  "compressedFiles": [
+    {"path": "default.sarif.gz", "sha256": "0818f17819d0d631b8cad71669ffdccb66faf546e985577bc9097a267eeb361b"},
+    {"path": "security-and-quality.sarif.gz", "sha256": "7ac5a13ecab4ba7a065c2f035830ba349ffd74d691b688a04f253d34e330e655"},
+    {"path": "zizmor.json.gz", "sha256": "9da061a6e4cea06ff2114d766d63fcad6582212be3bb0154c5868b0c2f71ed74"}
+  ]
+}

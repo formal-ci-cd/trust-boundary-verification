@@ -1,0 +1,3338 @@
+{
+  "operations": [
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.read",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    },
+    {
+      "kind": "cache.write",
+      "action": "actions/cache",
+      "arguments": {
+        "key": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restore-keys": "${{ runner.os }}-pnpm-store-\n",
+        "path": "${{ env.STORE_PATH }}",
+        "name": null,
+        "run-id": null
+      },
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "resolution": "supplied-composite-snapshot; runtime identity unknown",
+      "runtimeSuccess": "unknown"
+    }
+  ],
+  "unsupportedActions": [
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 4,
+        "line": 29
+      },
+      "action": "autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 3,
+        "line": 123
+      },
+      "action": "benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/check-skills.yml",
+        "job": "validate",
+        "step": 1,
+        "line": 50
+      },
+      "action": "actions/setup-node@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/check-skills.yml",
+        "job": "review",
+        "step": 1,
+        "line": 71
+      },
+      "action": "actions/setup-node@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 2,
+        "line": 47
+      },
+      "action": "CodSpeedHQ/action@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/labeler.yml",
+        "job": "labeler",
+        "step": 0,
+        "line": 14
+      },
+      "action": "actions/labeler@v6.0.1",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 3,
+        "line": 33
+      },
+      "action": "nrwl/nx-set-shas@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 2,
+        "line": 64
+      },
+      "action": "TanStack/config/.github/changeset-preview@main",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    }
+  ],
+  "cacheCandidates": [
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": false,
+      "reason": "matching key expression across workflow files is only a candidate"
+    },
+    {
+      "producer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "consumer": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 3,
+        "compositeLine": 17,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "writeKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "readKeyExpression": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+      "restoreKeysExpression": "${{ runner.os }}-pnpm-store-\n",
+      "keyCompatibility": "expression-equal; effective key unknown",
+      "sameObject": "unknown",
+      "saveRestoreOrder": "unknown",
+      "cacheScope": "unknown",
+      "cacheVersion": "unknown",
+      "candidateEntry": "unknown",
+      "distinctRun": "unknown",
+      "sameCallSite": true,
+      "reason": "matching key expression across workflow files is only a candidate"
+    }
+  ],
+  "workflowCount": 7,
+  "emptyCandidateMeaning": "unknown/unsupported; not safe"
+}

@@ -1,0 +1,32 @@
+name: Validate
+
+on: pull_request_target
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # ESLint 10 requires Node.js v20.19.0+, v22.13.0+, or v24+
+        node: [20.x, 22.x, 24.x, 25.x]
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.ref }}
+          fetch-depth: 0
+
+      - uses: codfish/actions/setup-node-and-install@v3
+        with:
+          node-version: ${{ matrix.node }}
+          # Required until all ESLint plugins update their peer dependencies to support ESLint 10
+          install-options: --legacy-peer-deps
+
+      - run:
+          npx commitlint --from ${{ github.event.pull_request.base.sha }} --to ${{ github.event.pull_request.head.sha }}
+          --verbose
+
+      - run: npm run lint
+
+      - run: npm run typecheck

@@ -1,0 +1,13 @@
+{
+  "status": "unsupported-environment-gate",
+  "findings": [],
+  "externalAction": "haya14busa/action-cond@v1",
+  "externalActionSourceSHA256": "435ce592c132d49bc03383759c34e19317f0b9886f4a32081f196e2e1f3f1eb0",
+  "unsupportedJobs": [
+    {
+      "file": ".github/workflows/sonarqube.yml",
+      "job": "build",
+      "reason": "job environment selection or approval is not modeled"
+    }
+  ]
+}

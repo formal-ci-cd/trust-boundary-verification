@@ -1,0 +1,23 @@
+MODULE main
+FROZENVAR
+  cache_saved : boolean;
+  same_effective_key : boolean;
+  poisoned_entry_restored : boolean;
+  poisoned_code_invoked : boolean;
+VAR
+  phase : 0..5;
+  tainted : boolean;
+  bad : boolean;
+ASSIGN
+  init(phase) := 0;
+  init(tainted) := FALSE;
+  init(bad) := FALSE;
+  next(phase) := case phase < 5 : phase + 1; TRUE : phase; esac;
+  next(tainted) := case
+    phase = 1 : cache_saved;
+    phase = 2 : tainted & TRUE & same_effective_key & poisoned_entry_restored;
+    phase = 3 : tainted & poisoned_code_invoked;
+    TRUE : tainted;
+  esac;
+  next(bad) := bad | (phase = 4 & tainted);
+CTLSPEC AG !bad

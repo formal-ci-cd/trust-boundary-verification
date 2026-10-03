@@ -1,0 +1,4 @@
+name: formal-ci-cd/approval-race-diagnostics
+version: 0.1.0
+dependencies:
+  codeql/actions-all: 0.6.2

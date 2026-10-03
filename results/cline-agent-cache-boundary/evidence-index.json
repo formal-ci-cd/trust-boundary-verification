@@ -1,0 +1,1493 @@
+{
+  "description": "Full baseline outputs compressed losslessly. No CodeQL database, executables, runtime cache contents, or attacker payloads included.",
+  "codeqlCLI": "2.27.1",
+  "codeqlQueryPack": "codeql/actions-queries@0.6.36",
+  "zizmor": "1.30.1 --offline --no-config --no-ignores --persona=regular",
+  "actionlint": "1.7.12",
+  "opengrep": "1.30.0; AikidoSec rule at 12b001b4b1d65532b1a988b2f57a44468ad50445",
+  "summary": {
+    "pre-incident": {
+      "codeqlDefault": {
+        "count": 1,
+        "rules": {
+          "actions/missing-workflow-permissions": 1
+        },
+        "locations": [
+          {
+            "rule": "actions/missing-workflow-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 17
+          }
+        ]
+      },
+      "codeqlSecurityAndQuality": {
+        "count": 8,
+        "rules": {
+          "actions/missing-workflow-permissions": 1,
+          "actions/unpinned-tag": 7
+        },
+        "locations": [
+          {
+            "rule": "actions/missing-workflow-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 17
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 74
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/claude-issue-triage.yml",
+            "line": 44
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/claude-pr-review.yml",
+            "line": 64
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/publish.yml",
+            "line": 138
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 192
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 201
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 220
+          }
+        ]
+      },
+      "zizmorRegular": {
+        "count": 128,
+        "rules": {
+          "adhoc-packages": 3,
+          "artipacked": 13,
+          "cache-poisoning": 3,
+          "dangerous-triggers": 1,
+          "excessive-permissions": 17,
+          "github-app": 1,
+          "self-repository": 4,
+          "superfluous-actions": 1,
+          "template-injection": 30,
+          "unpinned-uses": 55
+        },
+        "locations": [
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 48
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 40
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 48
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 54
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 72
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/claude-issue-triage.yml",
+            "line": 37
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/claude-issue-triage.yml",
+            "line": 37
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/claude-issue-triage.yml",
+            "line": 42
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/claude-pr-review.yml",
+            "line": 42
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/claude-pr-review.yml",
+            "line": 53
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/claude-pr-review.yml",
+            "line": 42
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/claude-pr-review.yml",
+            "line": 62
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/cline-pr-review.yml",
+            "line": 46
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/cline-pr-review.yml",
+            "line": 69
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/cline-pr-review.yml",
+            "line": 46
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/cline-pr-review.yml",
+            "line": 57
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/e2e.yml",
+            "line": 37
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 1
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 16
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 37
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 38
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 44
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 52
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 60
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 70
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 106
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/e2e.yml",
+            "line": 90
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/label-jetbrains-issues.yml",
+            "line": 13
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 27
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 12
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 13
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 14
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 83
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 91
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 91
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 98
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 98
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 27
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 30
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 37
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 17
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 24
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 10
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 11
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 79
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 79
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 119
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 128
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 128
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 24
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 38
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 46
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 14
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 52
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 65
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 87
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 103
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 26
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 9
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 10
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 11
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 12
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 26
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 36
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 42
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 50
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 63
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 15
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/publish.yml",
+            "line": 36
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 20
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 21
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 22
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 23
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 80
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 95
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 95
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 95
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 95
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 121
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 36
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 42
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 48
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 56
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 137
+          },
+          {
+            "rule": "cache-poisoning",
+            "file": ".github/workflows/publish.yml",
+            "line": 138
+          },
+          {
+            "rule": "cache-poisoning",
+            "file": ".github/workflows/publish.yml",
+            "line": 138
+          },
+          {
+            "rule": "cache-poisoning",
+            "file": ".github/workflows/publish.yml",
+            "line": 138
+          },
+          {
+            "rule": "superfluous-actions",
+            "file": ".github/workflows/publish.yml",
+            "line": 137
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/publish.yml",
+            "line": 71
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/publish.yml",
+            "line": 26
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/stale.yml",
+            "line": 15
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test-stale.yml",
+            "line": 21
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 24
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 59
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 137
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 182
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/test.yml",
+            "line": 16
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/test.yml",
+            "line": 17
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 24
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 27
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 59
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 62
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 123
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 137
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 140
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 171
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 182
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 185
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 191
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 200
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 210
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 218
+          },
+          {
+            "rule": "dangerous-triggers",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 2
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 60
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 60
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 88
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 25
+          },
+          {
+            "rule": "github-app",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 27
+          }
+        ]
+      },
+      "actionlint": {
+        "count": 2,
+        "locations": [
+          {
+            "file": ".github/workflows/publish.yml",
+            "line": 138,
+            "kind": "action"
+          },
+          {
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 45,
+            "kind": "expression"
+          }
+        ]
+      },
+      "opengrepPromptPwnd": {
+        "count": 3,
+        "locations": [
+          {
+            "rule": "tools.github_workflow_prompt_injection",
+            "file": "/source/.github/workflows/claude-issue-triage.yml",
+            "line": 50
+          },
+          {
+            "rule": "tools.github_workflow_prompt_injection",
+            "file": "/source/.github/workflows/claude-pr-review.yml",
+            "line": 69
+          },
+          {
+            "rule": "tools.github_workflow_prompt_injection",
+            "file": "/source/.github/workflows/claude-pr-review.yml",
+            "line": 70
+          }
+        ]
+      }
+    },
+    "mitigation": {
+      "codeqlDefault": {
+        "count": 1,
+        "rules": {
+          "actions/missing-workflow-permissions": 1
+        },
+        "locations": [
+          {
+            "rule": "actions/missing-workflow-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 17
+          }
+        ]
+      },
+      "codeqlSecurityAndQuality": {
+        "count": 6,
+        "rules": {
+          "actions/missing-workflow-permissions": 1,
+          "actions/unpinned-tag": 5
+        },
+        "locations": [
+          {
+            "rule": "actions/missing-workflow-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 17
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 74
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/publish.yml",
+            "line": 120
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 192
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 201
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "file": ".github/workflows/test.yml",
+            "line": 220
+          }
+        ]
+      },
+      "zizmorRegular": {
+        "count": 109,
+        "rules": {
+          "adhoc-packages": 3,
+          "artipacked": 10,
+          "cache-poisoning": 1,
+          "dangerous-triggers": 1,
+          "excessive-permissions": 17,
+          "github-app": 1,
+          "self-repository": 4,
+          "superfluous-actions": 1,
+          "template-injection": 28,
+          "unpinned-uses": 43
+        },
+        "locations": [
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 48
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 40
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 48
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 54
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/changeset-converter.yml",
+            "line": 72
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/e2e.yml",
+            "line": 37
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 1
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/e2e.yml",
+            "line": 16
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 37
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 38
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 44
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 52
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 60
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 70
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/e2e.yml",
+            "line": 106
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/e2e.yml",
+            "line": 90
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/label-jetbrains-issues.yml",
+            "line": 13
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 27
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 12
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 13
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 14
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 75
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 83
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 83
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 90
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 90
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 27
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 30
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 17
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 24
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 10
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 11
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 70
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 70
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 110
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 119
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 119
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 24
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 38
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/npm-nightly.yaml",
+            "line": 14
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 207
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 52
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 65
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 87
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 103
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 109
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/pack-cli.yml",
+            "line": 169
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 26
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 9
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 10
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 11
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 12
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 26
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 36
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 47
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/publish-nightly.yml",
+            "line": 15
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/publish.yml",
+            "line": 36
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 20
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 21
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 22
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/publish.yml",
+            "line": 23
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 62
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 77
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 77
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 77
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 77
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/publish.yml",
+            "line": 103
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 36
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 42
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/publish.yml",
+            "line": 119
+          },
+          {
+            "rule": "cache-poisoning",
+            "file": ".github/workflows/publish.yml",
+            "line": 120
+          },
+          {
+            "rule": "superfluous-actions",
+            "file": ".github/workflows/publish.yml",
+            "line": 119
+          },
+          {
+            "rule": "adhoc-packages",
+            "file": ".github/workflows/publish.yml",
+            "line": 53
+          },
+          {
+            "rule": "self-repository",
+            "file": ".github/workflows/publish.yml",
+            "line": 26
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/stale.yml",
+            "line": 15
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test-stale.yml",
+            "line": 21
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 24
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 59
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 137
+          },
+          {
+            "rule": "artipacked",
+            "file": ".github/workflows/test.yml",
+            "line": 182
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/test.yml",
+            "line": 16
+          },
+          {
+            "rule": "excessive-permissions",
+            "file": ".github/workflows/test.yml",
+            "line": 17
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 24
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 27
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 59
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 62
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 123
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 137
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 140
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 171
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 182
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 185
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 191
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 200
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 210
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/test.yml",
+            "line": 218
+          },
+          {
+            "rule": "dangerous-triggers",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 2
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 60
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 60
+          },
+          {
+            "rule": "template-injection",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 88
+          },
+          {
+            "rule": "unpinned-uses",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 25
+          },
+          {
+            "rule": "github-app",
+            "file": ".github/workflows/trigger-jetbrains-tests.yml",
+            "line": 27
+          }
+        ]
+      },
+      "actionlint": {
+        "count": 2,
+        "locations": [
+          {
+            "file": ".github/workflows/publish.yml",
+            "line": 120,
+            "kind": "action"
+          },
+          {
+            "file": ".github/workflows/npm-main.yaml",
+            "line": 37,
+            "kind": "expression"
+          }
+        ]
+      },
+      "opengrepPromptPwnd": {
+        "count": 0,
+        "locations": []
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "codeql-full-pre-actions-code-scanning.qls.sarif.gz",
+      "sha256": "f8930114dc317520a1b190136ba550f5aa49256bf5d6cb66329bde5c9b0d540b",
+      "sourceSHA256": "386d57ed084895eac378253c2d6890cae65f67d427b95e78822d4a81cfb51b8e"
+    },
+    {
+      "path": "codeql-full-pre-actions-security-and-quality.qls.sarif.gz",
+      "sha256": "20a0428714b2fc3396b2f692abcd1d2cd75ef762360c72135ecb8339fe977c92",
+      "sourceSHA256": "659fe1a19fd0e385a62d4a16df4a6bc67bd0ac1919cf7f834816bdb0917029c2"
+    },
+    {
+      "path": "zizmor-full-pre.json.gz",
+      "sha256": "ec53e74841cd9de81dcd374f56943a3acfca35024cce468cba74ec0125a6d56b",
+      "sourceSHA256": "a8e74f7e238827a74961c0d840c9102831dcd4dc82e209c2af6e89510d488a37"
+    },
+    {
+      "path": "actionlint-pre.jsonl.gz",
+      "sha256": "f94830b06ffe443631d825afdeb4a394a9e62221f66480db77a2bc9d112a6cc1",
+      "sourceSHA256": "83ebb1744807c5df142918fbffdfcbdecd49cfb26ee3c167d46faac4faa49292"
+    },
+    {
+      "path": "opengrep-promptpwnd-pre.json.gz",
+      "sha256": "94a214e6a6b334a20fe11b1d77912679bc08bfeebb0268e4320598cfa918e284",
+      "sourceSHA256": "889993dfa4d518f218103cbf617f78a24f3fa6601edff8e0b2097cfb9246b1e2"
+    },
+    {
+      "path": "pre-incident.smv",
+      "sha256": "5ee1a08ab574064249d52ec78754b1a8c972a1e818cc964b8b7505ddbee07ba5",
+      "sourceSHA256": "5ee1a08ab574064249d52ec78754b1a8c972a1e818cc964b8b7505ddbee07ba5"
+    },
+    {
+      "path": "pre-incident.nusmv.txt",
+      "sha256": "cc3287dfca1f0e6cdbcfa5d17d108be754e2c9dbc32e13ba4fd11744d6e5a798",
+      "sourceSHA256": "cc3287dfca1f0e6cdbcfa5d17d108be754e2c9dbc32e13ba4fd11744d6e5a798"
+    },
+    {
+      "path": "codeql-full-post-actions-code-scanning.qls.sarif.gz",
+      "sha256": "a6fd8412023685be8967208c6fbeb64ee5d63d51bb01771f6ab0f4206b716046",
+      "sourceSHA256": "04515c848859ba86d4c71c8de9f51e2458fc5a730fee82741314c418d4a5b5a8"
+    },
+    {
+      "path": "codeql-full-post-actions-security-and-quality.qls.sarif.gz",
+      "sha256": "39b15ee517af4853ccfc2e67dbfaf21d1dee0f9c9ebaa46dc10c519e77acc833",
+      "sourceSHA256": "3183a7951826dce89ad69b50a64dc08df98f3090ec6631b5a8808d88d1298ca5"
+    },
+    {
+      "path": "zizmor-full-post.json.gz",
+      "sha256": "ac6f9ea4604e93f33a2cf5cdc3ceb60616e5e671125245f3232e90bea72d26c1",
+      "sourceSHA256": "f7e21109ee2078e9e24e96150b920fb1eface0658fa934f6aa85a31618ae641f"
+    },
+    {
+      "path": "actionlint-post.jsonl.gz",
+      "sha256": "bbc8bb4477fb92d057e40165da03da1e5f109168c4bba4e1384ac2ba1bfc0e37",
+      "sourceSHA256": "1284ff12a85bdba8ba5372639167a3f0687665c4c007524b3fabf153ff864daa"
+    },
+    {
+      "path": "opengrep-promptpwnd-post.json.gz",
+      "sha256": "5e9138dbcdaffe7cbbcda1b3367d54c08a5cdd555afb63ca97f9f28971da1ac7",
+      "sourceSHA256": "3ee967fff0463319ca98864d0469d228235eaf65ec83ed5ef9d8b9b86780e493"
+    },
+    {
+      "path": "mitigation.smv",
+      "sha256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05",
+      "sourceSHA256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05"
+    },
+    {
+      "path": "mitigation.nusmv.txt",
+      "sha256": "a3ed70d291a44a52ea83e49b76ad3bd4055298e7f73bc86e713af741f00b8ffc",
+      "sourceSHA256": "a3ed70d291a44a52ea83e49b76ad3bd4055298e7f73bc86e713af741f00b8ffc"
+    },
+    {
+      "path": "analysis.json",
+      "sha256": "68438bd5d1236c7497e4bc6a656bb0efab269ee0d513424e8bfacaa59ef69dc2",
+      "sourceSHA256": "68438bd5d1236c7497e4bc6a656bb0efab269ee0d513424e8bfacaa59ef69dc2"
+    },
+    {
+      "path": "pre-incident-current-policy.smv",
+      "sha256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05",
+      "sourceSHA256": "2b7c2143be74828bf5dc23ab7bb11d85967cf7a8946bc5011e4dbf47c1fdcf05"
+    },
+    {
+      "path": "pre-incident-current-policy.nusmv.txt",
+      "sha256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5",
+      "sourceSHA256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5"
+    },
+    {
+      "path": "promptpwnd-rule-2025-12-03.yaml",
+      "sha256": "255f3141210edc0e8ac8b2663214e3e6e9a1e7523d69782020b4d6eea98eac3f",
+      "sourceSHA256": "255f3141210edc0e8ac8b2663214e3e6e9a1e7523d69782020b4d6eea98eac3f"
+    }
+  ]
+}

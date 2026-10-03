@@ -1,0 +1,49 @@
+{
+  "status": "analyzed",
+  "findings": [
+    {
+      "property": "PR-controlled checkout bytes cannot reach a local executable with configured secrets under pull_request_target",
+      "status": "potential-risk",
+      "event": "pull_request_target",
+      "refSource": "refs/pull/${{ github.event.pull_request.number }}/merge",
+      "checkoutRef": "${{ steps.condval.outputs.value }}",
+      "localCommand": "./mvnw",
+      "configuredSecrets": [
+        "PAT_TO_FORK",
+        "SONAR_TOKEN"
+      ],
+      "evidence": [
+        {
+          "file": ".github/workflows/sonarqube.yml",
+          "job": "build",
+          "line": 35,
+          "step": 0,
+          "role": "conditional-PR-merge-ref"
+        },
+        {
+          "file": ".github/workflows/sonarqube.yml",
+          "job": "build",
+          "line": 42,
+          "step": 1,
+          "role": "checkout-conditional-output"
+        },
+        {
+          "file": ".github/workflows/sonarqube.yml",
+          "job": "build",
+          "line": 59,
+          "step": 4,
+          "role": "local-executable-with-secrets"
+        }
+      ],
+      "assumptions": [
+        "The mutable external action tag resolved to the supplied action implementation at the run time.",
+        "The pull_request_target event reaches this job; any job-level repository condition is satisfied.",
+        "The pull request merge ref contains attacker-controlled bytes and checkout succeeds.",
+        "The local executable runs successfully and receives the configured secret environment.",
+        "No claim is made about exfiltration, actual secret value availability, or later lateral movement."
+      ]
+    }
+  ],
+  "externalAction": "haya14busa/action-cond@v1",
+  "externalActionSourceSHA256": "435ce592c132d49bc03383759c34e19317f0b9886f4a32081f196e2e1f3f1eb0"
+}

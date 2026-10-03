@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "spotbugs-fork-gate-0.1",
+  "property": "External fork PR bytes never reach a secret-bearing local executable",
+  "sourceActionSHA256": "435ce592c132d49bc03383759c34e19317f0b9886f4a32081f196e2e1f3f1eb0",
+  "semantics": "Under pull_request_target, github.repository names the base repository; an external fork has a different PR head repository.",
+  "cases": [
+    {
+      "label": "original",
+      "workflow": "experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml",
+      "workflowSHA256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+      "gate": "github.repository == 'spotbugs/sonar-findbugs'",
+      "model": "original.smv",
+      "modelSHA256": "0fdbf354cfd32b2beb3443552d0150109ac67d94f9f58ef1c8fda329c29aef1f",
+      "bfs": {
+        "possibleExternalForkPath": true,
+        "reachableStates": 128,
+        "counterexample": [
+          {
+            "pc": 0,
+            "externalFork": true,
+            "selectedPR": false,
+            "checkedPR": false,
+            "bad": false
+          },
+          {
+            "pc": 1,
+            "externalFork": true,
+            "selectedPR": true,
+            "checkedPR": false,
+            "bad": false
+          },
+          {
+            "pc": 2,
+            "externalFork": true,
+            "selectedPR": true,
+            "checkedPR": true,
+            "bad": false
+          },
+          {
+            "pc": 3,
+            "externalFork": true,
+            "selectedPR": true,
+            "checkedPR": true,
+            "bad": true
+          }
+        ]
+      }
+    },
+    {
+      "label": "fork-excluded-control",
+      "workflow": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-correct-fork/.github/workflows/sonarqube.yml",
+      "workflowSHA256": "f112a4555b0e1fa5c7c34477fb92c3ae103a1254e2a3945fe01e0a4c04099b3c",
+      "gate": "github.event.pull_request.head.repo.full_name == github.repository",
+      "model": "fork-excluded-control.smv",
+      "modelSHA256": "8c494dc148e944a55ee4a98a4f120e64d3efb2b56681add40aa1c7e7e52fdf03",
+      "bfs": {
+        "possibleExternalForkPath": false,
+        "reachableStates": 128,
+        "counterexample": []
+      }
+    }
+  ]
+}

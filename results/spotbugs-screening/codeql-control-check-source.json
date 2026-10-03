@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "spotbugs-codeql-control-check-source-0.1",
+  "pack": {
+    "version": "0.6.36",
+    "actionsAllDependency": "0.6.2",
+    "fileSHA256": "ed93acd4d790e2ce5e8e2fa2d27daa72b9fcee2b1afeccceddbbce69b6052f1e"
+  },
+  "controlChecks": {
+    "fileSHA256": "3917b1c77ef8b9cfffaee98c35233593c8299f4a7191871033d4abc314d34b65",
+    "classLine": 382,
+    "githubRepositoryPatternLine": 389,
+    "eventApplicabilityLine": 399
+  },
+  "criticalQuery": {
+    "fileSHA256": "494e07239c5000a4541c5e369c251637e184bfba98714234506803de863c52a0",
+    "checkoutSuppressionLine": 60,
+    "sinkSuppressionLine": 61
+  },
+  "interpretation": "The repository-check class uses regexpFind on a list containing github.repository alone and applies to pull_request_target. The critical query excludes paths protected by a ControlCheck. The saved ablation shows this check suppresses the SpotBugs warning for the pinned version; this is not a claim about all CodeQL versions."
+}

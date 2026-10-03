@@ -1,0 +1,260 @@
+{
+  "description": "Full CodeQL and zizmor SARIF are compressed losslessly. No executable, database, cache content or attacker payload is included.",
+  "codeqlCLI": "2.27.1",
+  "codeqlQueryPack": "codeql/actions-queries@0.6.36",
+  "zizmor": "1.30.1 --offline --no-config --no-ignores --persona=regular",
+  "baselineSummary": {
+    "pre-incident": {
+      "codeql-default": {
+        "version": "2.27.1",
+        "totalAlerts": 1,
+        "rules": {
+          "actions/cache-poisoning/poisonable-step": 1
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "line": 45,
+            "message": "Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code from [github.event.pull_request.number](1). ([workflow_dispatch](2))."
+          }
+        ]
+      },
+      "codeql-security-and-quality": {
+        "version": "2.27.1",
+        "totalAlerts": 14,
+        "rules": {
+          "actions/cache-poisoning/poisonable-step": 1,
+          "actions/unpinned-tag": 12,
+          "actions/untrusted-checkout/medium": 1
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "line": 45,
+            "message": "Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code from [github.event.pull_request.number](1). ([workflow_dispatch](2))."
+          },
+          {
+            "rule": "actions/untrusted-checkout/medium",
+            "line": 35,
+            "message": "Potential unsafe checkout of untrusted pull request on non-privileged workflow."
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 43,
+            "message": "Unpinned 3rd party Action 'Bundle Size' step [Uses Step](1) uses 'TanStack/config/.github/setup' with ref 'main', not a pinned commit hash"
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 119,
+            "message": "Unpinned 3rd party Action 'Bundle Size' step [Uses Step](1) uses 'TanStack/config/.github/setup' with ref 'main', not a pinned commit hash"
+          }
+        ]
+      },
+      "zizmor-regular": {
+        "version": "1.30.1",
+        "totalAlerts": 50,
+        "rules": {
+          "zizmor/adhoc-packages": 2,
+          "zizmor/artipacked": 9,
+          "zizmor/cache-poisoning": 2,
+          "zizmor/dangerous-triggers": 1,
+          "zizmor/excessive-permissions": 3,
+          "zizmor/github-env": 1,
+          "zizmor/template-injection": 4,
+          "zizmor/unpinned-uses": 28
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "zizmor/artipacked",
+            "line": 113,
+            "message": "credential persistence through GitHub Actions artifacts: does not set persist-credentials: false"
+          },
+          {
+            "rule": "zizmor/dangerous-triggers",
+            "line": 3,
+            "message": "use of fundamentally insecure workflow trigger: pull_request_target is almost always used insecurely"
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "line": 96,
+            "message": "code injection via template expansion: may expand into attacker-controllable code"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 36,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 43,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 65,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 114,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 119,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          }
+        ]
+      }
+    },
+    "mitigation": {
+      "codeql-default": {
+        "version": "2.27.1",
+        "totalAlerts": 1,
+        "rules": {
+          "actions/cache-poisoning/poisonable-step": 1
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "line": 45,
+            "message": "Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code from [github.event.pull_request.number](1). ([workflow_dispatch](2))."
+          }
+        ]
+      },
+      "codeql-security-and-quality": {
+        "version": "2.27.1",
+        "totalAlerts": 14,
+        "rules": {
+          "actions/cache-poisoning/poisonable-step": 1,
+          "actions/unpinned-tag": 12,
+          "actions/untrusted-checkout/medium": 1
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "actions/cache-poisoning/poisonable-step",
+            "line": 45,
+            "message": "Potential cache poisoning in the context of the default branch due to privilege checkout of untrusted code from [github.event.pull_request.number](1). ([workflow_dispatch](2))."
+          },
+          {
+            "rule": "actions/untrusted-checkout/medium",
+            "line": 35,
+            "message": "Potential unsafe checkout of untrusted pull request on non-privileged workflow."
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 43,
+            "message": "Unpinned 3rd party Action 'Bundle Size' step [Uses Step](1) uses 'TanStack/config/.github/setup' with ref 'main', not a pinned commit hash"
+          },
+          {
+            "rule": "actions/unpinned-tag",
+            "line": 119,
+            "message": "Unpinned 3rd party Action 'Bundle Size' step [Uses Step](1) uses 'TanStack/config/.github/setup' with ref 'main', not a pinned commit hash"
+          }
+        ]
+      },
+      "zizmor-regular": {
+        "version": "1.30.1",
+        "totalAlerts": 49,
+        "rules": {
+          "zizmor/adhoc-packages": 2,
+          "zizmor/artipacked": 9,
+          "zizmor/cache-poisoning": 2,
+          "zizmor/excessive-permissions": 3,
+          "zizmor/github-env": 1,
+          "zizmor/template-injection": 4,
+          "zizmor/unpinned-uses": 28
+        },
+        "bundleSizeAlerts": [
+          {
+            "rule": "zizmor/artipacked",
+            "line": 113,
+            "message": "credential persistence through GitHub Actions artifacts: does not set persist-credentials: false"
+          },
+          {
+            "rule": "zizmor/template-injection",
+            "line": 96,
+            "message": "code injection via template expansion: may expand into attacker-controllable code"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 36,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 43,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 65,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 114,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          },
+          {
+            "rule": "zizmor/unpinned-uses",
+            "line": 119,
+            "message": "unpinned action reference: action is not pinned to a hash (required by blanket policy)"
+          }
+        ]
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "pre-incident/codeql-default.sarif.gz",
+      "sha256": "6a98ec88ddadfe38342b37db99fe1eba3f79f497661f2f08062edb5ee335c19c",
+      "originalSHA256": "7b9e513004f3f23192f92b0fe7601cc666155665aa61fc0ee5edf8e209b7e4c1"
+    },
+    {
+      "path": "pre-incident/codeql-security-and-quality.sarif.gz",
+      "sha256": "236ed39ce03f8967235f2b855cd2f6f5851a8fb021ce63673449d08133683b1e",
+      "originalSHA256": "2c38a5e877cf2bb48374c804ed204c1ef909b932762b91130432ca89e55d8066"
+    },
+    {
+      "path": "pre-incident/zizmor-regular.sarif.gz",
+      "sha256": "2fc4839ea07d9ba1176b4411d70dffa53a640aea4cc0535f324fa69bb3924d5f",
+      "originalSHA256": "806105233f25ae92c3c0ff5d9eb46e92b9eeae52f78cf010e3314b17041f8d63"
+    },
+    {
+      "path": "pre-incident.smv",
+      "sha256": "bf27aee30dc223a3953d881a553021d1ede431539c51ee66fd6b2bc659992719"
+    },
+    {
+      "path": "pre-incident.nusmv.txt",
+      "sha256": "8df56a8abbc2120a92894a3e07e31300d7f52a51bbf88e0e9e5dbcfcb5ab8af6"
+    },
+    {
+      "path": "mitigation/codeql-default.sarif.gz",
+      "sha256": "28df7ff1e847cc1ec9c5851d94b27a9d87ca66c2a424b3e1e7cbd2a97727d8e2",
+      "originalSHA256": "f3280ddeee68d59e5e886da9667e2354d9589381f64b135a97c1a93ad90a74aa"
+    },
+    {
+      "path": "mitigation/codeql-security-and-quality.sarif.gz",
+      "sha256": "33ed97f4d2ec5a355d4d3ef4920700ee224d3ae37dbbfee5807a690793b3d553",
+      "originalSHA256": "28e2533e0b825f5b4f350c5ba1af91c0f73f979c3a64f741efa5ea4d88e749ea"
+    },
+    {
+      "path": "mitigation/zizmor-regular.sarif.gz",
+      "sha256": "bb5f6c73824ec86b3660724a6ce6ed394438750f0b91e1b15548fc40f14ac770",
+      "originalSHA256": "d0d24818d35188f2fdc8ed9a26a46e9e7f34a35e4d368849bc2ab3d5e5b11f33"
+    },
+    {
+      "path": "mitigation.smv",
+      "sha256": "b91eea0f2b49af37ff5073938ee37ffdf2573f91a6cf86b83f2b3ec17fbf9f15"
+    },
+    {
+      "path": "mitigation.nusmv.txt",
+      "sha256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5"
+    },
+    {
+      "path": "analysis.json",
+      "sha256": "e23390baf58ddb7f1c2120ddd9bb19718a0f78c77c5c9a5681fc161f1032d327"
+    }
+  ]
+}

@@ -1,0 +1,376 @@
+{
+  "scope": "synthetic mutable-file interleavings; no YAML concurrency inference",
+  "property": "AG !bad",
+  "results": [
+    {
+      "objects": 1,
+      "mode": "mutable",
+      "bfs": {
+        "verdict": "unsafe",
+        "reachableStates": 12,
+        "seconds": 2.5083980290219188e-05,
+        "counterexample": [
+          {
+            "action": "consumer[0]:restore",
+            "sharedTainted": [
+              false
+            ],
+            "verified": [
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "sharedTainted": [
+              false
+            ],
+            "verified": [
+              true
+            ],
+            "bad": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "sharedTainted": [
+              true
+            ],
+            "verified": [
+              true
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "sharedTainted": [
+              true
+            ],
+            "verified": [
+              true
+            ],
+            "bad": true
+          }
+        ]
+      },
+      "nusmv": {
+        "verdict": "unsafe",
+        "seconds": 0.026666374993510544
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": true,
+        "events": [
+          {
+            "action": "consumer[0]:restore",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "dummyAuthorityReached": true
+          }
+        ],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 1,
+      "mode": "snapshot",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 10,
+        "seconds": 2.475001383572817e-05,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.004584709007758647
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 1,
+      "mode": "revalidate",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 11,
+        "seconds": 2.820900408551097e-05,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.004347290989244357
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 2,
+      "mode": "mutable",
+      "bfs": {
+        "verdict": "unsafe",
+        "reachableStates": 142,
+        "seconds": 0.00021637501777149737,
+        "counterexample": [
+          {
+            "action": "consumer[0]:restore",
+            "sharedTainted": [
+              false,
+              false
+            ],
+            "verified": [
+              false,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "sharedTainted": [
+              false,
+              false
+            ],
+            "verified": [
+              true,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "sharedTainted": [
+              true,
+              false
+            ],
+            "verified": [
+              true,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "sharedTainted": [
+              true,
+              false
+            ],
+            "verified": [
+              true,
+              false
+            ],
+            "bad": true
+          }
+        ]
+      },
+      "nusmv": {
+        "verdict": "unsafe",
+        "seconds": 0.0052324999996926636
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": true,
+        "events": [
+          {
+            "action": "consumer[0]:restore",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "dummyAuthorityReached": true
+          }
+        ],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 2,
+      "mode": "snapshot",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 100,
+        "seconds": 0.00016154200420714915,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.004612999997334555
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 2,
+      "mode": "revalidate",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 121,
+        "seconds": 0.00017679098527878523,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.005489333008881658
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 3,
+      "mode": "mutable",
+      "bfs": {
+        "verdict": "unsafe",
+        "reachableStates": 1662,
+        "seconds": 0.0052581659983843565,
+        "counterexample": [
+          {
+            "action": "consumer[0]:restore",
+            "sharedTainted": [
+              false,
+              false,
+              false
+            ],
+            "verified": [
+              false,
+              false,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "sharedTainted": [
+              false,
+              false,
+              false
+            ],
+            "verified": [
+              true,
+              false,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "sharedTainted": [
+              true,
+              false,
+              false
+            ],
+            "verified": [
+              true,
+              false,
+              false
+            ],
+            "bad": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "sharedTainted": [
+              true,
+              false,
+              false
+            ],
+            "verified": [
+              true,
+              false,
+              false
+            ],
+            "bad": true
+          }
+        ]
+      },
+      "nusmv": {
+        "verdict": "unsafe",
+        "seconds": 0.0075718330044765025
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": true,
+        "events": [
+          {
+            "action": "consumer[0]:restore",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:verify",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "writer[0]:replace",
+            "dummyAuthorityReached": false
+          },
+          {
+            "action": "consumer[0]:use",
+            "dummyAuthorityReached": true
+          }
+        ],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 3,
+      "mode": "snapshot",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 1000,
+        "seconds": 0.0022345000179484487,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.006618499988690019
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    },
+    {
+      "objects": 3,
+      "mode": "revalidate",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 1331,
+        "seconds": 0.0025317920080851763,
+        "counterexample": []
+      },
+      "nusmv": {
+        "verdict": "safe",
+        "seconds": 0.006191082997247577
+      },
+      "safeReplay": {
+        "dummyAuthorityReached": false,
+        "events": [],
+        "realAuthorityExercised": false
+      }
+    }
+  ],
+  "conclusion": "BFS and NuSMV agree. Necessity or performance superiority of model checking is not established."
+}

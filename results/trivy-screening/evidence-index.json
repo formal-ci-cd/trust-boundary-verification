@@ -1,0 +1,38 @@
+{
+  "input": "One incident-era workflow, not the complete repository",
+  "network": "disabled during CodeQL analysis",
+  "comparisons": [
+    {
+      "codeqlCLI": "2.24.1",
+      "queryPack": "0.6.19",
+      "suite": "actions-code-scanning.qls",
+      "extractedFiles": "1/1",
+      "sarif": "codeql-2.24.1-default.sarif.gz",
+      "compressedSHA256": "ebc9e6bcbd7d136a3b8d4e009b5c2a2ae04717ebc147ed29f65f765edf0a5773",
+      "findings": [
+        {
+          "rule": "actions/untrusted-checkout/critical",
+          "file": ".github/workflows/apidiff.yaml",
+          "line": 64,
+          "message": "Potential execution of untrusted code on a privileged workflow ([pull_request_target](1))"
+        }
+      ]
+    },
+    {
+      "codeqlCLI": "2.27.1",
+      "queryPack": "0.6.36",
+      "suite": "actions-code-scanning.qls",
+      "extractedFiles": "1/1",
+      "sarif": "codeql-2.27.1-default.sarif.gz",
+      "compressedSHA256": "252fffabfdc9ea1841f0d08e4ca68e6e8c8451f4937d689111d9ed3ab40adc23",
+      "findings": [
+        {
+          "rule": "actions/untrusted-checkout/critical",
+          "file": ".github/workflows/apidiff.yaml",
+          "line": 59,
+          "message": "Checkout of untrusted code from [github.event.pull_request.number](1) in a privileged workflow with later potential execution (event trigger: [pull_request_target](2))."
+        }
+      ]
+    }
+  ]
+}

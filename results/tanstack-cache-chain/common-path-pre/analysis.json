@@ -1,0 +1,1315 @@
+{
+  "scope": "limited fork PR cache to explicit repository write sink; no actual compromise inferred",
+  "policy": "historical-pre-2026-06-26",
+  "workflowCount": 7,
+  "cachePairCandidates": 64,
+  "supportedPathCandidates": 6,
+  "emptyCandidateMeaning": "unknown/unsupported; never safe",
+  "repositorySafety": "unknown/unsupported; per-path safe verdicts do not cover other Actions or paths",
+  "unsupportedActions": [
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1,
+        "line": 23,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 4,
+        "line": 29
+      },
+      "action": "autofix-ci/action@635ffb0c9798bd160680f18fd73371e355b85f27",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 1,
+        "line": 118,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-main",
+        "step": 3,
+        "line": 123
+      },
+      "action": "benchmark-action/github-action-benchmark@4bdcce38c94cec68da58d012ac24b7b1155efe8b",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/check-skills.yml",
+        "job": "validate",
+        "step": 1,
+        "line": 50
+      },
+      "action": "actions/setup-node@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/check-skills.yml",
+        "job": "review",
+        "step": 1,
+        "line": 71
+      },
+      "action": "actions/setup-node@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1,
+        "line": 44,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 2,
+        "line": 47
+      },
+      "action": "CodSpeedHQ/action@v4",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/labeler.yml",
+        "job": "labeler",
+        "step": 0,
+        "line": 14
+      },
+      "action": "actions/labeler@v6.0.1",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2,
+        "line": 31,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 3,
+        "line": 33
+      },
+      "action": "nrwl/nx-set-shas@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1,
+        "line": 50,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1,
+        "line": 62,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 2,
+        "line": 64
+      },
+      "action": "TanStack/config/.github/changeset-preview@main",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 0,
+        "compositeLine": 6,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "pnpm/action-setup@v4.4.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    },
+    {
+      "location": {
+        "workflow": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3,
+        "line": 42,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeStep": 1,
+        "compositeLine": 8,
+        "compositeSHA256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793",
+        "compositeStack": [
+          "TanStack/config/.github/setup@main"
+        ]
+      },
+      "action": "actions/setup-node@v6.3.0",
+      "reason": "no supplied composite contract or known threat-model action contract"
+    }
+  ],
+  "policyEvidence": "docs/github-actions-cache-object-identity.md (historical assumptions require date-specific validation)",
+  "results": [
+    {
+      "id": "b3addddb2860",
+      "source": {
+        "event": "pull_request",
+        "checkout": {
+          "file": ".github/workflows/autofix.yml",
+          "line": 21,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/autofix.yml",
+        "line": 23,
+        "job": "autofix",
+        "step": 1,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "false",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "PR merge-ref scope",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/autofix.yml",
+        "job": "autofix",
+        "step": 1
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "unknown",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "false",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "producerCallEnabled": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": []
+      },
+      "status": "safe-within-model",
+      "modelVerdict": "safe",
+      "evidence": [
+        {
+          "file": ".github/workflows/autofix.yml",
+          "line": 4,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/autofix.yml",
+          "line": 21,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/autofix.yml",
+          "line": 23,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-b3addddb2860.smv",
+      "nusmvOutput": "cache-b3addddb2860.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    },
+    {
+      "id": "0c9cb92189b1",
+      "source": {
+        "event": "pull_request_target",
+        "checkout": {
+          "file": ".github/workflows/bundle-size.yml",
+          "line": 35,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/bundle-size.yml",
+        "line": 42,
+        "job": "benchmark-pr",
+        "step": 1,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "unknown",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "base/default branch scope possible",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/bundle-size.yml",
+        "job": "benchmark-pr",
+        "step": 1
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "true",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "producerTaintsCache": true,
+        "consumerCallEnabled": true,
+        "sameObject": true,
+        "readSucceeded": true,
+        "producerActionMatches": true,
+        "consumerActionMatches": true,
+        "useSucceeded": true,
+        "integrityVerified": false,
+        "sinkReachable": true
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": [
+          {
+            "actor": "producer",
+            "producerPC": 1,
+            "consumerPC": 0,
+            "cacheTainted": false,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "producer",
+            "producerPC": 2,
+            "consumerPC": 0,
+            "cacheTainted": true,
+            "restoredTainted": false,
+            "bad": false
+          },
+          {
+            "actor": "consumer",
+            "producerPC": 2,
+            "consumerPC": 1,
+            "cacheTainted": true,
+            "restoredTainted": true,
+            "bad": false
+          },
+          {
+            "actor": "consumer",
+            "producerPC": 2,
+            "consumerPC": 2,
+            "cacheTainted": true,
+            "restoredTainted": true,
+            "bad": false
+          },
+          {
+            "actor": "consumer",
+            "producerPC": 2,
+            "consumerPC": 3,
+            "cacheTainted": true,
+            "restoredTainted": true,
+            "bad": true
+          }
+        ]
+      },
+      "status": "unsafe-counterexample",
+      "modelVerdict": "unsafe",
+      "evidence": [
+        {
+          "file": ".github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/bundle-size.yml",
+          "line": 35,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/bundle-size.yml",
+          "line": 42,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-0c9cb92189b1.smv",
+      "nusmvOutput": "cache-0c9cb92189b1.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    },
+    {
+      "id": "efc321a834df",
+      "source": {
+        "event": "pull_request",
+        "checkout": {
+          "file": ".github/workflows/client-nav-benchmarks.yml",
+          "line": 41,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/client-nav-benchmarks.yml",
+        "line": 44,
+        "job": "benchmarks",
+        "step": 1,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "false",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "PR merge-ref scope",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/client-nav-benchmarks.yml",
+        "job": "benchmarks",
+        "step": 1
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "true",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "false",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": []
+      },
+      "status": "safe-within-model",
+      "modelVerdict": "safe",
+      "evidence": [
+        {
+          "file": ".github/workflows/client-nav-benchmarks.yml",
+          "line": 11,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/client-nav-benchmarks.yml",
+          "line": 41,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/client-nav-benchmarks.yml",
+          "line": 44,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-efc321a834df.smv",
+      "nusmvOutput": "cache-efc321a834df.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    },
+    {
+      "id": "c3f6d528df69",
+      "source": {
+        "event": "pull_request",
+        "checkout": {
+          "file": ".github/workflows/pr.yml",
+          "line": 25,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/pr.yml",
+        "line": 31,
+        "job": "test",
+        "step": 2,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "false",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "PR merge-ref scope",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/pr.yml",
+        "job": "test",
+        "step": 2
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "true",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "false",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": []
+      },
+      "status": "safe-within-model",
+      "modelVerdict": "safe",
+      "evidence": [
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 4,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 25,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 31,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-c3f6d528df69.smv",
+      "nusmvOutput": "cache-c3f6d528df69.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    },
+    {
+      "id": "b95b9f74e88e",
+      "source": {
+        "event": "pull_request",
+        "checkout": {
+          "file": ".github/workflows/pr.yml",
+          "line": 46,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/pr.yml",
+        "line": 50,
+        "job": "preview",
+        "step": 1,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "false",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "PR merge-ref scope",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/pr.yml",
+        "job": "preview",
+        "step": 1
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "true",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "false",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": []
+      },
+      "status": "safe-within-model",
+      "modelVerdict": "safe",
+      "evidence": [
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 4,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 46,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 50,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-b95b9f74e88e.smv",
+      "nusmvOutput": "cache-b95b9f74e88e.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    },
+    {
+      "id": "528598cd2a59",
+      "source": {
+        "event": "pull_request",
+        "checkout": {
+          "file": ".github/workflows/pr.yml",
+          "line": 60,
+          "role": "untrusted-pr-checkout"
+        }
+      },
+      "producer": {
+        "file": ".github/workflows/pr.yml",
+        "line": 62,
+        "job": "version-preview",
+        "step": 1,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.write"
+      },
+      "sharedObject": {
+        "kind": "cache",
+        "writeKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "readKey": "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}",
+        "restoreKeys": "${{ runner.os }}-pnpm-store-\n",
+        "keyCompatibility": "expression-equal; effective key unknown",
+        "sameObject": "false",
+        "scopePolicy": "historical-pre-2026-06-26",
+        "producerScope": "PR merge-ref scope",
+        "consumerScope": "main push possible",
+        "branchProtection": "unknown",
+        "version": "unknown",
+        "candidateEntry": "unknown"
+      },
+      "consumer": {
+        "file": ".github/workflows/release.yml",
+        "line": 42,
+        "job": "release",
+        "step": 3,
+        "compositeFile": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "compositeLine": 17,
+        "role": "cache.read"
+      },
+      "producerUse": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/pr.yml",
+        "job": "version-preview",
+        "step": 1
+      },
+      "use": {
+        "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+        "line": 24,
+        "role": "candidate-cache-derived-use",
+        "workflowCall": ".github/workflows/release.yml",
+        "job": "release",
+        "step": 3
+      },
+      "verify": {
+        "trustedIntegrityVerification": "unknown",
+        "reason": "No supported trusted digest guard was established from this cache path"
+      },
+      "privilegedAuthority": {
+        "kind": "repository-write",
+        "configured": "true",
+        "sink": {
+          "file": ".github/workflows/release.yml",
+          "job": "release",
+          "step": 8,
+          "line": 57
+        },
+        "actualOperationSucceeded": "unknown"
+      },
+      "facts": {
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "producerTaintsCache": "unknown",
+        "producerCallEnabled": "true",
+        "consumerCallEnabled": "unknown",
+        "sameObject": "false",
+        "readSucceeded": "unknown",
+        "producerActionMatches": "unknown",
+        "consumerActionMatches": "unknown",
+        "useSucceeded": "unknown",
+        "integrityVerified": "unknown",
+        "hasAuthority": "true",
+        "sinkReachable": "unknown"
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      },
+      "order": {
+        "producerAndConsumerRunsDistinct": true,
+        "saveBeforeRestore": "possible, not observed",
+        "counterexample": []
+      },
+      "status": "safe-within-model",
+      "modelVerdict": "safe",
+      "evidence": [
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 4,
+          "role": "untrusted-pr-event"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 60,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": ".github/workflows/pr.yml",
+          "line": 62,
+          "role": "producer-cache-write-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 42,
+          "role": "consumer-cache-read-call"
+        },
+        {
+          "file": ".github/workflows/release.yml",
+          "line": 57,
+          "role": "repository-write-sink"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-pr-influenced-cache-store"
+        },
+        {
+          "file": "experiments/public-cases/tanstack/external-setup/.github/setup/action.yml",
+          "line": 24,
+          "role": "candidate-cache-derived-use"
+        }
+      ],
+      "smv": "cache-528598cd2a59.smv",
+      "nusmvOutput": "cache-528598cd2a59.nusmv.txt",
+      "limitations": [
+        "A mutable composite Action reference was represented by a checksum-matched snapshot, not proven runtime bytes",
+        "Cache saved/restored bytes, effective keys and use are unobserved"
+      ]
+    }
+  ]
+}

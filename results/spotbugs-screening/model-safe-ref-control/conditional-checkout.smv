@@ -1,0 +1,23 @@
+MODULE main
+IVAR advance : boolean;
+FROZENVAR
+  pr_event : boolean;
+  merge_exists : boolean;
+  checkout_succeeds : boolean;
+  secret_available : boolean;
+  command_succeeds : boolean;
+VAR
+  pc : 0..4;
+  selected_pr : boolean;
+  checked_pr : boolean;
+  bad : boolean;
+ASSIGN
+  init(pc) := 0;
+  init(selected_pr) := FALSE;
+  init(checked_pr) := FALSE;
+  init(bad) := FALSE;
+  next(pc) := case advance & pc < 4 : pc + 1; TRUE : pc; esac;
+  next(selected_pr) := case advance & pc = 0 : pr_event & FALSE; TRUE : selected_pr; esac;
+  next(checked_pr) := case advance & pc = 1 : selected_pr & merge_exists & checkout_succeeds; TRUE : checked_pr; esac;
+  next(bad) := bad | (advance & pc = 2 & checked_pr & secret_available & command_succeeds);
+CTLSPEC AG !bad

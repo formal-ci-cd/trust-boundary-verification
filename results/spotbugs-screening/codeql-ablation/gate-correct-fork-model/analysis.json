@@ -1,0 +1,10 @@
+{
+  "status": "fork-excluded",
+  "config": null,
+  "forkExcludedJobs": [
+    {
+      "file": ".github/workflows/sonarqube.yml",
+      "job": "build"
+    }
+  ]
+}

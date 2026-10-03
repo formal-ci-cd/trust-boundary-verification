@@ -1,0 +1,25 @@
+{
+  "testedImplementationCommit": "a23d9abcc093d33fe4f8e3f35c43f76c1241d668",
+  "pullRequest": "https://github.com/formal-ci-cd/trust-boundary-verification/pull/15",
+  "local": {
+    "unitTests": 51,
+    "schemaValidatedWorkflowModels": 36,
+    "nusmvVersion": "2.7.0",
+    "staticBaselineAgreement": 7,
+    "temporalBfsAgreement": 9,
+    "publicCaseVariantsEvaluated": 4,
+    "readOnlyMountReplay": "passed"
+  },
+  "github": {
+    "researchValidationRun": "https://github.com/formal-ci-cd/trust-boundary-verification/actions/runs/36887435413",
+    "conclusion": "success",
+    "unitTests": 51,
+    "standardBase": "python:3.12.11-slim-bookworm",
+    "resolvedBaseDigest": "sha256:519591d6871b7bc437060736b9f7456b8731f1499a57e22e6c285135ae657bf7",
+    "harmlessReplay": "passed",
+    "codeqlCheck": "success",
+    "zizmorCheck": "success",
+    "actionlintCheck": "success"
+  },
+  "interpretation": "CI success is not a repository safety or research superiority claim; source snapshots and unsupported behavior retain their stated limits"
+}

@@ -1,0 +1,163 @@
+"filePath","line","workflowName","jobId","stepIndex","kind","name","detail"
+".github/workflows/commit-dist.yml",10,"Commit dist","-","-","workflow","Commit dist","-"
+".github/workflows/commit-dist.yml",13,"Commit dist","-","-","event","workflow_run","externally-triggerable;privileged"
+".github/workflows/commit-dist.yml",13,"Commit dist","-","-","event-property","workflow_run.types","completed"
+".github/workflows/commit-dist.yml",13,"Commit dist","-","-","event-property","workflow_run.workflows","Rebuild dist"
+".github/workflows/commit-dist.yml",19,"Commit dist","-","-","permission","permission","contents: read"
+".github/workflows/commit-dist.yml",23,"Commit dist","commit","-","job","commit","runs-on=ubuntu-latest"
+".github/workflows/commit-dist.yml",26,"Commit dist","commit","-","permission","permission","contents: write"
+".github/workflows/commit-dist.yml",29,"Commit dist","commit","-","expression","github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+","github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'"
+".github/workflows/commit-dist.yml",32,"Commit dist","commit","0","uses-argument","github-token","${{ github.token }}"
+".github/workflows/commit-dist.yml",32,"Commit dist","commit","0","uses-argument","name","rebuilt-dist"
+".github/workflows/commit-dist.yml",32,"Commit dist","commit","0","uses-argument","path","${{ runner.temp }}/incoming"
+".github/workflows/commit-dist.yml",32,"Commit dist","commit","0","uses-argument","run-id","${{ github.event.workflow_run.id }}"
+".github/workflows/commit-dist.yml",32,"Commit dist","commit","0","uses-step","download","actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c"
+".github/workflows/commit-dist.yml",38,"Commit dist","commit","-","expression","${{ github.event.workflow_run.id }}","github.event.workflow_run.id"
+".github/workflows/commit-dist.yml",39,"Commit dist","commit","-","expression","${{ github.token }}","github.token"
+".github/workflows/commit-dist.yml",43,"Commit dist","commit","-","expression","${{ runner.temp }}","runner.temp"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-script","check","incoming=""${{ runner.temp }}/incoming""
+if [ ! -d ""$incoming/dist"" ] || [ ! -f ""$incoming/dist-meta/head-ref"" ] || [ ! -f ""$incoming/dist-meta/head-sha"" ]; then
+  echo ""present=false"" >> ""$GITHUB_OUTPUT""
+  exit 0
+fi
+
+head_ref=""$(head -n1 ""$incoming/dist-meta/head-ref"" | tr -d '\r\n')""
+head_sha=""$(head -n1 ""$incoming/dist-meta/head-sha"" | tr -d '\r\n')""
+
+if ! printf '%s' ""$head_sha"" | grep -Eq '^[0-9a-f]{40}$'; then
+  echo ""Invalid head-sha; refusing to proceed."" >&2
+  exit 1
+fi
+if ! printf '%s' ""$head_ref"" | grep -Eq '^[A-Za-z0-9._/-]+$'; then
+  echo ""Invalid head-ref; refusing to proceed."" >&2
+  exit 1
+fi
+
+echo ""present=true"" >> ""$GITHUB_OUTPUT""
+echo ""head-ref=$head_ref"" >> ""$GITHUB_OUTPUT""
+echo ""head-sha=$head_sha"" >> ""$GITHUB_OUTPUT""
+"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""present=false"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""Invalid head-ref; refusing to proceed."" >&2"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","incoming=""${{ runner.temp }}/incoming"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","head_ref=""$(head -n1 ""$incoming/dist-meta/head-ref"" | tr -d '\r\n')"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","head_sha=""$(head -n1 ""$incoming/dist-meta/head-sha"" | tr -d '\r\n')"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","exit 0"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","tr -d '\r\n'"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","exit 1"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""Invalid head-sha; refusing to proceed."" >&2"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","if ! printf '%s' ""$head_ref"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","if [ ! -d ""$incoming/dist"" ]"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","[ ! -f ""$incoming/dist-meta/head-ref"" ]"
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","head -n1 ""$incoming/dist-meta/head-ref"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","head -n1 ""$incoming/dist-meta/head-sha"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","if ! printf '%s' ""$head_sha"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""present=true"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""head-ref=$head_ref"""
+".github/workflows/commit-dist.yml",49,"Commit dist","commit","1","run-step","check","echo ""head-sha=$head_sha"""
+".github/workflows/commit-dist.yml",52,"Commit dist","commit","-","expression","${{ runner.temp }}","runner.temp"
+".github/workflows/commit-dist.yml",74,"Commit dist","commit","2","uses-argument","ref","${{ steps.check.outputs.head-ref }}"
+".github/workflows/commit-dist.yml",74,"Commit dist","commit","2","uses-step","-","actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
+".github/workflows/commit-dist.yml",75,"Commit dist","commit","-","expression","steps.check.outputs.present == 'true'","steps.check.outputs.present == 'true'"
+".github/workflows/commit-dist.yml",78,"Commit dist","commit","-","expression","${{ steps.check.outputs.head-ref }}","steps.check.outputs.head-ref"
+".github/workflows/commit-dist.yml",79,"Commit dist","commit","-","expression","${{ github.token }}","github.token"
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-script","-","current=""$(git rev-parse HEAD)""
+if [ ""$current"" != ""${{ steps.check.outputs.head-sha }}"" ]; then
+  echo ""PR branch moved ($current != ${{ steps.check.outputs.head-sha }}); skipping.""
+  exit 1
+fi
+"
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-step","-","git rev-parse HEAD"
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-step","-","current=""$(git rev-parse HEAD)"""
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-step","-","exit 1"
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-step","-","if [ ""$current"" != ""${{ steps.check.outputs.head-sha }}"" ]"
+".github/workflows/commit-dist.yml",83,"Commit dist","commit","3","run-step","-","echo ""PR branch moved ($current != ${{ steps.check.outputs.head-sha }}); skipping."""
+".github/workflows/commit-dist.yml",84,"Commit dist","commit","-","expression","steps.check.outputs.present == 'true'","steps.check.outputs.present == 'true'"
+".github/workflows/commit-dist.yml",87,"Commit dist","commit","-","expression","${{ steps.check.outputs.head-sha }}","steps.check.outputs.head-sha"
+".github/workflows/commit-dist.yml",88,"Commit dist","commit","-","expression","${{ steps.check.outputs.head-sha }}","steps.check.outputs.head-sha"
+".github/workflows/commit-dist.yml",92,"Commit dist","commit","4","run-script","-","rm -rf dist
+mv ""${{ runner.temp }}/incoming/dist"" dist
+rm -rf ""${{ runner.temp }}/incoming""
+"
+".github/workflows/commit-dist.yml",92,"Commit dist","commit","4","run-step","-","mv ""${{ runner.temp }}/incoming/dist"" dist"
+".github/workflows/commit-dist.yml",92,"Commit dist","commit","4","run-step","-","rm -rf ""${{ runner.temp }}/incoming"""
+".github/workflows/commit-dist.yml",92,"Commit dist","commit","4","run-step","-","rm -rf dist"
+".github/workflows/commit-dist.yml",93,"Commit dist","commit","-","expression","steps.check.outputs.present == 'true'","steps.check.outputs.present == 'true'"
+".github/workflows/commit-dist.yml",96,"Commit dist","commit","-","expression","${{ runner.temp }}","runner.temp"
+".github/workflows/commit-dist.yml",97,"Commit dist","commit","-","expression","${{ runner.temp }}","runner.temp"
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-script","-","if git diff --quiet -- dist/; then
+  echo ""dist/ already current; nothing to commit.""
+  exit 0
+fi
+git config user.name  ""github-actions[bot]""
+git config user.email ""41898282+github-actions[bot]@users.noreply.github.com""
+git add dist/
+git commit -m ""build: rebuild dist/ for dependency bump""
+git push origin HEAD:${{ steps.check.outputs.head-ref }}
+"
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","exit 0"
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","echo ""dist/ already current; nothing to commit."""
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","git config user.name  ""github-actions[bot]"""
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","git config user.email ""41898282+github-actions[bot]@users.noreply.github.com"""
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","git add dist/"
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","git commit -m ""build: rebuild dist/ for dependency bump"""
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","git push origin HEAD:${{ steps.check.outputs.head-ref }}"
+".github/workflows/commit-dist.yml",99,"Commit dist","commit","5","run-step","-","if git diff --quiet -- dist/"
+".github/workflows/commit-dist.yml",100,"Commit dist","commit","-","expression","steps.check.outputs.present == 'true'","steps.check.outputs.present == 'true'"
+".github/workflows/commit-dist.yml",110,"Commit dist","commit","-","expression","${{ steps.check.outputs.head-ref }}","steps.check.outputs.head-ref"
+".github/workflows/rebuild-dist.yml",7,"Rebuild dist","-","-","workflow","Rebuild dist","-"
+".github/workflows/rebuild-dist.yml",10,"Rebuild dist","-","-","event","pull_request","externally-triggerable;not-privileged"
+".github/workflows/rebuild-dist.yml",10,"Rebuild dist","-","-","event-property","pull_request.branches","main"
+".github/workflows/rebuild-dist.yml",15,"Rebuild dist","-","-","permission","permission","contents: read"
+".github/workflows/rebuild-dist.yml",15,"Rebuild dist","-","-","permission","permission","pull-requests: read"
+".github/workflows/rebuild-dist.yml",20,"Rebuild dist","rebuild","-","job","rebuild","runs-on=ubuntu-latest"
+".github/workflows/rebuild-dist.yml",23,"Rebuild dist","rebuild","-","expression","github.actor == 'dependabot[bot]'","github.actor == 'dependabot[bot]'"
+".github/workflows/rebuild-dist.yml",26,"Rebuild dist","rebuild","0","uses-step","meta","dependabot/fetch-metadata@25dd0e34f4fe68f24cc83900b1fe3fe149efef98"
+".github/workflows/rebuild-dist.yml",30,"Rebuild dist","rebuild","1","uses-step","-","actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1"
+".github/workflows/rebuild-dist.yml",32,"Rebuild dist","rebuild","-","expression","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'
+","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'"
+".github/workflows/rebuild-dist.yml",36,"Rebuild dist","rebuild","2","uses-step","-","actions/setup-node@820762786026740c76f36085b0efc47a31fe5020"
+".github/workflows/rebuild-dist.yml",38,"Rebuild dist","rebuild","-","expression","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'
+","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'"
+".github/workflows/rebuild-dist.yml",47,"Rebuild dist","rebuild","3","run-script","-","npm ci --ignore-scripts"
+".github/workflows/rebuild-dist.yml",47,"Rebuild dist","rebuild","3","run-step","-","npm ci --ignore-scripts"
+".github/workflows/rebuild-dist.yml",49,"Rebuild dist","rebuild","-","expression","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'
+","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'"
+".github/workflows/rebuild-dist.yml",53,"Rebuild dist","rebuild","4","run-script","-","npm run bundle"
+".github/workflows/rebuild-dist.yml",53,"Rebuild dist","rebuild","4","run-step","-","npm run bundle"
+".github/workflows/rebuild-dist.yml",55,"Rebuild dist","rebuild","-","expression","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'
+","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'"
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-script","diff","if [ ""$(git diff --ignore-space-at-eol --text dist/ | wc -l)"" -gt ""0"" ]; then
+  echo ""changed=true"" >> ""$GITHUB_OUTPUT""
+else
+  echo ""changed=false"" >> ""$GITHUB_OUTPUT""
+fi
+"
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-step","diff","wc -l"
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-step","diff","if [ ""$(git diff --ignore-space-at-eol --text dist/ | wc -l)"" -gt ""0"" ]"
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-step","diff","echo ""changed=true"""
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-step","diff","echo ""changed=false"""
+".github/workflows/rebuild-dist.yml",59,"Rebuild dist","rebuild","5","run-step","diff","git diff --ignore-space-at-eol --text dist/"
+".github/workflows/rebuild-dist.yml",62,"Rebuild dist","rebuild","-","expression","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'
+","steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'"
+".github/workflows/rebuild-dist.yml",74,"Rebuild dist","rebuild","6","run-script","-","mkdir -p dist-meta
+echo ""${{ github.event.pull_request.number }}""   > dist-meta/pr-number
+echo ""${{ github.event.pull_request.head.ref }}"" > dist-meta/head-ref
+echo ""${{ github.event.pull_request.head.sha }}"" > dist-meta/head-sha
+"
+".github/workflows/rebuild-dist.yml",74,"Rebuild dist","rebuild","6","run-step","-","echo ""${{ github.event.pull_request.number }}""   > dist-meta/pr-number"
+".github/workflows/rebuild-dist.yml",74,"Rebuild dist","rebuild","6","run-step","-","mkdir -p dist-meta"
+".github/workflows/rebuild-dist.yml",74,"Rebuild dist","rebuild","6","run-step","-","echo ""${{ github.event.pull_request.head.sha }}"" > dist-meta/head-sha"
+".github/workflows/rebuild-dist.yml",74,"Rebuild dist","rebuild","6","run-step","-","echo ""${{ github.event.pull_request.head.ref }}"" > dist-meta/head-ref"
+".github/workflows/rebuild-dist.yml",75,"Rebuild dist","rebuild","-","expression","steps.diff.outputs.changed == 'true'","steps.diff.outputs.changed == 'true'"
+".github/workflows/rebuild-dist.yml",78,"Rebuild dist","rebuild","-","expression","${{ github.event.pull_request.number }}","github.event.pull_request.number"
+".github/workflows/rebuild-dist.yml",79,"Rebuild dist","rebuild","-","expression","${{ github.event.pull_request.head.ref }}","github.event.pull_request.head.ref"
+".github/workflows/rebuild-dist.yml",80,"Rebuild dist","rebuild","-","expression","${{ github.event.pull_request.head.sha }}","github.event.pull_request.head.sha"
+".github/workflows/rebuild-dist.yml",82,"Rebuild dist","rebuild","7","uses-argument","name","rebuilt-dist"
+".github/workflows/rebuild-dist.yml",82,"Rebuild dist","rebuild","7","uses-argument","path","dist/
+dist-meta/
+"
+".github/workflows/rebuild-dist.yml",82,"Rebuild dist","rebuild","7","uses-argument","retention-days","1"
+".github/workflows/rebuild-dist.yml",82,"Rebuild dist","rebuild","7","uses-step","-","actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a"
+".github/workflows/rebuild-dist.yml",83,"Rebuild dist","rebuild","-","expression","steps.diff.outputs.changed == 'true'","steps.diff.outputs.changed == 'true'"

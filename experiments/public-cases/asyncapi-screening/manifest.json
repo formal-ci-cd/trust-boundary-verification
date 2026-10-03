@@ -1,0 +1,19 @@
+{
+  "sourceRepository": "https://github.com/asyncapi/generator",
+  "sourceCommit": "ff010ef38e1be1ffc4112c8903f43637ecbf4041",
+  "sourceCommitDate": "2026-07-11T04:08:29Z",
+  "workflowLastChangeCommit": "2c57fee8bbbb026c9d2797aaaf5c485c4f03f31e",
+  "workflowPath": ".github/workflows/manual-netlify-preview.yml",
+  "license": "Apache-2.0",
+  "files": [
+    {
+      "path": "LICENSE",
+      "sha256": "43070e2d4e532684de521b885f385d0841030efa2b1a20bafb76133a5e1379c1"
+    },
+    {
+      "path": ".github/workflows/manual-netlify-preview.yml",
+      "sha256": "765fc4bee8af8e446c7c6a3e8deeab074782abeb841f1f8ba59ac78238647605"
+    }
+  ],
+  "scope": "Only the published attack-targeted workflow, not a repository-wide scan; no attacker payload executed"
+}

@@ -1,0 +1,121 @@
+{
+  "scope": "One fixed SpotBugs workflow and one-line true fork exclusion control; retrospective offline comparison",
+  "versions": {
+    "zizmor": "1.30.1",
+    "sisakulint": "0.3.7",
+    "poutine": "1.1.6"
+  },
+  "network": "none",
+  "sisakulintInputLayout": "Disposable repository copy containing .git and .github/workflows; original workflow bytes unchanged",
+  "variants": {
+    "original": {
+      "source": "experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml",
+      "sourceSha256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+      "tools": {
+        "zizmor": {
+          "sarif": "results/spotbugs-screening/fork-guard-baselines/original-zizmor.sarif.gz",
+          "sarifGzipSha256": "f0efae42fe7904dccfddb21358efef9b32370d6ed916ca992ecf0cd1b5c54058",
+          "count": 8,
+          "rules": [
+            "zizmor/artipacked",
+            "zizmor/cache-poisoning",
+            "zizmor/cache-poisoning",
+            "zizmor/dangerous-triggers",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses"
+          ]
+        },
+        "sisakulint": {
+          "sarif": "results/spotbugs-screening/fork-guard-baselines/original-sisakulint.sarif.gz",
+          "sarifGzipSha256": "ff342be9c909fb2a4655700b34f37f0c3c6c8b944a6fb0040f9895eedeccd651",
+          "count": 15,
+          "rules": [
+            "artipacked",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning-poisonable-step",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "dangerous-triggers-critical",
+            "dependabot-ecosystem",
+            "dependabot-github-actions",
+            "deprecated-node-runtime",
+            "deprecated-node-runtime",
+            "untrusted-checkout"
+          ]
+        },
+        "poutine": {
+          "output": "results/spotbugs-screening/fork-guard-baselines/original-poutine.json.gz",
+          "outputGzipSha256": "7d4ec881b33ac5e5d0d7442e33028c742415c02e0a6f01b7530aabcde32fcde5",
+          "count": 2,
+          "rules": [
+            "github_action_from_unverified_creator_used",
+            "untrusted_checkout_exec"
+          ]
+        }
+      }
+    },
+    "correctForkGuard": {
+      "source": "experiments/public-cases/spotbugs-chain/codeql-ablation/gate-correct-fork/.github/workflows/sonarqube.yml",
+      "sourceSha256": "f112a4555b0e1fa5c7c34477fb92c3ae103a1254e2a3945fe01e0a4c04099b3c",
+      "tools": {
+        "zizmor": {
+          "sarif": "results/spotbugs-screening/fork-guard-baselines/correct-zizmor.sarif.gz",
+          "sarifGzipSha256": "a1ee7866a9f3ecb03a8479866ab148d1e9722deb3ac41034140ee3357c37224c",
+          "count": 8,
+          "rules": [
+            "zizmor/artipacked",
+            "zizmor/cache-poisoning",
+            "zizmor/cache-poisoning",
+            "zizmor/dangerous-triggers",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses",
+            "zizmor/unpinned-uses"
+          ]
+        },
+        "sisakulint": {
+          "sarif": "results/spotbugs-screening/fork-guard-baselines/correct-sisakulint.sarif.gz",
+          "sarifGzipSha256": "ff567f106b26dade1e5bcd38ef43525f2ebe5733914c42fa542a14f4ba3aa4d7",
+          "count": 15,
+          "rules": [
+            "artipacked",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning",
+            "cache-poisoning-poisonable-step",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "commit-sha",
+            "dangerous-triggers-critical",
+            "dependabot-ecosystem",
+            "dependabot-github-actions",
+            "deprecated-node-runtime",
+            "deprecated-node-runtime",
+            "untrusted-checkout"
+          ]
+        },
+        "poutine": {
+          "output": "results/spotbugs-screening/fork-guard-baselines/correct-poutine.json.gz",
+          "outputGzipSha256": "b758ad1b592ffb9c922733b5ddf5a9b83201681bf2eaf4ea4d91979b1c4c7f15",
+          "count": 2,
+          "rules": [
+            "github_action_from_unverified_creator_used",
+            "untrusted_checkout_exec"
+          ]
+        }
+      }
+    }
+  },
+  "sameResults": {
+    "zizmor": true,
+    "sisakulint": true,
+    "poutine": true
+  }
+}

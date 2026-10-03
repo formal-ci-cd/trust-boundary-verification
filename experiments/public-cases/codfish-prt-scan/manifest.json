@@ -1,0 +1,42 @@
+{
+  "purpose": "Screen an actual 2026 prt-scan npm publication case; retrospective read-only analysis",
+  "incidentSource": "https://www.wiz.io/blog/six-accounts-one-actor-inside-the-prt-scan-supply-chain-campaign",
+  "workflowRepository": "codfish/eslint-config",
+  "workflowCommit": "684a1bd3849a470662952cb8f6d6fcfcc022bd2d",
+  "externalActionRepository": "codfish/actions",
+  "externalActionCommit": "a63e69e03fa870a3056f9a5bd0729d12f4e0138e",
+  "externalActionRuntimeTag": "v3",
+  "runtimeTagTargetAtAttack": "unknown",
+  "attackPR": "not independently located in public GitHub API",
+  "control": "One build-job if line excludes external fork PRs; research-only edit",
+  "files": [
+    {
+      "path": "external-npm-publish-pr/action.yml",
+      "sha256": "58dad91aa049eb34a2f006cf76def8903e8b79a8b123d35569a77b272c49e673"
+    },
+    {
+      "path": "fork-excluded-control/.github/workflows/pr.yml",
+      "sha256": "ec3983fa6f7669e96c5500b70550505d4c627cd117545982af37be249e6a9fe8"
+    },
+    {
+      "path": "fork-excluded-control/.github/workflows/release.yml",
+      "sha256": "4ee8011f766f5dbbc20a124fdb841b99b84c86a1361c7b8f7bcb5e19772c0064"
+    },
+    {
+      "path": "fork-excluded-control/.github/workflows/validate.yml",
+      "sha256": "071cd67638e54ad54ba26b7bafc9c5c22e7087d5eb4631a09ed263cbf8fe805d"
+    },
+    {
+      "path": "original/.github/workflows/pr.yml",
+      "sha256": "c3a149199fa4efa0699e9874458ec313f2c46ceb73662b3e4969d0494152fce2"
+    },
+    {
+      "path": "original/.github/workflows/release.yml",
+      "sha256": "4ee8011f766f5dbbc20a124fdb841b99b84c86a1361c7b8f7bcb5e19772c0064"
+    },
+    {
+      "path": "original/.github/workflows/validate.yml",
+      "sha256": "071cd67638e54ad54ba26b7bafc9c5c22e7087d5eb4631a09ed263cbf8fe805d"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "status": "chronology-consistent-partial",
+  "reportedCacheSaveUTC": "2026-05-11T11:29:00Z",
+  "reportedCacheKey": "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
+  "sourceType": "Maintainer postmortem plus public GitHub job-step metadata",
+  "checks": [
+    {
+      "run": "25613093674/attempt-4",
+      "reportedSaveBeforeSetup": true,
+      "setupStartedUTC": "2026-05-11T19:16:20Z",
+      "setupConclusion": "success",
+      "testsConclusion": "failure",
+      "declaredPublishConclusion": "skipped",
+      "githubRunURL": "https://github.com/TanStack/router/actions/runs/25613093674/attempts/4"
+    },
+    {
+      "run": "25691781302/attempt-1",
+      "reportedSaveBeforeSetup": true,
+      "setupStartedUTC": "2026-05-11T19:21:17Z",
+      "setupConclusion": "success",
+      "testsConclusion": "failure",
+      "declaredPublishConclusion": "skipped",
+      "githubRunURL": "https://github.com/TanStack/router/actions/runs/25691781302/attempts/1"
+    }
+  ],
+  "modelResult": {
+    "preIncident": [
+      true,
+      true
+    ],
+    "mitigation": [
+      false,
+      false
+    ]
+  },
+  "limits": [
+    "The cache-save time and restored cache identity are from the maintainer postmortem, not independently recovered runner logs.",
+    "Successful Setup Tools steps do not independently reveal the cache key, entry bytes, or external Action runtime SHA.",
+    "Skipped declared Publish Packages steps do not disprove the postmortem's separate direct OIDC publication mechanism.",
+    "The model keeps key equality, restore success, and malicious code execution as independent unknown facts."
+  ]
+}

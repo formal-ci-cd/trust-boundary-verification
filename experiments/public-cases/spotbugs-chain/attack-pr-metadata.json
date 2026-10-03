@@ -1,0 +1,27 @@
+{
+  "base": {
+    "sha": "e240bc1aca68337b2b40e100fb24552d27eeb8cc"
+  },
+  "closed_at": "2024-12-06T02:39:33Z",
+  "created_at": "2024-12-06T02:39:00Z",
+  "head": {
+    "sha": "d7804f6816ff9058dcc867c3d5ff57ae70fd3c48"
+  },
+  "html_url": "https://github.com/spotbugs/sonar-findbugs/pull/1116",
+  "number": 1116,
+  "state": "closed",
+  "changedFiles": [
+    {
+      "additions": 2,
+      "deletions": 0,
+      "filename": "mvnw",
+      "sha": "527b16564bbf759f47422b35ee0281ca3b40cdd9",
+      "status": "modified"
+    }
+  ],
+  "apiSources": [
+    "https://api.github.com/repos/spotbugs/sonar-findbugs/pulls/1116",
+    "https://api.github.com/repos/spotbugs/sonar-findbugs/pulls/1116/files"
+  ],
+  "scope": "Public PR metadata and changed-file metadata only; no attack payload or run logs"
+}

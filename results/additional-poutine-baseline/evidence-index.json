@@ -1,0 +1,77 @@
+{
+  "scanner": "Poutine",
+  "version": "1.1.6",
+  "commit": "8918c66db19ecfd12b2f8379e445c3da4589e599",
+  "releaseURL": "https://github.com/boostsecurityio/poutine/releases/tag/v1.1.6",
+  "linuxArm64ArchiveSHA256": "460c90300c6329106b551c150682d12e457365f6436a6cbbd08fe79eb9a98131",
+  "mode": "analyze_local /input --disable-version-check --format json, Docker --network none, same /input path for each variant",
+  "sourceConstruction": {
+    "tanstack": "tools/materialize_tanstack_combined.py, with --without-dispatch-control only for control",
+    "cline": "experiments/public-cases/cline/{pre-incident,mitigation} full snapshot"
+  },
+  "interpretation": "Target-cross-workflow-path flag was assessed against every finding, not inferred from total count. Poutine reports unverified external Action references in TanStack and Cline; no warning links the public entry to cache and privileged release job. This is a fixed-version retrospective comparison, not proof no other tool can detect the path.",
+  "cases": [
+    {
+      "name": "tanstack-pre",
+      "input": "tanstack pre-incident 7 workflows plus external setup Action",
+      "result": "tanstack-pre.json.gz",
+      "sha256": "280efb89d39957e286f9bd55042d34a7601484684faa74dc66997726102e9ecb",
+      "findingCount": 15,
+      "ruleCounts": {
+        "github_action_from_unverified_creator_used": 14,
+        "unpinnable_action": 1
+      },
+      "targetCrossWorkflowPathFinding": false
+    },
+    {
+      "name": "tanstack-mitigation",
+      "input": "tanstack mitigation 7 workflows plus external setup Action",
+      "result": "tanstack-mitigation.json.gz",
+      "sha256": "f9a22c08cada0518b0c42facb18973599e5bafd72afab943b3a5592f859b825b",
+      "findingCount": 15,
+      "ruleCounts": {
+        "github_action_from_unverified_creator_used": 14,
+        "unpinnable_action": 1
+      },
+      "targetCrossWorkflowPathFinding": false
+    },
+    {
+      "name": "tanstack-control",
+      "input": "tanstack pre-incident minus unrelated workflow_dispatch line, plus external setup Action",
+      "result": "tanstack-control.json.gz",
+      "sha256": "ecc054042075f331ab3bbb9d2abe907728de9959c20b921bf8e3c4e436db8135",
+      "findingCount": 15,
+      "ruleCounts": {
+        "github_action_from_unverified_creator_used": 14,
+        "unpinnable_action": 1
+      },
+      "targetCrossWorkflowPathFinding": false
+    },
+    {
+      "name": "cline-pre",
+      "input": "cline pre-incident 15 workflows",
+      "result": "cline-pre.json.gz",
+      "sha256": "7d6ebfb5a5a011cc9f651cccf39f7a9c0c37089eef953e5219e9176668d92150",
+      "findingCount": 13,
+      "ruleCounts": {
+        "github_action_from_unverified_creator_used": 8,
+        "injection": 2,
+        "known_vulnerability_in_build_component": 3
+      },
+      "targetCrossWorkflowPathFinding": false
+    },
+    {
+      "name": "cline-mitigation",
+      "input": "cline mitigation 12 workflows",
+      "result": "cline-mitigation.json.gz",
+      "sha256": "d36e93e901b352f58d867e5b89d7d5f408960c29222b3aa24e558349a1e7215b",
+      "findingCount": 11,
+      "ruleCounts": {
+        "github_action_from_unverified_creator_used": 6,
+        "injection": 2,
+        "known_vulnerability_in_build_component": 3
+      },
+      "targetCrossWorkflowPathFinding": false
+    }
+  ]
+}

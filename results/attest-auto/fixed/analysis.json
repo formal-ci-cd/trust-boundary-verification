@@ -1,0 +1,798 @@
+{
+  "scope": "external-fork artifact metadata-to-git-ref rule only; not a repository safety verdict",
+  "coverage": {
+    "workflowCount": 2,
+    "artifactCandidates": 1,
+    "unsupportedResources": [],
+    "emptyCandidateMeaning": "unknown/unsupported; never safe"
+  },
+  "models": {
+    ".github/workflows/commit-dist.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/actions-attest/fixed/.github/workflows/commit-dist.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Commit dist",
+        "file": ".github/workflows/commit-dist.yml",
+        "events": [
+          {
+            "name": "workflow_run",
+            "externallyTriggerable": true,
+            "privileged": true,
+            "properties": {
+              "workflows": [
+                "Rebuild dist"
+              ],
+              "types": [
+                "completed"
+              ]
+            }
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "contents",
+            "access": "read"
+          },
+          {
+            "jobId": "commit",
+            "scope": "contents",
+            "access": "write"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "commit",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/download-artifact",
+                "version": "3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c",
+                "arguments": {
+                  "name": "rebuilt-dist",
+                  "run-id": "${{ github.event.workflow_run.id }}",
+                  "github-token": "${{ github.token }}",
+                  "path": "${{ runner.temp }}/incoming/dist"
+                },
+                "id": "download",
+                "condition": "",
+                "env": {},
+                "line": 43
+              },
+              {
+                "index": 1,
+                "type": "run",
+                "command": "if [ -f \"${{ runner.temp }}/incoming/dist/index.js\" ]; then\n  echo \"present=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"present=false\" >> \"$GITHUB_OUTPUT\"\nfi\n",
+                "commands": [
+                  {
+                    "text": "if [ -f \"${{ runner.temp }}/incoming/dist/index.js\" ]; then\n  echo \"present=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"present=false\" >> \"$GITHUB_OUTPUT\"\nfi\n",
+                    "line": 65
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "check",
+                "condition": "",
+                "env": {},
+                "line": 63,
+                "shell": "bash"
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "arguments": {
+                  "ref": "${{ github.event.workflow_run.head_branch }}",
+                  "token": "${{ github.token }}"
+                },
+                "id": "",
+                "condition": "steps.check.outputs.present == 'true'",
+                "env": {},
+                "line": 72
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "current=\"$(git rev-parse HEAD)\"\nif [ \"$current\" != \"$EXPECTED_SHA\" ]; then\n  echo \"PR branch moved ($current != $EXPECTED_SHA); skipping.\"\n  exit 1\nfi\n",
+                "commands": [
+                  {
+                    "text": "current=\"$(git rev-parse HEAD)\"\nif [ \"$current\" != \"$EXPECTED_SHA\" ]; then\n  echo \"PR branch moved ($current != $EXPECTED_SHA); skipping.\"\n  exit 1\nfi\n",
+                    "line": 85
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.check.outputs.present == 'true'",
+                "env": {
+                  "EXPECTED_SHA": "${{ github.event.workflow_run.head_sha }}"
+                },
+                "line": 81,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "rm -rf dist\nmv \"${{ runner.temp }}/incoming/dist\" dist\nrm -rf \"${{ runner.temp }}/incoming\"\n",
+                "commands": [
+                  {
+                    "text": "rm -rf dist\nmv \"${{ runner.temp }}/incoming/dist\" dist\nrm -rf \"${{ runner.temp }}/incoming\"\n",
+                    "line": 94
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.check.outputs.present == 'true'",
+                "env": {},
+                "line": 92,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "if git diff --quiet -- dist/; then\n  echo \"dist/ already current; nothing to commit.\"\n  exit 0\nfi\ngit config user.name  \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\ngit add dist/\ngit commit -m \"build: rebuild dist/ for dependency bump\"\ngit push origin \"HEAD:refs/heads/$HEAD_BRANCH\"\n",
+                "commands": [
+                  {
+                    "text": "if git diff --quiet -- dist/; then\n  echo \"dist/ already current; nothing to commit.\"\n  exit 0\nfi\ngit config user.name  \"github-actions[bot]\"\ngit config user.email \"41898282+github-actions[bot]@users.noreply.github.com\"\ngit add dist/\ngit commit -m \"build: rebuild dist/ for dependency bump\"\ngit push origin \"HEAD:refs/heads/$HEAD_BRANCH\"\n",
+                    "line": 103
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.check.outputs.present == 'true'",
+                "env": {
+                  "HEAD_BRANCH": "${{ github.event.workflow_run.head_branch }}"
+                },
+                "line": 99,
+                "shell": "bash"
+              }
+            ],
+            "condition": "github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.head_repository.full_name == github.repository && github.event.workflow_run.actor.login == 'dependabot[bot]' && startsWith(github.event.workflow_run.head_branch, 'dependabot/')\n",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": true
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [
+        {
+          "id": "artifact-read:commit:0",
+          "kind": "artifactReadIntent",
+          "jobId": "commit",
+          "stepIndex": 0,
+          "key": null,
+          "path": "${{ runner.temp }}/incoming/dist",
+          "name": "rebuilt-dist",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      ],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/rebuild-dist.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/actions-attest/fixed/.github/workflows/rebuild-dist.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Rebuild dist",
+        "file": ".github/workflows/rebuild-dist.yml",
+        "events": [
+          {
+            "name": "pull_request",
+            "externallyTriggerable": true,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "contents",
+            "access": "read"
+          },
+          {
+            "jobId": null,
+            "scope": "pull-requests",
+            "access": "read"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "rebuild",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "dependabot/fetch-metadata",
+                "version": "25dd0e34f4fe68f24cc83900b1fe3fe149efef98",
+                "arguments": {},
+                "id": "meta",
+                "condition": "",
+                "env": {},
+                "line": 26
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "3d3c42e5aac5ba805825da76410c181273ba90b1",
+                "arguments": {},
+                "id": "",
+                "condition": "steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'\n",
+                "env": {},
+                "line": 30
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "actions/setup-node",
+                "version": "820762786026740c76f36085b0efc47a31fe5020",
+                "arguments": {
+                  "node-version-file": ".node-version",
+                  "cache": "npm"
+                },
+                "id": "",
+                "condition": "steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'\n",
+                "env": {},
+                "line": 36
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "npm ci --ignore-scripts",
+                "commands": [
+                  {
+                    "text": "npm ci --ignore-scripts",
+                    "line": 51
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'\n",
+                "env": {},
+                "line": 47,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "npm run bundle",
+                "commands": [
+                  {
+                    "text": "npm run bundle",
+                    "line": 57
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'\n",
+                "env": {},
+                "line": 53,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "if [ \"$(git diff --ignore-space-at-eol --text dist/ | wc -l)\" -gt \"0\" ]; then\n  echo \"changed=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"changed=false\" >> \"$GITHUB_OUTPUT\"\nfi\n",
+                "commands": [
+                  {
+                    "text": "if [ \"$(git diff --ignore-space-at-eol --text dist/ | wc -l)\" -gt \"0\" ]; then\n  echo \"changed=true\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"changed=false\" >> \"$GITHUB_OUTPUT\"\nfi\n",
+                    "line": 64
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "diff",
+                "condition": "steps.meta.outputs.dependency-type == 'direct:production' || steps.meta.outputs.dependency-type == 'direct:development'\n",
+                "env": {},
+                "line": 59,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "uses",
+                "action": "actions/upload-artifact",
+                "version": "043fb46d1a93c77aae656e7c1c64a875d1fc6a0a",
+                "arguments": {
+                  "name": "rebuilt-dist",
+                  "path": "dist/",
+                  "retention-days": "1"
+                },
+                "id": "",
+                "condition": "steps.diff.outputs.changed == 'true'",
+                "env": {},
+                "line": 74
+              }
+            ],
+            "condition": "github.actor == 'dependabot[bot]'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [
+        {
+          "id": "artifact-write:rebuild:6",
+          "kind": "artifactWriteIntent",
+          "jobId": "rebuild",
+          "stepIndex": 6,
+          "key": null,
+          "path": "dist/",
+          "name": "rebuilt-dist",
+          "runId": null
+        }
+      ],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    }
+  },
+  "candidates": [
+    {
+      "candidate": {
+        "id": "artifact-8af33f50506b",
+        "pairingStatus": "unique",
+        "producer": {
+          "workflow": "Rebuild dist",
+          "file": ".github/workflows/rebuild-dist.yml",
+          "operationId": "artifact-write:rebuild:6"
+        },
+        "consumer": {
+          "workflow": "Commit dist",
+          "file": ".github/workflows/commit-dist.yml",
+          "operationId": "artifact-read:commit:0"
+        },
+        "sharedObject": {
+          "kind": "artifact",
+          "name": "rebuilt-dist",
+          "consumerRunSelector": "github.event.workflow_run.id",
+          "triggerWorkflow": "Rebuild dist"
+        },
+        "matchBasis": [
+          "artifact nameが一致する．",
+          "取得側が起動元workflow_runのrun IDを指定する．",
+          "workflow_runのworkflows指定が保存側workflow名と一致する．"
+        ]
+      },
+      "status": "source-policy-blocked",
+      "configuredAuthority": "true",
+      "forkSourceExcluded": true,
+      "flows": [],
+      "unresolved": [
+        "no supported metadata-to-git-push path; arbitrary shell/actions remain unknown"
+      ],
+      "runtimeVerified": false,
+      "chain": {
+        "schemaVersion": "0.3.0",
+        "scenario": {
+          "id": "artifact-8af33f50506b",
+          "platform": "GitHub Actions",
+          "description": "Automatically derived static over-approximation; no runtime success claimed",
+          "evidenceStatus": "incomplete"
+        },
+        "producer": {
+          "workflow": {
+            "name": "Rebuild dist",
+            "file": ".github/workflows/rebuild-dist.yml",
+            "event": "pull_request"
+          },
+          "operation": {
+            "id": "artifact-write:rebuild:6",
+            "kind": "artifactWriteIntent",
+            "jobId": "rebuild",
+            "stepIndex": 6,
+            "name": "rebuilt-dist",
+            "path": "dist/",
+            "runId": null
+          }
+        },
+        "consumer": {
+          "workflow": {
+            "name": "Commit dist",
+            "file": ".github/workflows/commit-dist.yml",
+            "event": "workflow_run"
+          },
+          "operation": {
+            "id": "artifact-read:commit:0",
+            "kind": "artifactReadIntent",
+            "jobId": "commit",
+            "stepIndex": 0,
+            "name": "rebuilt-dist",
+            "path": "${{ runner.temp }}/incoming/dist",
+            "runId": "${{ github.event.workflow_run.id }}"
+          }
+        },
+        "sharedObject": {
+          "kind": "artifact",
+          "name": "rebuilt-dist",
+          "producerRunSelector": "current producer run",
+          "consumerRunSelector": "github.event.workflow_run.id",
+          "identityBasis": [
+            "static name/workflow/run-selector match only"
+          ]
+        },
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "unknown",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "traceMap": {
+          "start": {
+            "workflowFile": ".github/workflows/rebuild-dist.yml",
+            "workflowName": "Rebuild dist",
+            "jobId": "rebuild",
+            "stepIndex": 6,
+            "meaning": "Configured artifact upload"
+          },
+          "object_written": {
+            "workflowFile": ".github/workflows/rebuild-dist.yml",
+            "workflowName": "Rebuild dist",
+            "jobId": "rebuild",
+            "stepIndex": 6,
+            "meaning": "Potential successful upload, not observed"
+          },
+          "object_restored": {
+            "workflowFile": ".github/workflows/commit-dist.yml",
+            "workflowName": "Commit dist",
+            "jobId": "commit",
+            "stepIndex": 0,
+            "meaning": "Potential same artifact download, not observed"
+          },
+          "integrity_checked": {
+            "workflowFile": ".github/workflows/commit-dist.yml",
+            "workflowName": "Commit dist",
+            "jobId": "commit",
+            "stepIndex": 0,
+            "meaning": "Unknown integrity validation"
+          },
+          "object_used": {
+            "workflowFile": ".github/workflows/commit-dist.yml",
+            "workflowName": "Commit dist",
+            "jobId": "commit",
+            "stepIndex": 0,
+            "meaning": "Potential artifact-derived ref use"
+          },
+          "authority_reached": {
+            "workflowFile": ".github/workflows/commit-dist.yml",
+            "workflowName": "Commit dist",
+            "jobId": "commit",
+            "stepIndex": 0,
+            "meaning": "Configured write capability, not observed write"
+          }
+        },
+        "evidence": [
+          {
+            "kind": "static",
+            "source": "experiments/public-cases/actions-attest/fixed/.github/workflows/commit-dist.yml",
+            "claim": "Automatic limited metadata/source-policy rules"
+          },
+          {
+            "kind": "inference",
+            "source": "chain_to_nusmv.py",
+            "claim": "Potential execution under unknown facts; not confirmed exploitation"
+          }
+        ],
+        "provenance": [
+          {
+            "element": "facts.producerUntrusted",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.writeIntent",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.writeAuthorized",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.writeSucceeded",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.sameObject",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.readSucceeded",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.consumerUsesObject",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.integrityCheckPresent",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.integrityCheckPassed",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; unresolved"
+          },
+          {
+            "element": "facts.privilegedConsumer",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "facts.hasAuthority",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatic limited rule; static abstraction"
+          },
+          {
+            "element": "consumer.operation.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.jobId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.path",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.runId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.operation.stepIndex",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.event",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.file",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "consumer.workflow.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.jobId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.path",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.runId",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.operation.stepIndex",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.event",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.file",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "producer.workflow.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.description",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.evidenceStatus",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.id",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "scenario.platform",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.consumerRunSelector",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.identityBasis",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.kind",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.name",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "sharedObject.producerRunSelector",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.authority_reached",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.integrity_checked",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_restored",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_used",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.object_written",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          },
+          {
+            "element": "traceMap.start",
+            "sourceKind": "static-analysis",
+            "source": ".github/workflows/commit-dist.yml",
+            "claim": "Automatically generated structure or abstract trace location; no observed execution"
+          }
+        ]
+      }
+    }
+  ]
+}

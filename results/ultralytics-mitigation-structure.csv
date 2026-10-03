@@ -1,0 +1,767 @@
+"filePath","line","workflowName","jobId","stepIndex","kind","name","detail"
+".github/workflows/ci.yaml",4,"Ultralytics CI","-","-","workflow","Ultralytics CI","-"
+".github/workflows/ci.yaml",7,"Ultralytics CI","-","-","event","push","not-externally-triggerable;privileged"
+".github/workflows/ci.yaml",7,"Ultralytics CI","-","-","event-property","push.branches","main"
+".github/workflows/ci.yaml",9,"Ultralytics CI","-","-","event","pull_request","externally-triggerable;not-privileged"
+".github/workflows/ci.yaml",9,"Ultralytics CI","-","-","event-property","pull_request.branches","main"
+".github/workflows/ci.yaml",11,"Ultralytics CI","-","-","event","schedule","externally-triggerable;privileged"
+".github/workflows/ci.yaml",13,"Ultralytics CI","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/ci.yaml",43,"Ultralytics CI","HUB","-","expression","github.repository == 'ultralytics/ultralytics' && 'workflow_dispatch' && github.event.inputs.hub == 'true'","github.repository == 'ultralytics/ultralytics' && 'workflow_dispatch' && github.event.inputs.hub == 'true'"
+".github/workflows/ci.yaml",43,"Ultralytics CI","HUB","-","job","HUB","runs-on=ubuntu-latest"
+".github/workflows/ci.yaml",44,"Ultralytics CI","HUB","-","expression","${{ matrix.os }}","matrix.os"
+".github/workflows/ci.yaml",51,"Ultralytics CI","HUB","0","uses-step","-","actions/checkout@v4"
+".github/workflows/ci.yaml",52,"Ultralytics CI","HUB","1","uses-step","-","actions/setup-python@v5"
+".github/workflows/ci.yaml",54,"Ultralytics CI","HUB","-","expression","${{ matrix.python-version }}","matrix.python-version"
+".github/workflows/ci.yaml",55,"Ultralytics CI","HUB","2","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/ci.yaml",56,"Ultralytics CI","HUB","3","run-script","-","uv pip install --system . --extra-index-url https://download.pytorch.org/whl/cpu
+"
+".github/workflows/ci.yaml",56,"Ultralytics CI","HUB","3","run-step","-","uv pip install --system . --extra-index-url https://download.pytorch.org/whl/cpu"
+".github/workflows/ci.yaml",60,"Ultralytics CI","HUB","4","run-script","-","yolo checks
+uv pip list
+"
+".github/workflows/ci.yaml",60,"Ultralytics CI","HUB","4","run-step","-","uv pip list"
+".github/workflows/ci.yaml",60,"Ultralytics CI","HUB","4","run-step","-","yolo checks"
+".github/workflows/ci.yaml",64,"Ultralytics CI","HUB","5","run-script","-","import os
+from ultralytics import YOLO, hub
+api_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']
+hub.login(api_key)
+hub.reset_model(model_id)
+model = YOLO('https://hub.ultralytics.com/models/' + model_id)
+model.train()
+"
+".github/workflows/ci.yaml",64,"Ultralytics CI","HUB","5","run-step","-","NOT IMPLEMENTED"
+".github/workflows/ci.yaml",67,"Ultralytics CI","HUB","-","expression","${{ secrets.ULTRALYTICS_HUB_API_KEY }}","secrets.ULTRALYTICS_HUB_API_KEY"
+".github/workflows/ci.yaml",68,"Ultralytics CI","HUB","-","expression","${{ secrets.ULTRALYTICS_HUB_MODEL_ID }}","secrets.ULTRALYTICS_HUB_MODEL_ID"
+".github/workflows/ci.yaml",77,"Ultralytics CI","HUB","6","run-script","-","import os
+import requests
+import json
+api_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']
+url = f""https://api.ultralytics.com/v1/predict/{model_id}""
+headers = {""x-api-key"": api_key}
+data = {""size"": 320, ""confidence"": 0.25, ""iou"": 0.45}
+with open(""ultralytics/assets/zidane.jpg"", ""rb"") as f:
+    response = requests.post(url, headers=headers, data=data, files={""image"": f})
+assert response.status_code == 200, f'Status code {response.status_code}, Reason {response.reason}'
+print(json.dumps(response.json(), indent=2))
+"
+".github/workflows/ci.yaml",77,"Ultralytics CI","HUB","6","run-step","-","NOT IMPLEMENTED"
+".github/workflows/ci.yaml",80,"Ultralytics CI","HUB","-","expression","${{ secrets.ULTRALYTICS_HUB_API_KEY }}","secrets.ULTRALYTICS_HUB_API_KEY"
+".github/workflows/ci.yaml",81,"Ultralytics CI","HUB","-","expression","${{ secrets.ULTRALYTICS_HUB_MODEL_ID }}","secrets.ULTRALYTICS_HUB_MODEL_ID"
+".github/workflows/ci.yaml",96,"Ultralytics CI","Benchmarks","-","expression","github.event_name != 'workflow_dispatch' || github.event.inputs.benchmarks == 'true'","github.event_name != 'workflow_dispatch' || github.event.inputs.benchmarks == 'true'"
+".github/workflows/ci.yaml",96,"Ultralytics CI","Benchmarks","-","job","Benchmarks","runs-on=ubuntu-latest"
+".github/workflows/ci.yaml",96,"Ultralytics CI","Benchmarks","-","job","Benchmarks","runs-on=windows-latest"
+".github/workflows/ci.yaml",96,"Ultralytics CI","Benchmarks","-","job","Benchmarks","runs-on=macos-14"
+".github/workflows/ci.yaml",97,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.os }}","matrix.os"
+".github/workflows/ci.yaml",105,"Ultralytics CI","Benchmarks","0","uses-step","-","astral-sh/setup-uv@v3"
+".github/workflows/ci.yaml",106,"Ultralytics CI","Benchmarks","1","uses-step","-","actions/checkout@v4"
+".github/workflows/ci.yaml",107,"Ultralytics CI","Benchmarks","2","uses-step","-","actions/setup-python@v5"
+".github/workflows/ci.yaml",109,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.python-version }}","matrix.python-version"
+".github/workflows/ci.yaml",110,"Ultralytics CI","Benchmarks","3","run-script","-","uv pip install --system -e "".[export]"" ""coverage[toml]"" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-first-match
+"
+".github/workflows/ci.yaml",110,"Ultralytics CI","Benchmarks","3","run-step","-","uv pip install --system -e "".[export]"" ""coverage[toml]"" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-first-match"
+".github/workflows/ci.yaml",114,"Ultralytics CI","Benchmarks","4","run-script","-","yolo checks
+uv pip list
+"
+".github/workflows/ci.yaml",114,"Ultralytics CI","Benchmarks","4","run-step","-","uv pip list"
+".github/workflows/ci.yaml",114,"Ultralytics CI","Benchmarks","4","run-step","-","yolo checks"
+".github/workflows/ci.yaml",118,"Ultralytics CI","Benchmarks","5","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}.pt' imgsz=160 verbose=0.309"
+".github/workflows/ci.yaml",118,"Ultralytics CI","Benchmarks","5","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}.pt' imgsz=160 verbose=0.309"
+".github/workflows/ci.yaml",120,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.model }}","matrix.model"
+".github/workflows/ci.yaml",121,"Ultralytics CI","Benchmarks","6","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-cls.pt' imgsz=160 verbose=0.249"
+".github/workflows/ci.yaml",121,"Ultralytics CI","Benchmarks","6","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-cls.pt' imgsz=160 verbose=0.249"
+".github/workflows/ci.yaml",123,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.model }}","matrix.model"
+".github/workflows/ci.yaml",124,"Ultralytics CI","Benchmarks","7","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov8s-worldv2.pt' imgsz=160 verbose=0.337"
+".github/workflows/ci.yaml",124,"Ultralytics CI","Benchmarks","7","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov8s-worldv2.pt' imgsz=160 verbose=0.337"
+".github/workflows/ci.yaml",127,"Ultralytics CI","Benchmarks","8","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-seg.pt' imgsz=160 verbose=0.195"
+".github/workflows/ci.yaml",127,"Ultralytics CI","Benchmarks","8","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-seg.pt' imgsz=160 verbose=0.195"
+".github/workflows/ci.yaml",129,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.model }}","matrix.model"
+".github/workflows/ci.yaml",130,"Ultralytics CI","Benchmarks","9","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-pose.pt' imgsz=160 verbose=0.197"
+".github/workflows/ci.yaml",130,"Ultralytics CI","Benchmarks","9","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-pose.pt' imgsz=160 verbose=0.197"
+".github/workflows/ci.yaml",132,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.model }}","matrix.model"
+".github/workflows/ci.yaml",133,"Ultralytics CI","Benchmarks","10","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-obb.pt' imgsz=160 verbose=0.597"
+".github/workflows/ci.yaml",133,"Ultralytics CI","Benchmarks","10","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-obb.pt' imgsz=160 verbose=0.597"
+".github/workflows/ci.yaml",135,"Ultralytics CI","Benchmarks","-","expression","${{ matrix.model }}","matrix.model"
+".github/workflows/ci.yaml",136,"Ultralytics CI","Benchmarks","11","run-script","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov10n.pt' imgsz=160 verbose=0.205"
+".github/workflows/ci.yaml",136,"Ultralytics CI","Benchmarks","11","run-step","-","coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov10n.pt' imgsz=160 verbose=0.205"
+".github/workflows/ci.yaml",139,"Ultralytics CI","Benchmarks","12","run-script","-","coverage xml -o coverage-benchmarks.xml
+"
+".github/workflows/ci.yaml",139,"Ultralytics CI","Benchmarks","12","run-step","-","coverage xml -o coverage-benchmarks.xml"
+".github/workflows/ci.yaml",142,"Ultralytics CI","Benchmarks","13","uses-step","-","codecov/codecov-action@v5"
+".github/workflows/ci.yaml",143,"Ultralytics CI","Benchmarks","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/ci.yaml",148,"Ultralytics CI","Benchmarks","-","expression","${{ secrets.CODECOV_TOKEN }}","secrets.CODECOV_TOKEN"
+".github/workflows/ci.yaml",149,"Ultralytics CI","Benchmarks","14","run-script","-","uv cache prune --ci"
+".github/workflows/ci.yaml",149,"Ultralytics CI","Benchmarks","14","run-step","-","uv cache prune --ci"
+".github/workflows/ci.yaml",151,"Ultralytics CI","Benchmarks","15","run-script","-","cat benchmarks.log
+echo ""$(cat benchmarks.log)"" >> $GITHUB_STEP_SUMMARY
+"
+".github/workflows/ci.yaml",151,"Ultralytics CI","Benchmarks","15","run-step","-","cat benchmarks.log"
+".github/workflows/ci.yaml",151,"Ultralytics CI","Benchmarks","15","run-step","-","echo ""$(cat benchmarks.log)"""
+".github/workflows/ci.yaml",157,"Ultralytics CI","Tests","-","expression","github.event_name != 'workflow_dispatch' || github.event.inputs.tests == 'true'","github.event_name != 'workflow_dispatch' || github.event.inputs.tests == 'true'"
+".github/workflows/ci.yaml",157,"Ultralytics CI","Tests","-","job","Tests","runs-on=windows-latest"
+".github/workflows/ci.yaml",157,"Ultralytics CI","Tests","-","job","Tests","runs-on=macos-14"
+".github/workflows/ci.yaml",157,"Ultralytics CI","Tests","-","job","Tests","runs-on=ubuntu-latest"
+".github/workflows/ci.yaml",159,"Ultralytics CI","Tests","-","expression","${{ matrix.os }}","matrix.os"
+".github/workflows/ci.yaml",171,"Ultralytics CI","Tests","0","uses-step","-","actions/checkout@v4"
+".github/workflows/ci.yaml",172,"Ultralytics CI","Tests","1","uses-step","-","actions/setup-python@v5"
+".github/workflows/ci.yaml",174,"Ultralytics CI","Tests","-","expression","${{ matrix.python-version }}","matrix.python-version"
+".github/workflows/ci.yaml",175,"Ultralytics CI","Tests","2","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-script","-","# CoreML must be installed before export due to protobuf error from AutoInstall
+slow=""""
+torch=""""
+if [ ""${{ matrix.torch }}"" == ""1.8.0"" ]; then
+    torch=""torch==1.8.0 torchvision==0.9.0""
+fi
+if [[ ""${{ github.event_name }}"" =~ ^(schedule|workflow_dispatch)$ ]]; then
+    slow=""pycocotools mlflow""
+fi
+uv pip install --system -e "".[export]"" $torch $slow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu
+"
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","torch=""torch==1.8.0 torchvision==0.9.0"""
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","slow="""""
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","torch="""""
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","uv pip install --system -e "".[export]"" $torch $slow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu"
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","slow=""pycocotools mlflow"""
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","if [ ""${{ matrix.torch }}"" == ""1.8.0"" ]"
+".github/workflows/ci.yaml",176,"Ultralytics CI","Tests","3","run-step","-","if [[ ""${{ github.event_name }}"" =~ ^(schedule"
+".github/workflows/ci.yaml",182,"Ultralytics CI","Tests","-","expression","${{ matrix.torch }}","matrix.torch"
+".github/workflows/ci.yaml",185,"Ultralytics CI","Tests","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/ci.yaml",189,"Ultralytics CI","Tests","4","run-script","-","yolo checks
+uv pip list
+"
+".github/workflows/ci.yaml",189,"Ultralytics CI","Tests","4","run-step","-","yolo checks"
+".github/workflows/ci.yaml",189,"Ultralytics CI","Tests","4","run-step","-","uv pip list"
+".github/workflows/ci.yaml",193,"Ultralytics CI","Tests","5","run-script","-","slow=""""
+if [[ ""${{ github.event_name }}"" =~ ^(schedule|workflow_dispatch)$ ]]; then
+    slow=""--slow""
+fi
+pytest $slow --cov=ultralytics/ --cov-report xml tests/
+"
+".github/workflows/ci.yaml",193,"Ultralytics CI","Tests","5","run-step","-","slow="""""
+".github/workflows/ci.yaml",193,"Ultralytics CI","Tests","5","run-step","-","pytest $slow --cov=ultralytics/ --cov-report xml tests/"
+".github/workflows/ci.yaml",193,"Ultralytics CI","Tests","5","run-step","-","slow=""--slow"""
+".github/workflows/ci.yaml",193,"Ultralytics CI","Tests","5","run-step","-","if [[ ""${{ github.event_name }}"" =~ ^(schedule"
+".github/workflows/ci.yaml",197,"Ultralytics CI","Tests","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/ci.yaml",201,"Ultralytics CI","Tests","6","uses-step","-","codecov/codecov-action@v5"
+".github/workflows/ci.yaml",202,"Ultralytics CI","Tests","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/ci.yaml",207,"Ultralytics CI","Tests","-","expression","${{ secrets.CODECOV_TOKEN }}","secrets.CODECOV_TOKEN"
+".github/workflows/ci.yaml",208,"Ultralytics CI","Tests","7","run-script","-","uv cache prune --ci"
+".github/workflows/ci.yaml",208,"Ultralytics CI","Tests","7","run-step","-","uv cache prune --ci"
+".github/workflows/ci.yaml",212,"Ultralytics CI","GPU","-","expression","github.repository == 'ultralytics/ultralytics' && (github.event_name != 'workflow_dispatch' || github.event.inputs.gpu == 'true')","github.repository == 'ultralytics/ultralytics' && (github.event_name != 'workflow_dispatch' || github.event.inputs.gpu == 'true')"
+".github/workflows/ci.yaml",212,"Ultralytics CI","GPU","-","job","GPU","runs-on=gpu-latest"
+".github/workflows/ci.yaml",216,"Ultralytics CI","GPU","0","uses-step","-","actions/checkout@v4"
+".github/workflows/ci.yaml",217,"Ultralytics CI","GPU","1","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/ci.yaml",218,"Ultralytics CI","GPU","2","run-script","-","uv pip install --system -e . pytest-cov"
+".github/workflows/ci.yaml",218,"Ultralytics CI","GPU","2","run-step","-","uv pip install --system -e . pytest-cov"
+".github/workflows/ci.yaml",221,"Ultralytics CI","GPU","3","run-script","-","yolo checks
+uv pip list
+"
+".github/workflows/ci.yaml",221,"Ultralytics CI","GPU","3","run-step","-","yolo checks"
+".github/workflows/ci.yaml",221,"Ultralytics CI","GPU","3","run-step","-","uv pip list"
+".github/workflows/ci.yaml",225,"Ultralytics CI","GPU","4","run-script","-","slow=""""
+if [[ ""${{ github.event_name }}"" =~ ^(schedule|workflow_dispatch)$ ]]; then
+  slow=""--slow""
+fi
+pytest $slow --cov=ultralytics/ --cov-report xml tests/test_cuda.py
+"
+".github/workflows/ci.yaml",225,"Ultralytics CI","GPU","4","run-step","-","slow=""--slow"""
+".github/workflows/ci.yaml",225,"Ultralytics CI","GPU","4","run-step","-","slow="""""
+".github/workflows/ci.yaml",225,"Ultralytics CI","GPU","4","run-step","-","pytest $slow --cov=ultralytics/ --cov-report xml tests/test_cuda.py"
+".github/workflows/ci.yaml",225,"Ultralytics CI","GPU","4","run-step","-","if [[ ""${{ github.event_name }}"" =~ ^(schedule"
+".github/workflows/ci.yaml",228,"Ultralytics CI","GPU","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/ci.yaml",232,"Ultralytics CI","GPU","5","uses-step","-","codecov/codecov-action@v5"
+".github/workflows/ci.yaml",237,"Ultralytics CI","GPU","-","expression","${{ secrets.CODECOV_TOKEN }}","secrets.CODECOV_TOKEN"
+".github/workflows/ci.yaml",240,"Ultralytics CI","RaspberryPi","-","expression","github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.raspberrypi == 'true')","github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.raspberrypi == 'true')"
+".github/workflows/ci.yaml",240,"Ultralytics CI","RaspberryPi","-","job","RaspberryPi","runs-on=raspberry-pi"
+".github/workflows/ci.yaml",244,"Ultralytics CI","RaspberryPi","0","uses-step","-","actions/checkout@v4"
+".github/workflows/ci.yaml",245,"Ultralytics CI","RaspberryPi","1","run-script","-","python3.11 -m venv env
+source env/bin/activate
+echo PATH=$PATH >> $GITHUB_ENV
+"
+".github/workflows/ci.yaml",245,"Ultralytics CI","RaspberryPi","1","run-step","-","python3.11 -m venv env"
+".github/workflows/ci.yaml",245,"Ultralytics CI","RaspberryPi","1","run-step","-","source env/bin/activate"
+".github/workflows/ci.yaml",245,"Ultralytics CI","RaspberryPi","1","run-step","-","echo PATH=$PATH"
+".github/workflows/ci.yaml",250,"Ultralytics CI","RaspberryPi","2","run-script","-","python -m pip install --upgrade pip wheel
+pip install -e "".[export]"" pytest mlflow pycocotools
+"
+".github/workflows/ci.yaml",250,"Ultralytics CI","RaspberryPi","2","run-step","-","python -m pip install --upgrade pip wheel"
+".github/workflows/ci.yaml",250,"Ultralytics CI","RaspberryPi","2","run-step","-","pip install -e "".[export]"" pytest mlflow pycocotools"
+".github/workflows/ci.yaml",254,"Ultralytics CI","RaspberryPi","3","run-script","-","yolo checks
+pip list
+"
+".github/workflows/ci.yaml",254,"Ultralytics CI","RaspberryPi","3","run-step","-","yolo checks"
+".github/workflows/ci.yaml",254,"Ultralytics CI","RaspberryPi","3","run-step","-","pip list"
+".github/workflows/ci.yaml",258,"Ultralytics CI","RaspberryPi","4","run-script","-","pytest --slow tests/"
+".github/workflows/ci.yaml",258,"Ultralytics CI","RaspberryPi","4","run-step","-","pytest --slow tests/"
+".github/workflows/ci.yaml",260,"Ultralytics CI","RaspberryPi","5","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-cls.pt' imgsz=160 verbose=0.249"
+".github/workflows/ci.yaml",260,"Ultralytics CI","RaspberryPi","5","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-cls.pt' imgsz=160 verbose=0.249"
+".github/workflows/ci.yaml",262,"Ultralytics CI","RaspberryPi","6","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolov8s-worldv2.pt' imgsz=160 verbose=0.337"
+".github/workflows/ci.yaml",262,"Ultralytics CI","RaspberryPi","6","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolov8s-worldv2.pt' imgsz=160 verbose=0.337"
+".github/workflows/ci.yaml",264,"Ultralytics CI","RaspberryPi","7","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-seg.pt' imgsz=160 verbose=0.195"
+".github/workflows/ci.yaml",264,"Ultralytics CI","RaspberryPi","7","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-seg.pt' imgsz=160 verbose=0.195"
+".github/workflows/ci.yaml",266,"Ultralytics CI","RaspberryPi","8","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-pose.pt' imgsz=160 verbose=0.197"
+".github/workflows/ci.yaml",266,"Ultralytics CI","RaspberryPi","8","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-pose.pt' imgsz=160 verbose=0.197"
+".github/workflows/ci.yaml",268,"Ultralytics CI","RaspberryPi","9","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-obb.pt' imgsz=160 verbose=0.597"
+".github/workflows/ci.yaml",268,"Ultralytics CI","RaspberryPi","9","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolo11n-obb.pt' imgsz=160 verbose=0.597"
+".github/workflows/ci.yaml",270,"Ultralytics CI","RaspberryPi","10","run-script","-","python -m ultralytics.cfg.__init__ benchmark model='yolov10n.pt' imgsz=160 verbose=0.205"
+".github/workflows/ci.yaml",270,"Ultralytics CI","RaspberryPi","10","run-step","-","python -m ultralytics.cfg.__init__ benchmark model='yolov10n.pt' imgsz=160 verbose=0.205"
+".github/workflows/ci.yaml",272,"Ultralytics CI","RaspberryPi","11","run-script","-","cat benchmarks.log
+echo ""$(cat benchmarks.log)"" >> $GITHUB_STEP_SUMMARY
+"
+".github/workflows/ci.yaml",272,"Ultralytics CI","RaspberryPi","11","run-step","-","cat benchmarks.log"
+".github/workflows/ci.yaml",272,"Ultralytics CI","RaspberryPi","11","run-step","-","echo ""$(cat benchmarks.log)"""
+".github/workflows/ci.yaml",281,"Ultralytics CI","Conda","-","expression","github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.conda == 'true')","github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.conda == 'true')"
+".github/workflows/ci.yaml",281,"Ultralytics CI","Conda","-","job","Conda","runs-on=ubuntu-latest"
+".github/workflows/ci.yaml",283,"Ultralytics CI","Conda","-","expression","${{ matrix.os }}","matrix.os"
+".github/workflows/ci.yaml",293,"Ultralytics CI","Conda","0","uses-step","-","conda-incubator/setup-miniconda@v3"
+".github/workflows/ci.yaml",295,"Ultralytics CI","Conda","-","expression","${{ matrix.python-version }}","matrix.python-version"
+".github/workflows/ci.yaml",300,"Ultralytics CI","Conda","1","uses-step","-","ultralytics/actions/cleanup-disk@main"
+".github/workflows/ci.yaml",302,"Ultralytics CI","Conda","2","run-script","-","# Fix cv2 ImportError: 'libEGL.so.1: cannot open shared object file: No such file or directory'
+sudo apt-get update
+sudo apt-get install -y libegl1 libopengl0
+"
+".github/workflows/ci.yaml",302,"Ultralytics CI","Conda","2","run-step","-","sudo apt-get update"
+".github/workflows/ci.yaml",302,"Ultralytics CI","Conda","2","run-step","-","sudo apt-get install -y libegl1 libopengl0"
+".github/workflows/ci.yaml",307,"Ultralytics CI","Conda","3","run-script","-","conda config --set solver libmamba
+"
+".github/workflows/ci.yaml",307,"Ultralytics CI","Conda","3","run-step","-","conda config --set solver libmamba"
+".github/workflows/ci.yaml",310,"Ultralytics CI","Conda","4","run-script","-","conda install -c pytorch -c conda-forge pytorch torchvision ultralytics openvino
+"
+".github/workflows/ci.yaml",310,"Ultralytics CI","Conda","4","run-step","-","conda install -c pytorch -c conda-forge pytorch torchvision ultralytics openvino"
+".github/workflows/ci.yaml",313,"Ultralytics CI","Conda","5","run-script","-","# CoreML must be installed before export due to protobuf error from AutoInstall
+pip install pytest ""coremltools>=7.0; platform_system != 'Windows' and python_version <= '3.11'""
+"
+".github/workflows/ci.yaml",313,"Ultralytics CI","Conda","5","run-step","-","pip install pytest ""coremltools>=7.0; platform_system != 'Windows' and python_version <= '3.11'"""
+".github/workflows/ci.yaml",317,"Ultralytics CI","Conda","6","run-script","-","conda list
+"
+".github/workflows/ci.yaml",317,"Ultralytics CI","Conda","6","run-step","-","conda list"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-script","-","yolo predict model=yolo11n.pt imgsz=320
+yolo train model=yolo11n.pt data=coco8.yaml epochs=1 imgsz=32
+yolo val model=yolo11n.pt data=coco8.yaml imgsz=32
+yolo export model=yolo11n.pt format=torchscript imgsz=160
+yolo solutions
+"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-step","-","yolo export model=yolo11n.pt format=torchscript imgsz=160"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-step","-","yolo train model=yolo11n.pt data=coco8.yaml epochs=1 imgsz=32"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-step","-","yolo val model=yolo11n.pt data=coco8.yaml imgsz=32"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-step","-","yolo solutions"
+".github/workflows/ci.yaml",320,"Ultralytics CI","Conda","7","run-step","-","yolo predict model=yolo11n.pt imgsz=320"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-script","-","python -c ""
+from ultralytics import YOLO
+model = YOLO('yolo11n.pt')
+results = model.train(data='coco8.yaml', epochs=3, imgsz=160)
+results = model.val(imgsz=160)
+results = model.predict(imgsz=160)
+results = model.export(format='onnx', imgsz=160)
+""
+"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","results = model.predict(imgsz=160)"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-",""""
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","python -c """
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","from ultralytics import YOLO"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","model = YOLO('yolo11n.pt')"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","results = model.train(data='coco8.yaml', epochs=3, imgsz=160)"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","results = model.val(imgsz=160)"
+".github/workflows/ci.yaml",327,"Ultralytics CI","Conda","8","run-step","-","results = model.export(format='onnx', imgsz=160)"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-script","-","VERSION=$(conda list ultralytics | grep ultralytics | awk '{print $2}')
+echo ""Ultralytics version: $VERSION""
+git clone https://github.com/ultralytics/ultralytics.git
+cd ultralytics
+git checkout tags/v$VERSION
+pytest tests
+"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","echo ""Ultralytics version: $VERSION"""
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","git clone https://github.com/ultralytics/ultralytics.git"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","cd ultralytics"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","git checkout tags/v$VERSION"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","pytest tests"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","VERSION=$(conda list ultralytics | grep ultralytics | awk '{print $2}')"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","grep ultralytics"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","awk '{print $2}'"
+".github/workflows/ci.yaml",338,"Ultralytics CI","Conda","9","run-step","-","conda list ultralytics"
+".github/workflows/ci.yaml",348,"Ultralytics CI","Summary","-","job","Summary","runs-on=ubuntu-latest"
+".github/workflows/ci.yaml",350,"Ultralytics CI","Summary","-","expression","always()","always()"
+".github/workflows/ci.yaml",352,"Ultralytics CI","Summary","0","uses-step","-","slackapi/slack-github-action@v2.0.0"
+".github/workflows/ci.yaml",353,"Ultralytics CI","Summary","-","expression","(needs.HUB.result == 'failure' || needs.Benchmarks.result == 'failure' || needs.Tests.result == 'failure' || needs.GPU.result == 'failure' || needs.RaspberryPi.result == 'failure' || needs.Conda.result == 'failure' ) && github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event_name == 'push') && github.run_attempt == '1'","(needs.HUB.result == 'failure' || needs.Benchmarks.result == 'failure' || needs.Tests.result == 'failure' || needs.GPU.result == 'failure' || needs.RaspberryPi.result == 'failure' || needs.Conda.result == 'failure' ) && github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event_name == 'push') && github.run_attempt == '1'"
+".github/workflows/ci.yaml",357,"Ultralytics CI","Summary","-","expression","${{ secrets.SLACK_WEBHOOK_URL_YOLO }}","secrets.SLACK_WEBHOOK_URL_YOLO"
+".github/workflows/ci.yaml",359,"Ultralytics CI","Summary","-","expression","${{ github.actor }}","github.actor"
+".github/workflows/ci.yaml",359,"Ultralytics CI","Summary","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/ci.yaml",359,"Ultralytics CI","Summary","-","expression","${{ github.repository }}","github.repository"
+".github/workflows/ci.yaml",359,"Ultralytics CI","Summary","-","expression","${{ github.run_id }}","github.run_id"
+".github/workflows/ci.yaml",359,"Ultralytics CI","Summary","-","expression","${{ github.workflow }}","github.workflow"
+".github/workflows/cla.yml",5,"CLA Assistant","-","-","workflow","CLA Assistant","-"
+".github/workflows/cla.yml",7,"CLA Assistant","-","-","event","issue_comment","externally-triggerable;privileged"
+".github/workflows/cla.yml",7,"CLA Assistant","-","-","event-property","issue_comment.types","created"
+".github/workflows/cla.yml",10,"CLA Assistant","-","-","event","pull_request_target","externally-triggerable;privileged"
+".github/workflows/cla.yml",10,"CLA Assistant","-","-","event-property","pull_request_target.types","opened"
+".github/workflows/cla.yml",10,"CLA Assistant","-","-","event-property","pull_request_target.types","reopened"
+".github/workflows/cla.yml",10,"CLA Assistant","-","-","event-property","pull_request_target.types","synchronize"
+".github/workflows/cla.yml",17,"CLA Assistant","-","-","permission","permission","statuses: write"
+".github/workflows/cla.yml",17,"CLA Assistant","-","-","permission","permission","actions: write"
+".github/workflows/cla.yml",17,"CLA Assistant","-","-","permission","permission","contents: write"
+".github/workflows/cla.yml",17,"CLA Assistant","-","-","permission","permission","pull-requests: write"
+".github/workflows/cla.yml",24,"CLA Assistant","CLA","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/cla.yml",24,"CLA Assistant","CLA","-","job","CLA","runs-on=ubuntu-latest"
+".github/workflows/cla.yml",27,"CLA Assistant","CLA","0","uses-step","-","contributor-assistant/github-action@v2.6.1"
+".github/workflows/cla.yml",28,"CLA Assistant","CLA","-","expression","(github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the CLA Document and I sign the CLA') || github.event_name == 'pull_request_target'","(github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the CLA Document and I sign the CLA') || github.event_name == 'pull_request_target'"
+".github/workflows/cla.yml",31,"CLA Assistant","CLA","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/cla.yml",33,"CLA Assistant","CLA","-","expression","${{ secrets._GITHUB_TOKEN }}","secrets._GITHUB_TOKEN"
+".github/workflows/docker.yaml",4,"Publish Docker Images","-","-","workflow","Publish Docker Images","-"
+".github/workflows/docker.yaml",7,"Publish Docker Images","-","-","event","push","not-externally-triggerable;privileged"
+".github/workflows/docker.yaml",7,"Publish Docker Images","-","-","event-property","push.branches","main"
+".github/workflows/docker.yaml",12,"Publish Docker Images","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/docker.yaml",52,"Publish Docker Images","docker","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/docker.yaml",52,"Publish Docker Images","docker","-","job","docker","runs-on=ubuntu-latest"
+".github/workflows/docker.yaml",85,"Publish Docker Images","docker","-","expression","${{ steps.check_tag.outputs.new_release }}","steps.check_tag.outputs.new_release"
+".github/workflows/docker.yaml",87,"Publish Docker Images","docker","0","uses-step","-","ultralytics/actions/cleanup-disk@main"
+".github/workflows/docker.yaml",90,"Publish Docker Images","docker","1","uses-step","-","actions/checkout@v4"
+".github/workflows/docker.yaml",95,"Publish Docker Images","docker","2","uses-step","-","docker/setup-qemu-action@v3"
+".github/workflows/docker.yaml",98,"Publish Docker Images","docker","3","uses-step","-","docker/setup-buildx-action@v3"
+".github/workflows/docker.yaml",101,"Publish Docker Images","docker","4","uses-step","-","docker/login-action@v3"
+".github/workflows/docker.yaml",104,"Publish Docker Images","docker","-","expression","${{ secrets.DOCKERHUB_USERNAME }}","secrets.DOCKERHUB_USERNAME"
+".github/workflows/docker.yaml",105,"Publish Docker Images","docker","-","expression","${{ secrets.DOCKERHUB_TOKEN }}","secrets.DOCKERHUB_TOKEN"
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-script","get_version","VERSION=$(grep ""^__version__ ="" ultralytics/__init__.py | awk -F'""' '{print $2}')
+echo ""Retrieved Ultralytics version: $VERSION""
+echo ""version=$VERSION"" >> $GITHUB_OUTPUT
+VERSION_TAG=$(echo ""${{ matrix.tags }}"" | sed ""s/latest/${VERSION}/"")
+echo ""Intended version tag: $VERSION_TAG""
+echo ""version_tag=$VERSION_TAG"" >> $GITHUB_OUTPUT
+"
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","awk -F'""' '{print $2}'"
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","VERSION_TAG=$(echo ""${{ matrix.tags }}"" | sed ""s/latest/${VERSION}/"")"
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","echo ""Intended version tag: $VERSION_TAG"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","grep ""^__version__ ="" ultralytics/__init__.py"
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","echo ""Retrieved Ultralytics version: $VERSION"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","echo ""${{ matrix.tags }}"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","sed ""s/latest/${VERSION}/"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","echo ""version=$VERSION"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","echo ""version_tag=$VERSION_TAG"""
+".github/workflows/docker.yaml",107,"Publish Docker Images","docker","5","run-step","get_version","VERSION=$(grep ""^__version__ ="" ultralytics/__init__.py | awk -F'""' '{print $2}')"
+".github/workflows/docker.yaml",113,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-script","check_tag","RESPONSE=$(curl -s https://hub.docker.com/v2/repositories/ultralytics/ultralytics/tags/$VERSION_TAG)
+MESSAGE=$(echo $RESPONSE | jq -r '.message')
+if [[ ""$MESSAGE"" == ""null"" ]]; then
+    echo ""Tag $VERSION_TAG already exists on DockerHub.""
+    echo ""new_release=false"" >> $GITHUB_OUTPUT
+elif [[ ""$MESSAGE"" == *""404""* ]]; then
+    echo ""Tag $VERSION_TAG does not exist on DockerHub.""
+    echo ""new_release=true"" >> $GITHUB_OUTPUT
+else
+    echo ""Unexpected response from DockerHub. Please check manually.""
+    echo ""new_release=false"" >> $GITHUB_OUTPUT
+fi
+"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","MESSAGE=$(echo $RESPONSE | jq -r '.message')"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","curl -s https://hub.docker.com/v2/repositories/ultralytics/ultralytics/tags/$VERSION_TAG"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo $RESPONSE"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","jq -r '.message'"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo ""Unexpected response from DockerHub. Please check manually."""
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","if [[ ""$MESSAGE"" == ""null"" ]]"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","RESPONSE=$(curl -s https://hub.docker.com/v2/repositories/ultralytics/ultralytics/tags/$VERSION_TAG)"
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo ""Tag $VERSION_TAG already exists on DockerHub."""
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo ""Tag $VERSION_TAG does not exist on DockerHub."""
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo ""new_release=false"""
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","echo ""new_release=true"""
+".github/workflows/docker.yaml",117,"Publish Docker Images","docker","6","run-step","check_tag","elif [[ ""$MESSAGE"" == *""404""* ]]"
+".github/workflows/docker.yaml",133,"Publish Docker Images","docker","-","expression","${{ steps.get_version.outputs.version_tag }}","steps.get_version.outputs.version_tag"
+".github/workflows/docker.yaml",135,"Publish Docker Images","docker","7","uses-step","-","ultralytics/actions/retry@main"
+".github/workflows/docker.yaml",136,"Publish Docker Images","docker","-","expression","github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true'","github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true'"
+".github/workflows/docker.yaml",144,"Publish Docker Images","docker","-","expression","${{ matrix.platforms }}","matrix.platforms"
+".github/workflows/docker.yaml",145,"Publish Docker Images","docker","-","expression","${{ matrix.dockerfile }}","matrix.dockerfile"
+".github/workflows/docker.yaml",146,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",147,"Publish Docker Images","docker","-","expression","${{ steps.get_version.outputs.version_tag }}","steps.get_version.outputs.version_tag"
+".github/workflows/docker.yaml",150,"Publish Docker Images","docker","8","run-script","-","docker run ultralytics/ultralytics:${{ matrix.tags }} /bin/bash -c ""pip install pytest && pytest tests"""
+".github/workflows/docker.yaml",150,"Publish Docker Images","docker","8","run-step","-","docker run ultralytics/ultralytics:${{ matrix.tags }} /bin/bash -c ""pip install pytest && pytest tests"""
+".github/workflows/docker.yaml",151,"Publish Docker Images","docker","-","expression","(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile-conda'","(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile-conda'"
+".github/workflows/docker.yaml",152,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",154,"Publish Docker Images","docker","9","run-script","-","docker run ultralytics/ultralytics:${{ matrix.tags }} yolo benchmark model=yolo11n.pt imgsz=160 verbose=0.309"
+".github/workflows/docker.yaml",154,"Publish Docker Images","docker","9","run-step","-","docker run ultralytics/ultralytics:${{ matrix.tags }} yolo benchmark model=yolo11n.pt imgsz=160 verbose=0.309"
+".github/workflows/docker.yaml",156,"Publish Docker Images","docker","-","expression","(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile' && matrix.dockerfile != 'Dockerfile-conda'","(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile' && matrix.dockerfile != 'Dockerfile-conda'"
+".github/workflows/docker.yaml",157,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",159,"Publish Docker Images","docker","10","run-script","-","docker push ultralytics/ultralytics:${{ steps.get_version.outputs.version_tag }}
+"
+".github/workflows/docker.yaml",159,"Publish Docker Images","docker","10","run-step","-","docker push ultralytics/ultralytics:${{ steps.get_version.outputs.version_tag }}"
+".github/workflows/docker.yaml",160,"Publish Docker Images","docker","-","expression","(github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')) && steps.check_tag.outputs.new_release == 'true' && matrix.dockerfile != 'Dockerfile-conda'","(github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')) && steps.check_tag.outputs.new_release == 'true' && matrix.dockerfile != 'Dockerfile-conda'"
+".github/workflows/docker.yaml",162,"Publish Docker Images","docker","-","expression","${{ steps.get_version.outputs.version_tag }}","steps.get_version.outputs.version_tag"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-script","-","docker push ultralytics/ultralytics:${{ matrix.tags }}
+if [[ ""${{ matrix.tags }}"" == ""latest"" ]]; then
+  t=ultralytics/ultralytics:latest-runner
+  docker build -f docker/Dockerfile-runner -t $t .
+  docker push $t
+fi
+if [[ ""${{ matrix.tags }}"" == ""latest-python"" ]]; then
+  t=ultralytics/ultralytics:latest-jupyter
+  v=ultralytics/ultralytics:${{ steps.get_version.outputs.version }}-jupyter
+  docker build -f docker/Dockerfile-jupyter -t $t -t $v .
+  docker push $t
+  if [[ ""${{ steps.check_tag.outputs.new_release }}"" == ""true"" ]]; then
+    docker push $v
+  fi
+fi
+"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","docker push ultralytics/ultralytics:${{ matrix.tags }}"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","t=ultralytics/ultralytics:latest-runner"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","docker build -f docker/Dockerfile-runner -t $t ."
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","docker push $t"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","t=ultralytics/ultralytics:latest-jupyter"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","v=ultralytics/ultralytics:${{ steps.get_version.outputs.version }}-jupyter"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","docker build -f docker/Dockerfile-jupyter -t $t -t $v ."
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","docker push $v"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","if [[ ""${{ steps.check_tag.outputs.new_release }}"" == ""true"" ]]"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","if [[ ""${{ matrix.tags }}"" == ""latest"" ]]"
+".github/workflows/docker.yaml",164,"Publish Docker Images","docker","11","run-step","-","if [[ ""${{ matrix.tags }}"" == ""latest-python"" ]]"
+".github/workflows/docker.yaml",165,"Publish Docker Images","docker","-","expression","github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')","github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')"
+".github/workflows/docker.yaml",167,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",168,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",173,"Publish Docker Images","docker","-","expression","${{ matrix.tags }}","matrix.tags"
+".github/workflows/docker.yaml",175,"Publish Docker Images","docker","-","expression","${{ steps.get_version.outputs.version }}","steps.get_version.outputs.version"
+".github/workflows/docker.yaml",178,"Publish Docker Images","docker","-","expression","${{ steps.check_tag.outputs.new_release }}","steps.check_tag.outputs.new_release"
+".github/workflows/docker.yaml",184,"Publish Docker Images","trigger-actions","-","job","trigger-actions","runs-on=ubuntu-latest"
+".github/workflows/docker.yaml",187,"Publish Docker Images","trigger-actions","-","expression","success() && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && needs.docker.outputs.new_release == 'true'","success() && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && needs.docker.outputs.new_release == 'true'"
+".github/workflows/docker.yaml",189,"Publish Docker Images","trigger-actions","0","run-script","-","sleep 60
+gh workflow run deploy_cloud_run.yml \
+  --repo ultralytics/assistant \
+  --ref main
+"
+".github/workflows/docker.yaml",189,"Publish Docker Images","trigger-actions","0","run-step","-","sleep 60"
+".github/workflows/docker.yaml",189,"Publish Docker Images","trigger-actions","0","run-step","-","gh workflow run deploy_cloud_run.yml   --repo ultralytics/assistant   --ref main"
+".github/workflows/docker.yaml",191,"Publish Docker Images","trigger-actions","-","expression","${{ secrets._GITHUB_TOKEN }}","secrets._GITHUB_TOKEN"
+".github/workflows/docker.yaml",199,"Publish Docker Images","notify","-","job","notify","runs-on=ubuntu-latest"
+".github/workflows/docker.yaml",201,"Publish Docker Images","notify","-","expression","always()","always()"
+".github/workflows/docker.yaml",203,"Publish Docker Images","notify","0","uses-step","-","slackapi/slack-github-action@v2.0.0"
+".github/workflows/docker.yaml",204,"Publish Docker Images","notify","-","expression","needs.docker.result == 'failure' && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && github.run_attempt == '1'","needs.docker.result == 'failure' && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && github.run_attempt == '1'"
+".github/workflows/docker.yaml",208,"Publish Docker Images","notify","-","expression","${{ secrets.SLACK_WEBHOOK_URL_YOLO }}","secrets.SLACK_WEBHOOK_URL_YOLO"
+".github/workflows/docker.yaml",210,"Publish Docker Images","notify","-","expression","${{ github.actor }}","github.actor"
+".github/workflows/docker.yaml",210,"Publish Docker Images","notify","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/docker.yaml",210,"Publish Docker Images","notify","-","expression","${{ github.repository }}","github.repository"
+".github/workflows/docker.yaml",210,"Publish Docker Images","notify","-","expression","${{ github.run_id }}","github.run_id"
+".github/workflows/docker.yaml",210,"Publish Docker Images","notify","-","expression","${{ github.workflow }}","github.workflow"
+".github/workflows/docs.yml",15,"Publish Docs","-","-","workflow","Publish Docs","-"
+".github/workflows/docs.yml",18,"Publish Docs","-","-","event","push","not-externally-triggerable;privileged"
+".github/workflows/docs.yml",18,"Publish Docs","-","-","event-property","push.branches","main"
+".github/workflows/docs.yml",20,"Publish Docs","-","-","event","pull_request","externally-triggerable;not-privileged"
+".github/workflows/docs.yml",20,"Publish Docs","-","-","event-property","pull_request.branches","main"
+".github/workflows/docs.yml",22,"Publish Docs","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/docs.yml",31,"Publish Docs","Docs","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/docs.yml",31,"Publish Docs","Docs","-","job","Docs","runs-on=ubuntu-latest"
+".github/workflows/docs.yml",34,"Publish Docs","Docs","-","expression","${{ github.head_ref || github.ref }}","github.ref"
+".github/workflows/docs.yml",34,"Publish Docs","Docs","-","expression","${{ github.head_ref || github.ref }}","github.head_ref"
+".github/workflows/docs.yml",36,"Publish Docs","Docs","0","run-script","-","git config --global user.name ""UltralyticsAssistant""
+git config --global user.email ""web@ultralytics.com""
+"
+".github/workflows/docs.yml",36,"Publish Docs","Docs","0","run-step","-","git config --global user.name ""UltralyticsAssistant"""
+".github/workflows/docs.yml",36,"Publish Docs","Docs","0","run-step","-","git config --global user.email ""web@ultralytics.com"""
+".github/workflows/docs.yml",40,"Publish Docs","Docs","1","uses-argument","ref","${{ env.GITHUB_REF }}"
+".github/workflows/docs.yml",40,"Publish Docs","Docs","1","uses-argument","repository","${{ github.event.pull_request.head.repo.full_name || github.repository }}"
+".github/workflows/docs.yml",40,"Publish Docs","Docs","1","uses-step","-","actions/checkout@v4"
+".github/workflows/docs.yml",43,"Publish Docs","Docs","-","expression","${{ github.event.pull_request.head.repo.full_name || github.repository }}","github.event.pull_request.head.repo.full_name"
+".github/workflows/docs.yml",43,"Publish Docs","Docs","-","expression","${{ github.event.pull_request.head.repo.full_name || github.repository }}","github.repository"
+".github/workflows/docs.yml",44,"Publish Docs","Docs","-","expression","${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/docs.yml",44,"Publish Docs","Docs","-","expression","${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN }}","secrets._GITHUB_TOKEN"
+".github/workflows/docs.yml",45,"Publish Docs","Docs","-","expression","${{ env.GITHUB_REF }}","env.GITHUB_REF"
+".github/workflows/docs.yml",47,"Publish Docs","Docs","2","uses-step","-","actions/setup-python@v5"
+".github/workflows/docs.yml",51,"Publish Docs","Docs","3","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/docs.yml",52,"Publish Docs","Docs","4","run-script","-","uv pip install --system ruff black tqdm mkdocs-material ""mkdocstrings[python]"" mkdocs-jupyter mkdocs-redirects mkdocs-ultralytics-plugin mkdocs-macros-plugin"
+".github/workflows/docs.yml",52,"Publish Docs","Docs","4","run-step","-","uv pip install --system ruff black tqdm mkdocs-material ""mkdocstrings[python]"" mkdocs-jupyter mkdocs-redirects mkdocs-ultralytics-plugin mkdocs-macros-plugin"
+".github/workflows/docs.yml",54,"Publish Docs","Docs","5","run-script","-","ruff check --fix --unsafe-fixes --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 ."
+".github/workflows/docs.yml",54,"Publish Docs","Docs","5","run-step","-","ruff check --fix --unsafe-fixes --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 ."
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-script","-","python docs/build_reference.py
+git pull origin ""$GITHUB_REF""          
+git add .
+git reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token
+if ! git diff --staged --quiet; then
+  git commit -m ""Auto-update Ultralytics Docs Reference by https://ultralytics.com/actions""
+  git push
+else
+  echo ""No changes to commit""
+fi
+"
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","python docs/build_reference.py"
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","git add ."
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","git reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token"
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","git pull origin ""$GITHUB_REF"""
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","if ! git diff --staged --quiet"
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","git commit -m ""Auto-update Ultralytics Docs Reference by https://ultralytics.com/actions"""
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","git push"
+".github/workflows/docs.yml",57,"Publish Docs","Docs","6","run-step","-","echo ""No changes to commit"""
+".github/workflows/docs.yml",70,"Publish Docs","Docs","7","run-script","-","ruff check --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 ."
+".github/workflows/docs.yml",70,"Publish Docs","Docs","7","run-step","-","ruff check --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 ."
+".github/workflows/docs.yml",72,"Publish Docs","Docs","8","run-script","-","export JUPYTER_PLATFORM_DIRS=1
+python docs/build_docs.py
+"
+".github/workflows/docs.yml",72,"Publish Docs","Docs","8","run-step","-","python docs/build_docs.py"
+".github/workflows/docs.yml",72,"Publish Docs","Docs","8","run-step","-","export JUPYTER_PLATFORM_DIRS=1"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-script","-","git pull origin ""$GITHUB_REF""
+git add --update  # only add updated files
+git reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token
+if ! git diff --staged --quiet; then
+  git commit -m ""Auto-update Ultralytics Docs by https://ultralytics.com/actions""
+  git push
+else
+  echo ""No changes to commit""
+fi
+"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","git push"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","git add --update  # only add updated files"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","if ! git diff --staged --quiet"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","git reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token"
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","echo ""No changes to commit"""
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","git pull origin ""$GITHUB_REF"""
+".github/workflows/docs.yml",76,"Publish Docs","Docs","9","run-step","-","git commit -m ""Auto-update Ultralytics Docs by https://ultralytics.com/actions"""
+".github/workflows/docs.yml",78,"Publish Docs","Docs","-","expression","always()","always()"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-script","-","git clone https://github.com/ultralytics/docs.git docs-repo
+cd docs-repo
+git checkout gh-pages || git checkout -b gh-pages
+rm -rf *
+cp -R ../site/* .
+echo ""${{ secrets.INDEXNOW_KEY_DOCS }}"" > ""${{ secrets.INDEXNOW_KEY_DOCS }}.txt""
+git add .
+if git diff --staged --quiet; then
+  echo ""No changes to commit""
+else
+  LATEST_HASH=$(git rev-parse --short=7 HEAD)
+  git commit -m ""Update Docs for 'ultralytics ${{ steps.check_pypi.outputs.version }} - $LATEST_HASH'""
+  git push https://${{ secrets._GITHUB_TOKEN }}@github.com/ultralytics/docs.git gh-pages
+fi
+"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","echo ""No changes to commit"""
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git checkout gh-pages"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git checkout -b gh-pages"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git commit -m ""Update Docs for 'ultralytics ${{ steps.check_pypi.outputs.version }} - $LATEST_HASH'"""
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","LATEST_HASH=$(git rev-parse --short=7 HEAD)"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git push https://${{ secrets._GITHUB_TOKEN }}@github.com/ultralytics/docs.git gh-pages"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git clone https://github.com/ultralytics/docs.git docs-repo"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","cd docs-repo"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","rm -rf *"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","cp -R ../site/* ."
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","echo ""${{ secrets.INDEXNOW_KEY_DOCS }}"" > ""${{ secrets.INDEXNOW_KEY_DOCS }}.txt"""
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git add ."
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","git rev-parse --short=7 HEAD"
+".github/workflows/docs.yml",89,"Publish Docs","Docs","10","run-step","-","if git diff --staged --quiet"
+".github/workflows/docs.yml",90,"Publish Docs","Docs","-","expression","github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_docs == 'true')","github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_docs == 'true')"
+".github/workflows/docs.yml",97,"Publish Docs","Docs","-","expression","${{ secrets.INDEXNOW_KEY_DOCS }}","secrets.INDEXNOW_KEY_DOCS"
+".github/workflows/docs.yml",103,"Publish Docs","Docs","-","expression","${{ steps.check_pypi.outputs.version }}","steps.check_pypi.outputs.version"
+".github/workflows/docs.yml",104,"Publish Docs","Docs","-","expression","${{ secrets._GITHUB_TOKEN }}","secrets._GITHUB_TOKEN"
+".github/workflows/format.yml",5,"Ultralytics Actions","-","-","workflow","Ultralytics Actions","-"
+".github/workflows/format.yml",8,"Ultralytics Actions","-","-","event","issues","externally-triggerable;privileged"
+".github/workflows/format.yml",8,"Ultralytics Actions","-","-","event-property","issues.types","edited"
+".github/workflows/format.yml",8,"Ultralytics Actions","-","-","event-property","issues.types","opened"
+".github/workflows/format.yml",10,"Ultralytics Actions","-","-","event","discussion","externally-triggerable;privileged"
+".github/workflows/format.yml",10,"Ultralytics Actions","-","-","event-property","discussion.types","created"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event","pull_request","externally-triggerable;not-privileged"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event-property","pull_request.branches","main"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event-property","pull_request.types","synchronize"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event-property","pull_request.types","opened"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event-property","pull_request.types","closed"
+".github/workflows/format.yml",12,"Ultralytics Actions","-","-","event-property","pull_request.types","review_requested"
+".github/workflows/format.yml",18,"Ultralytics Actions","format","-","job","format","runs-on=ubuntu-latest"
+".github/workflows/format.yml",20,"Ultralytics Actions","format","0","uses-step","-","ultralytics/actions@main"
+".github/workflows/format.yml",23,"Ultralytics Actions","format","-","expression","${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN}}","secrets._GITHUB_TOKEN"
+".github/workflows/format.yml",23,"Ultralytics Actions","format","-","expression","${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN}}","secrets.GITHUB_TOKEN"
+".github/workflows/format.yml",30,"Ultralytics Actions","format","-","expression","${{ secrets.OPENAI_API_KEY }}","secrets.OPENAI_API_KEY"
+".github/workflows/format.yml",32,"Ultralytics Actions","format","-","expression","${{ github.actor }}","github.actor"
+".github/workflows/links.yml",11,"Check Broken links","-","-","workflow","Check Broken links","-"
+".github/workflows/links.yml",14,"Check Broken links","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/links.yml",15,"Check Broken links","-","-","event","schedule","externally-triggerable;privileged"
+".github/workflows/links.yml",20,"Check Broken links","Links","-","job","Links","runs-on=ubuntu-latest"
+".github/workflows/links.yml",22,"Check Broken links","Links","0","uses-step","-","actions/checkout@v4"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-script","-","LYCHEE_URL=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | grep ""browser_download_url"" | grep ""x86_64-unknown-linux-gnu.tar.gz"" | cut -d '""' -f 4)
+curl -L $LYCHEE_URL -o lychee.tar.gz
+tar xzf lychee.tar.gz
+sudo mv lychee /usr/local/bin
+"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","grep ""x86_64-unknown-linux-gnu.tar.gz"""
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","LYCHEE_URL=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | grep ""browser_download_url"" | grep ""x86_64-unknown-linux-gnu.tar.gz"" | cut -d '""' -f 4)"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","curl -L $LYCHEE_URL -o lychee.tar.gz"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","tar xzf lychee.tar.gz"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","sudo mv lychee /usr/local/bin"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest"
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","grep ""browser_download_url"""
+".github/workflows/links.yml",24,"Check Broken links","Links","1","run-step","-","cut -d '""' -f 4"
+".github/workflows/links.yml",31,"Check Broken links","Links","2","uses-step","-","ultralytics/actions/retry@main"
+".github/workflows/links.yml",55,"Check Broken links","Links","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/links.yml",60,"Check Broken links","Links","3","uses-step","-","ultralytics/actions/retry@main"
+".github/workflows/links.yml",61,"Check Broken links","Links","-","expression","github.event_name == 'workflow_dispatch'","github.event_name == 'workflow_dispatch'"
+".github/workflows/links.yml",86,"Check Broken links","Links","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/merge-main-into-prs.yml",5,"Merge main into PRs","-","-","workflow","Merge main into PRs","-"
+".github/workflows/merge-main-into-prs.yml",8,"Merge main into PRs","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/merge-main-into-prs.yml",15,"Merge main into PRs","Merge","-","expression","github.repository == 'ultralytics/ultralytics'","github.repository == 'ultralytics/ultralytics'"
+".github/workflows/merge-main-into-prs.yml",15,"Merge main into PRs","Merge","-","job","Merge","runs-on=ubuntu-latest"
+".github/workflows/merge-main-into-prs.yml",18,"Merge main into PRs","Merge","0","uses-step","-","actions/checkout@v4"
+".github/workflows/merge-main-into-prs.yml",22,"Merge main into PRs","Merge","1","uses-step","-","actions/setup-python@v5"
+".github/workflows/merge-main-into-prs.yml",26,"Merge main into PRs","Merge","2","run-script","-","pip install pygithub
+"
+".github/workflows/merge-main-into-prs.yml",26,"Merge main into PRs","Merge","2","run-step","-","pip install pygithub"
+".github/workflows/merge-main-into-prs.yml",29,"Merge main into PRs","Merge","3","run-script","-","from github import Github
+import os
+import time
+
+g = Github(""${{ secrets._GITHUB_TOKEN }}"")
+repo = g.get_repo(""${{ github.repository }}"")
+
+# Fetch the default branch name
+default_branch_name = repo.default_branch
+default_branch = repo.get_branch(default_branch_name)
+
+# Initialize counters
+updated_branches = 0
+up_to_date_branches = 0
+errors = 0
+
+for pr in repo.get_pulls(state='open', sort='created'):
+    try:
+        # Label PRs as popular for positive reactions
+        reactions = pr.as_issue().get_reactions()
+        if sum([(1 if r.content not in {""-1"", ""confused""} else 0) for r in reactions]) > 5:
+            pr.set_labels(*(""popular"",) + tuple(l.name for l in pr.get_labels()))
+
+        # Get full names for repositories and branches
+        base_repo_name = repo.full_name
+        head_repo_name = pr.head.repo.full_name
+        base_branch_name = pr.base.ref
+        head_branch_name = pr.head.ref
+
+        # Check if PR is behind the default branch
+        comparison = repo.compare(default_branch.commit.sha, pr.head.sha)
+        if comparison.behind_by > 0:
+            print(f""⚠️ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is behind {default_branch_name} by {comparison.behind_by} commit(s)."")
+            
+            # Attempt to update the branch
+            try:
+                success = pr.update_branch()
+                assert success, ""Branch update failed""
+                print(f""✅ Successfully merged '{default_branch_name}' into PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name})."")
+                updated_branches += 1
+                time.sleep(10)  # rate limit merges
+            except Exception as update_error:
+                print(f""❌ Could not update PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}): {update_error}"")
+                errors += 1
+        else:
+            print(f""✅ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is already up to date with {default_branch_name}, no merge required."")
+            up_to_date_branches += 1
+    except Exception as e:
+        print(f""❌ Could not process PR #{pr.number}: {e}"")
+        errors += 1
+
+# Print summary
+print(""\n\nSummary:"")
+print(f""Branches updated: {updated_branches}"")
+print(f""Branches already up-to-date: {up_to_date_branches}"")
+print(f""Total errors: {errors}"")
+"
+".github/workflows/merge-main-into-prs.yml",29,"Merge main into PRs","Merge","3","run-step","-","NOT IMPLEMENTED"
+".github/workflows/merge-main-into-prs.yml",36,"Merge main into PRs","Merge","-","expression","${{ secrets._GITHUB_TOKEN }}","secrets._GITHUB_TOKEN"
+".github/workflows/merge-main-into-prs.yml",37,"Merge main into PRs","Merge","-","expression","${{ github.repository }}","github.repository"
+".github/workflows/publish.yml",4,"Publish to PyPI","-","-","workflow","Publish to PyPI","-"
+".github/workflows/publish.yml",7,"Publish to PyPI","-","-","event","push","not-externally-triggerable;privileged"
+".github/workflows/publish.yml",7,"Publish to PyPI","-","-","event-property","push.branches","main"
+".github/workflows/publish.yml",9,"Publish to PyPI","-","-","event","workflow_dispatch","externally-triggerable;privileged"
+".github/workflows/publish.yml",17,"Publish to PyPI","check","-","expression","github.repository == 'ultralytics/ultralytics' && github.actor == 'glenn-jocher'","github.repository == 'ultralytics/ultralytics' && github.actor == 'glenn-jocher'"
+".github/workflows/publish.yml",17,"Publish to PyPI","check","-","job","check","runs-on=ubuntu-latest"
+".github/workflows/publish.yml",20,"Publish to PyPI","check","-","permission","permission","contents: write"
+".github/workflows/publish.yml",22,"Publish to PyPI","check","-","expression","${{ steps.check_pypi.outputs.increment }}","steps.check_pypi.outputs.increment"
+".github/workflows/publish.yml",23,"Publish to PyPI","check","-","expression","${{ steps.check_pypi.outputs.current_tag }}","steps.check_pypi.outputs.current_tag"
+".github/workflows/publish.yml",24,"Publish to PyPI","check","-","expression","${{ steps.check_pypi.outputs.previous_tag }}","steps.check_pypi.outputs.previous_tag"
+".github/workflows/publish.yml",26,"Publish to PyPI","check","0","uses-step","-","actions/checkout@v4"
+".github/workflows/publish.yml",27,"Publish to PyPI","check","1","uses-step","-","actions/setup-python@v5"
+".github/workflows/publish.yml",30,"Publish to PyPI","check","2","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/publish.yml",31,"Publish to PyPI","check","3","run-script","-","uv pip install --system --no-cache ultralytics-actions"
+".github/workflows/publish.yml",31,"Publish to PyPI","check","3","run-step","-","uv pip install --system --no-cache ultralytics-actions"
+".github/workflows/publish.yml",32,"Publish to PyPI","check","4","run-script","check_pypi","import os
+from actions.utils import check_pypi_version
+local_version, online_version, publish = check_pypi_version()
+os.system(f'echo ""increment={publish}"" >> $GITHUB_OUTPUT')
+os.system(f'echo ""current_tag=v{local_version}"" >> $GITHUB_OUTPUT')
+os.system(f'echo ""previous_tag=v{online_version}"" >> $GITHUB_OUTPUT')
+if publish:
+    print('Ready to publish new version to PyPI ✅.')
+"
+".github/workflows/publish.yml",32,"Publish to PyPI","check","4","run-step","check_pypi","NOT IMPLEMENTED"
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-script","-","git config --global user.name ""UltralyticsAssistant""
+git config --global user.email ""web@ultralytics.com""
+git tag -a ""$CURRENT_TAG"" -m ""$(git log -1 --pretty=%B)""
+git push origin ""$CURRENT_TAG""
+ultralytics-actions-summarize-release
+uv cache prune --ci
+"
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","git config --global user.email ""web@ultralytics.com"""
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","git tag -a ""$CURRENT_TAG"" -m ""$(git log -1 --pretty=%B)"""
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","ultralytics-actions-summarize-release"
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","git log -1 --pretty=%B"
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","git push origin ""$CURRENT_TAG"""
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","uv cache prune --ci"
+".github/workflows/publish.yml",43,"Publish to PyPI","check","5","run-step","-","git config --global user.name ""UltralyticsAssistant"""
+".github/workflows/publish.yml",44,"Publish to PyPI","check","-","expression","steps.check_pypi.outputs.increment == 'True'","steps.check_pypi.outputs.increment == 'True'"
+".github/workflows/publish.yml",46,"Publish to PyPI","check","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/publish.yml",47,"Publish to PyPI","check","-","expression","${{ steps.check_pypi.outputs.current_tag }}","steps.check_pypi.outputs.current_tag"
+".github/workflows/publish.yml",48,"Publish to PyPI","check","-","expression","${{ steps.check_pypi.outputs.previous_tag }}","steps.check_pypi.outputs.previous_tag"
+".github/workflows/publish.yml",49,"Publish to PyPI","check","-","expression","${{ secrets.OPENAI_API_KEY }}","secrets.OPENAI_API_KEY"
+".github/workflows/publish.yml",59,"Publish to PyPI","build","-","job","build","runs-on=ubuntu-latest"
+".github/workflows/publish.yml",60,"Publish to PyPI","build","-","expression","needs.check.outputs.increment == 'True'","needs.check.outputs.increment == 'True'"
+".github/workflows/publish.yml",63,"Publish to PyPI","build","-","permission","permission","contents: read"
+".github/workflows/publish.yml",65,"Publish to PyPI","build","0","uses-step","-","actions/checkout@v4"
+".github/workflows/publish.yml",66,"Publish to PyPI","build","1","uses-step","-","actions/setup-python@v5"
+".github/workflows/publish.yml",69,"Publish to PyPI","build","2","uses-step","-","astral-sh/setup-uv@v4"
+".github/workflows/publish.yml",70,"Publish to PyPI","build","3","run-script","-","uv pip install --system --no-cache build"
+".github/workflows/publish.yml",70,"Publish to PyPI","build","3","run-step","-","uv pip install --system --no-cache build"
+".github/workflows/publish.yml",71,"Publish to PyPI","build","4","run-script","-","python -m build"
+".github/workflows/publish.yml",71,"Publish to PyPI","build","4","run-step","-","python -m build"
+".github/workflows/publish.yml",72,"Publish to PyPI","build","5","uses-argument","name","dist"
+".github/workflows/publish.yml",72,"Publish to PyPI","build","5","uses-argument","path","dist/"
+".github/workflows/publish.yml",72,"Publish to PyPI","build","5","uses-step","-","actions/upload-artifact@v4"
+".github/workflows/publish.yml",76,"Publish to PyPI","build","6","run-script","-","uv cache prune --ci"
+".github/workflows/publish.yml",76,"Publish to PyPI","build","6","run-step","-","uv cache prune --ci"
+".github/workflows/publish.yml",79,"Publish to PyPI","publish","-","job","publish","runs-on=ubuntu-latest"
+".github/workflows/publish.yml",80,"Publish to PyPI","publish","-","expression","needs.check.outputs.increment == 'True'","needs.check.outputs.increment == 'True'"
+".github/workflows/publish.yml",86,"Publish to PyPI","publish","-","permission","permission","id-token: write"
+".github/workflows/publish.yml",88,"Publish to PyPI","publish","0","uses-argument","name","dist"
+".github/workflows/publish.yml",88,"Publish to PyPI","publish","0","uses-argument","path","dist/"
+".github/workflows/publish.yml",88,"Publish to PyPI","publish","0","uses-step","-","actions/download-artifact@v4"
+".github/workflows/publish.yml",92,"Publish to PyPI","publish","1","uses-step","-","pypa/gh-action-pypi-publish@release/v1"
+".github/workflows/publish.yml",95,"Publish to PyPI","notify","-","job","notify","runs-on=ubuntu-latest"
+".github/workflows/publish.yml",96,"Publish to PyPI","notify","-","expression","always() && needs.check.outputs.increment == 'True'","always() && needs.check.outputs.increment == 'True'"
+".github/workflows/publish.yml",99,"Publish to PyPI","notify","0","uses-step","-","actions/checkout@v4"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-script","-","PR_JSON=$(gh pr list --search ""${GITHUB_SHA}"" --state merged --json number,title --jq '.[0]')
+PR_NUMBER=$(echo ""${PR_JSON}"" | jq -r '.number')
+PR_TITLE=$(echo ""${PR_JSON}"" | jq -r '.title')
+echo ""PR_NUMBER=${PR_NUMBER}"" >> ""${GITHUB_ENV}""
+echo ""PR_TITLE=${PR_TITLE}"" >> ""${GITHUB_ENV}""
+"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","echo ""PR_NUMBER=${PR_NUMBER}"""
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","PR_JSON=$(gh pr list --search ""${GITHUB_SHA}"" --state merged --json number,title --jq '.[0]')"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","PR_NUMBER=$(echo ""${PR_JSON}"" | jq -r '.number')"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","PR_TITLE=$(echo ""${PR_JSON}"" | jq -r '.title')"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","gh pr list --search ""${GITHUB_SHA}"" --state merged --json number,title --jq '.[0]'"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","jq -r '.number'"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","jq -r '.title'"
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","echo ""${PR_JSON}"""
+".github/workflows/publish.yml",100,"Publish to PyPI","notify","1","run-step","-","echo ""PR_TITLE=${PR_TITLE}"""
+".github/workflows/publish.yml",102,"Publish to PyPI","notify","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"
+".github/workflows/publish.yml",109,"Publish to PyPI","notify","2","uses-step","-","slackapi/slack-github-action@v2.0.0"
+".github/workflows/publish.yml",110,"Publish to PyPI","notify","-","expression","needs.publish.result == 'success' && github.event_name == 'push'","needs.publish.result == 'success' && github.event_name == 'push'"
+".github/workflows/publish.yml",114,"Publish to PyPI","notify","-","expression","${{ secrets.SLACK_WEBHOOK_URL_YOLO }}","secrets.SLACK_WEBHOOK_URL_YOLO"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ env.PR_NUMBER }}","env.PR_NUMBER"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ env.PR_TITLE }}","env.PR_TITLE"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ github.actor }}","github.actor"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ github.repository }}","github.repository"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ github.run_id }}","github.run_id"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ github.workflow }}","github.workflow"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ job.status }}","job.status"
+".github/workflows/publish.yml",116,"Publish to PyPI","notify","-","expression","${{ needs.check.outputs.current_tag }}","needs.check.outputs.current_tag"
+".github/workflows/publish.yml",117,"Publish to PyPI","notify","3","uses-step","-","slackapi/slack-github-action@v2.0.0"
+".github/workflows/publish.yml",118,"Publish to PyPI","notify","-","expression","needs.publish.result != 'success'","needs.publish.result != 'success'"
+".github/workflows/publish.yml",122,"Publish to PyPI","notify","-","expression","${{ secrets.SLACK_WEBHOOK_URL_YOLO }}","secrets.SLACK_WEBHOOK_URL_YOLO"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ env.PR_NUMBER }}","env.PR_NUMBER"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ env.PR_TITLE }}","env.PR_TITLE"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ github.actor }}","github.actor"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ github.event_name }}","github.event_name"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ github.repository }}","github.repository"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ github.run_id }}","github.run_id"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ github.workflow }}","github.workflow"
+".github/workflows/publish.yml",124,"Publish to PyPI","notify","-","expression","${{ job.status }}","job.status"
+".github/workflows/stale.yml",3,"Close stale issues","-","-","workflow","Close stale issues","-"
+".github/workflows/stale.yml",5,"Close stale issues","-","-","event","schedule","externally-triggerable;privileged"
+".github/workflows/stale.yml",9,"Close stale issues","-","-","permission","permission","pull-requests: write"
+".github/workflows/stale.yml",9,"Close stale issues","-","-","permission","permission","issues: write"
+".github/workflows/stale.yml",14,"Close stale issues","stale","-","job","stale","runs-on=ubuntu-latest"
+".github/workflows/stale.yml",16,"Close stale issues","stale","0","uses-step","-","actions/stale@v9"
+".github/workflows/stale.yml",18,"Close stale issues","stale","-","expression","${{ secrets.GITHUB_TOKEN }}","secrets.GITHUB_TOKEN"

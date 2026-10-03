@@ -1,0 +1,47 @@
+{
+  "source": "https://old.tanstack.com/blog/npm-supply-chain-compromise-postmortem",
+  "evidenceType": "maintainer postmortem, separated from YAML-only detector input",
+  "eventDate": "2026-05-11",
+  "reportedCache": {
+    "key": "Linux-pnpm-store-6f9233a50def742c09fde54f56553d6b449a535adf87d4083690539f49ae4da11",
+    "scope": "refs/heads/main",
+    "savedAtUTC": "2026-05-11T11:29:00Z",
+    "restoredByReleaseRuns": [
+      "25613093674/attempt-4",
+      "25691781302/attempt-1"
+    ]
+  },
+  "reportedImpact": {
+    "maliciousVersions": 84,
+    "packages": 42,
+    "firstPublishUTC": "2026-05-11T19:20:39Z",
+    "lastPublishUTC": "2026-05-11T19:26:14Z",
+    "mechanism": "malware executed during release tests and used id-token: write to authenticate direct npm publishes; the declared Publish Packages step was skipped"
+  },
+  "unresolvedBySavedYAML": [
+    "the exact commit resolved by TanStack/config/.github/setup@main in each historical run",
+    "the exact bytes and internal object ID of the poisoned cache",
+    "the complete historical runner logs and all attacker actions",
+    "public detailed run logs now return HTTP 410; GitHub step metadata remains available"
+  ],
+  "publicJobMetadata": {
+    "source": "GitHub REST API run-attempt jobs; saved separately at results/tanstack-cache-chain/public-run-metadata.json",
+    "checkedUTCDate": "2026-10-02",
+    "runs": [
+      {
+        "id": 25613093674,
+        "attempt": 4
+      },
+      {
+        "id": 25691781302,
+        "attempt": 1
+      }
+    ],
+    "independentlyObservedInBothRuns": {
+      "Setup Tools": "success",
+      "Run Tests": "failure",
+      "Publish Packages": "skipped"
+    },
+    "evidenceLimit": "Step metadata does not show cache key/object, restored bytes, external Action SHA, malware behavior or direct OIDC publish"
+  }
+}

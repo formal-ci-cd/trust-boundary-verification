@@ -1,0 +1,127 @@
+{
+  "repository": "https://github.com/TanStack/router",
+  "incidentSource": "https://old.tanstack.com/blog/npm-supply-chain-compromise-postmortem",
+  "advisory": "https://github.com/TanStack/router/security/advisories/GHSA-g7cv-rxg3-hmpx",
+  "confirmedExploitation": true,
+  "preIncidentCommit": "b1c061aff9185cdf5fdc08c0136382a9dce0302f",
+  "mitigationCommit": "5d92d5aea3020e9db90b872a8c394c6fd0847c6d",
+  "snapshotScope": "all 7 workflow files and license at each repository commit; external setup Action pinned separately; no attacker payload",
+  "separateCombinedInputEvaluation": true,
+  "externalAction": {
+    "repository": "https://github.com/TanStack/config",
+    "workflowReference": "TanStack/config/.github/setup@main",
+    "latestMainCommitBeforeAttack": "1ba8c18d3eb01c208a59fc27c3076c9d10bdc9a8",
+    "lastActionFileCommit": "d8cef73c4209d91ca578274ce6f83770f64752d3",
+    "resolutionStatus": "inferred from public main history; exact runtime Action SHA not observed",
+    "files": [
+      {
+        "upstreamPath": ".github/setup/action.yml",
+        "snapshot": "external-setup/.github/setup/action.yml",
+        "sha256": "f9fa5b4da4d23a7ffaaa3b6284d178a4e5b6c332675821074f969065df13a793"
+      },
+      {
+        "upstreamPath": "LICENSE",
+        "snapshot": "external-setup/LICENSE",
+        "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+      }
+    ]
+  },
+  "files": [
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/autofix.yml",
+      "snapshot": "pre-incident/.github/workflows/autofix.yml",
+      "sha256": "ba0bce84199e14dfce01f03e82fee6254d61fccbb4a6e1e21c488004a9a4b8aa"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/bundle-size.yml",
+      "snapshot": "pre-incident/.github/workflows/bundle-size.yml",
+      "sha256": "bf76e0e879713dbfe808a06a43555376466175f29731d1fcaf34f41f5db355f4"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/check-skills.yml",
+      "snapshot": "pre-incident/.github/workflows/check-skills.yml",
+      "sha256": "026bbbbb863cc480118d1aba694e459c0f71e9257b696d23400b96714bfc8770"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/client-nav-benchmarks.yml",
+      "snapshot": "pre-incident/.github/workflows/client-nav-benchmarks.yml",
+      "sha256": "c5c108132974b136961016309c4d72b4e38b96902cacfc6a4fb533452b9b91ce"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/labeler.yml",
+      "snapshot": "pre-incident/.github/workflows/labeler.yml",
+      "sha256": "3433dda1fb6bc7f00dcf2f3d692aac937a3d020c224964c242098c9b5a37d1ac"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/pr.yml",
+      "snapshot": "pre-incident/.github/workflows/pr.yml",
+      "sha256": "d8458f5a96b70b6c2fd0b4cffabe6589186a4f1cff53e392a8e1b0b5df150989"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": ".github/workflows/release.yml",
+      "snapshot": "pre-incident/.github/workflows/release.yml",
+      "sha256": "b888f3853a12223d0163893b7e735daf851e1f164d539f81696612afc95422ae"
+    },
+    {
+      "variant": "pre-incident",
+      "upstreamPath": "LICENSE",
+      "snapshot": "pre-incident/LICENSE",
+      "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/autofix.yml",
+      "snapshot": "mitigation/.github/workflows/autofix.yml",
+      "sha256": "ba0bce84199e14dfce01f03e82fee6254d61fccbb4a6e1e21c488004a9a4b8aa"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/bundle-size.yml",
+      "snapshot": "mitigation/.github/workflows/bundle-size.yml",
+      "sha256": "90aa90cfa84c4bb8fe6f3019aab7266038984fba1e623ee95aee522f47f5df6d"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/check-skills.yml",
+      "snapshot": "mitigation/.github/workflows/check-skills.yml",
+      "sha256": "026bbbbb863cc480118d1aba694e459c0f71e9257b696d23400b96714bfc8770"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/client-nav-benchmarks.yml",
+      "snapshot": "mitigation/.github/workflows/client-nav-benchmarks.yml",
+      "sha256": "c5c108132974b136961016309c4d72b4e38b96902cacfc6a4fb533452b9b91ce"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/labeler.yml",
+      "snapshot": "mitigation/.github/workflows/labeler.yml",
+      "sha256": "61be3dc9ccefd4164a79e1d239ef7f26aeef23240d01c4c76db126602874ac43"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/pr.yml",
+      "snapshot": "mitigation/.github/workflows/pr.yml",
+      "sha256": "d8458f5a96b70b6c2fd0b4cffabe6589186a4f1cff53e392a8e1b0b5df150989"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": ".github/workflows/release.yml",
+      "snapshot": "mitigation/.github/workflows/release.yml",
+      "sha256": "b888f3853a12223d0163893b7e735daf851e1f164d539f81696612afc95422ae"
+    },
+    {
+      "variant": "mitigation",
+      "upstreamPath": "LICENSE",
+      "snapshot": "mitigation/LICENSE",
+      "sha256": "a405ee70c632bb938acb7ac5f210e814409b3760ea9d2329d8ed8ffcfd11a0e7"
+    }
+  ]
+}

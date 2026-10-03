@@ -1,0 +1,64 @@
+{
+  "purpose": "Retrospective analysis of the confirmed 2024-12-06 SpotBugs attack path; no third-party workflow execution.",
+  "attackPR": {
+    "number": 1116,
+    "metadataFile": "attack-pr-metadata.json",
+    "source": "https://github.com/spotbugs/sonar-findbugs/pull/1116",
+    "filesFile": "attack-pr-files.json",
+    "filesSha256": "8cf2f9ada130673afeadcd7d6e7f34a5471f2226937e667e9079fbf23407f1e1",
+    "filesSource": "https://api.github.com/repos/spotbugs/sonar-findbugs/pulls/1116/files"
+  },
+  "workflowLicenseDeclaration": "https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/pom.xml#L22-L28",
+  "externalActionTag": "v1",
+  "currentAnnotatedTagObject": "d0c3785880c08a358711ee8047f593cbcf1cdcfd",
+  "currentTagTarget": "94f77f7a80cd666cb3155084e428254fea4281fd",
+  "taggerDate": "2024-02-09T14:19:27Z",
+  "historicalRuntimeTarget": "unknown; mutable tag could have moved after the incident",
+  "researchControl": {
+    "path": "safe-ref-control/.github/workflows/sonarqube.yml",
+    "sha256": "23ca67ac199341c3a1e13e11ec1f93e31ed450d41e9a246dd8c163f8748b6280",
+    "edit": "Only if_true changes from the PR merge ref to ${{ github.sha }}; this is not an upstream fix"
+  },
+  "files": [
+    {
+      "repository": "spotbugs/sonar-findbugs",
+      "commit": "e240bc1aca68337b2b40e100fb24552d27eeb8cc",
+      "path": ".github/workflows/sonarqube.yml",
+      "localPath": ".github/workflows/sonarqube.yml",
+      "sha256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+      "source": "https://github.com/spotbugs/sonar-findbugs/blob/e240bc1aca68337b2b40e100fb24552d27eeb8cc/.github/workflows/sonarqube.yml"
+    },
+    {
+      "repository": "haya14busa/action-cond",
+      "commit": "94f77f7a80cd666cb3155084e428254fea4281fd",
+      "path": "action.yml",
+      "localPath": "external-action-cond/action.yml",
+      "sha256": "2529b9192106099dc158de6127868bd676abdcc546d7863f13abce76628dc9cd",
+      "source": "https://github.com/haya14busa/action-cond/blob/94f77f7a80cd666cb3155084e428254fea4281fd/action.yml"
+    },
+    {
+      "repository": "haya14busa/action-cond",
+      "commit": "94f77f7a80cd666cb3155084e428254fea4281fd",
+      "path": "src/main.ts",
+      "localPath": "external-action-cond/main.ts",
+      "sha256": "6b3458de4d344d4f1655455797e4584f5f9e6357c9fab97b318703b239c8614d",
+      "source": "https://github.com/haya14busa/action-cond/blob/94f77f7a80cd666cb3155084e428254fea4281fd/src/main.ts"
+    },
+    {
+      "repository": "haya14busa/action-cond",
+      "commit": "94f77f7a80cd666cb3155084e428254fea4281fd",
+      "path": "dist/index.js",
+      "localPath": "external-action-cond/index.js",
+      "sha256": "435ce592c132d49bc03383759c34e19317f0b9886f4a32081f196e2e1f3f1eb0",
+      "source": "https://github.com/haya14busa/action-cond/blob/94f77f7a80cd666cb3155084e428254fea4281fd/dist/index.js"
+    },
+    {
+      "repository": "haya14busa/action-cond",
+      "commit": "94f77f7a80cd666cb3155084e428254fea4281fd",
+      "path": "LICENSE",
+      "localPath": "external-action-cond/LICENSE",
+      "sha256": "7d070f6b64d9bcc530fe99cc21eaaa4b3c364e0b2d367d7735671fa202a03b32",
+      "source": "https://github.com/haya14busa/action-cond/blob/94f77f7a80cd666cb3155084e428254fea4281fd/LICENSE"
+    }
+  ]
+}

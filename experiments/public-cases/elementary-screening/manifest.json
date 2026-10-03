@@ -1,0 +1,20 @@
+{
+  "repository": "https://github.com/elementary-data/elementary",
+  "incidentSource": "https://www.elementary-data.com/post/security-incident-report-malicious-release-of-elementary-oss-python-cli-v0-23-3",
+  "removalCommit": "edd283c7f7216a9d940132b772c4c7ea03a4d445",
+  "preRemovalCommit": "e5af7e7a569e0af691672831524b372e304faf12",
+  "earlierIdenticalWorkflowCommit": "c7f611ff1d647c10ce440e00d47543c2da4a5ac3",
+  "snapshotScope": "one exploited workflow and the repository license; candidate screening, not a whole-repository comparison",
+  "files": [
+    {
+      "upstreamPath": ".github/workflows/update_pylon_issue.yml",
+      "snapshot": ".github/workflows/update_pylon_issue.yml",
+      "sha256": "77ed5a6b2e2cbe39af1a50fd0b86cba09e3f75c96a75c4be5d8924c6c388effe"
+    },
+    {
+      "upstreamPath": "LICENSE",
+      "snapshot": "LICENSE",
+      "sha256": "abbb092d07754c3dbfa05c4748e9262db9ee3163df77ef69f07cdb201fcc67c3"
+    }
+  ]
+}

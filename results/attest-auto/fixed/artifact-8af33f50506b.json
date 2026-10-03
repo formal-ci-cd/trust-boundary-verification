@@ -1,0 +1,397 @@
+{
+  "schemaVersion": "0.3.0",
+  "scenario": {
+    "id": "artifact-8af33f50506b",
+    "platform": "GitHub Actions",
+    "description": "Automatically derived static over-approximation; no runtime success claimed",
+    "evidenceStatus": "incomplete"
+  },
+  "producer": {
+    "workflow": {
+      "name": "Rebuild dist",
+      "file": ".github/workflows/rebuild-dist.yml",
+      "event": "pull_request"
+    },
+    "operation": {
+      "id": "artifact-write:rebuild:6",
+      "kind": "artifactWriteIntent",
+      "jobId": "rebuild",
+      "stepIndex": 6,
+      "name": "rebuilt-dist",
+      "path": "dist/",
+      "runId": null
+    }
+  },
+  "consumer": {
+    "workflow": {
+      "name": "Commit dist",
+      "file": ".github/workflows/commit-dist.yml",
+      "event": "workflow_run"
+    },
+    "operation": {
+      "id": "artifact-read:commit:0",
+      "kind": "artifactReadIntent",
+      "jobId": "commit",
+      "stepIndex": 0,
+      "name": "rebuilt-dist",
+      "path": "${{ runner.temp }}/incoming/dist",
+      "runId": "${{ github.event.workflow_run.id }}"
+    }
+  },
+  "sharedObject": {
+    "kind": "artifact",
+    "name": "rebuilt-dist",
+    "producerRunSelector": "current producer run",
+    "consumerRunSelector": "github.event.workflow_run.id",
+    "identityBasis": [
+      "static name/workflow/run-selector match only"
+    ]
+  },
+  "facts": {
+    "producerUntrusted": "false",
+    "writeIntent": "true",
+    "writeAuthorized": "unknown",
+    "writeSucceeded": "unknown",
+    "sameObject": "unknown",
+    "readSucceeded": "unknown",
+    "consumerUsesObject": "unknown",
+    "integrityCheckPresent": "unknown",
+    "integrityCheckPassed": "unknown",
+    "privilegedConsumer": "true",
+    "hasAuthority": "true"
+  },
+  "traceMap": {
+    "start": {
+      "workflowFile": ".github/workflows/rebuild-dist.yml",
+      "workflowName": "Rebuild dist",
+      "jobId": "rebuild",
+      "stepIndex": 6,
+      "meaning": "Configured artifact upload"
+    },
+    "object_written": {
+      "workflowFile": ".github/workflows/rebuild-dist.yml",
+      "workflowName": "Rebuild dist",
+      "jobId": "rebuild",
+      "stepIndex": 6,
+      "meaning": "Potential successful upload, not observed"
+    },
+    "object_restored": {
+      "workflowFile": ".github/workflows/commit-dist.yml",
+      "workflowName": "Commit dist",
+      "jobId": "commit",
+      "stepIndex": 0,
+      "meaning": "Potential same artifact download, not observed"
+    },
+    "integrity_checked": {
+      "workflowFile": ".github/workflows/commit-dist.yml",
+      "workflowName": "Commit dist",
+      "jobId": "commit",
+      "stepIndex": 0,
+      "meaning": "Unknown integrity validation"
+    },
+    "object_used": {
+      "workflowFile": ".github/workflows/commit-dist.yml",
+      "workflowName": "Commit dist",
+      "jobId": "commit",
+      "stepIndex": 0,
+      "meaning": "Potential artifact-derived ref use"
+    },
+    "authority_reached": {
+      "workflowFile": ".github/workflows/commit-dist.yml",
+      "workflowName": "Commit dist",
+      "jobId": "commit",
+      "stepIndex": 0,
+      "meaning": "Configured write capability, not observed write"
+    }
+  },
+  "evidence": [
+    {
+      "kind": "static",
+      "source": "experiments/public-cases/actions-attest/fixed/.github/workflows/commit-dist.yml",
+      "claim": "Automatic limited metadata/source-policy rules"
+    },
+    {
+      "kind": "inference",
+      "source": "chain_to_nusmv.py",
+      "claim": "Potential execution under unknown facts; not confirmed exploitation"
+    }
+  ],
+  "provenance": [
+    {
+      "element": "facts.producerUntrusted",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; static abstraction"
+    },
+    {
+      "element": "facts.writeIntent",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; static abstraction"
+    },
+    {
+      "element": "facts.writeAuthorized",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.writeSucceeded",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.sameObject",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.readSucceeded",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.consumerUsesObject",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.integrityCheckPresent",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.integrityCheckPassed",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; unresolved"
+    },
+    {
+      "element": "facts.privilegedConsumer",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; static abstraction"
+    },
+    {
+      "element": "facts.hasAuthority",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatic limited rule; static abstraction"
+    },
+    {
+      "element": "consumer.operation.id",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.jobId",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.kind",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.name",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.path",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.runId",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.operation.stepIndex",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.workflow.event",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.workflow.file",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "consumer.workflow.name",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.id",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.jobId",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.kind",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.name",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.path",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.runId",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.operation.stepIndex",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.workflow.event",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.workflow.file",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "producer.workflow.name",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "scenario.description",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "scenario.evidenceStatus",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "scenario.id",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "scenario.platform",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "sharedObject.consumerRunSelector",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "sharedObject.identityBasis",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "sharedObject.kind",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "sharedObject.name",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "sharedObject.producerRunSelector",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.authority_reached",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.integrity_checked",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.object_restored",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.object_used",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.object_written",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    },
+    {
+      "element": "traceMap.start",
+      "sourceKind": "static-analysis",
+      "source": ".github/workflows/commit-dist.yml",
+      "claim": "Automatically generated structure or abstract trace location; no observed execution"
+    }
+  ]
+}

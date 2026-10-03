@@ -1,0 +1,151 @@
+{
+  "scope": "One boundary condition per control in pinned finite artifact models; runtime control not demonstrated",
+  "rows": [
+    {
+      "case": "A1",
+      "control": "original",
+      "changedFacts": {},
+      "verdict": "unsafe"
+    },
+    {
+      "case": "A1",
+      "control": "source-excluded",
+      "changedFacts": {
+        "producerUntrusted": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "write-denied",
+      "changedFacts": {
+        "writeAuthorized": "false",
+        "writeSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "save-failed",
+      "changedFacts": {
+        "writeSucceeded": "false",
+        "readSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "different-object",
+      "changedFacts": {
+        "sameObject": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "restore-failed",
+      "changedFacts": {
+        "readSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "not-used",
+      "changedFacts": {
+        "consumerUsesObject": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "verified-before-use",
+      "changedFacts": {
+        "integrityCheckPresent": "true",
+        "integrityCheckPassed": "true"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A1",
+      "control": "no-authority",
+      "changedFacts": {
+        "hasAuthority": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "original",
+      "changedFacts": {},
+      "verdict": "unsafe"
+    },
+    {
+      "case": "A5",
+      "control": "source-excluded",
+      "changedFacts": {
+        "producerUntrusted": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "write-denied",
+      "changedFacts": {
+        "writeAuthorized": "false",
+        "writeSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "save-failed",
+      "changedFacts": {
+        "writeSucceeded": "false",
+        "readSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "different-object",
+      "changedFacts": {
+        "sameObject": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "restore-failed",
+      "changedFacts": {
+        "readSucceeded": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "not-used",
+      "changedFacts": {
+        "consumerUsesObject": "false"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "verified-before-use",
+      "changedFacts": {
+        "integrityCheckPresent": "true",
+        "integrityCheckPassed": "true"
+      },
+      "verdict": "safe"
+    },
+    {
+      "case": "A5",
+      "control": "no-authority",
+      "changedFacts": {
+        "hasAuthority": "false"
+      },
+      "verdict": "safe"
+    }
+  ]
+}

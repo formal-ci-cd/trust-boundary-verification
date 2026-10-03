@@ -1,0 +1,206 @@
+{
+  "purpose": "Retrospective one-workflow comparison of existing tools and a conditional proposal-side path analyzer; historical external-action runtime target unverified",
+  "incident": "2024-12-06 attack PR spotbugs/sonar-findbugs#1116",
+  "sourceCommit": "e240bc1aca68337b2b40e100fb24552d27eeb8cc",
+  "sourceFile": ".github/workflows/sonarqube.yml",
+  "sourceBlobSHA": "176cd5cd4cbd7c7a05f1e9730c1e40542ebe64c9",
+  "sourceSHA256": "e7d3acaa4633e114aa901fba6b05eb236bbe67aa89a84b148db0c0db96ff5f74",
+  "scope": "Original attacked workflow, plus a separate current-CodeQL combined-input check containing the same workflow and fixed external Action YAML/JavaScript; all scans retrospective and offline",
+  "codeqlSuite": "actions-code-scanning.qls",
+  "files": [
+    {
+      "file": "codeql-2.25.4-default.sarif.gz",
+      "uncompressedSHA256": "40b2a57dcec6bd0ad351c9d9ed79aa81b776586ad8ecfea50ed596a425baa6b0",
+      "compressedSHA256": "a611eeb7989a89aec87dcbff1f7fb909b676623b1ebc3baa792f6d8fd06a007e",
+      "findingCount": 0,
+      "findings": []
+    },
+    {
+      "file": "codeql-2.27.1-default.sarif.gz",
+      "uncompressedSHA256": "5eafef4c7345e04176ee9d5ba8905ec3a863bac423b7e4f4ad011b5d2c9a5900",
+      "compressedSHA256": "3b4f5fcf2d451563ca675547e36302528036025312649036c81c99ae2f3e77f3",
+      "findingCount": 0,
+      "findings": []
+    },
+    {
+      "file": "zizmor-1.30.1.sarif.gz",
+      "uncompressedSHA256": "08b063ce0c6f4dda09ec71f185af26e80ba48273ca35537bfa885d327d477fad",
+      "compressedSHA256": "c2e0892b6091ce4a6bd801e3cc798deb220e3f9f0cc9dd9a790d0e813a621ed9",
+      "findingCount": 8,
+      "findings": [
+        {
+          "rule": "zizmor/artipacked",
+          "line": 42
+        },
+        {
+          "rule": "zizmor/dangerous-triggers",
+          "line": 1
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "line": 36
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "line": 42
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "line": 47
+        },
+        {
+          "rule": "zizmor/unpinned-uses",
+          "line": 53
+        },
+        {
+          "rule": "zizmor/cache-poisoning",
+          "line": 47
+        },
+        {
+          "rule": "zizmor/cache-poisoning",
+          "line": 53
+        }
+      ]
+    },
+    {
+      "file": "sisakulint-0.3.7.sarif.gz",
+      "uncompressedSHA256": "f97814317e074222c200d9556c52bbaf585a35fcf8e117f5e34fd134e543f93d",
+      "compressedSHA256": "4877ef28ff2009feeaea0e9d9f4b0264d9e9d29a6d4d509258b270a15d3e4b10",
+      "findingCount": 15,
+      "findings": [
+        {
+          "rule": "dependabot-github-actions",
+          "line": 1
+        },
+        {
+          "rule": "dangerous-triggers-critical",
+          "line": 8
+        },
+        {
+          "rule": "commit-sha",
+          "line": 35
+        },
+        {
+          "rule": "commit-sha",
+          "line": 42
+        },
+        {
+          "rule": "artipacked",
+          "line": 42
+        },
+        {
+          "rule": "deprecated-node-runtime",
+          "line": 42
+        },
+        {
+          "rule": "untrusted-checkout",
+          "line": 45
+        },
+        {
+          "rule": "commit-sha",
+          "line": 46
+        },
+        {
+          "rule": "cache-poisoning",
+          "line": 46
+        },
+        {
+          "rule": "dependabot-ecosystem",
+          "line": 47
+        },
+        {
+          "rule": "commit-sha",
+          "line": 52
+        },
+        {
+          "rule": "cache-poisoning",
+          "line": 52
+        },
+        {
+          "rule": "cache-poisoning",
+          "line": 52
+        },
+        {
+          "rule": "deprecated-node-runtime",
+          "line": 53
+        },
+        {
+          "rule": "cache-poisoning-poisonable-step",
+          "line": 59
+        }
+      ]
+    },
+    {
+      "file": "codeql-2.25.4-security-and-quality.sarif.gz",
+      "suite": "actions-security-and-quality.qls",
+      "codeqlVersion": "2.25.4",
+      "queryPackVersion": "0.6.27",
+      "uncompressedSHA256": "790399a81f50341fecbef87eeec4455dbd901b743687ebff15fceed96f534b19",
+      "compressedSHA256": "4457478dc32c742248feb1d2d3328e4b6e6ddd900d0e430eec3db8f7d1ced127",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-security-and-quality.sarif.gz",
+      "suite": "actions-security-and-quality.qls",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "uncompressedSHA256": "34743c0bc2a739f7f0e279eb1a9820b6d90aff62a2dd241a3b79d9c386c64cd4",
+      "compressedSHA256": "49d465f91eac72a6d79bbd393d062a82e71f621f1f4856badd8b0f8ba2d0ba36",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-combined-default.sarif.gz",
+      "input": "workflow plus fixed external action YAML and bundled JavaScript",
+      "extractedActionsFiles": "2/2",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "suite": "actions-code-scanning.qls",
+      "uncompressedSHA256": "1bd249055256e083942ef8c0968cfec95d4ef2b4224fc15434c1d1b57becb24e",
+      "compressedSHA256": "970c4988983cf39377de1d50de06357c5cdceef1c71268d4671ab6d12535fa95",
+      "findingCount": 0,
+      "findings": [],
+      "targetPathFindingCount": 0
+    },
+    {
+      "file": "codeql-2.27.1-combined-security-and-quality.sarif.gz",
+      "input": "workflow plus fixed external action YAML and bundled JavaScript",
+      "extractedActionsFiles": "2/2",
+      "codeqlVersion": "2.27.1",
+      "queryPackVersion": "0.6.36",
+      "suite": "actions-security-and-quality.qls",
+      "uncompressedSHA256": "1d2ad9b32f5e600ffd9439bbd556aa2fcb7b1d7ac879c7702a09fe892753968f",
+      "compressedSHA256": "4c9acf9397eba4698b29f72d3385c90811602579bb841a50e8fe3f05d1a9f85c",
+      "findingCount": 1,
+      "findings": [
+        {
+          "rule": "actions/unpinned-tag",
+          "line": 36
+        }
+      ],
+      "targetPathFindingCount": 0
+    }
+  ],
+  "proposalResult": "conditional-chain-analysis.json",
+  "proposalResultSHA256": "b3bbe773e72aee1448aae980fb8eb9ebb09687a827bbfdcfa0928aebce2c8b52",
+  "combinedInput": {
+    "workflow": "experiments/public-cases/spotbugs-chain/.github/workflows/sonarqube.yml",
+    "externalActionYAML": "experiments/public-cases/spotbugs-chain/external-action-cond/action.yml",
+    "externalActionBundledJS": "experiments/public-cases/spotbugs-chain/external-action-cond/index.js",
+    "codeqlActionsExtractedFiles": "2/2 YAML files; bundled JavaScript is present but not extracted as an Actions file",
+    "sourceDigests": "experiments/public-cases/spotbugs-chain/manifest.json"
+  }
+}

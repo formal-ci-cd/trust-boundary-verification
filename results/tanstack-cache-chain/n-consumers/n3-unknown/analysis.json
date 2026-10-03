@@ -1,0 +1,147 @@
+{
+  "schemaVersion": "tanstack-n-consumers-0.1",
+  "scope": "One YAML-derived producer; N synthetic consumers except N=2 public-run count; clean initial cache; no eviction",
+  "consumers": 3,
+  "frozenUnknownFacts": true,
+  "cases": [
+    {
+      "variant": "pre-incident",
+      "cacheScopeCompatible": true,
+      "sourceEvidence": [
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "pre-incident/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "pre-incident/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "consumers": 3,
+        "frozenUnknownFacts": true,
+        "reachableStates": 146368,
+        "possible": true,
+        "witnessFacts": {
+          "save": true,
+          "key1": false,
+          "restore1": false,
+          "execute1": false,
+          "key2": false,
+          "restore2": false,
+          "execute2": false,
+          "key3": true,
+          "restore3": true,
+          "execute3": true
+        },
+        "seconds": 0.213
+      }
+    },
+    {
+      "variant": "mitigation",
+      "cacheScopeCompatible": false,
+      "sourceEvidence": [
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 7,
+          "role": "fork-pr-event"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 38,
+          "role": "untrusted-pr-checkout"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 43,
+          "role": "producer-external-setup"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 18,
+          "role": "shared-action-cache"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 21,
+          "role": "cache-key-expression"
+        },
+        {
+          "file": "external-setup/.github/setup/action.yml",
+          "line": 26,
+          "role": "untrusted-install"
+        },
+        {
+          "file": "mitigation/.github/workflows/bundle-size.yml",
+          "line": 46,
+          "role": "untrusted-build"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 17,
+          "role": "oidc-authority"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 43,
+          "role": "consumer-external-setup"
+        },
+        {
+          "file": "mitigation/.github/workflows/release.yml",
+          "line": 46,
+          "role": "privileged-use-after-restore"
+        }
+      ],
+      "bfs": {
+        "consumers": 3,
+        "frozenUnknownFacts": true,
+        "reachableStates": 138240,
+        "possible": false,
+        "witnessFacts": null,
+        "seconds": 0.2
+      }
+    }
+  ]
+}

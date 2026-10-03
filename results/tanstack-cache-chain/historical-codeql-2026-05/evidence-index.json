@@ -1,0 +1,74 @@
+{
+  "purpose": "Contemporaneous available CodeQL baseline for the May 11 2026 TanStack incident",
+  "cliVersion": "2.25.4",
+  "cliReleaseDate": "2026-05-07",
+  "cliReleaseURL": "https://github.com/github/codeql-cli-binaries/releases/tag/v2.25.4",
+  "linux64ArchiveSHA256": "d585e31776327b97039427f04bd9ed322f8abb216e59b5ee7ad33076b3b28055",
+  "queryPack": "codeql/actions-queries@0.6.27",
+  "queryPackTag": "github/codeql@codeql-cli/v2.25.4",
+  "environment": "Docker linux/amd64 ubuntu:24.04 --network none; x64 CLI and its bundled Actions extractor; pinned query pack",
+  "input": "Same 7 TanStack/router workflow snapshots plus pinned TanStack/config Setup Action used in current comparison; one-line control is synthetic",
+  "interpretation": "Historical CodeQL already alerts on the exploited pull_request_target event in the original and one-line control, and no longer alerts after mitigation. Do not claim exclusive detection superiority on TanStack. The alert does not show the downstream release OIDC job, whereas the proposed conditional model connects them.",
+  "cases": [
+    {
+      "case": "pre-incident",
+      "file": "pre-incident-default.sarif.gz",
+      "sha256": "245e8ff0ab13e04cf236d11dc9c6c1867541ec5efdb767650ebc47994f4e2ba5",
+      "extractedActionsFiles": 8,
+      "findingCount": 1,
+      "findingRules": [
+        "actions/cache-poisoning/poisonable-step"
+      ],
+      "warningEvents": [
+        "pull_request_target"
+      ],
+      "crossWorkflowCacheToOIDCFinding": false
+    },
+    {
+      "case": "without-dispatch-control",
+      "file": "without-dispatch-control-default.sarif.gz",
+      "sha256": "49dd8b52db8417f999482b8cbca34d83ca60793ef84b2eb1f1997df0a868c15e",
+      "extractedActionsFiles": 8,
+      "findingCount": 1,
+      "findingRules": [
+        "actions/cache-poisoning/poisonable-step"
+      ],
+      "warningEvents": [
+        "pull_request_target"
+      ],
+      "crossWorkflowCacheToOIDCFinding": false
+    },
+    {
+      "case": "mitigation",
+      "file": "mitigation-default.sarif.gz",
+      "sha256": "a2e139d2bfe41b839eaa5d1965a001a3baafed29f26c1328fceb1cfc70b1fa48",
+      "extractedActionsFiles": 8,
+      "findingCount": 0,
+      "findingRules": [],
+      "warningEvents": [],
+      "crossWorkflowCacheToOIDCFinding": false
+    }
+  ],
+  "mixedVersionControl": {
+    "setup": "CLI and extractor 2.27.1 with historical query pack 0.6.27 on separately created current databases",
+    "purpose": "Shows that a historical query pack alone does not reproduce the contemporaneous CLI-plus-pack result; do not use as incident-time baseline",
+    "cases": [
+      {
+        "case": "pre",
+        "file": "mixed-current-cli-old-pack-pre.sarif.gz",
+        "sha256": "6a98ec88ddadfe38342b37db99fe1eba3f79f497661f2f08062edb5ee335c19c",
+        "findingCount": 1,
+        "warningEvents": [
+          "workflow_dispatch"
+        ]
+      },
+      {
+        "case": "control",
+        "file": "mixed-current-cli-old-pack-control.sarif.gz",
+        "sha256": "187e7029327e9802ee14332620670a2893b8b7ccbb064bf5d3795590024f5fb0",
+        "findingCount": 0,
+        "warningEvents": []
+      }
+    ]
+  }
+}

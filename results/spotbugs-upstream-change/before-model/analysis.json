@@ -1,0 +1,10 @@
+{
+  "status": "unsupported-environment-gate",
+  "config": null,
+  "unsupportedJobs": [
+    {
+      "file": ".github/workflows/sonarqube.yml",
+      "job": "build"
+    }
+  ]
+}

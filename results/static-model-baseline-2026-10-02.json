@@ -1,0 +1,104 @@
+{
+  "scope": "equivalence of existing frozen-fact abstraction only",
+  "results": [
+    {
+      "chain": "model/generated-chains/gha-a3-auto.json",
+      "script": {
+        "verdict": "safe",
+        "witness": null,
+        "scope": "same frozen-fact abstraction; not a repository safety verdict"
+      },
+      "nusmvVerdict": "safe"
+    },
+    {
+      "chain": "model/generated-chains/gha-a4-auto.json",
+      "script": {
+        "verdict": "safe",
+        "witness": null,
+        "scope": "same frozen-fact abstraction; not a repository safety verdict"
+      },
+      "nusmvVerdict": "safe"
+    },
+    {
+      "chain": "model/generated-chains/gha-a2-auto.json",
+      "script": {
+        "verdict": "safe",
+        "witness": null,
+        "scope": "same frozen-fact abstraction; not a repository safety verdict"
+      },
+      "nusmvVerdict": "safe"
+    },
+    {
+      "chain": "model/generated-chains/gha-a1-auto.json",
+      "script": {
+        "verdict": "unsafe",
+        "witness": {
+          "producer_untrusted": true,
+          "write_intent": true,
+          "write_authorized": true,
+          "write_succeeded": true,
+          "same_object": true,
+          "read_succeeded": true,
+          "consumer_uses_object": true,
+          "integrity_check_present": false,
+          "integrity_check_passed": false,
+          "privileged_consumer": true,
+          "has_authority": true
+        },
+        "scope": "same frozen-fact abstraction; not observed exploitation"
+      },
+      "nusmvVerdict": "unsafe"
+    },
+    {
+      "chain": "results/attest-auto/vulnerable/artifact-62e4104bcbad.json",
+      "script": {
+        "verdict": "unsafe",
+        "witness": {
+          "producer_untrusted": true,
+          "write_intent": true,
+          "write_authorized": true,
+          "write_succeeded": true,
+          "same_object": true,
+          "read_succeeded": true,
+          "consumer_uses_object": true,
+          "integrity_check_present": false,
+          "integrity_check_passed": false,
+          "privileged_consumer": true,
+          "has_authority": true
+        },
+        "scope": "same frozen-fact abstraction; not observed exploitation"
+      },
+      "nusmvVerdict": "unsafe"
+    },
+    {
+      "chain": "results/attest-auto/fixed/artifact-8af33f50506b.json",
+      "script": {
+        "verdict": "safe",
+        "witness": null,
+        "scope": "same frozen-fact abstraction; not a repository safety verdict"
+      },
+      "nusmvVerdict": "safe"
+    },
+    {
+      "chain": "model/case-studies/gha-a5-actions-attest.json",
+      "script": {
+        "verdict": "unsafe",
+        "witness": {
+          "producer_untrusted": true,
+          "write_intent": true,
+          "write_authorized": true,
+          "write_succeeded": true,
+          "same_object": true,
+          "read_succeeded": true,
+          "consumer_uses_object": true,
+          "integrity_check_present": false,
+          "integrity_check_passed": false,
+          "privileged_consumer": true,
+          "has_authority": true
+        },
+        "scope": "same frozen-fact abstraction; not observed exploitation"
+      },
+      "nusmvVerdict": "unsafe"
+    }
+  ]
+}

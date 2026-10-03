@@ -1,0 +1,2579 @@
+{
+  "scope": "external-fork artifact metadata-to-git-ref rule only; not a repository safety verdict",
+  "coverage": {
+    "workflowCount": 9,
+    "artifactCandidates": 0,
+    "unsupportedResources": [
+      {
+        "file": ".github/workflows/merge-main-into-prs.yml",
+        "job": "Merge",
+        "step": 1,
+        "action": "actions/setup-python",
+        "reason": "cache namespace, key matching and historical platform policy are not modeled"
+      }
+    ],
+    "emptyCandidateMeaning": "unknown/unsupported; never safe"
+  },
+  "models": {
+    ".github/workflows/ci.yaml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/ci.yaml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Ultralytics CI",
+        "file": ".github/workflows/ci.yaml",
+        "events": [
+          {
+            "name": "push",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "pull_request",
+            "externallyTriggerable": true,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "schedule",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          },
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "HUB",
+            "runnerLabels": [
+              "${{ matrix.os }}"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 51
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "${{ matrix.python-version }}"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 52
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 55
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "uv pip install --system . --extra-index-url https://download.pytorch.org/whl/cpu\n",
+                "commands": [
+                  {
+                    "text": "uv pip install --system . --extra-index-url https://download.pytorch.org/whl/cpu\n",
+                    "line": 58
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 56,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "yolo checks\nuv pip list\n",
+                "commands": [
+                  {
+                    "text": "yolo checks\nuv pip list\n",
+                    "line": 61
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 60,
+                "shell": "unknown"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "import os\nfrom ultralytics import YOLO, hub\napi_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']\nhub.login(api_key)\nhub.reset_model(model_id)\nmodel = YOLO('https://hub.ultralytics.com/models/' + model_id)\nmodel.train()\n",
+                "commands": [
+                  {
+                    "text": "import os\nfrom ultralytics import YOLO, hub\napi_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']\nhub.login(api_key)\nhub.reset_model(model_id)\nmodel = YOLO('https://hub.ultralytics.com/models/' + model_id)\nmodel.train()\n",
+                    "line": 69
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {
+                  "API_KEY": "${{ secrets.ULTRALYTICS_HUB_API_KEY }}",
+                  "MODEL_ID": "${{ secrets.ULTRALYTICS_HUB_MODEL_ID }}"
+                },
+                "line": 64,
+                "shell": "python"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "import os\nimport requests\nimport json\napi_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']\nurl = f\"https://api.ultralytics.com/v1/predict/{model_id}\"\nheaders = {\"x-api-key\": api_key}\ndata = {\"size\": 320, \"confidence\": 0.25, \"iou\": 0.45}\nwith open(\"ultralytics/assets/zidane.jpg\", \"rb\") as f:\n    response = requests.post(url, headers=headers, data=data, files={\"image\": f})\nassert response.status_code == 200, f'Status code {response.status_code}, Reason {response.reason}'\nprint(json.dumps(response.json(), indent=2))\n",
+                "commands": [
+                  {
+                    "text": "import os\nimport requests\nimport json\napi_key, model_id = os.environ['API_KEY'], os.environ['MODEL_ID']\nurl = f\"https://api.ultralytics.com/v1/predict/{model_id}\"\nheaders = {\"x-api-key\": api_key}\ndata = {\"size\": 320, \"confidence\": 0.25, \"iou\": 0.45}\nwith open(\"ultralytics/assets/zidane.jpg\", \"rb\") as f:\n    response = requests.post(url, headers=headers, data=data, files={\"image\": f})\nassert response.status_code == 200, f'Status code {response.status_code}, Reason {response.reason}'\nprint(json.dumps(response.json(), indent=2))\n",
+                    "line": 82
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {
+                  "API_KEY": "${{ secrets.ULTRALYTICS_HUB_API_KEY }}",
+                  "MODEL_ID": "${{ secrets.ULTRALYTICS_HUB_MODEL_ID }}"
+                },
+                "line": 77,
+                "shell": "python"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics' && 'workflow_dispatch' && github.event.inputs.hub == 'true'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "Benchmarks",
+            "runnerLabels": [
+              "${{ matrix.os }}"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v3",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 105
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 106
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "${{ matrix.python-version }}"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 107
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "uv pip install --system -e \".[export]\" \"coverage[toml]\" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-first-match\n",
+                "commands": [
+                  {
+                    "text": "uv pip install --system -e \".[export]\" \"coverage[toml]\" --extra-index-url https://download.pytorch.org/whl/cpu --index-strategy unsafe-first-match\n",
+                    "line": 112
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 110,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "yolo checks\nuv pip list\n",
+                "commands": [
+                  {
+                    "text": "yolo checks\nuv pip list\n",
+                    "line": 115
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 114,
+                "shell": "unknown"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}.pt' imgsz=160 verbose=0.309",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}.pt' imgsz=160 verbose=0.309",
+                    "line": 120
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 118,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-cls.pt' imgsz=160 verbose=0.249",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-cls.pt' imgsz=160 verbose=0.249",
+                    "line": 123
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 121,
+                "shell": "bash"
+              },
+              {
+                "index": 7,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov8s-worldv2.pt' imgsz=160 verbose=0.337",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov8s-worldv2.pt' imgsz=160 verbose=0.337",
+                    "line": 126
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 124,
+                "shell": "bash"
+              },
+              {
+                "index": 8,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-seg.pt' imgsz=160 verbose=0.195",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-seg.pt' imgsz=160 verbose=0.195",
+                    "line": 129
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 127,
+                "shell": "bash"
+              },
+              {
+                "index": 9,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-pose.pt' imgsz=160 verbose=0.197",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-pose.pt' imgsz=160 verbose=0.197",
+                    "line": 132
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 130,
+                "shell": "bash"
+              },
+              {
+                "index": 10,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-obb.pt' imgsz=160 verbose=0.597",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/${{ matrix.model }}-obb.pt' imgsz=160 verbose=0.597",
+                    "line": 135
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 133,
+                "shell": "bash"
+              },
+              {
+                "index": 11,
+                "type": "run",
+                "command": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov10n.pt' imgsz=160 verbose=0.205",
+                "commands": [
+                  {
+                    "text": "coverage run -a --source=ultralytics -m ultralytics.cfg.__init__ benchmark model='path with spaces/yolov10n.pt' imgsz=160 verbose=0.205",
+                    "line": 138
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 136,
+                "shell": "bash"
+              },
+              {
+                "index": 12,
+                "type": "run",
+                "command": "coverage xml -o coverage-benchmarks.xml\n",
+                "commands": [
+                  {
+                    "text": "coverage xml -o coverage-benchmarks.xml\n",
+                    "line": 140
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 139,
+                "shell": "unknown"
+              },
+              {
+                "index": 13,
+                "type": "uses",
+                "action": "codecov/codecov-action",
+                "version": "v5",
+                "arguments": {
+                  "flags": "Benchmarks"
+                },
+                "id": "",
+                "condition": "github.repository == 'ultralytics/ultralytics'",
+                "env": {
+                  "CODECOV_TOKEN": "${{ secrets.CODECOV_TOKEN }}"
+                },
+                "line": 142
+              },
+              {
+                "index": 14,
+                "type": "run",
+                "command": "uv cache prune --ci",
+                "commands": [
+                  {
+                    "text": "uv cache prune --ci",
+                    "line": 150
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 149,
+                "shell": "unknown"
+              },
+              {
+                "index": 15,
+                "type": "run",
+                "command": "cat benchmarks.log\necho \"$(cat benchmarks.log)\" >> $GITHUB_STEP_SUMMARY\n",
+                "commands": [
+                  {
+                    "text": "cat benchmarks.log\necho \"$(cat benchmarks.log)\" >> $GITHUB_STEP_SUMMARY\n",
+                    "line": 152
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 151,
+                "shell": "unknown"
+              }
+            ],
+            "condition": "github.event_name != 'workflow_dispatch' || github.event.inputs.benchmarks == 'true'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "Tests",
+            "runnerLabels": [
+              "${{ matrix.os }}"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 171
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "${{ matrix.python-version }}"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 172
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 175
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "# CoreML must be installed before export due to protobuf error from AutoInstall\nslow=\"\"\ntorch=\"\"\nif [ \"${{ matrix.torch }}\" == \"1.8.0\" ]; then\n    torch=\"torch==1.8.0 torchvision==0.9.0\"\nfi\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n    slow=\"pycocotools mlflow\"\nfi\nuv pip install --system -e \".[export]\" $torch $slow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu\n",
+                "commands": [
+                  {
+                    "text": "# CoreML must be installed before export due to protobuf error from AutoInstall\nslow=\"\"\ntorch=\"\"\nif [ \"${{ matrix.torch }}\" == \"1.8.0\" ]; then\n    torch=\"torch==1.8.0 torchvision==0.9.0\"\nfi\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n    slow=\"pycocotools mlflow\"\nfi\nuv pip install --system -e \".[export]\" $torch $slow pytest-cov --extra-index-url https://download.pytorch.org/whl/cpu\n",
+                    "line": 178
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 176,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "yolo checks\nuv pip list\n",
+                "commands": [
+                  {
+                    "text": "yolo checks\nuv pip list\n",
+                    "line": 190
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 189,
+                "shell": "unknown"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "slow=\"\"\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n    slow=\"--slow\"\nfi\npytest $slow --cov=ultralytics/ --cov-report xml tests/\n",
+                "commands": [
+                  {
+                    "text": "slow=\"\"\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n    slow=\"--slow\"\nfi\npytest $slow --cov=ultralytics/ --cov-report xml tests/\n",
+                    "line": 195
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 193,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "uses",
+                "action": "codecov/codecov-action",
+                "version": "v5",
+                "arguments": {
+                  "flags": "Tests"
+                },
+                "id": "",
+                "condition": "github.repository == 'ultralytics/ultralytics'",
+                "env": {
+                  "CODECOV_TOKEN": "${{ secrets.CODECOV_TOKEN }}"
+                },
+                "line": 201
+              },
+              {
+                "index": 7,
+                "type": "run",
+                "command": "uv cache prune --ci",
+                "commands": [
+                  {
+                    "text": "uv cache prune --ci",
+                    "line": 209
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 208,
+                "shell": "unknown"
+              }
+            ],
+            "condition": "github.event_name != 'workflow_dispatch' || github.event.inputs.tests == 'true'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "GPU",
+            "runnerLabels": [
+              "gpu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 216
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 217
+              },
+              {
+                "index": 2,
+                "type": "run",
+                "command": "uv pip install --system -e . pytest-cov",
+                "commands": [
+                  {
+                    "text": "uv pip install --system -e . pytest-cov",
+                    "line": 220
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 218,
+                "shell": "bash"
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "yolo checks\nuv pip list\n",
+                "commands": [
+                  {
+                    "text": "yolo checks\nuv pip list\n",
+                    "line": 222
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 221,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "slow=\"\"\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n  slow=\"--slow\"\nfi\npytest $slow --cov=ultralytics/ --cov-report xml tests/test_cuda.py\n",
+                "commands": [
+                  {
+                    "text": "slow=\"\"\nif [[ \"${{ github.event_name }}\" =~ ^(schedule|workflow_dispatch)$ ]]; then\n  slow=\"--slow\"\nfi\npytest $slow --cov=ultralytics/ --cov-report xml tests/test_cuda.py\n",
+                    "line": 226
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 225,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "uses",
+                "action": "codecov/codecov-action",
+                "version": "v5",
+                "arguments": {
+                  "flags": "GPU"
+                },
+                "id": "",
+                "condition": "",
+                "env": {
+                  "CODECOV_TOKEN": "${{ secrets.CODECOV_TOKEN }}"
+                },
+                "line": 232
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics' && (github.event_name != 'workflow_dispatch' || github.event.inputs.gpu == 'true')",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "RaspberryPi",
+            "runnerLabels": [
+              "raspberry-pi"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 244
+              },
+              {
+                "index": 1,
+                "type": "run",
+                "command": "python3.11 -m venv env\nsource env/bin/activate\necho PATH=$PATH >> $GITHUB_ENV\n",
+                "commands": [
+                  {
+                    "text": "python3.11 -m venv env\nsource env/bin/activate\necho PATH=$PATH >> $GITHUB_ENV\n",
+                    "line": 246
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 245,
+                "shell": "bash"
+              },
+              {
+                "index": 2,
+                "type": "run",
+                "command": "python -m pip install --upgrade pip wheel\npip install -e \".[export]\" pytest mlflow pycocotools\n",
+                "commands": [
+                  {
+                    "text": "python -m pip install --upgrade pip wheel\npip install -e \".[export]\" pytest mlflow pycocotools\n",
+                    "line": 251
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 250,
+                "shell": "bash"
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "yolo checks\npip list\n",
+                "commands": [
+                  {
+                    "text": "yolo checks\npip list\n",
+                    "line": 255
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 254,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "pytest --slow tests/",
+                "commands": [
+                  {
+                    "text": "pytest --slow tests/",
+                    "line": 259
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 258,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-cls.pt' imgsz=160 verbose=0.249",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-cls.pt' imgsz=160 verbose=0.249",
+                    "line": 261
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 260,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolov8s-worldv2.pt' imgsz=160 verbose=0.337",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolov8s-worldv2.pt' imgsz=160 verbose=0.337",
+                    "line": 263
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 262,
+                "shell": "bash"
+              },
+              {
+                "index": 7,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-seg.pt' imgsz=160 verbose=0.195",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-seg.pt' imgsz=160 verbose=0.195",
+                    "line": 265
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 264,
+                "shell": "bash"
+              },
+              {
+                "index": 8,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-pose.pt' imgsz=160 verbose=0.197",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-pose.pt' imgsz=160 verbose=0.197",
+                    "line": 267
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 266,
+                "shell": "bash"
+              },
+              {
+                "index": 9,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-obb.pt' imgsz=160 verbose=0.597",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolo11n-obb.pt' imgsz=160 verbose=0.597",
+                    "line": 269
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 268,
+                "shell": "bash"
+              },
+              {
+                "index": 10,
+                "type": "run",
+                "command": "python -m ultralytics.cfg.__init__ benchmark model='yolov10n.pt' imgsz=160 verbose=0.205",
+                "commands": [
+                  {
+                    "text": "python -m ultralytics.cfg.__init__ benchmark model='yolov10n.pt' imgsz=160 verbose=0.205",
+                    "line": 271
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 270,
+                "shell": "bash"
+              },
+              {
+                "index": 11,
+                "type": "run",
+                "command": "cat benchmarks.log\necho \"$(cat benchmarks.log)\" >> $GITHUB_STEP_SUMMARY\n",
+                "commands": [
+                  {
+                    "text": "cat benchmarks.log\necho \"$(cat benchmarks.log)\" >> $GITHUB_STEP_SUMMARY\n",
+                    "line": 273
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 272,
+                "shell": "bash"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.raspberrypi == 'true')",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "Conda",
+            "runnerLabels": [
+              "${{ matrix.os }}"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "conda-incubator/setup-miniconda",
+                "version": "v3",
+                "arguments": {
+                  "python-version": "${{ matrix.python-version }}",
+                  "mamba-version": "*",
+                  "channels": "conda-forge,defaults",
+                  "channel-priority": "true",
+                  "activate-environment": "anaconda-client-env"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 293
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "ultralytics/actions/cleanup-disk",
+                "version": "main",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 300
+              },
+              {
+                "index": 2,
+                "type": "run",
+                "command": "# Fix cv2 ImportError: 'libEGL.so.1: cannot open shared object file: No such file or directory'\nsudo apt-get update\nsudo apt-get install -y libegl1 libopengl0\n",
+                "commands": [
+                  {
+                    "text": "# Fix cv2 ImportError: 'libEGL.so.1: cannot open shared object file: No such file or directory'\nsudo apt-get update\nsudo apt-get install -y libegl1 libopengl0\n",
+                    "line": 303
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 302,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "conda config --set solver libmamba\n",
+                "commands": [
+                  {
+                    "text": "conda config --set solver libmamba\n",
+                    "line": 308
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 307,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "conda install -c pytorch -c conda-forge pytorch torchvision ultralytics openvino\n",
+                "commands": [
+                  {
+                    "text": "conda install -c pytorch -c conda-forge pytorch torchvision ultralytics openvino\n",
+                    "line": 311
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 310,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "# CoreML must be installed before export due to protobuf error from AutoInstall\npip install pytest \"coremltools>=7.0; platform_system != 'Windows' and python_version <= '3.11'\"\n",
+                "commands": [
+                  {
+                    "text": "# CoreML must be installed before export due to protobuf error from AutoInstall\npip install pytest \"coremltools>=7.0; platform_system != 'Windows' and python_version <= '3.11'\"\n",
+                    "line": 314
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 313,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "conda list\n",
+                "commands": [
+                  {
+                    "text": "conda list\n",
+                    "line": 318
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 317,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 7,
+                "type": "run",
+                "command": "yolo predict model=yolo11n.pt imgsz=320\nyolo train model=yolo11n.pt data=coco8.yaml epochs=1 imgsz=32\nyolo val model=yolo11n.pt data=coco8.yaml imgsz=32\nyolo export model=yolo11n.pt format=torchscript imgsz=160\nyolo solutions\n",
+                "commands": [
+                  {
+                    "text": "yolo predict model=yolo11n.pt imgsz=320\nyolo train model=yolo11n.pt data=coco8.yaml epochs=1 imgsz=32\nyolo val model=yolo11n.pt data=coco8.yaml imgsz=32\nyolo export model=yolo11n.pt format=torchscript imgsz=160\nyolo solutions\n",
+                    "line": 321
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 320,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 8,
+                "type": "run",
+                "command": "python -c \"\nfrom ultralytics import YOLO\nmodel = YOLO('yolo11n.pt')\nresults = model.train(data='coco8.yaml', epochs=3, imgsz=160)\nresults = model.val(imgsz=160)\nresults = model.predict(imgsz=160)\nresults = model.export(format='onnx', imgsz=160)\n\"\n",
+                "commands": [
+                  {
+                    "text": "python -c \"\nfrom ultralytics import YOLO\nmodel = YOLO('yolo11n.pt')\nresults = model.train(data='coco8.yaml', epochs=3, imgsz=160)\nresults = model.val(imgsz=160)\nresults = model.predict(imgsz=160)\nresults = model.export(format='onnx', imgsz=160)\n\"\n",
+                    "line": 329
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 327,
+                "shell": "bash -el {0}"
+              },
+              {
+                "index": 9,
+                "type": "run",
+                "command": "VERSION=$(conda list ultralytics | grep ultralytics | awk '{print $2}')\necho \"Ultralytics version: $VERSION\"\ngit clone https://github.com/ultralytics/ultralytics.git\ncd ultralytics\ngit checkout tags/v$VERSION\npytest tests\n",
+                "commands": [
+                  {
+                    "text": "VERSION=$(conda list ultralytics | grep ultralytics | awk '{print $2}')\necho \"Ultralytics version: $VERSION\"\ngit clone https://github.com/ultralytics/ultralytics.git\ncd ultralytics\ngit checkout tags/v$VERSION\npytest tests\n",
+                    "line": 339
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 338,
+                "shell": "bash -el {0}"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event.inputs.conda == 'true')",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "Summary",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "slackapi/slack-github-action",
+                "version": "v2.0.0",
+                "arguments": {
+                  "webhook-type": "incoming-webhook",
+                  "webhook": "${{ secrets.SLACK_WEBHOOK_URL_YOLO }}",
+                  "payload": "text: \"<!channel> GitHub Actions error for ${{ github.workflow }} ❌\\n\\n\\n*Repository:* https://github.com/${{ github.repository }}\\n*Action:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\\n*Author:* ${{ github.actor }}\\n*Event:* ${{ github.event_name }}\\n\"\n"
+                },
+                "id": "",
+                "condition": "(needs.HUB.result == 'failure' || needs.Benchmarks.result == 'failure' || needs.Tests.result == 'failure' || needs.GPU.result == 'failure' || needs.RaspberryPi.result == 'failure' || needs.Conda.result == 'failure' ) && github.repository == 'ultralytics/ultralytics' && (github.event_name == 'schedule' || github.event_name == 'push') && github.run_attempt == '1'",
+                "env": {},
+                "line": 352
+              }
+            ],
+            "condition": "always()",
+            "env": {},
+            "needs": [
+              "HUB",
+              "Benchmarks",
+              "Tests",
+              "GPU",
+              "RaspberryPi",
+              "Conda"
+            ],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/cla.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/cla.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "CLA Assistant",
+        "file": ".github/workflows/cla.yml",
+        "events": [
+          {
+            "name": "issue_comment",
+            "externallyTriggerable": true,
+            "privileged": true,
+            "properties": {
+              "types": [
+                "created"
+              ]
+            }
+          },
+          {
+            "name": "pull_request_target",
+            "externallyTriggerable": true,
+            "privileged": true,
+            "properties": {
+              "types": [
+                "reopened",
+                "opened",
+                "synchronize"
+              ]
+            }
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "actions",
+            "access": "write"
+          },
+          {
+            "jobId": null,
+            "scope": "contents",
+            "access": "write"
+          },
+          {
+            "jobId": null,
+            "scope": "pull-requests",
+            "access": "write"
+          },
+          {
+            "jobId": null,
+            "scope": "statuses",
+            "access": "write"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "CLA",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "contributor-assistant/github-action",
+                "version": "v2.6.1",
+                "arguments": {
+                  "path-to-signatures": "signatures/version1/cla.json",
+                  "path-to-document": "https://docs.ultralytics.com/help/CLA",
+                  "branch": "cla-signatures",
+                  "allowlist": "dependabot[bot],github-actions,[pre-commit*,pre-commit*,bot*",
+                  "remote-organization-name": "ultralytics",
+                  "remote-repository-name": "cla",
+                  "custom-pr-sign-comment": "I have read the CLA Document and I sign the CLA",
+                  "custom-allsigned-prcomment": "All Contributors have signed the CLA. ✅"
+                },
+                "id": "",
+                "condition": "(github.event.comment.body == 'recheck' || github.event.comment.body == 'I have read the CLA Document and I sign the CLA') || github.event_name == 'pull_request_target'",
+                "env": {
+                  "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}",
+                  "PERSONAL_ACCESS_TOKEN": "${{ secrets._GITHUB_TOKEN }}"
+                },
+                "line": 27
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/docker.yaml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/docker.yaml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Publish Docker Images",
+        "file": ".github/workflows/docker.yaml",
+        "events": [
+          {
+            "name": "push",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "docker",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "ultralytics/actions/cleanup-disk",
+                "version": "main",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 87
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {
+                  "fetch-depth": "0"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 90
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "docker/setup-qemu-action",
+                "version": "v3",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 95
+              },
+              {
+                "index": 3,
+                "type": "uses",
+                "action": "docker/setup-buildx-action",
+                "version": "v3",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 98
+              },
+              {
+                "index": 4,
+                "type": "uses",
+                "action": "docker/login-action",
+                "version": "v3",
+                "arguments": {
+                  "username": "${{ secrets.DOCKERHUB_USERNAME }}",
+                  "password": "${{ secrets.DOCKERHUB_TOKEN }}"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 101
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "VERSION=$(grep \"^__version__ =\" ultralytics/__init__.py | awk -F'\"' '{print $2}')\necho \"Retrieved Ultralytics version: $VERSION\"\necho \"version=$VERSION\" >> $GITHUB_OUTPUT\nVERSION_TAG=$(echo \"${{ matrix.tags }}\" | sed \"s/latest/${VERSION}/\")\necho \"Intended version tag: $VERSION_TAG\"\necho \"version_tag=$VERSION_TAG\" >> $GITHUB_OUTPUT\n",
+                "commands": [
+                  {
+                    "text": "VERSION=$(grep \"^__version__ =\" ultralytics/__init__.py | awk -F'\"' '{print $2}')\necho \"Retrieved Ultralytics version: $VERSION\"\necho \"version=$VERSION\" >> $GITHUB_OUTPUT\nVERSION_TAG=$(echo \"${{ matrix.tags }}\" | sed \"s/latest/${VERSION}/\")\necho \"Intended version tag: $VERSION_TAG\"\necho \"version_tag=$VERSION_TAG\" >> $GITHUB_OUTPUT\n",
+                    "line": 109
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "get_version",
+                "condition": "",
+                "env": {},
+                "line": 107,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "RESPONSE=$(curl -s https://hub.docker.com/v2/repositories/ultralytics/ultralytics/tags/$VERSION_TAG)\nMESSAGE=$(echo $RESPONSE | jq -r '.message')\nif [[ \"$MESSAGE\" == \"null\" ]]; then\n    echo \"Tag $VERSION_TAG already exists on DockerHub.\"\n    echo \"new_release=false\" >> $GITHUB_OUTPUT\nelif [[ \"$MESSAGE\" == *\"404\"* ]]; then\n    echo \"Tag $VERSION_TAG does not exist on DockerHub.\"\n    echo \"new_release=true\" >> $GITHUB_OUTPUT\nelse\n    echo \"Unexpected response from DockerHub. Please check manually.\"\n    echo \"new_release=false\" >> $GITHUB_OUTPUT\nfi\n",
+                "commands": [
+                  {
+                    "text": "RESPONSE=$(curl -s https://hub.docker.com/v2/repositories/ultralytics/ultralytics/tags/$VERSION_TAG)\nMESSAGE=$(echo $RESPONSE | jq -r '.message')\nif [[ \"$MESSAGE\" == \"null\" ]]; then\n    echo \"Tag $VERSION_TAG already exists on DockerHub.\"\n    echo \"new_release=false\" >> $GITHUB_OUTPUT\nelif [[ \"$MESSAGE\" == *\"404\"* ]]; then\n    echo \"Tag $VERSION_TAG does not exist on DockerHub.\"\n    echo \"new_release=true\" >> $GITHUB_OUTPUT\nelse\n    echo \"Unexpected response from DockerHub. Please check manually.\"\n    echo \"new_release=false\" >> $GITHUB_OUTPUT\nfi\n",
+                    "line": 119
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "check_tag",
+                "condition": "",
+                "env": {
+                  "VERSION_TAG": "${{ steps.get_version.outputs.version_tag }}"
+                },
+                "line": 117,
+                "shell": "bash"
+              },
+              {
+                "index": 7,
+                "type": "uses",
+                "action": "ultralytics/actions/retry",
+                "version": "main",
+                "arguments": {
+                  "timeout_minutes": "120",
+                  "retry_delay_seconds": "60",
+                  "retries": "2",
+                  "run": "docker build \\\n--platform ${{ matrix.platforms }} \\\n-f docker/${{ matrix.dockerfile }} \\\n-t ultralytics/ultralytics:${{ matrix.tags }} \\\n-t ultralytics/ultralytics:${{ steps.get_version.outputs.version_tag }} \\\n.\n"
+                },
+                "id": "",
+                "condition": "github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true'",
+                "env": {},
+                "line": 135
+              },
+              {
+                "index": 8,
+                "type": "run",
+                "command": "docker run ultralytics/ultralytics:${{ matrix.tags }} /bin/bash -c \"pip install pytest && pytest tests\"",
+                "commands": [
+                  {
+                    "text": "docker run ultralytics/ultralytics:${{ matrix.tags }} /bin/bash -c \"pip install pytest && pytest tests\"",
+                    "line": 152
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile-conda'",
+                "env": {},
+                "line": 150,
+                "shell": "bash"
+              },
+              {
+                "index": 9,
+                "type": "run",
+                "command": "docker run ultralytics/ultralytics:${{ matrix.tags }} yolo benchmark model=yolo11n.pt imgsz=160 verbose=0.309",
+                "commands": [
+                  {
+                    "text": "docker run ultralytics/ultralytics:${{ matrix.tags }} yolo benchmark model=yolo11n.pt imgsz=160 verbose=0.309",
+                    "line": 157
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "(github.event_name == 'push' || github.event.inputs[matrix.dockerfile] == 'true') && matrix.platforms == 'linux/amd64' && matrix.dockerfile != 'Dockerfile' && matrix.dockerfile != 'Dockerfile-conda'",
+                "env": {},
+                "line": 154,
+                "shell": "bash"
+              },
+              {
+                "index": 10,
+                "type": "run",
+                "command": "docker push ultralytics/ultralytics:${{ steps.get_version.outputs.version_tag }}\n",
+                "commands": [
+                  {
+                    "text": "docker push ultralytics/ultralytics:${{ steps.get_version.outputs.version_tag }}\n",
+                    "line": 161
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "(github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')) && steps.check_tag.outputs.new_release == 'true' && matrix.dockerfile != 'Dockerfile-conda'",
+                "env": {},
+                "line": 159,
+                "shell": "bash"
+              },
+              {
+                "index": 11,
+                "type": "run",
+                "command": "docker push ultralytics/ultralytics:${{ matrix.tags }}\nif [[ \"${{ matrix.tags }}\" == \"latest\" ]]; then\n  t=ultralytics/ultralytics:latest-runner\n  docker build -f docker/Dockerfile-runner -t $t .\n  docker push $t\nfi\nif [[ \"${{ matrix.tags }}\" == \"latest-python\" ]]; then\n  t=ultralytics/ultralytics:latest-jupyter\n  v=ultralytics/ultralytics:${{ steps.get_version.outputs.version }}-jupyter\n  docker build -f docker/Dockerfile-jupyter -t $t -t $v .\n  docker push $t\n  if [[ \"${{ steps.check_tag.outputs.new_release }}\" == \"true\" ]]; then\n    docker push $v\n  fi\nfi\n",
+                "commands": [
+                  {
+                    "text": "docker push ultralytics/ultralytics:${{ matrix.tags }}\nif [[ \"${{ matrix.tags }}\" == \"latest\" ]]; then\n  t=ultralytics/ultralytics:latest-runner\n  docker build -f docker/Dockerfile-runner -t $t .\n  docker push $t\nfi\nif [[ \"${{ matrix.tags }}\" == \"latest-python\" ]]; then\n  t=ultralytics/ultralytics:latest-jupyter\n  v=ultralytics/ultralytics:${{ steps.get_version.outputs.version }}-jupyter\n  docker build -f docker/Dockerfile-jupyter -t $t -t $v .\n  docker push $t\n  if [[ \"${{ steps.check_tag.outputs.new_release }}\" == \"true\" ]]; then\n    docker push $v\n  fi\nfi\n",
+                    "line": 166
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "github.event_name == 'push' || (github.event.inputs[matrix.dockerfile] == 'true' && github.event.inputs.push == 'true')",
+                "env": {},
+                "line": 164,
+                "shell": "bash"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          },
+          {
+            "id": "trigger-actions",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "run",
+                "command": "sleep 60\ngh workflow run deploy_cloud_run.yml \\\n  --repo ultralytics/assistant \\\n  --ref main\n",
+                "commands": [
+                  {
+                    "text": "sleep 60\ngh workflow run deploy_cloud_run.yml \\\n  --repo ultralytics/assistant \\\n  --ref main\n",
+                    "line": 192
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {
+                  "GH_TOKEN": "${{ secrets._GITHUB_TOKEN }}"
+                },
+                "line": 189,
+                "shell": "bash"
+              }
+            ],
+            "condition": "success() && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && needs.docker.outputs.new_release == 'true'",
+            "env": {},
+            "needs": "docker",
+            "permissionsDeclared": false
+          },
+          {
+            "id": "notify",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "slackapi/slack-github-action",
+                "version": "v2.0.0",
+                "arguments": {
+                  "webhook-type": "incoming-webhook",
+                  "webhook": "${{ secrets.SLACK_WEBHOOK_URL_YOLO }}",
+                  "payload": "text: \"<!channel> GitHub Actions error for ${{ github.workflow }} ❌\\n\\n\\n*Repository:* https://github.com/${{ github.repository }}\\n*Action:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\\n*Author:* ${{ github.actor }}\\n*Event:* ${{ github.event_name }}\\n\"\n"
+                },
+                "id": "",
+                "condition": "needs.docker.result == 'failure' && github.repository == 'ultralytics/ultralytics' && github.event_name == 'push' && github.run_attempt == '1'",
+                "env": {},
+                "line": 203
+              }
+            ],
+            "condition": "always()",
+            "env": {},
+            "needs": [
+              "docker",
+              "trigger-actions"
+            ],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/docs.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/docs.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Publish Docs",
+        "file": ".github/workflows/docs.yml",
+        "events": [
+          {
+            "name": "push",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "pull_request",
+            "externallyTriggerable": true,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "Docs",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "run",
+                "command": "git config --global user.name \"UltralyticsAssistant\"\ngit config --global user.email \"web@ultralytics.com\"\n",
+                "commands": [
+                  {
+                    "text": "git config --global user.name \"UltralyticsAssistant\"\ngit config --global user.email \"web@ultralytics.com\"\n",
+                    "line": 37
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 36,
+                "shell": "bash"
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {
+                  "repository": "${{ github.event.pull_request.head.repo.full_name || github.repository }}",
+                  "token": "${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN }}",
+                  "ref": "${{ env.GITHUB_REF }}",
+                  "fetch-depth": "0"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 40
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "3.x"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 47
+              },
+              {
+                "index": 3,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 51
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "uv pip install --system ruff black tqdm mkdocs-material \"mkdocstrings[python]\" mkdocs-jupyter mkdocs-redirects mkdocs-ultralytics-plugin mkdocs-macros-plugin",
+                "commands": [
+                  {
+                    "text": "uv pip install --system ruff black tqdm mkdocs-material \"mkdocstrings[python]\" mkdocs-jupyter mkdocs-redirects mkdocs-ultralytics-plugin mkdocs-macros-plugin",
+                    "line": 53
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 52,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "ruff check --fix --unsafe-fixes --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 .",
+                "commands": [
+                  {
+                    "text": "ruff check --fix --unsafe-fixes --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 .",
+                    "line": 56
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 54,
+                "shell": "bash"
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "python docs/build_reference.py\ngit pull origin \"$GITHUB_REF\"          \ngit add .\ngit reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token\nif ! git diff --staged --quiet; then\n  git commit -m \"Auto-update Ultralytics Docs Reference by https://ultralytics.com/actions\"\n  git push\nelse\n  echo \"No changes to commit\"\nfi\n",
+                "commands": [
+                  {
+                    "text": "python docs/build_reference.py\ngit pull origin \"$GITHUB_REF\"          \ngit add .\ngit reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token\nif ! git diff --staged --quiet; then\n  git commit -m \"Auto-update Ultralytics Docs Reference by https://ultralytics.com/actions\"\n  git push\nelse\n  echo \"No changes to commit\"\nfi\n",
+                    "line": 59
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 57,
+                "shell": "bash"
+              },
+              {
+                "index": 7,
+                "type": "run",
+                "command": "ruff check --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 .",
+                "commands": [
+                  {
+                    "text": "ruff check --select D --ignore=D100,D104,D203,D205,D212,D213,D401,D406,D407,D413 .",
+                    "line": 71
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 70,
+                "shell": "bash"
+              },
+              {
+                "index": 8,
+                "type": "run",
+                "command": "export JUPYTER_PLATFORM_DIRS=1\npython docs/build_docs.py\n",
+                "commands": [
+                  {
+                    "text": "export JUPYTER_PLATFORM_DIRS=1\npython docs/build_docs.py\n",
+                    "line": 73
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 72,
+                "shell": "bash"
+              },
+              {
+                "index": 9,
+                "type": "run",
+                "command": "git pull origin \"$GITHUB_REF\"\ngit add --update  # only add updated files\ngit reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token\nif ! git diff --staged --quiet; then\n  git commit -m \"Auto-update Ultralytics Docs by https://ultralytics.com/actions\"\n  git push\nelse\n  echo \"No changes to commit\"\nfi\n",
+                "commands": [
+                  {
+                    "text": "git pull origin \"$GITHUB_REF\"\ngit add --update  # only add updated files\ngit reset HEAD -- .github/workflows/  # workflow changes are not permitted with default token\nif ! git diff --staged --quiet; then\n  git commit -m \"Auto-update Ultralytics Docs by https://ultralytics.com/actions\"\n  git push\nelse\n  echo \"No changes to commit\"\nfi\n",
+                    "line": 79
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "always()",
+                "env": {},
+                "line": 76,
+                "shell": "bash"
+              },
+              {
+                "index": 10,
+                "type": "run",
+                "command": "git clone https://github.com/ultralytics/docs.git docs-repo\ncd docs-repo\ngit checkout gh-pages || git checkout -b gh-pages\nrm -rf *\ncp -R ../site/* .\necho \"${{ secrets.INDEXNOW_KEY_DOCS }}\" > \"${{ secrets.INDEXNOW_KEY_DOCS }}.txt\"\ngit add .\nif git diff --staged --quiet; then\n  echo \"No changes to commit\"\nelse\n  LATEST_HASH=$(git rev-parse --short=7 HEAD)\n  git commit -m \"Update Docs for 'ultralytics ${{ steps.check_pypi.outputs.version }} - $LATEST_HASH'\"\n  git push https://${{ secrets._GITHUB_TOKEN }}@github.com/ultralytics/docs.git gh-pages\nfi\n",
+                "commands": [
+                  {
+                    "text": "git clone https://github.com/ultralytics/docs.git docs-repo\ncd docs-repo\ngit checkout gh-pages || git checkout -b gh-pages\nrm -rf *\ncp -R ../site/* .\necho \"${{ secrets.INDEXNOW_KEY_DOCS }}\" > \"${{ secrets.INDEXNOW_KEY_DOCS }}.txt\"\ngit add .\nif git diff --staged --quiet; then\n  echo \"No changes to commit\"\nelse\n  LATEST_HASH=$(git rev-parse --short=7 HEAD)\n  git commit -m \"Update Docs for 'ultralytics ${{ steps.check_pypi.outputs.version }} - $LATEST_HASH'\"\n  git push https://${{ secrets._GITHUB_TOKEN }}@github.com/ultralytics/docs.git gh-pages\nfi\n",
+                    "line": 91
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && github.event.inputs.publish_docs == 'true')",
+                "env": {},
+                "line": 89,
+                "shell": "bash"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics'",
+            "env": {
+              "GITHUB_REF": "${{ github.head_ref || github.ref }}"
+            },
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/format.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/format.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Ultralytics Actions",
+        "file": ".github/workflows/format.yml",
+        "events": [
+          {
+            "name": "issues",
+            "externallyTriggerable": true,
+            "privileged": true,
+            "properties": {
+              "types": [
+                "opened",
+                "edited"
+              ]
+            }
+          },
+          {
+            "name": "discussion",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {
+              "types": [
+                "created"
+              ]
+            }
+          },
+          {
+            "name": "pull_request",
+            "externallyTriggerable": true,
+            "privileged": false,
+            "properties": {
+              "types": [
+                "opened",
+                "closed",
+                "synchronize",
+                "review_requested"
+              ],
+              "branches": [
+                "main"
+              ]
+            }
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "format",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "ultralytics/actions",
+                "version": "main",
+                "arguments": {
+                  "token": "${{ secrets._GITHUB_TOKEN || secrets.GITHUB_TOKEN}}",
+                  "labels": "true",
+                  "python": "true",
+                  "prettier": "true",
+                  "spelling": "true",
+                  "links": "false",
+                  "summary": "true",
+                  "openai_api_key": "${{ secrets.OPENAI_API_KEY }}",
+                  "first_issue_response": "👋 Hello @${{ github.actor }}, thank you for your interest in Ultralytics 🚀! We recommend a visit to the [Docs](https://docs.ultralytics.com) for new users where you can find many [Python](https://docs.ultralytics.com/usage/python/) and [CLI](https://docs.ultralytics.com/usage/cli/) usage examples and where many of the most common questions may already be answered.\n\nIf this is a 🐛 Bug Report, please provide a [minimum reproducible example](https://docs.ultralytics.com/help/minimum_reproducible_example/) to help us debug it.\n\nIf this is a custom training ❓ Question, please provide as much information as possible, including dataset image examples and training logs, and verify you are following our [Tips for Best Training Results](https://docs.ultralytics.com/guides/model-training-tips/).\n\nJoin the Ultralytics community where it suits you best. For real-time chat, head to [Discord](https://discord.com/invite/ultralytics) 🎧. Prefer in-depth discussions? Check out [Discourse](https://community.ultralytics.com). Or dive into threads on our [Subreddit](https://reddit.com/r/Ultralytics) to share knowledge with the community.\n\n## Upgrade\n\nUpgrade to the latest `ultralytics` package including all [requirements](https://github.com/ultralytics/ultralytics/blob/main/pyproject.toml) in a [**Python>=3.8**](https://www.python.org/) environment with [**PyTorch>=1.8**](https://pytorch.org/get-started/locally/) to verify your issue is not already resolved in the latest version:\n\n```bash\npip install -U ultralytics\n```\n\n## Environments\n\nYOLO may be run in any of the following up-to-date verified environments (with all dependencies including [CUDA](https://developer.nvidia.com/cuda)/[CUDNN](https://developer.nvidia.com/cudnn), [Python](https://www.python.org/) and [PyTorch](https://pytorch.org/) preinstalled):\n\n- **Notebooks** with free GPU: <a href=\"https://console.paperspace.com/github/ultralytics/ultralytics\"><img src=\"https://assets.paperspace.io/img/gradient-badge.svg\" alt=\"Run on Gradient\"/></a> <a href=\"https://colab.research.google.com/github/ultralytics/ultralytics/blob/main/examples/tutorial.ipynb\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"></a> <a href=\"https://www.kaggle.com/models/ultralytics/yolo11\"><img src=\"https://kaggle.com/static/images/open-in-kaggle.svg\" alt=\"Open In Kaggle\"></a>\n- **Google Cloud** Deep Learning VM. See [GCP Quickstart Guide](https://docs.ultralytics.com/yolov5/environments/google_cloud_quickstart_tutorial/)\n- **Amazon** Deep Learning AMI. See [AWS Quickstart Guide](https://docs.ultralytics.com/yolov5/environments/aws_quickstart_tutorial/)\n- **Docker Image**. See [Docker Quickstart Guide](https://docs.ultralytics.com/yolov5/environments/docker_image_quickstart_tutorial/) <a href=\"https://hub.docker.com/r/ultralytics/ultralytics\"><img src=\"https://img.shields.io/docker/pulls/ultralytics/ultralytics?logo=docker\" alt=\"Docker Pulls\"></a>\n\n## Status\n\n<a href=\"https://github.com/ultralytics/ultralytics/actions/workflows/ci.yaml?query=event%3Aschedule\"><img src=\"https://github.com/ultralytics/ultralytics/actions/workflows/ci.yaml/badge.svg\" alt=\"Ultralytics CI\"></a>\n\nIf this badge is green, all [Ultralytics CI](https://github.com/ultralytics/ultralytics/actions/workflows/ci.yaml?query=event%3Aschedule) tests are currently passing. CI tests verify correct operation of all YOLO [Modes](https://docs.ultralytics.com/modes/) and [Tasks](https://docs.ultralytics.com/tasks/) on macOS, Windows, and Ubuntu every 24 hours and on every commit.\n"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 20
+              }
+            ],
+            "condition": "",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/links.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/links.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Check Broken links",
+        "file": ".github/workflows/links.yml",
+        "events": [
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          },
+          {
+            "name": "schedule",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "Links",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 22
+              },
+              {
+                "index": 1,
+                "type": "run",
+                "command": "LYCHEE_URL=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | grep \"browser_download_url\" | grep \"x86_64-unknown-linux-gnu.tar.gz\" | cut -d '\"' -f 4)\ncurl -L $LYCHEE_URL -o lychee.tar.gz\ntar xzf lychee.tar.gz\nsudo mv lychee /usr/local/bin\n",
+                "commands": [
+                  {
+                    "text": "LYCHEE_URL=$(curl -s https://api.github.com/repos/lycheeverse/lychee/releases/latest | grep \"browser_download_url\" | grep \"x86_64-unknown-linux-gnu.tar.gz\" | cut -d '\"' -f 4)\ncurl -L $LYCHEE_URL -o lychee.tar.gz\ntar xzf lychee.tar.gz\nsudo mv lychee /usr/local/bin\n",
+                    "line": 25
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 24,
+                "shell": "bash"
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "ultralytics/actions/retry",
+                "version": "main",
+                "arguments": {
+                  "timeout_minutes": "60",
+                  "retry_delay_seconds": "900",
+                  "retries": "2",
+                  "run": "lychee \\\n--scheme https \\\n--timeout 60 \\\n--insecure \\\n--accept 401,403,429,500,502,999 \\\n--exclude-all-private \\\n--exclude 'https?://(www\\.)?(linkedin\\.com|twitter\\.com|instagram\\.com|kaggle\\.com|fonts\\.gstatic\\.com|url\\.com)' \\\n--exclude-path docs/zh \\\n--exclude-path docs/es \\\n--exclude-path docs/ru \\\n--exclude-path docs/pt \\\n--exclude-path docs/fr \\\n--exclude-path docs/de \\\n--exclude-path docs/ja \\\n--exclude-path docs/ko \\\n--exclude-path docs/hi \\\n--exclude-path docs/ar \\\n--github-token ${{ secrets.GITHUB_TOKEN }} \\\n--header \"User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.183 Safari/537.36\" \\\n'./**/*.md' \\\n'./**/*.html'\n"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 31
+              },
+              {
+                "index": 3,
+                "type": "uses",
+                "action": "ultralytics/actions/retry",
+                "version": "main",
+                "arguments": {
+                  "timeout_minutes": "60",
+                  "retry_delay_seconds": "900",
+                  "retries": "2",
+                  "run": "lychee \\\n--scheme https \\\n--timeout 60 \\\n--insecure \\\n--accept 401,403,429,500,502,999 \\\n--exclude-all-private \\\n--exclude 'https?://(www\\.)?(linkedin\\.com|twitter\\.com|instagram\\.com|kaggle\\.com|fonts\\.gstatic\\.com|url\\.com)' \\\n--exclude-path '**/ci.yaml' \\\n--exclude-path docs/zh \\\n--exclude-path docs/es \\\n--exclude-path docs/ru \\\n--exclude-path docs/pt \\\n--exclude-path docs/fr \\\n--exclude-path docs/de \\\n--exclude-path docs/ja \\\n--exclude-path docs/ko \\\n--exclude-path docs/hi \\\n--exclude-path docs/ar \\\n--github-token ${{ secrets.GITHUB_TOKEN }} \\\n--header \"User-Agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.6478.183 Safari/537.36\" \\\n'./**/*.md' \\\n'./**/*.html' \\\n'./**/*.yml' \\\n'./**/*.yaml' \\\n'./**/*.py' \\\n'./**/*.ipynb'\n"
+                },
+                "id": "",
+                "condition": "github.event_name == 'workflow_dispatch'",
+                "env": {},
+                "line": 60
+              }
+            ],
+            "condition": "",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/merge-main-into-prs.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/merge-main-into-prs.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Merge main into PRs",
+        "file": ".github/workflows/merge-main-into-prs.yml",
+        "events": [
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [],
+        "jobs": [
+          {
+            "id": "Merge",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {
+                  "fetch-depth": "0"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 18
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "3.x",
+                  "cache": "pip"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 22
+              },
+              {
+                "index": 2,
+                "type": "run",
+                "command": "pip install pygithub\n",
+                "commands": [
+                  {
+                    "text": "pip install pygithub\n",
+                    "line": 27
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 26,
+                "shell": "bash"
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "from github import Github\nimport os\nimport time\n\ng = Github(\"${{ secrets._GITHUB_TOKEN }}\")\nrepo = g.get_repo(\"${{ github.repository }}\")\n\n# Fetch the default branch name\ndefault_branch_name = repo.default_branch\ndefault_branch = repo.get_branch(default_branch_name)\n\n# Initialize counters\nupdated_branches = 0\nup_to_date_branches = 0\nerrors = 0\n\nfor pr in repo.get_pulls(state='open', sort='created'):\n    try:\n        # Label PRs as popular for positive reactions\n        reactions = pr.as_issue().get_reactions()\n        if sum([(1 if r.content not in {\"-1\", \"confused\"} else 0) for r in reactions]) > 5:\n            pr.set_labels(*(\"popular\",) + tuple(l.name for l in pr.get_labels()))\n\n        # Get full names for repositories and branches\n        base_repo_name = repo.full_name\n        head_repo_name = pr.head.repo.full_name\n        base_branch_name = pr.base.ref\n        head_branch_name = pr.head.ref\n\n        # Check if PR is behind the default branch\n        comparison = repo.compare(default_branch.commit.sha, pr.head.sha)\n        if comparison.behind_by > 0:\n            print(f\"⚠️ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is behind {default_branch_name} by {comparison.behind_by} commit(s).\")\n            \n            # Attempt to update the branch\n            try:\n                success = pr.update_branch()\n                assert success, \"Branch update failed\"\n                print(f\"✅ Successfully merged '{default_branch_name}' into PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}).\")\n                updated_branches += 1\n                time.sleep(10)  # rate limit merges\n            except Exception as update_error:\n                print(f\"❌ Could not update PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}): {update_error}\")\n                errors += 1\n        else:\n            print(f\"✅ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is already up to date with {default_branch_name}, no merge required.\")\n            up_to_date_branches += 1\n    except Exception as e:\n        print(f\"❌ Could not process PR #{pr.number}: {e}\")\n        errors += 1\n\n# Print summary\nprint(\"\\n\\nSummary:\")\nprint(f\"Branches updated: {updated_branches}\")\nprint(f\"Branches already up-to-date: {up_to_date_branches}\")\nprint(f\"Total errors: {errors}\")\n",
+                "commands": [
+                  {
+                    "text": "from github import Github\nimport os\nimport time\n\ng = Github(\"${{ secrets._GITHUB_TOKEN }}\")\nrepo = g.get_repo(\"${{ github.repository }}\")\n\n# Fetch the default branch name\ndefault_branch_name = repo.default_branch\ndefault_branch = repo.get_branch(default_branch_name)\n\n# Initialize counters\nupdated_branches = 0\nup_to_date_branches = 0\nerrors = 0\n\nfor pr in repo.get_pulls(state='open', sort='created'):\n    try:\n        # Label PRs as popular for positive reactions\n        reactions = pr.as_issue().get_reactions()\n        if sum([(1 if r.content not in {\"-1\", \"confused\"} else 0) for r in reactions]) > 5:\n            pr.set_labels(*(\"popular\",) + tuple(l.name for l in pr.get_labels()))\n\n        # Get full names for repositories and branches\n        base_repo_name = repo.full_name\n        head_repo_name = pr.head.repo.full_name\n        base_branch_name = pr.base.ref\n        head_branch_name = pr.head.ref\n\n        # Check if PR is behind the default branch\n        comparison = repo.compare(default_branch.commit.sha, pr.head.sha)\n        if comparison.behind_by > 0:\n            print(f\"⚠️ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is behind {default_branch_name} by {comparison.behind_by} commit(s).\")\n            \n            # Attempt to update the branch\n            try:\n                success = pr.update_branch()\n                assert success, \"Branch update failed\"\n                print(f\"✅ Successfully merged '{default_branch_name}' into PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}).\")\n                updated_branches += 1\n                time.sleep(10)  # rate limit merges\n            except Exception as update_error:\n                print(f\"❌ Could not update PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}): {update_error}\")\n                errors += 1\n        else:\n            print(f\"✅ PR #{pr.number} ({head_repo_name}:{head_branch_name} -> {base_repo_name}:{base_branch_name}) is already up to date with {default_branch_name}, no merge required.\")\n            up_to_date_branches += 1\n    except Exception as e:\n        print(f\"❌ Could not process PR #{pr.number}: {e}\")\n        errors += 1\n\n# Print summary\nprint(\"\\n\\nSummary:\")\nprint(f\"Branches updated: {updated_branches}\")\nprint(f\"Branches already up-to-date: {up_to_date_branches}\")\nprint(f\"Total errors: {errors}\")\n",
+                    "line": 31
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 29,
+                "shell": "python"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/publish.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/publish.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Publish to PyPI",
+        "file": ".github/workflows/publish.yml",
+        "events": [
+          {
+            "name": "push",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {
+              "branches": [
+                "main"
+              ]
+            }
+          },
+          {
+            "name": "workflow_dispatch",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": "check",
+            "scope": "contents",
+            "access": "write"
+          },
+          {
+            "jobId": "build",
+            "scope": "contents",
+            "access": "read"
+          },
+          {
+            "jobId": "publish",
+            "scope": "id-token",
+            "access": "write"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "check",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 26
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "3.x"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 27
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 30
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "uv pip install --system --no-cache ultralytics-actions",
+                "commands": [
+                  {
+                    "text": "uv pip install --system --no-cache ultralytics-actions",
+                    "line": 31
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 31,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "import os\nfrom actions.utils import check_pypi_version\nlocal_version, online_version, publish = check_pypi_version()\nos.system(f'echo \"increment={publish}\" >> $GITHUB_OUTPUT')\nos.system(f'echo \"current_tag=v{local_version}\" >> $GITHUB_OUTPUT')\nos.system(f'echo \"previous_tag=v{online_version}\" >> $GITHUB_OUTPUT')\nif publish:\n    print('Ready to publish new version to PyPI ✅.')\n",
+                "commands": [
+                  {
+                    "text": "import os\nfrom actions.utils import check_pypi_version\nlocal_version, online_version, publish = check_pypi_version()\nos.system(f'echo \"increment={publish}\" >> $GITHUB_OUTPUT')\nos.system(f'echo \"current_tag=v{local_version}\" >> $GITHUB_OUTPUT')\nos.system(f'echo \"previous_tag=v{online_version}\" >> $GITHUB_OUTPUT')\nif publish:\n    print('Ready to publish new version to PyPI ✅.')\n",
+                    "line": 34
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "check_pypi",
+                "condition": "",
+                "env": {},
+                "line": 32,
+                "shell": "python"
+              },
+              {
+                "index": 5,
+                "type": "run",
+                "command": "git config --global user.name \"UltralyticsAssistant\"\ngit config --global user.email \"web@ultralytics.com\"\ngit tag -a \"$CURRENT_TAG\" -m \"$(git log -1 --pretty=%B)\"\ngit push origin \"$CURRENT_TAG\"\nultralytics-actions-summarize-release\nuv cache prune --ci\n",
+                "commands": [
+                  {
+                    "text": "git config --global user.name \"UltralyticsAssistant\"\ngit config --global user.email \"web@ultralytics.com\"\ngit tag -a \"$CURRENT_TAG\" -m \"$(git log -1 --pretty=%B)\"\ngit push origin \"$CURRENT_TAG\"\nultralytics-actions-summarize-release\nuv cache prune --ci\n",
+                    "line": 50
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "steps.check_pypi.outputs.increment == 'True'",
+                "env": {
+                  "GITHUB_TOKEN": "${{ secrets.GITHUB_TOKEN }}",
+                  "CURRENT_TAG": "${{ steps.check_pypi.outputs.current_tag }}",
+                  "PREVIOUS_TAG": "${{ steps.check_pypi.outputs.previous_tag }}",
+                  "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}"
+                },
+                "line": 43,
+                "shell": "bash"
+              }
+            ],
+            "condition": "github.repository == 'ultralytics/ultralytics' && github.actor == 'glenn-jocher'",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": true
+          },
+          {
+            "id": "build",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 65
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "actions/setup-python",
+                "version": "v5",
+                "arguments": {
+                  "python-version": "3.x"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 66
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "astral-sh/setup-uv",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 69
+              },
+              {
+                "index": 3,
+                "type": "run",
+                "command": "uv pip install --system --no-cache build",
+                "commands": [
+                  {
+                    "text": "uv pip install --system --no-cache build",
+                    "line": 70
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 70,
+                "shell": "bash"
+              },
+              {
+                "index": 4,
+                "type": "run",
+                "command": "python -m build",
+                "commands": [
+                  {
+                    "text": "python -m build",
+                    "line": 71
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 71,
+                "shell": "bash"
+              },
+              {
+                "index": 5,
+                "type": "uses",
+                "action": "actions/upload-artifact",
+                "version": "v4",
+                "arguments": {
+                  "name": "dist",
+                  "path": "dist/"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 72
+              },
+              {
+                "index": 6,
+                "type": "run",
+                "command": "uv cache prune --ci",
+                "commands": [
+                  {
+                    "text": "uv cache prune --ci",
+                    "line": 76
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 76,
+                "shell": "bash"
+              }
+            ],
+            "condition": "needs.check.outputs.increment == 'True'",
+            "env": {},
+            "needs": "check",
+            "permissionsDeclared": true
+          },
+          {
+            "id": "publish",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/download-artifact",
+                "version": "v4",
+                "arguments": {
+                  "name": "dist",
+                  "path": "dist/"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 88
+              },
+              {
+                "index": 1,
+                "type": "uses",
+                "action": "pypa/gh-action-pypi-publish",
+                "version": "release/v1",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 92
+              }
+            ],
+            "condition": "needs.check.outputs.increment == 'True'",
+            "env": {},
+            "needs": [
+              "check",
+              "build"
+            ],
+            "permissionsDeclared": true
+          },
+          {
+            "id": "notify",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/checkout",
+                "version": "v4",
+                "arguments": {},
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 99
+              },
+              {
+                "index": 1,
+                "type": "run",
+                "command": "PR_JSON=$(gh pr list --search \"${GITHUB_SHA}\" --state merged --json number,title --jq '.[0]')\nPR_NUMBER=$(echo \"${PR_JSON}\" | jq -r '.number')\nPR_TITLE=$(echo \"${PR_JSON}\" | jq -r '.title')\necho \"PR_NUMBER=${PR_NUMBER}\" >> \"${GITHUB_ENV}\"\necho \"PR_TITLE=${PR_TITLE}\" >> \"${GITHUB_ENV}\"\n",
+                "commands": [
+                  {
+                    "text": "PR_JSON=$(gh pr list --search \"${GITHUB_SHA}\" --state merged --json number,title --jq '.[0]')\nPR_NUMBER=$(echo \"${PR_JSON}\" | jq -r '.number')\nPR_TITLE=$(echo \"${PR_JSON}\" | jq -r '.title')\necho \"PR_NUMBER=${PR_NUMBER}\" >> \"${GITHUB_ENV}\"\necho \"PR_TITLE=${PR_TITLE}\" >> \"${GITHUB_ENV}\"\n",
+                    "line": 103
+                  }
+                ],
+                "commandOrderKnown": true,
+                "id": "",
+                "condition": "",
+                "env": {
+                  "GH_TOKEN": "${{ secrets.GITHUB_TOKEN }}"
+                },
+                "line": 100,
+                "shell": "bash"
+              },
+              {
+                "index": 2,
+                "type": "uses",
+                "action": "slackapi/slack-github-action",
+                "version": "v2.0.0",
+                "arguments": {
+                  "webhook-type": "incoming-webhook",
+                  "webhook": "${{ secrets.SLACK_WEBHOOK_URL_YOLO }}",
+                  "payload": "text: \"<!channel> GitHub Actions success for ${{ github.workflow }} ✅\\n\\n\\n*Repository:* https://github.com/${{ github.repository }}\\n*Action:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\\n*Author:* ${{ github.actor }}\\n*Event:* NEW `${{ github.repository }} ${{ needs.check.outputs.current_tag }}` pip package published 😃\\n*Job Status:* ${{ job.status }}\\n*Pull Request:* <https://github.com/${{ github.repository }}/pull/${{ env.PR_NUMBER }}> ${{ env.PR_TITLE }}\\n\"\n"
+                },
+                "id": "",
+                "condition": "needs.publish.result == 'success' && github.event_name == 'push'",
+                "env": {},
+                "line": 109
+              },
+              {
+                "index": 3,
+                "type": "uses",
+                "action": "slackapi/slack-github-action",
+                "version": "v2.0.0",
+                "arguments": {
+                  "webhook-type": "incoming-webhook",
+                  "webhook": "${{ secrets.SLACK_WEBHOOK_URL_YOLO }}",
+                  "payload": "text: \"<!channel> GitHub Actions error for ${{ github.workflow }} ❌\\n\\n\\n*Repository:* https://github.com/${{ github.repository }}\\n*Action:* https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}\\n*Author:* ${{ github.actor }}\\n*Event:* ${{ github.event_name }}\\n*Job Status:* ${{ job.status }}\\n*Pull Request:* <https://github.com/${{ github.repository }}/pull/${{ env.PR_NUMBER }}> ${{ env.PR_TITLE }}\\n\"\n"
+                },
+                "id": "",
+                "condition": "needs.publish.result != 'success'",
+                "env": {},
+                "line": 117
+              }
+            ],
+            "condition": "always() && needs.check.outputs.increment == 'True'",
+            "env": {},
+            "needs": [
+              "check",
+              "publish"
+            ],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": false,
+        "env": {}
+      },
+      "sharedStateOperations": [
+        {
+          "id": "artifact-write:build:5",
+          "kind": "artifactWriteIntent",
+          "jobId": "build",
+          "stepIndex": 5,
+          "key": null,
+          "path": "dist/",
+          "name": "dist",
+          "runId": null
+        },
+        {
+          "id": "artifact-read:publish:0",
+          "kind": "artifactReadIntent",
+          "jobId": "publish",
+          "stepIndex": 0,
+          "key": null,
+          "path": "dist/",
+          "name": "dist",
+          "runId": null
+        }
+      ],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    },
+    ".github/workflows/stale.yml": {
+      "schemaVersion": "0.1.0",
+      "source": {
+        "type": "yamlLibrary",
+        "file": "experiments/public-cases/ultralytics/mitigation/.github/workflows/stale.yml",
+        "staticAnalysisOnly": true
+      },
+      "workflow": {
+        "name": "Close stale issues",
+        "file": ".github/workflows/stale.yml",
+        "events": [
+          {
+            "name": "schedule",
+            "externallyTriggerable": false,
+            "privileged": false,
+            "properties": {}
+          }
+        ],
+        "permissions": [
+          {
+            "jobId": null,
+            "scope": "pull-requests",
+            "access": "write"
+          },
+          {
+            "jobId": null,
+            "scope": "issues",
+            "access": "write"
+          }
+        ],
+        "jobs": [
+          {
+            "id": "stale",
+            "runnerLabels": [
+              "ubuntu-latest"
+            ],
+            "steps": [
+              {
+                "index": 0,
+                "type": "uses",
+                "action": "actions/stale",
+                "version": "v9",
+                "arguments": {
+                  "repo-token": "${{ secrets.GITHUB_TOKEN }}",
+                  "stale-issue-message": "👋 Hello there! We wanted to give you a friendly reminder that this issue has not had any recent activity and may be closed soon, but don't worry - you can always reopen it if needed. If you still have any questions or concerns, please feel free to let us know how we can help.\n\nFor additional resources and information, please see the links below:\n\n- **Docs**: https://docs.ultralytics.com\n- **HUB**: https://hub.ultralytics.com\n- **Community**: https://community.ultralytics.com\n\nFeel free to inform us of any other **issues** you discover or **feature requests** that come to mind in the future. Pull Requests (PRs) are also always welcomed!\n\nThank you for your contributions to YOLO 🚀 and Vision AI ⭐\n",
+                  "stale-pr-message": "👋 Hello there! We wanted to let you know that we've decided to close this pull request due to inactivity. We appreciate the effort you put into contributing to our project, but unfortunately, not all contributions are suitable or aligned with our product roadmap.\n\nWe hope you understand our decision, and please don't let it discourage you from contributing to open source projects in the future. We value all of our community members and their contributions, and we encourage you to keep exploring new projects and ways to get involved.\n\nFor additional resources and information, please see the links below:\n\n- **Docs**: https://docs.ultralytics.com\n- **HUB**: https://hub.ultralytics.com\n- **Community**: https://community.ultralytics.com\n\nThank you for your contributions to YOLO 🚀 and Vision AI ⭐\n",
+                  "days-before-issue-stale": "30",
+                  "days-before-issue-close": "10",
+                  "days-before-pr-stale": "90",
+                  "days-before-pr-close": "30",
+                  "exempt-issue-labels": "documentation,tutorial,TODO",
+                  "operations-per-run": "300"
+                },
+                "id": "",
+                "condition": "",
+                "env": {},
+                "line": 16
+              }
+            ],
+            "condition": "",
+            "env": {},
+            "needs": [],
+            "permissionsDeclared": false
+          }
+        ],
+        "expressions": [],
+        "permissionsDeclared": true,
+        "env": {}
+      },
+      "sharedStateOperations": [],
+      "verificationFacts": {
+        "sameObject": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityVerified": "unknown",
+        "privilegedConsumer": "unknown",
+        "hasAuthority": "unknown"
+      },
+      "runtimeObservations": []
+    }
+  },
+  "candidates": []
+}

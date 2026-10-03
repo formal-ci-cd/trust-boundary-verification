@@ -1,0 +1,27 @@
+{
+  "purpose": "Compare actual upstream workflow states around commit #1237, not claim that change was direct incident response.",
+  "changeCommit": "6d051a3652f562bd3a6561bca6809146f6041043",
+  "changeDate": "2025-04-02T02:18:30Z",
+  "changeURL": "https://github.com/spotbugs/sonar-findbugs/pull/1237",
+  "importantLimit": "Before version selects an environment based on PR author association; approval rules are not in the YAML, so external-attacker reachability is unsupported. After version has no pull_request_target trigger.",
+  "files": [
+    {
+      "variant": "before",
+      "repository": "spotbugs/sonar-findbugs",
+      "commit": "ca5dc9db15f6e1124d4eff95e9a1083effd8a828",
+      "path": ".github/workflows/sonarqube.yml",
+      "localPath": "before/.github/workflows/sonarqube.yml",
+      "sha256": "802a74bae6730e460e992f012df219f8540781f18815f046d98d41920303f38a",
+      "source": "https://github.com/spotbugs/sonar-findbugs/blob/ca5dc9db15f6e1124d4eff95e9a1083effd8a828/.github/workflows/sonarqube.yml"
+    },
+    {
+      "variant": "after",
+      "repository": "spotbugs/sonar-findbugs",
+      "commit": "6d051a3652f562bd3a6561bca6809146f6041043",
+      "path": ".github/workflows/sonarqube.yml",
+      "localPath": "after/.github/workflows/sonarqube.yml",
+      "sha256": "a20bd889408322e5b41020b4122bbe4f8370c528b42bc9c65627733c2b577715",
+      "source": "https://github.com/spotbugs/sonar-findbugs/blob/6d051a3652f562bd3a6561bca6809146f6041043/.github/workflows/sonarqube.yml"
+    }
+  ]
+}

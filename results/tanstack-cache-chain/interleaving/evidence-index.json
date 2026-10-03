@@ -1,0 +1,32 @@
+{
+  "sourceManifest": "experiments/public-cases/tanstack/manifest.json",
+  "tool": "tools/tanstack_interleaving.py",
+  "verifier": "tools/verify_tanstack_interleaving.py",
+  "nusmvVersion": "2.7.0",
+  "files": [
+    {
+      "path": "analysis-native.json",
+      "sha256": "522e1c43d9c78d921a0bdd617aef8ffe2c177bd55eadc9448bd4bca1527571da"
+    },
+    {
+      "path": "analysis.json",
+      "sha256": "f9c5ed1be754892123b96db5e7b6ff18c82c9ee2265cdf38f13bc7527165a487"
+    },
+    {
+      "path": "mitigation.nusmv.txt",
+      "sha256": "377e166e1ec1a16315f3100defa7454a1890765c2d6222a590d92f4aae10d3d5"
+    },
+    {
+      "path": "mitigation.smv",
+      "sha256": "73a50d79a5e5090989e31167b509bde82dab9f386a4cba8b550104c3886c58a7"
+    },
+    {
+      "path": "pre-incident.nusmv.txt",
+      "sha256": "d89d9304dd5e8b37ea63d7c489ae625ebd86f097fb5c13c9f225f69b1746a273"
+    },
+    {
+      "path": "pre-incident.smv",
+      "sha256": "aced952944c3eb903a71ad391600b14d66324f7a4344c41c50c7762b20b5f3ca"
+    }
+  ]
+}

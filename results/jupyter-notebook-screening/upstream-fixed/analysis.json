@@ -1,0 +1,86 @@
+{
+  "schemaVersion": "composite-approval-race-0.1",
+  "status": "analyzed",
+  "candidates": [
+    {
+      "id": "playwright-update-update-snapshots-pr",
+      "rejectionOperator": "-ge",
+      "sourceScript": "pr=\"$(gh api /repos/${GH_REPO}/pulls/${PR_NUMBER})\"\nhead_sha=\"$(echo \"$pr\" | jq -r .head.sha)\"\npushed_at=\"$(echo \"$pr\" | jq -r .head.repo.pushed_at)\"\n\nif [[ $(date -d \"$pushed_at\" +%s) -ge $(date -d \"$COMMENT_AT\" +%s) ]]; then\n    echo \"Updating is not allowed because the PR was pushed to (at $pushed_at) after the triggering comment was issued (at $COMMENT_AT)\"\n    exit 1\nfi\n\necho \"head_sha=$head_sha\" >> $GITHUB_OUTPUT\n",
+      "timestampVariables": [
+        "pushed_at",
+        "COMMENT_AT"
+      ],
+      "actionRef": "jupyterlab/maintainer-tools/.github/actions/update-snapshots-checkout@21b1cac622018fd37ec13a1c8081da814e10d94e",
+      "configuredWriteScopes": [
+        "contents",
+        "pull-requests"
+      ],
+      "evidence": [
+        {
+          "file": ".github/workflows/playwright-update.yml",
+          "line": 27,
+          "role": "pinned-composite-Action"
+        },
+        {
+          "file": ".github/actions/update-snapshots-checkout/action.yml",
+          "line": 27,
+          "role": "commenter-authorization"
+        },
+        {
+          "file": ".github/actions/update-snapshots-checkout/action.yml",
+          "line": 54,
+          "role": "PR-fetch-and-timestamp-guard"
+        },
+        {
+          "file": ".github/actions/update-snapshots-checkout/action.yml",
+          "line": 74,
+          "role": "PR-checkout"
+        },
+        {
+          "file": ".github/actions/update-snapshots-checkout/action.yml",
+          "line": 80,
+          "role": "HEAD-validation"
+        },
+        {
+          "file": ".github/workflows/playwright-update.yml",
+          "line": 34,
+          "role": "PR-local-Action"
+        }
+      ],
+      "assumptions": [
+        "The pinned Action snapshot is the bytes at the caller commit; the manifest pins both source repositories.",
+        "An authorized maintainer comment exists and the attacker can update the same PR later within that timestamp second.",
+        "The PR API fetch returns head SHA and pushed_at from one state; timestamps are truncated to seconds.",
+        "The PR checkout and HEAD validation succeed; the chosen PR commit contains attacker-controlled local Action code.",
+        "The configured write token and local Action execution indicate capability, not successful exploitation or actual incident."
+      ],
+      "property": "After the authorized comment, a later PR update must not reach a PR-controlled local Action in a write-token job.",
+      "bfs": {
+        "verdict": "safe",
+        "reachableStates": 42,
+        "counterexample": []
+      },
+      "status": "safe-in-supported-model",
+      "guardReplay": [
+        {
+          "case": "before",
+          "accepted": true,
+          "timestampOnly": true,
+          "subsecondOrdering": "assumed by test input label"
+        },
+        {
+          "case": "same-second-after",
+          "accepted": false,
+          "timestampOnly": true,
+          "subsecondOrdering": "assumed by test input label"
+        },
+        {
+          "case": "next-second-after",
+          "accepted": false,
+          "timestampOnly": true,
+          "subsecondOrdering": "assumed by test input label"
+        }
+      ]
+    }
+  ]
+}

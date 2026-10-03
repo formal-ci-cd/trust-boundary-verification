@@ -47,6 +47,18 @@ class ArtifactSubsetTests(unittest.TestCase):
             rows = self.run_repo(root)
             self.assertEqual(rows[path.name]['status'], 'unknown/unsupported')
 
+    def test_unsupported_action_before_download_does_not_become_safe(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a3-download-only-consumer.yml'
+            text = path.read_text().replace(
+                '      - name: Download',
+                '      - uses: unknown/action@v1\n      - name: Download', 1)
+            path.write_text(text)
+            rows = self.run_repo(root)
+            self.assertEqual(rows[path.name]['status'], 'unknown/unsupported')
+
 
     def test_extra_a5_shell_command_is_unsupported(self):
         with tempfile.TemporaryDirectory() as folder:

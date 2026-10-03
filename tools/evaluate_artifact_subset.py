@@ -253,10 +253,10 @@ def evaluate(candidate, nusmv, output, root):
     job = consumer_job(candidate)
     later = [s for s in job['steps'] if s['index'] > read['stepIndex']]
     unsupported = []
-    for step in later:
+    for step in job['steps']:
         if step['type'] == 'uses' and step.get('action') not in ALLOWED_CONSUMER_ACTIONS:
             unsupported.append(f"unsupported action {step.get('action')}")
-        elif step['type'] == 'run' and step.get('shell') not in {'bash', 'sh'}:
+        elif step['index'] > read['stepIndex'] and step['type'] == 'run' and step.get('shell') not in {'bash', 'sh'}:
             unsupported.append(f"unsupported shell {step.get('shell')}")
     if candidate['pairingStatus'] != 'unique':
         unsupported.append('ambiguous producer for artifact name/run selector')

@@ -17,7 +17,7 @@
 | A5 | 公開脆弱性を基にしたPR producer→artifact→別runのconsumer→模擬repository更新 | 固定YAMLからの限定自動解析で条件付き反例．同一artifact ID／digestと模擬到達を観測．旧モデル入力には人手対応が残る |
 | TanStack | 実侵害のPR側Cache保存候補→外部Setup Actionの復元→別workflow/runのOIDC job | 事件前に条件付き反例，実対策版で対象経路なし．順序を変えると到達runが変わる．実効Cache entry／byteの全同一性は未観測 |
 
-[A1～A4のYAML自動再評価](../results/core-artifact-subset/analysis.json)では，現実のpublish権限でなくdummy markerへの到達を検査している．A1～A4の実行観測は[成果物実験](../results/github-actions-artifact-runtime-2026-08-22.md)と[A3～A5の検証](../results/artifact-case-study-2026-09-23.md)，TanStackの固定原本・反例・時刻の対応は[事例検証](tanstack-incident-cache-boundary.md)を参照する．A1／A5の[一境界ずつのモデル対照](../results/core-boundary-controls.json)はNuSMVと独立した列挙で18構成を照合した．TanStackの構造対照も既存テストにある．これらは**全てのYAML表現や実行時条件の網羅ではない**．[抽出範囲と評価契約](scope-and-extraction.md)に残作業を明示した．
+[A1～A5のYAML自動再評価](../results/core-artifact-subset/analysis.json)では，現実のpublish権限でなくdummy markerへの到達を検査している．A1～A4の実行観測は[成果物実験](../results/github-actions-artifact-runtime-2026-08-22.md)と[A3～A5の検証](../results/artifact-case-study-2026-09-23.md)，TanStackの固定原本・反例・時刻の対応は[事例検証](tanstack-incident-cache-boundary.md)を参照する．A1／A5の[一境界ずつのモデル対照](../results/core-boundary-controls.json)はNuSMVと独立した列挙で18構成を照合した．さらに[YAML境界マトリクス](yaml-boundary-matrix-evaluation.md)でSource・upload・download・useの16通り，digest guardを持つ8通り，単独軸対照，A5とTanStackのsafe controlを抽出から検査まで通した．これらは**全てのYAML表現や実行時条件の網羅ではない**．[抽出範囲と評価契約](scope-and-extraction.md)に残作業を明示した．
 
 ## property-levelの既存ツール比較
 

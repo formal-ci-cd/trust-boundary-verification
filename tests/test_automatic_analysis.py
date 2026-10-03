@@ -147,6 +147,18 @@ class AutomaticRulesTests(unittest.TestCase):
         self.assertEqual(result["chain"]["facts"]["sameObject"], "unknown")
         self.assertFalse(result["runtimeVerified"])
 
+    def test_unknown_consumer_action_does_not_keep_potential_risk_class(self):
+        candidate = copy.deepcopy(discovery.discover_candidates(
+            yaml_frontend.load_models(CASE / 'vulnerable'))[0])
+        job = candidate['consumerModel']['workflow']['jobs'][0]
+        job['steps'].append({'type': 'uses', 'action': 'unknown/action',
+                             'index': max(s['index'] for s in job['steps']) + 1,
+                             'arguments': {}, 'env': {}})
+        result = auto.analyze(candidate)
+        self.assertEqual(result['status'], 'unknown')
+        self.assertTrue(any('unsupported consumer Action' in reason
+                            for reason in result['unresolved']))
+
     def test_fixed_origin_policy_blocks_external_fork(self):
         result = self.result("fixed")
         self.assertEqual(result["status"], "source-policy-blocked")

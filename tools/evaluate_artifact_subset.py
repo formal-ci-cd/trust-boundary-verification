@@ -18,6 +18,35 @@ ALLOWED_CONSUMER_ACTIONS = {'actions/download-artifact'}
 HEX_DIGEST = r'[0-9a-f]{64}'
 
 
+def condition_status(value):
+    """Only literal booleans are decided; expressions remain unknown."""
+    value = str(value or '').strip()
+    if value.startswith('${{') and value.endswith('}}'):
+        value = value[3:-2].strip()
+    if value in ('', 'true', 'True'):
+        return 'true'
+    if value in ('false', 'False'):
+        return 'false'
+    return 'unknown'
+
+
+def and_status(*values):
+    if 'false' in values:
+        return 'false'
+    return 'unknown' if 'unknown' in values else 'true'
+
+
+def workflow_run_guard_status(value):
+    """Recognize the fixed completed-success PR guard used by A1-A5."""
+    literal = condition_status(value)
+    if literal != 'unknown':
+        return literal
+    normalized = ' '.join(str(value).split())
+    expected = ("github.event.workflow_run.conclusion == 'success' && "
+                "github.event.workflow_run.event == 'pull_request'")
+    return 'true' if normalized == expected else 'unknown'
+
+
 def consumer_job(candidate):
     read = candidate['consumerOperation']
     jobs = candidate['consumerModel']['workflow']['jobs']
@@ -31,19 +60,22 @@ def source_fact(candidate):
                if j['id'] == candidate['producerOperation']['jobId'])
     upload = next(s for s in job['steps']
                   if s['index'] == candidate['producerOperation']['stepIndex'])
-    if job.get('condition') or upload.get('condition'):
-        return 'unknown'
+    if 'pull_request' not in events:
+        return 'false' if events == {'push'} else 'unknown'
     before = [s for s in job['steps'] if s['index'] < candidate['producerOperation']['stepIndex']]
     checkouts = [s for s in before if s.get('action') == 'actions/checkout' and
                  not s.get('arguments', {}).get('ref') and not s.get('condition')]
-    if 'pull_request' not in events or len(checkouts) != 1:
+    if len(checkouts) != 1:
         return 'unknown'
     upload_path = candidate['producerOperation'].get('path', '')
     if not relative_repo_path(upload_path):
         return 'unknown'
     copied_into_upload = False
+    generated_upload = False
     for step in before:
         if step['index'] <= checkouts[0]['index']:
+            continue
+        if step['type'] == 'uses' and step.get('action') == 'actions/upload-artifact' and not step.get('condition'):
             continue
         if step['type'] != 'run' or step.get('shell') not in {'bash', 'sh'}:
             return 'unknown'
@@ -58,6 +90,8 @@ def source_fact(candidate):
             except ValueError:
                 return 'unknown'
             if words[:2] == ['mkdir', '-p'] and all(relative_repo_path(p) for p in words[2:]):
+                generated_upload |= any(p == upload_path or
+                    p.startswith(upload_path.rstrip('/') + '/') for p in words[2:])
                 continue
             if len(words) == 3 and words[0] == 'cp' and relative_repo_path(words[1]) and \
                     relative_repo_path(words[2]) and \
@@ -66,7 +100,7 @@ def source_fact(candidate):
                 copied_into_upload = True
                 continue
             return 'unknown'
-    if upload_path.startswith('.research-artifact-input/') or copied_into_upload:
+    if copied_into_upload or not generated_upload:
         return 'true'
     return 'unknown'
 
@@ -118,6 +152,12 @@ def digest_guard(job, read_index):
 def supported_dummy_sink(step):
     """Research marker only; never equate it with an actual publish permission."""
     script = step.get('command', '')
+    lines = [line.strip() for line in script.splitlines() if line.strip()]
+    expected_branch = 'if [ "$request" = "publish=true" ]; then'
+    if any(re.match(r'^(?:exit|return|exec|source|eval)\b', line) for line in lines):
+        return False
+    if any(line.startswith('if ') and line != expected_branch for line in lines):
+        return False
     return (step['type'] == 'run' and
             re.search(r'if \[ "\$request" = "publish=true" \]; then\s+authority_reached=true\s+else\s+authority_reached=false\s+fi', script) is not None and
             'dummy_publish_authority_reached=$authority_reached' in script and
@@ -235,7 +275,10 @@ def metadata_dummy_sink(job, read):
         return None, None
     if not all(token in sink['command'] for token in
        ('test -f "$ARTIFACT_DIR/dist/index.js"',
-        "echo 'dummy_repository_update_reached=true'", '$TARGET_BRANCH', '$TARGET_SHA')):
+        '$TARGET_BRANCH', '$TARGET_SHA')):
+        return None, None
+    if not re.search(r"echo 'dummy_repository_update_reached=(?:true|false)'",
+                     sink['command']):
         return None, None
     allowed_sink = {'set -eu', 'test -f "$ARTIFACT_DIR/dist/index.js"',
                     '{', 'echo', '} | tee -a "$GITHUB_STEP_SUMMARY"'}
@@ -251,6 +294,11 @@ def evaluate(candidate, nusmv, output, root):
     consumer = candidate['consumerModel']
     read = candidate['consumerOperation']
     job = consumer_job(candidate)
+    producer_job = next(j for j in producer['workflow']['jobs']
+                        if j['id'] == candidate['producerOperation']['jobId'])
+    write_step = next(s for s in producer_job['steps']
+                      if s['index'] == candidate['producerOperation']['stepIndex'])
+    read_step = next(s for s in job['steps'] if s['index'] == read['stepIndex'])
     later = [s for s in job['steps'] if s['index'] > read['stepIndex']]
     unsupported = []
     for step in job['steps']:
@@ -258,8 +306,10 @@ def evaluate(candidate, nusmv, output, root):
             unsupported.append(f"unsupported action {step.get('action')}")
         elif step['index'] > read['stepIndex'] and step['type'] == 'run' and step.get('shell') not in {'bash', 'sh'}:
             unsupported.append(f"unsupported shell {step.get('shell')}")
-    if candidate['pairingStatus'] != 'unique':
+    if candidate['pairingStatus'] != 'unique' and candidate.get('nameCompatibility') != 'equal-candidate':
         unsupported.append('ambiguous producer for artifact name/run selector')
+    if candidate.get('nameCompatibility') == 'unknown':
+        unsupported.append('dynamic or missing artifact name is outside the supported identity subset')
     verify, verified_uses = digest_guard(job, read['stepIndex'])
     sink_steps = [s for s in later if supported_dummy_sink(s)]
     metadata_step, metadata_sink = metadata_dummy_sink(job, read)
@@ -286,13 +336,36 @@ def evaluate(candidate, nusmv, output, root):
         unsupported.append('artifact use or verification is outside the supported shell subset')
     # A dummy sink is a research simulation and has no real publish authority.
     # Its own property is evaluated separately from configured GitHub permissions.
-    sink = 'true' if sink_steps or metadata_sink else ('false' if (use == 'false' or supported_read_only(job, read)) and not unsupported else 'unknown')
-    facts = dict(producerUntrusted=source_fact(candidate), writeIntent='true',
-                 writeAuthorized='unknown', writeSucceeded='unknown', sameObject='unknown',
-                 readSucceeded='unknown', consumerUsesObject=use,
+    metadata_sink_enabled = bool(metadata_sink and
+        "echo 'dummy_repository_update_reached=true'" in metadata_sink['command'])
+    sink = ('true' if sink_steps or metadata_sink_enabled else
+            'false' if (use == 'false' or supported_read_only(job, read) or metadata_sink)
+            and not unsupported else 'unknown')
+    write_enabled = and_status(condition_status(producer_job.get('condition')),
+                               condition_status(write_step.get('condition')))
+    read_enabled = and_status(workflow_run_guard_status(job.get('condition')),
+                              condition_status(read_step.get('condition')))
+    if write_enabled == 'unknown':
+        unsupported.append('producer job or upload condition is outside the supported subset')
+    if read_enabled == 'unknown':
+        unsupported.append('consumer job or download condition is outside the supported subset')
+    if use_step:
+        use_condition = condition_status(use_step.get('condition'))
+        if integrity == 'true' and use_step in verified_uses:
+            use_condition = 'true'
+        if use_condition == 'false':
+            use = 'false'
+            sink = 'false'
+        elif use_condition == 'unknown':
+            unsupported.append('artifact use condition is outside the supported subset')
+    same_object = 'false' if candidate.get('nameCompatibility') == 'literal-different' else 'unknown'
+    facts = dict(producerUntrusted=source_fact(candidate), writeIntent=write_enabled,
+                 writeAuthorized='unknown', writeSucceeded='unknown', sameObject=same_object,
+                 readSucceeded='false' if read_enabled == 'false' else 'unknown',
+                 consumerUsesObject=use,
                  integrityCheckPresent=integrity, integrityCheckPassed='unknown' if integrity == 'true' else 'false',
                  privilegedConsumer='true', hasAuthority=sink)
-    if facts['producerUntrusted'] != 'true':
+    if facts['producerUntrusted'] == 'unknown':
         unsupported.append('upload bytes could not be traced to the checked-out PR input')
     if unsupported:
         status = 'unknown/unsupported'
@@ -304,9 +377,6 @@ def evaluate(candidate, nusmv, output, root):
         value = build_trust_chain.location(ep, step['index'], meaning)
         value['line'] = step['line']
         return value
-    write_step = next(s for j in producer['workflow']['jobs'] if j['id'] == candidate['producerOperation']['jobId']
-                      for s in j['steps'] if s['index'] == candidate['producerOperation']['stepIndex'])
-    read_step = next(s for s in job['steps'] if s['index'] == read['stepIndex'])
     use_loc = use_step or (verified_uses[0] if verified_uses else read_step)
     sink_loc = sink_steps[0] if sink_steps else (metadata_sink or use_loc)
     trace = {'start': loc(producer_ep, write_step, 'PR artifact upload intent'),
@@ -340,7 +410,9 @@ def evaluate(candidate, nusmv, output, root):
             'recognition': 'literal checked-out file or recognized pre-upload cp into artifact directory'},
             'producer': producer_ep, 'consumer': consumer_ep,
             'sharedObject': {'kind': 'artifact', 'name': candidate['producerOperation'].get('name'),
-                             'runSelector': discovery.WORKFLOW_RUN_ID, 'sameObject': 'unknown',
+                             'consumerName': candidate['consumerOperation'].get('name'),
+                             'nameCompatibility': candidate.get('nameCompatibility', 'unknown'),
+                             'runSelector': discovery.WORKFLOW_RUN_ID, 'sameObject': same_object,
                              'producerRunId': 'unknown', 'artifactId': 'unknown',
                              'artifactDigest': 'unknown'},
             'facts': facts, 'traceMap': trace, 'status': status,

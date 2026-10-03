@@ -48,6 +48,8 @@
       "sharedObject": {
         "kind": "artifact",
         "name": "trust-boundary-build-output",
+        "consumerName": "trust-boundary-build-output",
+        "nameCompatibility": "equal-candidate",
         "runSelector": "github.event.workflow_run.id",
         "sameObject": "unknown",
         "producerRunId": "unknown",
@@ -181,6 +183,8 @@
       "sharedObject": {
         "kind": "artifact",
         "name": "trust-boundary-build-output",
+        "consumerName": "trust-boundary-build-output",
+        "nameCompatibility": "equal-candidate",
         "runSelector": "github.event.workflow_run.id",
         "sameObject": "unknown",
         "producerRunId": "unknown",
@@ -308,6 +312,8 @@
       "sharedObject": {
         "kind": "artifact",
         "name": "trust-boundary-build-output",
+        "consumerName": "trust-boundary-build-output",
+        "nameCompatibility": "equal-candidate",
         "runSelector": "github.event.workflow_run.id",
         "sameObject": "unknown",
         "producerRunId": "unknown",
@@ -434,6 +440,8 @@
       "sharedObject": {
         "kind": "artifact",
         "name": "trust-boundary-build-output",
+        "consumerName": "trust-boundary-build-output",
+        "nameCompatibility": "equal-candidate",
         "runSelector": "github.event.workflow_run.id",
         "sameObject": "unknown",
         "producerRunId": "unknown",
@@ -560,6 +568,8 @@
       "sharedObject": {
         "kind": "artifact",
         "name": "gha-a5-rebuilt-dist",
+        "consumerName": "gha-a5-rebuilt-dist",
+        "nameCompatibility": "equal-candidate",
         "runSelector": "github.event.workflow_run.id",
         "sameObject": "unknown",
         "producerRunId": "unknown",

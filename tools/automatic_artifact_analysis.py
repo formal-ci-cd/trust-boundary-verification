@@ -185,6 +185,12 @@ def analyze(candidate):
         for e in p_events
     )
     authority = configured_authority(consumer, job)
+    name_compatibility = candidate.get('nameCompatibility', 'unknown')
+    unsupported_actions = [step.get('action') for step in job['steps']
+                           if step['type'] == 'uses' and step.get('action') not in
+                           {'actions/download-artifact', 'actions/checkout'}]
+    if unsupported_actions:
+        unresolved.append('unsupported consumer Action: ' + ', '.join(unsupported_actions))
     status = (
         "source-policy-blocked"
         if excluded and external
@@ -194,6 +200,8 @@ def analyze(candidate):
             and authority == "true"
             and external
             and candidate["pairingStatus"] == "unique"
+            and name_compatibility == 'equal-candidate'
+            and not unsupported_actions
             else "unknown"
         )
     )
@@ -205,7 +213,7 @@ def analyze(candidate):
         writeIntent="true",
         writeAuthorized="unknown",
         writeSucceeded="unknown",
-        sameObject="unknown",
+        sameObject="false" if name_compatibility == 'literal-different' else "unknown",
         readSucceeded="unknown",
         consumerUsesObject="true" if flows else "unknown",
         integrityCheckPresent="unknown",
@@ -294,7 +302,8 @@ def analyze(candidate):
             "name": write["name"],
             "producerRunSelector": "current producer run",
             "consumerRunSelector": discovery.WORKFLOW_RUN_ID,
-            "identityBasis": ["static name/workflow/run-selector match only"],
+            "identityBasis": ["workflow/run-selector match; artifact name compatibility: "
+                              + name_compatibility],
         },
         "facts": facts,
         "traceMap": trace,

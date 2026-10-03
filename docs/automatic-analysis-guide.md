@@ -13,6 +13,15 @@ PYTHONPATH=/path/to/installed/dependencies python3 tools/evaluate_artifact_subse
 
 [固定YAMLから生成した結果](../results/core-artifact-subset/analysis.json)は，NuSMVと独立事実列挙の一致を確認済み．`safe-within-model`はこの模擬publish地点と認識したshell部分集合の結論であり，repository全体の安全性ではない．
 
+Supported Subsetの[YAML境界マトリクス](yaml-boundary-matrix-evaluation.md)は，固定事例の一箇所変更に加えて，Source・upload・download・useの組合せとdigest guard，A5の模擬sink，TanStackのCache対照を抽出から検査まで通す．
+
+```sh
+PYTHONPATH=/path/to/installed/dependencies python3 -m unittest \
+  tests.test_supported_subset_yaml_matrix -v
+```
+
+実行にはNuSMVが必要で，`NUSMV_BIN=/path/to/NuSMV`又は`PATH`内の`NuSMV`を使用する．どちらもない場合は研究用macOSの固定pathを参照し，実行可能なbinaryがなければテストをskipする．CIの通常のDocker imageにはNuSMVを含めていないため，CIのgreenだけでこの行列のNuSMV照合が実行されたとはみなさない．研究用macOS上では2.7.0で全行列を実行して確認した．
+
 ## Cache操作の共通inventory
 
 既知の`actions/cache`系と，明示的に渡したSHA-256照合済みComposite Action snapshotから，Cache read/writeを抽出し候補対を列挙する．TanStackの`@main`は可変参照なので，snapshotを照合しても**事件時に同じActionが実行された証明にはならない**．`sameObject`，実効key，scope，version，save/restoreの順序はunknownに保つ．この段階の候補数は危険経路数ではない．

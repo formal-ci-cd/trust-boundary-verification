@@ -102,14 +102,27 @@ def discover_candidates(models):
             continue
 
         targets = workflow_run_targets(consumer_model)
-        # 成果物名とworkflow_runの起動元名が両方一致する保存操作を探す．
-        matches = [
+        # 起動元workflow内の保存操作から，nameを照合する．文字列不一致は
+        # 同一objectの遮断根拠として保持し，動的nameはunknown候補に残す．
+        target_writes = [
             (producer_model, write)
             for producer_model, write in writes
-            if write.get("name") is not None and write.get("name") == read.get("name")
-            and producer_model["workflow"]["name"] in targets
+            if producer_model["workflow"]["name"] in targets
         ]
+        def compatibility(write):
+            producer_name, consumer_name = write.get('name'), read.get('name')
+            if not producer_name or not consumer_name:
+                return 'unknown'
+            if '${{' in producer_name or '${{' in consumer_name:
+                return 'unknown'
+            return 'equal-candidate' if producer_name == consumer_name else 'literal-different'
+        exact = [(model, write) for model, write in target_writes
+                 if compatibility(write) == 'equal-candidate']
+        dynamic = [(model, write) for model, write in target_writes
+                   if compatibility(write) == 'unknown']
+        matches = exact or dynamic or target_writes
         for producer_model, write in matches:
+            name_compatibility = compatibility(write)
             candidates.append(
                 {
                     "id": candidate_id(
@@ -121,8 +134,9 @@ def discover_candidates(models):
                     "consumerOperation": read,
                     # 複数の保存側が一致した場合は，誤って1件を選ばず曖昧として残す．
                     "pairingStatus": "unique" if len(matches) == 1 else "ambiguous",
+                    "nameCompatibility": name_compatibility,
                     "matchBasis": [
-                        "artifact nameが一致する．",
+                        "artifact nameの一致・不一致・動的値を区別する．",
                         "取得側が起動元workflow_runのrun IDを指定する．",
                         "workflow_runのworkflows指定が保存側workflow名と一致する．",
                     ],
@@ -155,6 +169,7 @@ def catalog_entry(candidate):
             "triggerWorkflow": candidate["producerModel"]["workflow"]["name"],
         },
         "matchBasis": candidate["matchBasis"],
+        "nameCompatibility": candidate["nameCompatibility"],
     }
 
 

@@ -46,7 +46,10 @@
         "kind": "artifact",
         "name": "trust-boundary-build-output",
         "runSelector": "github.event.workflow_run.id",
-        "sameObject": "unknown"
+        "sameObject": "unknown",
+        "producerRunId": "unknown",
+        "artifactId": "unknown",
+        "artifactDigest": "unknown"
       },
       "facts": {
         "producerUntrusted": "true",
@@ -120,13 +123,13 @@
         "object_used",
         "authority_reached"
       ],
-      "unknownAssumptions": [
-        "integrityCheckPresent",
-        "readSucceeded",
-        "sameObject",
-        "writeAuthorized",
-        "writeSucceeded"
-      ],
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "sameObject": true,
+        "readSucceeded": true,
+        "integrityCheckPresent": false
+      },
       "unsupported": [],
       "simulation": "dummy publish marker; no actual publish authority"
     },
@@ -173,7 +176,10 @@
         "kind": "artifact",
         "name": "trust-boundary-build-output",
         "runSelector": "github.event.workflow_run.id",
-        "sameObject": "unknown"
+        "sameObject": "unknown",
+        "producerRunId": "unknown",
+        "artifactId": "unknown",
+        "artifactDigest": "unknown"
       },
       "facts": {
         "producerUntrusted": "true",
@@ -241,13 +247,13 @@
       "status": "safe-within-model",
       "hypotheticalModelVerdict": "safe",
       "counterexampleStages": [],
-      "unknownAssumptions": [
-        "integrityCheckPassed",
-        "readSucceeded",
-        "sameObject",
-        "writeAuthorized",
-        "writeSucceeded"
-      ],
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved",
+        "integrityCheckPassed": "unresolved"
+      },
       "unsupported": [],
       "simulation": "dummy publish marker; no actual publish authority"
     },
@@ -294,7 +300,10 @@
         "kind": "artifact",
         "name": "trust-boundary-build-output",
         "runSelector": "github.event.workflow_run.id",
-        "sameObject": "unknown"
+        "sameObject": "unknown",
+        "producerRunId": "unknown",
+        "artifactId": "unknown",
+        "artifactDigest": "unknown"
       },
       "facts": {
         "producerUntrusted": "true",
@@ -362,12 +371,12 @@
       "status": "safe-within-model",
       "hypotheticalModelVerdict": "safe",
       "counterexampleStages": [],
-      "unknownAssumptions": [
-        "readSucceeded",
-        "sameObject",
-        "writeAuthorized",
-        "writeSucceeded"
-      ],
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved"
+      },
       "unsupported": [],
       "simulation": "dummy publish marker; no actual publish authority"
     },
@@ -414,7 +423,10 @@
         "kind": "artifact",
         "name": "trust-boundary-build-output",
         "runSelector": "github.event.workflow_run.id",
-        "sameObject": "unknown"
+        "sameObject": "unknown",
+        "producerRunId": "unknown",
+        "artifactId": "unknown",
+        "artifactDigest": "unknown"
       },
       "facts": {
         "producerUntrusted": "true",
@@ -482,12 +494,12 @@
       "status": "safe-within-model",
       "hypotheticalModelVerdict": "safe",
       "counterexampleStages": [],
-      "unknownAssumptions": [
-        "readSucceeded",
-        "sameObject",
-        "writeAuthorized",
-        "writeSucceeded"
-      ],
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved"
+      },
       "unsupported": [],
       "simulation": "dummy publish marker; no actual publish authority"
     },
@@ -534,7 +546,10 @@
         "kind": "artifact",
         "name": "gha-a5-rebuilt-dist",
         "runSelector": "github.event.workflow_run.id",
-        "sameObject": "unknown"
+        "sameObject": "unknown",
+        "producerRunId": "unknown",
+        "artifactId": "unknown",
+        "artifactDigest": "unknown"
       },
       "facts": {
         "producerUntrusted": "true",
@@ -608,15 +623,15 @@
         "object_used",
         "authority_reached"
       ],
-      "unknownAssumptions": [
-        "consumerUsesObject",
-        "hasAuthority",
-        "integrityCheckPresent",
-        "readSucceeded",
-        "sameObject",
-        "writeAuthorized",
-        "writeSucceeded"
-      ],
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "sameObject": true,
+        "readSucceeded": true,
+        "consumerUsesObject": true,
+        "integrityCheckPresent": false,
+        "hasAuthority": true
+      },
       "unsupported": [
         "artifact use or verification is outside the supported shell subset"
       ],

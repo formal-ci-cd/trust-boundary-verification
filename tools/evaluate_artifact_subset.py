@@ -221,7 +221,8 @@ def evaluate(candidate, nusmv, output, root):
     run = subprocess.run([str(nusmv), str(model_path)], capture_output=True, text=True, check=True)
     formal = evaluate_artifact_chains.parse_verdict(run.stdout)
     counterexample_stages = re.findall(r'^\s*stage = ([a-z_]+)$', run.stdout, re.M) if formal == 'unsafe' else []
-    independent = static_chain_baseline.check(chain)['verdict']
+    independent_result = static_chain_baseline.check(chain)
+    independent = independent_result['verdict']
     if formal != independent:
         raise RuntimeError(f'NuSMV/BFS disagree for {candidate["id"]}')
     if status is None:
@@ -234,10 +235,14 @@ def evaluate(candidate, nusmv, output, root):
     return {'id': candidate['id'], 'source': {'event': event_name, 'file': source_file, 'line': event_line},
             'producer': producer_ep, 'consumer': consumer_ep,
             'sharedObject': {'kind': 'artifact', 'name': candidate['producerOperation'].get('name'),
-                             'runSelector': discovery.WORKFLOW_RUN_ID, 'sameObject': 'unknown'},
+                             'runSelector': discovery.WORKFLOW_RUN_ID, 'sameObject': 'unknown',
+                             'producerRunId': 'unknown', 'artifactId': 'unknown',
+                             'artifactDigest': 'unknown'},
             'facts': facts, 'traceMap': trace, 'status': status,
             'hypotheticalModelVerdict': formal, 'counterexampleStages': counterexample_stages,
-            'unknownAssumptions': sorted(k for k,v in facts.items() if v == 'unknown'),
+            'unknownAssumptions': {camel: (independent_result['witness'][snake] if independent_result['witness'] else 'unresolved')
+                                   for snake,camel in chain_to_nusmv.FACT_MAPPING.items()
+                                   if facts[camel] == 'unknown'},
             'unsupported': unsupported, 'simulation': 'dummy publish marker; no actual publish authority'}
 
 

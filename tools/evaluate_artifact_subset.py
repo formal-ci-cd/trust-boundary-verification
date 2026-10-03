@@ -4,6 +4,7 @@ import argparse
 import json
 from pathlib import Path
 import re
+import shlex
 import subprocess
 
 import build_trust_chain
@@ -28,12 +29,53 @@ def source_fact(candidate):
     events = {event['name'] for event in producer['workflow']['events']}
     job = next(j for j in producer['workflow']['jobs']
                if j['id'] == candidate['producerOperation']['jobId'])
+    upload = next(s for s in job['steps']
+                  if s['index'] == candidate['producerOperation']['stepIndex'])
+    if job.get('condition') or upload.get('condition'):
+        return 'unknown'
     before = [s for s in job['steps'] if s['index'] < candidate['producerOperation']['stepIndex']]
-    checkout = any(s.get('action') == 'actions/checkout' and
-                   not s.get('arguments', {}).get('ref') for s in before)
-    if 'pull_request' in events and checkout:
+    checkouts = [s for s in before if s.get('action') == 'actions/checkout' and
+                 not s.get('arguments', {}).get('ref') and not s.get('condition')]
+    if 'pull_request' not in events or len(checkouts) != 1:
+        return 'unknown'
+    upload_path = candidate['producerOperation'].get('path', '')
+    if not relative_repo_path(upload_path):
+        return 'unknown'
+    copied_into_upload = False
+    for step in before:
+        if step['index'] <= checkouts[0]['index']:
+            continue
+        if step['type'] != 'run' or step.get('shell') not in {'bash', 'sh'}:
+            return 'unknown'
+        for raw in step['command'].splitlines():
+            line = raw.strip()
+            if not line or line == 'set -eu':
+                continue
+            if line.startswith('grep -Eq ') and upload_path in line:
+                continue
+            try:
+                words = shlex.split(line)
+            except ValueError:
+                return 'unknown'
+            if words[:2] == ['mkdir', '-p'] and all(relative_repo_path(p) for p in words[2:]):
+                continue
+            if len(words) == 3 and words[0] == 'cp' and relative_repo_path(words[1]) and \
+                    relative_repo_path(words[2]) and \
+                    words[2].startswith(upload_path.rstrip('/') + '/') and \
+                    not words[1].startswith(upload_path.rstrip('/') + '/'):
+                copied_into_upload = True
+                continue
+            return 'unknown'
+    if upload_path.startswith('.research-artifact-input/') or copied_into_upload:
         return 'true'
     return 'unknown'
+
+
+def relative_repo_path(value):
+    """Only literal paths within the checked-out workspace are in this subset."""
+    return bool(value and not value.startswith('/') and not any(
+        part in {'.', '..'} for part in value.split('/')) and
+        not any(token in value for token in ('${', '$(', '`', '*', '?', ':')))
 
 
 def digest_guard(job, read_index):
@@ -250,6 +292,8 @@ def evaluate(candidate, nusmv, output, root):
                  readSucceeded='unknown', consumerUsesObject=use,
                  integrityCheckPresent=integrity, integrityCheckPassed='unknown' if integrity == 'true' else 'false',
                  privilegedConsumer='true', hasAuthority=sink)
+    if facts['producerUntrusted'] != 'true':
+        unsupported.append('upload bytes could not be traced to the checked-out PR input')
     if unsupported:
         status = 'unknown/unsupported'
     else:
@@ -290,7 +334,10 @@ def evaluate(candidate, nusmv, output, root):
     source_text = (root / source_file).read_text()
     event_line = next((i for i, line in enumerate(source_text.splitlines(), 1)
                        if line.strip() == event_name + ':'), None)
-    return {'id': candidate['id'], 'source': {'event': event_name, 'file': source_file, 'line': event_line},
+    return {'id': candidate['id'], 'source': {'event': event_name, 'file': source_file,
+            'line': event_line, 'uploadPath': candidate['producerOperation'].get('path'),
+            'prByteProvenance': facts['producerUntrusted'],
+            'recognition': 'literal checked-out file or recognized pre-upload cp into artifact directory'},
             'producer': producer_ep, 'consumer': consumer_ep,
             'sharedObject': {'kind': 'artifact', 'name': candidate['producerOperation'].get('name'),
                              'runSelector': discovery.WORKFLOW_RUN_ID, 'sameObject': 'unknown',

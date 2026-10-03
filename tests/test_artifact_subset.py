@@ -96,6 +96,42 @@ class ArtifactSubsetTests(unittest.TestCase):
             rows = self.run_repo(root)
             self.assertNotEqual(rows[path.name]['status'], 'safe-within-model')
 
+    def test_a1_upload_outside_checkout_is_unknown(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a1-pr-producer.yml'
+            path.write_text(path.read_text().replace(
+                'path: .research-artifact-input/payload.txt',
+                'path: /tmp/untracked-payload.txt'))
+            rows = self.run_repo(root)
+            self.assertEqual(rows['artifact-a1-unsafe-consumer.yml']['status'],
+                             'unknown/unsupported')
+
+    def test_a5_unrecognized_producer_copy_is_unknown(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a5-attest-producer.yml'
+            path.write_text(path.read_text().replace(
+                'cp .research-artifact-a5-input/head-ref.txt',
+                'install .research-artifact-a5-input/head-ref.txt'))
+            rows = self.run_repo(root)
+            self.assertEqual(rows['artifact-a5-attest-consumer.yml']['status'],
+                             'unknown/unsupported')
+
+    def test_conditional_upload_is_not_unconditionally_trusted(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a1-pr-producer.yml'
+            path.write_text(path.read_text().replace(
+                '        id: upload-artifact',
+                "        if: github.event.pull_request.head.repo.fork == false\n        id: upload-artifact"))
+            rows = self.run_repo(root)
+            self.assertEqual(rows['artifact-a1-unsafe-consumer.yml']['status'],
+                             'unknown/unsupported')
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -13,6 +13,19 @@ PYTHONPATH=/path/to/installed/dependencies python3 tools/evaluate_artifact_subse
 
 [固定YAMLから生成した結果](../results/core-artifact-subset/analysis.json)は，NuSMVと独立事実列挙の一致を確認済み．`safe-within-model`はこの模擬publish地点と認識したshell部分集合の結論であり，repository全体の安全性ではない．
 
+## Cache操作の共通inventory
+
+既知の`actions/cache`系と，明示的に渡したSHA-256照合済みComposite Action snapshotから，Cache read/writeを抽出し候補対を列挙する．TanStackの`@main`は可変参照なので，snapshotを照合しても**事件時に同じActionが実行された証明にはならない**．`sameObject`，実効key，scope，version，save/restoreの順序はunknownに保つ．この段階の候補数は危険経路数ではない．
+
+```sh
+PYTHONPATH=/path/to/installed/dependencies python3 tools/extract_shared_operations.py \
+  experiments/public-cases/tanstack/pre-incident \
+  --composites experiments/public-cases/tanstack/composite-contracts.json \
+  --output /tmp/tanstack-cache-inventory.json
+```
+
+[原本の保存結果](../results/tanstack-cache-chain/common-inventory-pre.json)と[対策版](../results/tanstack-cache-chain/common-inventory-mitigation.json)を比較できる．
+
 ## Python解析
 
 依存関係は `requirements-analysis.txt`，隔離環境は `experiments/analysis.Dockerfile` です．

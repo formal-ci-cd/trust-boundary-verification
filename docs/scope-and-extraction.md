@@ -13,7 +13,7 @@
 | Privileged Authority | workflow/jobの明示`permissions`と，既知の`git push`等のsink候補．TanStack専用解析は`id-token: write`の設定を抽出 | 権限設定だけではOIDC発行・publish成功を証明しない．外部token，環境保護，secret参照の実効権限はunknown |
 | Order／property | `chain_to_nusmv.py`は保存→復元→利用→権限到達の有限状態モデルと`AG !bad`を生成．TanStack専用モデルはrun間順序を展開 | 一般の並行run全体，実際のsave/restore時刻，第三者Actionの時点依存挙動 |
 
-YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A4の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，模擬publish markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA5の未対応shellをunknown/unsupportedとする．`tanstack_cache_chain.py` と複数runモデルは**固定事例専用**であり，現時点で汎用Cache解析器が完成したと読んではならない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
+YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A4の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，模擬publish markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA5の未対応shellをunknown/unsupportedとする．`tanstack_cache_chain.py` と複数runモデルは**固定事例専用**であり，共通操作inventoryだけから完全なCache経路を判定できるとは読んではならない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
 
 ## 現在主張できるSupported Subset
 
@@ -21,7 +21,7 @@ YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`o
 - 中心artifact評価器は`pull_request`の暗黙ref checkout，`actions/upload-artifact`，`workflow_run.workflows`で指定された別workflow，`${{ github.event.workflow_run.id }}`を渡す`actions/download-artifact`，一致するliteral artifact nameを候補結合する．artifact ID，digest，取得成功は静的にはunknownである．
 - shellはA1～A4に現れる**限定した形**だけを認識する．artifact pathを指す`ARTIFACT_FILE`からの`tr`読取り，literal digestに対する`sha256sum`と`verified` output，そのoutputを条件とする後続use，summary-only出力，研究用`dummy_publish_authority_reached` markerを扱う．guardに余分なコマンドがあれば検証済みとみなさない．模擬markerは実publish権限ではない．
 - `contents: write`／`id-token: write`等の明示permissionは構造として取得できるが，権限の**使用**と同一視しない．`git push`は既存の限定metadata flowで候補とする．secret，外部token，外部認可の成功はunknownである．
-- Cacheは既知の`actions/cache`とTanStackで固定したComposite Actionの操作を事例専用に抽出する．現段階では，全workflowのCache read/writeを汎用的に結ぶSupported Subsetが完成していない．可変tagの時点の内容，実効key，scope，version，復元entryはunknownである．
+- Cacheは[共通操作inventory](../tools/extract_shared_operations.py)で，既知の`actions/cache`／`save`／`restore`と照合済みComposite Action snapshot内の操作を全workflowから抽出し，key式を比較した候補対を列挙する．[TanStack原本の候補](../results/tanstack-cache-chain/common-inventory-pre.json)にはPR側とrelease側が含まれる．現段階では，候補対からSource・use・privileged sinkまでを汎用的に構成する処理は未完成である．可変tagの時点の内容，実効key，scope，version，復元entryはunknownである．
 - `pull_request_target`のfork入力は単なるevent存在で確定しない．限定したcheckout refと有効なfork除外を追加評価する必要がある．任意の`if`式，JavaScript／Docker Action，任意Bash，固定できないComposite Actionはunsupportedとして扱う．
 
 ## 限定拡張の設計契約

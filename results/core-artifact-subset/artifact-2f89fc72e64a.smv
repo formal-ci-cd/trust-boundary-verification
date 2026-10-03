@@ -4,25 +4,25 @@
 -- TRACE object_written: .github/workflows/artifact-a5-attest-producer.yml:rebuild-dist:2 - upload success remains unknown
 -- TRACE object_restored: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:0 - same artifact and restore success remain unknown
 -- TRACE integrity_checked: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:0 - verification absent or unknown
--- TRACE object_used: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:0 - use absent or unknown
--- TRACE authority_reached: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:0 - dummy publish marker, not real authority
+-- TRACE object_used: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:1 - artifact-derived data use
+-- TRACE authority_reached: .github/workflows/artifact-a5-attest-consumer.yml:consume-untrusted-dist:2 - dummy publish/update marker, not real authority
 MODULE main
 FROZENVAR
   write_authorized : boolean;
   write_succeeded : boolean;
   same_object : boolean;
   read_succeeded : boolean;
-  consumer_uses_object : boolean;
-  integrity_check_present : boolean;
-  has_authority : boolean;
 VAR
   stage : {start, object_written, object_restored, integrity_checked, object_used, authority_reached, blocked};
   object_tainted : boolean;
 DEFINE
   producer_untrusted := TRUE;
   write_intent := TRUE;
+  consumer_uses_object := TRUE;
+  integrity_check_present := FALSE;
   integrity_check_passed := FALSE;
   privileged_consumer := TRUE;
+  has_authority := TRUE;
 INVAR write_succeeded -> write_authorized
 INVAR read_succeeded -> write_succeeded
 INVAR integrity_check_passed -> integrity_check_present

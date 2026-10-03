@@ -13,7 +13,7 @@
 | Privileged Authority | workflow/jobの明示`permissions`と，既知の`git push`等のsink候補．TanStack専用解析は`id-token: write`の設定を抽出 | 権限設定だけではOIDC発行・publish成功を証明しない．外部token，環境保護，secret参照の実効権限はunknown |
 | Order／property | `chain_to_nusmv.py`は保存→復元→利用→権限到達の有限状態モデルと`AG !bad`を生成．TanStack専用モデルはrun間順序を展開 | 一般の並行run全体，実際のsave/restore時刻，第三者Actionの時点依存挙動 |
 
-YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A4の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，模擬publish markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA5の未対応shellをunknown/unsupportedとする．`tanstack_cache_chain.py` と複数runモデルは**固定事例専用**であり，共通操作inventoryだけから完全なCache経路を判定できるとは読んではならない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
+YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A5の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，artifact metadata→step output→模擬更新markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA1・A5に条件付き反例，A2～A4に対象反例なし．A5のYAMLにある文字種チェックは完全性照合ではない．実repository writeは行わない．`tanstack_cache_chain.py` と複数runモデルは**固定事例専用**であり，共通操作inventoryだけから完全なCache経路を判定できるとは読んではならない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
 
 ## 現在主張できるSupported Subset
 
@@ -42,7 +42,7 @@ YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`o
 | A2 | 固定YAMLの信頼済みdigest guardを認識し対象反例なし．同一artifact IDを確認 | 一般の照合抽出は未実装 |
 | A3 | 固定YAMLの限定的なsummary-only shellを認識して対象反例なし．実行時にも利用なし | 全shellの非利用証明ではない |
 | A4 | 固定YAMLの読取りと模擬publish=falseを認識して対象反例なし．実行時にも権限なし | 研究用dummy権限の範囲 |
-| A5 | 未検証artifact→模擬repository更新地点の反例．同一ID／digestを観測 | モデル入力に人手対応が残る．[一境界ずつのモデル対照](../results/core-boundary-controls.json)は検査済み．YAMLからのmetadata→模擬更新地点の自動意味付けは未完了．既存の実行観測は保存済み |
+| A5 | 固定YAMLからmetadata→step output→模擬repository更新地点を注釈なしで結合し条件付き反例．同一ID／digestを観測 | 旧モデル入力には人手対応が残る．自動評価は模擬markerまでで，実権限は推論しない．[一境界ずつのモデル対照](../results/core-boundary-controls.json)は検査済み |
 | TanStack | 事件前に条件付きCache反例，実対策版で対象経路なし．保存／復元順序を複数runモデルで区別．CodeQL等は入口を警告 | 対策版は複数変更を含む．既存テストにはjob条件，checkout ref，OIDC設定，外部ActionのCacheを各一箇所変えた構造対照があるが，実効Cache key／復元byteは未観測 |
 
 A1／A5については[研究用の一境界対照](../results/core-boundary-controls.json)で，各原本と八つの遮断条件の合計18構成をNuSMVと独立した事実列挙で照合した．保存許可と保存成功など，因果上同時に変えるべき事実は一つの**境界条件**として扱う．これはJSON事実モデルの感度検査であり，YAML抽出精度，実行時のsave／restore，又は実際の対策効果を検証したものではない．TanStackは[既存の構造対照テスト](../tests/test_tanstack_cache_chain.py)で四つの独立変更を扱う．順序，完全性検証，実効Cache entryの全組合せを実証済みとは言わない．

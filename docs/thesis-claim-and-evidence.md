@@ -14,7 +14,7 @@
 | A2 | A1のconsumerが信頼済みdigest不一致で停止 | 対象反例なし．同一artifact IDの取得と停止を確認 |
 | A3 | A1のconsumerが取得内容を利用しない | 対象反例なし．実行時にも非利用を確認 |
 | A4 | A1のconsumerに対象権限がない | 対象反例なし．実行時にも権限なしを確認 |
-| A5 | 公開脆弱性を基にしたPR producer→artifact→別runのconsumer→模擬repository更新 | 反例あり．同一artifact ID／digestと模擬到達を観測．人手対応のモデル入力を含む |
+| A5 | 公開脆弱性を基にしたPR producer→artifact→別runのconsumer→模擬repository更新 | 固定YAMLからの限定自動解析で条件付き反例．同一artifact ID／digestと模擬到達を観測．旧モデル入力には人手対応が残る |
 | TanStack | 実侵害のPR側Cache保存候補→外部Setup Actionの復元→別workflow/runのOIDC job | 事件前に条件付き反例，実対策版で対象経路なし．順序を変えると到達runが変わる．実効Cache entry／byteの全同一性は未観測 |
 
 [A1～A4のYAML自動再評価](../results/core-artifact-subset/analysis.json)では，現実のpublish権限でなくdummy markerへの到達を検査している．A1～A4の実行観測は[成果物実験](../results/github-actions-artifact-runtime-2026-08-22.md)と[A3～A5の検証](../results/artifact-case-study-2026-09-23.md)，TanStackの固定原本・反例・時刻の対応は[事例検証](tanstack-incident-cache-boundary.md)を参照する．A1／A5の[一境界ずつのモデル対照](../results/core-boundary-controls.json)はNuSMVと独立した列挙で18構成を照合した．TanStackの構造対照も既存テストにある．これらは**全てのYAML表現や実行時条件の網羅ではない**．[抽出範囲と評価契約](scope-and-extraction.md)に残作業を明示した．
@@ -44,4 +44,4 @@ TanStackについては[一つのfindingの位置とflowを再計算した比較
 
 ## 論文に置ける結論文
 
-> GitHub Actionsで未信頼producerがCache又はartifactに保存し，別workflow又はrunのconsumerが同じ共有状態を検証せずに権限付き処理へ利用する経路を有限状態モデルで検査した．A1～A4では，限定したSupported Subset内でYAMLから注釈なしに，未検証利用の条件付き反例と，完全性照合・非利用・権限不在による反例消失を同じpropertyで区別した．A5では人手入力を含むartifact経路の反例を，TanStackでは既存ツールが警告したPR側入口を別runのOIDC側へ接続する条件付き反例と順序依存性を示した．この成果は対象モデルと保存した比較出力に限定され，任意のAction／shellの自動解析，実侵害の全経路証明，既存ツール一般の見逃し，又はNuSMV固有の優位性を意味しない．
+> GitHub Actionsで未信頼producerがCache又はartifactに保存し，別workflow又はrunのconsumerが同じ共有状態を検証せずに権限付き処理へ利用する経路を有限状態モデルで検査した．A1～A4では，限定したSupported Subset内でYAMLから注釈なしに，未検証利用の条件付き反例と，完全性照合・非利用・権限不在による反例消失を同じpropertyで区別した．A5では固定YAMLから限定したmetadata経路を注釈なしで再生成した反例を，TanStackでは既存ツールが警告したPR側入口を別runのOIDC側へ接続する条件付き反例と順序依存性を示した．この成果は対象モデルと保存した比較出力に限定され，任意のAction／shellの自動解析，実侵害の全経路証明，既存ツール一般の見逃し，又はNuSMV固有の優位性を意味しない．

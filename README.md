@@ -6,7 +6,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 
 本研究は，GitHub Actionsで未信頼producerがCache又はartifactへ書き込み，別workflow又は別runのconsumerが同じ共有状態を完全性確認なしに利用して，privileged authorityへ至る**一つの経路**を有限状態モデルと反例で提示することを中心とします．既存ツールが入口を警告することと両立する主張です．
 
-対象と必要十分条件は[Threat Model](docs/threat-model.md)，A1～A5・TanStackの評価と既存ツールとのproperty-level比較は[中心仮説と証拠](docs/thesis-claim-and-evidence.md)，自動抽出できる範囲と未完了項目は[抽出範囲と評価契約](docs/scope-and-extraction.md)にまとめています． A1～A4は[限定したYAML自動評価](results/core-artifact-subset/analysis.json)で注釈なしの再生成を確認しました．A5は同じ評価器では`unknown/unsupported`とし，旧来の人手対応結果と区別します．SpotBugs，Jupyter，marimo，Clineなど既存の探索結果は保存し，中心評価・補助事例・scope外に区分しています．
+対象と必要十分条件は[Threat Model](docs/threat-model.md)，A1～A5・TanStackの評価と既存ツールとのproperty-level比較は[中心仮説と証拠](docs/thesis-claim-and-evidence.md)，自動抽出できる範囲と未完了項目は[抽出範囲と評価契約](docs/scope-and-extraction.md)にまとめています． A1～A5は[限定したYAML自動評価](results/core-artifact-subset/analysis.json)で注釈なしの再生成を確認しました．ここでの権限地点は研究用の模擬markerであり，実publishや実repository writeではありません．SpotBugs，Jupyter，marimo，Clineなど既存の探索結果は保存し，中心評価・補助事例・scope外に区分しています．
 
 ## 研究目的
 

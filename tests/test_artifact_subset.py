@@ -29,7 +29,7 @@ class ArtifactSubsetTests(unittest.TestCase):
                     'artifact-a2-safe-consumer.yml': 'safe-within-model',
                     'artifact-a3-download-only-consumer.yml': 'safe-within-model',
                     'artifact-a4-no-authority-consumer.yml': 'safe-within-model',
-                    'artifact-a5-attest-consumer.yml': 'unknown/unsupported'}
+                    'artifact-a5-attest-consumer.yml': 'unsafe-counterexample'}
         self.assertEqual({k: r['status'] for k, r in rows.items()}, expected)
         trace = rows['artifact-a1-unsafe-consumer.yml']
         self.assertEqual(trace['counterexampleStages'][-1], 'authority_reached')
@@ -47,6 +47,28 @@ class ArtifactSubsetTests(unittest.TestCase):
             rows = self.run_repo(root)
             self.assertEqual(rows[path.name]['status'], 'unknown/unsupported')
 
+
+    def test_extra_a5_shell_command_is_unsupported(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a5-attest-consumer.yml'
+            text = path.read_text().replace('          target_branch=$(tr',
+                                            '          exit 0\n          target_branch=$(tr')
+            path.write_text(text)
+            rows = self.run_repo(root)
+            self.assertEqual(rows[path.name]['status'], 'unknown/unsupported')
+
+    def test_unmatched_a5_metadata_flow_is_unknown(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            shutil.copytree(ROOT / '.github/workflows', root / '.github/workflows')
+            path = root / '.github/workflows/artifact-a5-attest-consumer.yml'
+            text = path.read_text().replace('steps.artifact-metadata.outputs.target_branch',
+                                            'steps.other.outputs.target_branch')
+            path.write_text(text)
+            rows = self.run_repo(root)
+            self.assertEqual(rows[path.name]['status'], 'unknown/unsupported')
 
     def test_extra_unguarded_artifact_use_cancels_safe_guard(self):
         with tempfile.TemporaryDirectory() as folder:

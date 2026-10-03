@@ -4,8 +4,8 @@
 -- TRACE object_written: .github/workflows/artifact-a1-pr-producer.yml:produce-artifact:2 - upload success remains unknown
 -- TRACE object_restored: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:0 - same artifact and restore success remain unknown
 -- TRACE integrity_checked: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:1 - trusted digest guard
--- TRACE object_used: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - artifact-derived dummy publish decision
--- TRACE authority_reached: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - dummy publish marker, not real authority
+-- TRACE object_used: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - artifact-derived data use
+-- TRACE authority_reached: .github/workflows/artifact-a2-safe-consumer.yml:consume-after-verification:2 - dummy publish/update marker, not real authority
 MODULE main
 FROZENVAR
   write_authorized : boolean;

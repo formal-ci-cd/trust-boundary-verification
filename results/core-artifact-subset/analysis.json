@@ -102,7 +102,7 @@
           "workflowName": "GHA-A1 Unverified artifact consumer",
           "jobId": "consume-without-verification",
           "stepIndex": 1,
-          "meaning": "artifact-derived dummy publish decision",
+          "meaning": "artifact-derived data use",
           "line": 41
         },
         "authority_reached": {
@@ -110,7 +110,7 @@
           "workflowName": "GHA-A1 Unverified artifact consumer",
           "jobId": "consume-without-verification",
           "stepIndex": 1,
-          "meaning": "dummy publish marker, not real authority",
+          "meaning": "dummy publish/update marker, not real authority",
           "line": 41
         }
       },
@@ -131,7 +131,7 @@
         "integrityCheckPresent": false
       },
       "unsupported": [],
-      "simulation": "dummy publish marker; no actual publish authority"
+      "simulation": "dummy publish/update marker; no actual publish or repository write authority"
     },
     {
       "id": "artifact-2c67a40cd85c",
@@ -232,7 +232,7 @@
           "workflowName": "GHA-A2 Verified artifact consumer",
           "jobId": "consume-after-verification",
           "stepIndex": 2,
-          "meaning": "artifact-derived dummy publish decision",
+          "meaning": "artifact-derived data use",
           "line": 57
         },
         "authority_reached": {
@@ -240,7 +240,7 @@
           "workflowName": "GHA-A2 Verified artifact consumer",
           "jobId": "consume-after-verification",
           "stepIndex": 2,
-          "meaning": "dummy publish marker, not real authority",
+          "meaning": "dummy publish/update marker, not real authority",
           "line": 57
         }
       },
@@ -255,7 +255,7 @@
         "integrityCheckPassed": "unresolved"
       },
       "unsupported": [],
-      "simulation": "dummy publish marker; no actual publish authority"
+      "simulation": "dummy publish/update marker; no actual publish or repository write authority"
     },
     {
       "id": "artifact-f582ab034b5a",
@@ -364,7 +364,7 @@
           "workflowName": "GHA-A3 Download-only artifact consumer",
           "jobId": "download-without-use",
           "stepIndex": 0,
-          "meaning": "dummy publish marker, not real authority",
+          "meaning": "dummy publish/update marker, not real authority",
           "line": 23
         }
       },
@@ -378,7 +378,7 @@
         "readSucceeded": "unresolved"
       },
       "unsupported": [],
-      "simulation": "dummy publish marker; no actual publish authority"
+      "simulation": "dummy publish/update marker; no actual publish or repository write authority"
     },
     {
       "id": "artifact-d0802ae279a0",
@@ -487,7 +487,7 @@
           "workflowName": "GHA-A4 Artifact consumer without authority",
           "jobId": "consume-without-authority",
           "stepIndex": 0,
-          "meaning": "dummy publish marker, not real authority",
+          "meaning": "dummy publish/update marker, not real authority",
           "line": 22
         }
       },
@@ -501,7 +501,7 @@
         "readSucceeded": "unresolved"
       },
       "unsupported": [],
-      "simulation": "dummy publish marker; no actual publish authority"
+      "simulation": "dummy publish/update marker; no actual publish or repository write authority"
     },
     {
       "id": "artifact-2f89fc72e64a",
@@ -558,11 +558,11 @@
         "writeSucceeded": "unknown",
         "sameObject": "unknown",
         "readSucceeded": "unknown",
-        "consumerUsesObject": "unknown",
-        "integrityCheckPresent": "unknown",
+        "consumerUsesObject": "true",
+        "integrityCheckPresent": "false",
         "integrityCheckPassed": "false",
         "privilegedConsumer": "true",
-        "hasAuthority": "unknown"
+        "hasAuthority": "true"
       },
       "traceMap": {
         "start": {
@@ -601,20 +601,20 @@
           "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
           "workflowName": "GHA-A5 actions-attest style unsafe consumer",
           "jobId": "consume-untrusted-dist",
-          "stepIndex": 0,
-          "meaning": "use absent or unknown",
-          "line": 24
+          "stepIndex": 1,
+          "meaning": "artifact-derived data use",
+          "line": 33
         },
         "authority_reached": {
           "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
           "workflowName": "GHA-A5 actions-attest style unsafe consumer",
           "jobId": "consume-untrusted-dist",
-          "stepIndex": 0,
-          "meaning": "dummy publish marker, not real authority",
-          "line": 24
+          "stepIndex": 2,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 59
         }
       },
-      "status": "unknown/unsupported",
+      "status": "unsafe-counterexample",
       "hypotheticalModelVerdict": "unsafe",
       "counterexampleStages": [
         "start",
@@ -627,15 +627,10 @@
         "writeAuthorized": true,
         "writeSucceeded": true,
         "sameObject": true,
-        "readSucceeded": true,
-        "consumerUsesObject": true,
-        "integrityCheckPresent": false,
-        "hasAuthority": true
+        "readSucceeded": true
       },
-      "unsupported": [
-        "artifact use or verification is outside the supported shell subset"
-      ],
-      "simulation": "dummy publish marker; no actual publish authority"
+      "unsupported": [],
+      "simulation": "dummy publish/update marker; no actual publish or repository write authority"
     }
   ]
 }

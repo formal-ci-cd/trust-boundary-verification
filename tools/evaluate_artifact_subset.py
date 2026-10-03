@@ -150,6 +150,60 @@ def guarded_uses_only(job, read_index, verify, uses):
     return True
 
 
+def metadata_dummy_sink(job, read):
+    """Track two artifact metadata files through step outputs to a dummy update."""
+    later = [s for s in job['steps'] if s['index'] > read['stepIndex']]
+    if len(later) != 2 or any(s['type'] != 'run' or s.get('shell') not in {'bash', 'sh'}
+                              for s in later):
+        return None, None
+    metadata, sink = later
+    path = read.get('path', '')
+    if not path or metadata.get('env', {}).get('ARTIFACT_DIR') != path:
+        return None, None
+    script = metadata['command']
+    for name, file in (('target_branch', 'head-ref'), ('target_sha', 'head-sha')):
+        pattern = rf'{name}=\$\(tr -d [^;]+ < "\$ARTIFACT_DIR/dist-meta/{file}"\)'
+        if not re.search(pattern, script):
+            return None, None
+        if not re.search(rf'printf \'{name}=%s\\n\' "\${name}" >> "\$GITHUB_OUTPUT"', script):
+            return None, None
+    if not metadata.get('id') or not all(token in script for token in
+       ('case "$target_branch" in', 'case "$target_sha" in', 'exit 1',
+        'test "${#target_sha}" -eq 40')):
+        return None, None
+    allowed_metadata = [
+        r'set -eu',
+        r'target_(?:branch|sha)=\$\(tr -d [^;]+ < "\$ARTIFACT_DIR/dist-meta/(?:head-ref|head-sha)"\)',
+        r'case "\$target_(?:branch|sha)" in',
+        r'\*\[![^]]+\]\*\|\'\'\)',
+        r'echo \'invalid (?:branch name|commit SHA)\' >&2',
+        r'exit 1', r';;', r'esac',
+        r'test "\$\{#target_sha\}" -eq 40',
+        r'printf \'target_(?:branch|sha)=%s\\n\' "\$target_(?:branch|sha)" >> "\$GITHUB_OUTPUT"',
+    ]
+    if not all(any(re.fullmatch(pattern, line.strip()) for pattern in allowed_metadata)
+               for line in script.splitlines() if line.strip()):
+        return None, None
+    env = sink.get('env', {})
+    for name in ('target_branch', 'target_sha'):
+        expected = '${{ steps.' + metadata['id'] + '.outputs.' + name + ' }}'
+        if env.get(name.upper()) != expected:
+            return None, None
+    if env.get('ARTIFACT_DIR') != path or sink.get('condition'):
+        return None, None
+    if not all(token in sink['command'] for token in
+       ('test -f "$ARTIFACT_DIR/dist/index.js"',
+        "echo 'dummy_repository_update_reached=true'", '$TARGET_BRANCH', '$TARGET_SHA')):
+        return None, None
+    allowed_sink = {'set -eu', 'test -f "$ARTIFACT_DIR/dist/index.js"',
+                    '{', 'echo', '} | tee -a "$GITHUB_STEP_SUMMARY"'}
+    if not all(line.strip() in allowed_sink or
+               (line.strip().startswith('echo ') and '$(' not in line and '`' not in line)
+               for line in sink['command'].splitlines() if line.strip()):
+        return None, None
+    return metadata, sink
+
+
 def evaluate(candidate, nusmv, output, root):
     producer = candidate['producerModel']
     consumer = candidate['consumerModel']
@@ -166,13 +220,17 @@ def evaluate(candidate, nusmv, output, root):
         unsupported.append('ambiguous producer for artifact name/run selector')
     verify, verified_uses = digest_guard(job, read['stepIndex'])
     sink_steps = [s for s in later if supported_dummy_sink(s)]
-    use_step = sink_steps[0] if sink_steps else None
+    metadata_step, metadata_sink = metadata_dummy_sink(job, read)
+    use_step = sink_steps[0] if sink_steps else metadata_step
     if (guarded_uses_only(job, read['stepIndex'], verify, verified_uses)
             and sink_steps and sink_steps[0] in verified_uses):
         integrity = 'true'
         use = 'true'
     elif sink_steps:
         integrity = 'unknown' if any('sha256sum' in s.get('command', '') for s in later) else 'false'
+        use = 'true'
+    elif metadata_step and metadata_sink:
+        integrity = 'false'
         use = 'true'
     elif supported_no_use(job, read):
         integrity = 'false'
@@ -186,7 +244,7 @@ def evaluate(candidate, nusmv, output, root):
         unsupported.append('artifact use or verification is outside the supported shell subset')
     # A dummy sink is a research simulation and has no real publish authority.
     # Its own property is evaluated separately from configured GitHub permissions.
-    sink = 'true' if sink_steps else ('false' if (use == 'false' or supported_read_only(job, read)) and not unsupported else 'unknown')
+    sink = 'true' if sink_steps or metadata_sink else ('false' if (use == 'false' or supported_read_only(job, read)) and not unsupported else 'unknown')
     facts = dict(producerUntrusted=source_fact(candidate), writeIntent='true',
                  writeAuthorized='unknown', writeSucceeded='unknown', sameObject='unknown',
                  readSucceeded='unknown', consumerUsesObject=use,
@@ -206,13 +264,13 @@ def evaluate(candidate, nusmv, output, root):
                       for s in j['steps'] if s['index'] == candidate['producerOperation']['stepIndex'])
     read_step = next(s for s in job['steps'] if s['index'] == read['stepIndex'])
     use_loc = use_step or (verified_uses[0] if verified_uses else read_step)
-    sink_loc = sink_steps[0] if sink_steps else use_loc
+    sink_loc = sink_steps[0] if sink_steps else (metadata_sink or use_loc)
     trace = {'start': loc(producer_ep, write_step, 'PR artifact upload intent'),
              'object_written': loc(producer_ep, write_step, 'upload success remains unknown'),
              'object_restored': loc(consumer_ep, read_step, 'same artifact and restore success remain unknown'),
              'integrity_checked': loc(consumer_ep, verify or read_step, 'trusted digest guard' if verify else 'verification absent or unknown'),
-             'object_used': loc(consumer_ep, use_loc, 'artifact-derived dummy publish decision' if use_step else 'use absent or unknown'),
-             'authority_reached': loc(consumer_ep, sink_loc, 'dummy publish marker, not real authority')}
+             'object_used': loc(consumer_ep, use_loc, 'artifact-derived data use' if use_step else 'use absent or unknown'),
+             'authority_reached': loc(consumer_ep, sink_loc, 'dummy publish/update marker, not real authority')}
     chain = {'scenario': {'id': candidate['id'], 'platform': 'GitHub Actions'},
              'facts': facts, 'traceMap': trace}
     smv = chain_to_nusmv.render_model(chain, candidate['id'])
@@ -243,7 +301,7 @@ def evaluate(candidate, nusmv, output, root):
             'unknownAssumptions': {camel: (independent_result['witness'][snake] if independent_result['witness'] else 'unresolved')
                                    for snake,camel in chain_to_nusmv.FACT_MAPPING.items()
                                    if facts[camel] == 'unknown'},
-            'unsupported': unsupported, 'simulation': 'dummy publish marker; no actual publish authority'}
+            'unsupported': unsupported, 'simulation': 'dummy publish/update marker; no actual publish or repository write authority'}
 
 
 def main():

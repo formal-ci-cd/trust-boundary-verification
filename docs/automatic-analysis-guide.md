@@ -4,7 +4,7 @@
 
 ## 中心artifact部分集合をYAMLから再評価
 
-A1～A5の固定workflowを読み，artifactの保存・取得候補を全workflowから結合する．A1～A4については限定したdummy publish markerのpropertyを注釈なしで検査する．A5の未対応shellは`unknown/unsupported`として残す．実secret，publish，deploy，攻撃payloadは実行しない．生成JSONには行位置とunknown仮定，SMVにはpropertyが入る．
+A1～A5の固定workflowを読み，artifactの保存・取得候補を全workflowから結合する．A1～A4のdummy publish markerと，A5のartifact metadata→step output→dummy repository update markerを，注釈なしで限定解析する．対応外のshell・Actionは`unknown/unsupported`として残す．実secret，publish，deploy，攻撃payloadは実行しない．生成JSONには行位置とunknown仮定，SMVにはpropertyが入る．
 
 ```sh
 PYTHONPATH=/path/to/installed/dependencies python3 tools/evaluate_artifact_subset.py . \

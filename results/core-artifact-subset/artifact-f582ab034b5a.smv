@@ -5,7 +5,7 @@
 -- TRACE object_restored: .github/workflows/artifact-a3-download-only-consumer.yml:download-without-use:0 - same artifact and restore success remain unknown
 -- TRACE integrity_checked: .github/workflows/artifact-a3-download-only-consumer.yml:download-without-use:0 - verification absent or unknown
 -- TRACE object_used: .github/workflows/artifact-a3-download-only-consumer.yml:download-without-use:0 - use absent or unknown
--- TRACE authority_reached: .github/workflows/artifact-a3-download-only-consumer.yml:download-without-use:0 - dummy publish marker, not real authority
+-- TRACE authority_reached: .github/workflows/artifact-a3-download-only-consumer.yml:download-without-use:0 - dummy publish/update marker, not real authority
 MODULE main
 FROZENVAR
   write_authorized : boolean;

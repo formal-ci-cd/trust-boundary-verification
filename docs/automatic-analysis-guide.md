@@ -4,7 +4,7 @@
 
 ## 中心評価を第三者が再実行するための準備
 
-Python 3.12と[固定依存関係](../requirements-analysis.txt)を使う．NuSMVは評価済みの**2.7.0**を[公式配布ページ](https://nusmv.fbk.eu/downloads.html)からOS・CPUに合うarchiveと対応するSHA-256照合ファイルを取得し，checksumを照合して展開する．macOS universal版はCommand Line Toolsと`libgmp`が必要である．Linux配布binaryはx86-64向けであるため，arm64のDocker imageへそのまま入れない．入手先が一時的に利用できない場合は，未照合binaryをCIへ組み込まず，NuSMVを持つホストで再実行する．研究用macOSでは`/Applications/NuSMV-2.7.0-macos-universal/bin/NuSMV`を使った．
+Python 3.12と[固定依存関係](../requirements-analysis.txt)を使う．NuSMVは評価済みの**2.7.0**を[公式配布ページ](https://nusmv.fbk.eu/downloads.html)からOS・CPUに合うarchiveと対応するSHA-256照合ファイルを取得する．`shasum -a 256 <archive>`（Linuxでは`sha256sum <archive>`）の値を公式照合ファイルと比較してから`tar -xf <archive>`で展開する．macOS universal版はCommand Line Toolsと`libgmp`が必要である．Linux配布binaryはx86-64向けであるため，arm64のDocker imageへそのまま入れない．入手先が一時的に利用できない場合は，未照合binaryをCIへ組み込まず，NuSMVを持つホストで再実行する．研究用macOSでは`/Applications/NuSMV-2.7.0-macos-universal/bin/NuSMV`を使った．
 
 ```sh
 python3 -m venv /tmp/tbv-venv

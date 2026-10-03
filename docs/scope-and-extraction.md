@@ -1,17 +1,17 @@
 # 中心Threat Modelの抽出範囲と評価契約
 
-[Threat Model](threat-model.md)で定義したCache／artifact経路だけを対象とする．ここでは**現行実装で確認できること**と**必要な限定拡張**を分ける．新しい攻撃クラス，汎用shell／Action意味解析，LLM判定を研究課題にしない．
+[Threat Model](threat-model.md)で定義したCache／artifact経路だけを対象とする．ここでは**現行実装で確認できること**と**未対応として残すこと**を分ける．新しい攻撃クラス，汎用shell／Action意味解析，LLM判定を研究課題にしない．論文用の概念・コード対応は[研究整理](paper-ready-synthesis.md)にある．
 
 ## 現行の抽出とunknown
 
 | 関係 | 現行で自動取得／判定できる範囲 | unknown又は人手／外部証拠が必要な範囲 |
 |---|---|---|
 | Source／Producer | YAMLからevent，job/step条件，checkout ref，既知Actionの保存意図を抽出．限定したAND型fork除外を認識 | 任意のGitHub式，外部Action内の隠れた保存，run時の入力，実際のCache token許可と保存成功 |
-| Shared Object／SameObject | artifactのname・run-id式とdownloadを構造的に候補結合．TanStack専用解析は固定した外部composite ActionのCache key／pathを照合 | 実効key，scope，version，既存Cacheとの競合，実際の復元entry，artifact ID／digest．構造的対応を実体同一としない |
-| Consumer use | `automatic_artifact_analysis.py`は限定した同一jobのartifact file→step output→checkout ref→`git push`構文を認識．TanStack専用解析はSetup Action後の既知の`pnpm`実行を識別 | 任意shellのデータフロー，任意Action内部，復元byteの実際の実行．認識できない場合はunknown |
+| Shared Object／SameObject | artifactのname・run-id式とdownloadを構造的に候補結合．共通Cache inventoryは固定した外部composite ActionのCache key／pathを照合 | 実効key，scope，version，既存Cacheとの競合，実際の復元entry，artifact ID／digest．構造的対応を実体同一としない |
+| Consumer use | `automatic_artifact_analysis.py`は限定した同一jobのartifact file→step output→checkout ref→`git push`構文を認識．共通Cache経路解析は照合済みSetup Action内の固定`pnpm install`を利用候補として識別 | 任意shellのデータフロー，任意Action内部，復元byteの実際の実行．認識できない場合はunknown |
 | Integrity Verification | A2の固定YAMLのliteral digest，対象ファイルのsha256sum，照合結果output，後続useのguardを限定規則で認識可能．旧モデルでは照合成否を手入力可能 | 一般のhash/signature呼び出しの信頼済み基準・順序・失敗時停止は自動証明しない．未解析の照合を「なし」「成功」と決めない |
 | Privileged Authority | workflow/jobの明示`permissions`と，既知の`git push`等のsink候補．TanStack専用解析は`id-token: write`の設定を抽出 | 権限設定だけではOIDC発行・publish成功を証明しない．外部token，環境保護，secret参照の実効権限はunknown |
-| Order／property | `chain_to_nusmv.py`は保存→復元→利用→権限到達の有限状態モデルと`AG !bad`を生成．TanStack専用モデルはrun間順序を展開 | 一般の並行run全体，実際のsave/restore時刻，第三者Actionの時点依存挙動 |
+| Order／property | `chain_to_nusmv.py`は保存→復元→利用→権限到達の有限状態モデルと`AG !bad`を生成．共通Cache経路は`cache_two_run_model.py`で2 runの順序を展開し，TanStack専用の旧モデルも保存 | 一般の並行run全体，実際のsave/restore時刻，第三者Actionの時点依存挙動 |
 
 YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`on`，複数行`run`，元の行位置を保持する．`automatic_artifact_analysis.py` はartifactについて注釈なしで限定経路を解析する．さらに[中心artifact部分集合の評価器](../tools/evaluate_artifact_subset.py)は，A1～A5の固定YAMLから，保存・取得の結合，信頼済みdigest guard，非利用，artifact metadata→step output→模擬更新markerを注釈なしで抽出し，NuSMVと独立した事実列挙で照合する．[生成結果](../results/core-artifact-subset/analysis.json)ではA1・A5に条件付き反例，A2～A4に対象反例なし．A5のYAMLにある文字種チェックは完全性照合ではない．実repository writeは行わない．`tanstack_cache_chain.py` の事例専用結果は保存する．新しい限定Cache経路解析は複数workflowのPR・Cache・明示repository write地点を再構成するが，実効Cache objectと実被害の因果関係は証明しない．`model/artifact-chain-annotations.json`やA5は旧来の人手対応を含む．
 
@@ -26,7 +26,7 @@ YAML reader (`yaml_to_model.py`) はCodeQLを構文解析の前提とせず，`o
 - Cacheは[共通操作inventory](../tools/extract_shared_operations.py)で，既知の`actions/cache`／`save`／`restore`と照合済みComposite Action snapshot内の操作を全workflowから抽出し，key式を比較した候補対を列挙する．[TanStack原本の候補](../results/tanstack-cache-chain/common-inventory-pre.json)にはPR側とrelease側が含まれる．さらに[限定Cache経路解析](../tools/evaluate_cache_subset.py)は，PR checkout→Cache操作→別runの復元→固定Composite Action内`pnpm install`→明示`git push`を結び，repository write地点への条件付き反例を構成する．jobとstepの条件は限定したAND型event／fork述語だけを確定し，それ以外はunknownにする．fork PRを明示的に除外するjobからは，そのSourceの候補を作らない．[事件前](../results/tanstack-cache-chain/common-path-pre/analysis.json)と[対策版](../results/tanstack-cache-chain/common-path-mitigation/analysis.json)を同じpropertyで比較する．これはこのコマンド・Action contractの部分集合に限り，任意のCache利用・publish・OIDC使用の汎用解析ではない．可変tagの時点の内容，実効key，scope，version，復元entryはunknownである．
 - `pull_request_target`のfork入力は単なるevent存在で確定しない．限定したcheckout refと有効なfork除外を追加評価する必要がある．任意の`if`式，JavaScript／Docker Action，任意Bash，固定できないComposite Actionはunsupportedとして扱う．
 
-## 限定拡張の設計契約
+## 対応範囲を広げる場合の設計契約
 
 実装を広げる場合も，次の決定論的な操作語彙に限る．`cache.write`／`cache.read`，`artifact.upload`／`artifact.download`，`use`／`execute`，`verify`，`privileged_sink`．各抽出結果にはworkflow，job，step，元行，認識規則，対象object式，証拠の種類を付す．既知の`uses@version`と固定・照合済みcomposite Action内の`uses`を展開する．未知のActionやshell表現をブラックボックスのままSafeにしない．
 

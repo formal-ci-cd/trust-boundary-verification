@@ -33,10 +33,15 @@ def main():
     parser.add_argument("--zizmor", type=Path, required=True)
     parser.add_argument("--sisakulint", type=Path, required=True)
     parser.add_argument("--poutine", type=Path, required=True)
+    parser.add_argument("--codeql-default", type=Path, required=True)
+    parser.add_argument("--codeql-broad", type=Path, required=True)
+    parser.add_argument("--root", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     args.output.mkdir(parents=True, exist_ok=True)
-    sources = {"zizmor": args.zizmor, "sisakulint": args.sisakulint, "poutine": args.poutine}
+    sources = {"zizmor": args.zizmor, "sisakulint": args.sisakulint,
+               "poutine": args.poutine, "codeql-default": args.codeql_default,
+               "codeql-broad": args.codeql_broad}
     findings = {}
     provenance = {}
     for tool, path in sources.items():
@@ -67,18 +72,25 @@ def main():
             comparisons[case][tool] = {
                 "allFindingsAtEndpoints": matching,
                 "targetRelatedFindings": target,
-                "propertyLevelClass": "consumer側トリガーのみ" if target else "対象findingなし",
+                "propertyLevelClass": "入口のみ" if target else "対象findingなし",
+                "classificationDetail": "consumer側workflow_run triggerの局所警告" if target else "対象propertyのfindingなし",
                 "sameFindingLinksProducerSharedObjectConsumerAuthority": 0,
             }
 
     report = {
         "scope": "A1-A5 artifact property; fixed local outputs, not a general capability claim",
-        "versions": {"zizmor": "1.30.1", "sisakulint": "0.3.7", "poutine": "1.1.6"},
-        "inputs": "zizmor and sisakulint: seven artifact-a*.yml workflows; Poutine: entire local research repository",
+        "versions": {"zizmor": "1.30.1", "sisakulint": "0.3.7", "poutine": "1.1.6",
+                     "codeql": "2.27.1", "codeqlQueryPack": "codeql/actions-queries@0.6.36"},
+        "codeqlMacOSArchiveSHA256": "412c600764a7835f9548af120d0bdadea1040c6f68b8f6bf04ec72a664891f63",
+        "inputs": "CodeQL, zizmor and sisakulint: seven artifact-a*.yml workflows; Poutine: entire local research repository",
+        "inputSHA256": {name: hashlib.sha256((args.root / '.github/workflows' / name).read_bytes()).hexdigest()
+                        for name in sorted({p for pair in CASES.values() for p in pair})},
         "commands": {
             "zizmor": "zizmor --offline --format sarif <seven artifact workflows>",
             "sisakulint": "sisakulint -fix off -format '{{sarif .}}' <seven artifact workflows>",
             "poutine": "poutine analyze_local <research repository> --disable-version-check --format json",
+            "codeql-default": "codeql database create --language=actions <seven-workflow source>; codeql database analyze codeql/actions-queries@0.6.36:codeql-suites/actions-code-scanning.qls",
+            "codeql-broad": "codeql database analyze same database codeql/actions-queries@0.6.36:codeql-suites/actions-security-and-quality.qls",
         },
         "limitations": [
             "This is a reviewed rule-and-location classification of saved output, not a proof of tool incapability.",
@@ -86,6 +98,7 @@ def main():
             "zizmor template-injection warnings in A5 concern a different property.",
             "sisakulint reported no GitHub token; online API checks may be limited.",
             "Poutine was scanned with full repository context, while the other tools received only seven workflow files.",
+            "CodeQL's zero results describe these two fixed suites and inputs only, not all possible custom queries.",
         ],
         "outputs": provenance,
         "cases": comparisons,

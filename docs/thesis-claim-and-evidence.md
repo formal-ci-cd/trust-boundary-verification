@@ -25,11 +25,11 @@
 
 | 対象 | CodeQL | zizmor | sisakulint | Poutine | 提案側 |
 |---|---|---|---|---|---|
-| A1～A4 | [保存済み比較](../results/github-actions-artifact-runtime-2026-08-22.md)ではbuilt-inに対象の一貫した全経路findingなし | consumer側の`dangerous-triggers`のみ | 対象propertyのfindingなし（Node実行環境の警告のみ） | 対象workflowのfindingなし | A1の全経路反例とA2～A4の遮断点を同じpropertyで区別 |
-| A5 | 同一条件の保存済みSARIFがなく未分類 | consumer側の`dangerous-triggers`のみ（producer側の`template-injection`は別property） | 対象propertyのfindingなし（Node実行環境の警告のみ） | 対象workflowのfindingなし | 条件付きの全経路反例．一部のruntime事実はunknown |
+| A1～A4 | 七つの中心workflowに対するCLI 2.27.1／公式pack 0.6.36のdefault・security-and-quality両suiteで対象findingなし | consumer側の`dangerous-triggers`のみ | 対象propertyのfindingなし（Node実行環境の警告のみ） | 対象workflowのfindingなし | A1の全経路反例とA2～A4の遮断点を同じpropertyで区別 |
+| A5 | 同じ二suiteで対象findingなし | consumer側の`dangerous-triggers`のみ（producer側の`template-injection`は別property） | 対象propertyのfindingなし（Node実行環境の警告のみ） | 対象workflowのfindingなし | 条件付きの全経路反例．一部のruntime事実はunknown |
 | TanStack | 当時版2.25.4は**PR側入口を警告**．保存SARIFに公開側まで結ぶ同一結果なし | 入口警告あり．同一結果で公開側まで接続せず | 入口の未信頼checkoutを警告．同一結果で公開側まで接続せず | 外部Action等への警告あり．同一結果でCache経路を接続せず | producer→Cache→別runのOIDC側を条件付き反例として接続 |
 
-TanStackについては[一つのfindingの位置とflowを再計算した比較](../results/tanstack-cache-chain/property-level-comparison.json)を用いる．新しい共通解析は，旧事例専用モデルのOIDC設定経路とは別に，PR側Cache候補からrelease workflow内の明示`git push`地点までを[条件付き反例](../results/tanstack-cache-chain/common-path-pre/analysis.json)として構成した．対策版では2026年5月のscope規則により[同じpropertyの対象反例がない](../results/tanstack-cache-chain/common-path-mitigation/analysis.json)．これは実際のnpm公開やrepository更新成功を示さない．A1～A5のzizmor 1.30.1，sisakulint 0.3.7，Poutine 1.1.6の固定出力と入力範囲は[比較記録](../results/core-artifact-tool-baselines/property-level-comparison.json)に保存した．CodeQLについてはA5の同条件の保存出力がないため未分類とする．版・suite・入力に依存した**この保存済み出力**に関する比較であり，各ツール一般にその能力がないという証明ではない．警告件数は検出率・優劣の指標にしない．
+TanStackについては[一つのfindingの位置とflowを再計算した比較](../results/tanstack-cache-chain/property-level-comparison.json)を用いる．新しい共通解析は，旧事例専用モデルのOIDC設定経路とは別に，PR側Cache候補からrelease workflow内の明示`git push`地点までを[条件付き反例](../results/tanstack-cache-chain/common-path-pre/analysis.json)として構成した．対策版では2026年5月のscope規則により[同じpropertyの対象反例がない](../results/tanstack-cache-chain/common-path-mitigation/analysis.json)．これは実際のnpm公開やrepository更新成功を示さない．A1～A5のCodeQL 2.27.1，zizmor 1.30.1，sisakulint 0.3.7，Poutine 1.1.6の固定出力と入力範囲は[比較記録](../results/core-artifact-tool-baselines/property-level-comparison.json)に保存した．CodeQLの二suiteはこの七入力で結果0件であり，カスタムqueryを含むCodeQL一般の能力については主張しない．版・suite・入力に依存した**この保存済み出力**に関する比較であり，各ツール一般にその能力がないという証明ではない．警告件数は検出率・優劣の指標にしない．
 
 ## 保存するが中心評価から外す事例
 

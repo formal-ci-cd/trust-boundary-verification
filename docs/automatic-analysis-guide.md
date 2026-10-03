@@ -2,6 +2,17 @@
 
 研究の現状と限界は [2026-10-02の結果](research-status-2026-10-02.md) を参照してください．以下のコマンドはrepositoryのルートから実行します．入力workflowは解析対象であり，実行しません．
 
+## 中心artifact部分集合をYAMLから再評価
+
+A1～A5の固定workflowを読み，artifactの保存・取得候補を全workflowから結合する．A1～A4については限定したdummy publish markerのpropertyを注釈なしで検査する．A5の未対応shellは`unknown/unsupported`として残す．実secret，publish，deploy，攻撃payloadは実行しない．生成JSONには行位置とunknown仮定，SMVにはpropertyが入る．
+
+```sh
+PYTHONPATH=/path/to/installed/dependencies python3 tools/evaluate_artifact_subset.py . \
+  --nusmv /path/to/NuSMV --output /tmp/core-artifact-subset
+```
+
+[固定YAMLから生成した結果](../results/core-artifact-subset/analysis.json)は，NuSMVと独立事実列挙の一致を確認済み．`safe-within-model`はこの模擬publish地点と認識したshell部分集合の結論であり，repository全体の安全性ではない．
+
 ## Python解析
 
 依存関係は `requirements-analysis.txt`，隔離環境は `experiments/analysis.Dockerfile` です．

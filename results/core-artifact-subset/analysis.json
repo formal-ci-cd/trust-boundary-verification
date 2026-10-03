@@ -1,0 +1,626 @@
+{
+  "scope": "artifact dummy publish subset only; no actual authority or runtime success inferred",
+  "candidateCount": 5,
+  "emptyCandidateMeaning": "unknown/unsupported",
+  "results": [
+    {
+      "id": "artifact-abe74ce7be91",
+      "source": {
+        "event": "pull_request",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "line": 6
+      },
+      "producer": {
+        "workflow": {
+          "name": "GHA-A Producer - untrusted PR artifact",
+          "file": ".github/workflows/artifact-a1-pr-producer.yml",
+          "event": "pull_request"
+        },
+        "operation": {
+          "id": "artifact-write:produce-artifact:2",
+          "kind": "artifactWriteIntent",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "name": "trust-boundary-build-output",
+          "path": ".research-artifact-input/payload.txt",
+          "runId": null
+        }
+      },
+      "consumer": {
+        "workflow": {
+          "name": "GHA-A1 Unverified artifact consumer",
+          "file": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "event": "workflow_run"
+        },
+        "operation": {
+          "id": "artifact-read:consume-without-verification:0",
+          "kind": "artifactReadIntent",
+          "jobId": "consume-without-verification",
+          "stepIndex": 0,
+          "name": "trust-boundary-build-output",
+          "path": "${{ runner.temp }}/trust-boundary-artifact",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "runSelector": "github.event.workflow_run.id",
+        "sameObject": "unknown"
+      },
+      "facts": {
+        "producerUntrusted": "true",
+        "writeIntent": "true",
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "consumerUsesObject": "true",
+        "integrityCheckPresent": "unknown",
+        "integrityCheckPassed": "false",
+        "privilegedConsumer": "true",
+        "hasAuthority": "true"
+      },
+      "traceMap": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 31
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 31
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "meaning": "artifact-derived dummy publish decision",
+          "line": 41
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "meaning": "dummy publish marker, not real authority",
+          "line": 41
+        }
+      },
+      "status": "unsafe-counterexample",
+      "hypotheticalModelVerdict": "unsafe",
+      "counterexampleStages": [
+        "start",
+        "object_written",
+        "object_restored",
+        "object_used",
+        "authority_reached"
+      ],
+      "unknownAssumptions": [
+        "integrityCheckPresent",
+        "readSucceeded",
+        "sameObject",
+        "writeAuthorized",
+        "writeSucceeded"
+      ],
+      "unsupported": [],
+      "simulation": "dummy publish marker; no actual publish authority"
+    },
+    {
+      "id": "artifact-2c67a40cd85c",
+      "source": {
+        "event": "pull_request",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "line": 6
+      },
+      "producer": {
+        "workflow": {
+          "name": "GHA-A Producer - untrusted PR artifact",
+          "file": ".github/workflows/artifact-a1-pr-producer.yml",
+          "event": "pull_request"
+        },
+        "operation": {
+          "id": "artifact-write:produce-artifact:2",
+          "kind": "artifactWriteIntent",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "name": "trust-boundary-build-output",
+          "path": ".research-artifact-input/payload.txt",
+          "runId": null
+        }
+      },
+      "consumer": {
+        "workflow": {
+          "name": "GHA-A2 Verified artifact consumer",
+          "file": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "event": "workflow_run"
+        },
+        "operation": {
+          "id": "artifact-read:consume-after-verification:0",
+          "kind": "artifactReadIntent",
+          "jobId": "consume-after-verification",
+          "stepIndex": 0,
+          "name": "trust-boundary-build-output",
+          "path": "${{ runner.temp }}/trust-boundary-artifact",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "runSelector": "github.event.workflow_run.id",
+        "sameObject": "unknown"
+      },
+      "facts": {
+        "producerUntrusted": "true",
+        "writeIntent": "true",
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "consumerUsesObject": "true",
+        "integrityCheckPresent": "true",
+        "integrityCheckPassed": "unknown",
+        "privilegedConsumer": "true",
+        "hasAuthority": "true"
+      },
+      "traceMap": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 29
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 1,
+          "meaning": "trusted digest guard",
+          "line": 38
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "meaning": "artifact-derived dummy publish decision",
+          "line": 57
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "meaning": "dummy publish marker, not real authority",
+          "line": 57
+        }
+      },
+      "status": "safe-within-model",
+      "hypotheticalModelVerdict": "safe",
+      "counterexampleStages": [],
+      "unknownAssumptions": [
+        "integrityCheckPassed",
+        "readSucceeded",
+        "sameObject",
+        "writeAuthorized",
+        "writeSucceeded"
+      ],
+      "unsupported": [],
+      "simulation": "dummy publish marker; no actual publish authority"
+    },
+    {
+      "id": "artifact-f582ab034b5a",
+      "source": {
+        "event": "pull_request",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "line": 6
+      },
+      "producer": {
+        "workflow": {
+          "name": "GHA-A Producer - untrusted PR artifact",
+          "file": ".github/workflows/artifact-a1-pr-producer.yml",
+          "event": "pull_request"
+        },
+        "operation": {
+          "id": "artifact-write:produce-artifact:2",
+          "kind": "artifactWriteIntent",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "name": "trust-boundary-build-output",
+          "path": ".research-artifact-input/payload.txt",
+          "runId": null
+        }
+      },
+      "consumer": {
+        "workflow": {
+          "name": "GHA-A3 Download-only artifact consumer",
+          "file": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "event": "workflow_run"
+        },
+        "operation": {
+          "id": "artifact-read:download-without-use:0",
+          "kind": "artifactReadIntent",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "name": "trust-boundary-build-output",
+          "path": "${{ runner.temp }}/trust-boundary-artifact",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "runSelector": "github.event.workflow_run.id",
+        "sameObject": "unknown"
+      },
+      "facts": {
+        "producerUntrusted": "true",
+        "writeIntent": "true",
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "consumerUsesObject": "false",
+        "integrityCheckPresent": "false",
+        "integrityCheckPassed": "false",
+        "privilegedConsumer": "true",
+        "hasAuthority": "false"
+      },
+      "traceMap": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 23
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 23
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "use absent or unknown",
+          "line": 23
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "dummy publish marker, not real authority",
+          "line": 23
+        }
+      },
+      "status": "safe-within-model",
+      "hypotheticalModelVerdict": "safe",
+      "counterexampleStages": [],
+      "unknownAssumptions": [
+        "readSucceeded",
+        "sameObject",
+        "writeAuthorized",
+        "writeSucceeded"
+      ],
+      "unsupported": [],
+      "simulation": "dummy publish marker; no actual publish authority"
+    },
+    {
+      "id": "artifact-d0802ae279a0",
+      "source": {
+        "event": "pull_request",
+        "file": ".github/workflows/artifact-a1-pr-producer.yml",
+        "line": 6
+      },
+      "producer": {
+        "workflow": {
+          "name": "GHA-A Producer - untrusted PR artifact",
+          "file": ".github/workflows/artifact-a1-pr-producer.yml",
+          "event": "pull_request"
+        },
+        "operation": {
+          "id": "artifact-write:produce-artifact:2",
+          "kind": "artifactWriteIntent",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "name": "trust-boundary-build-output",
+          "path": ".research-artifact-input/payload.txt",
+          "runId": null
+        }
+      },
+      "consumer": {
+        "workflow": {
+          "name": "GHA-A4 Artifact consumer without authority",
+          "file": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "event": "workflow_run"
+        },
+        "operation": {
+          "id": "artifact-read:consume-without-authority:0",
+          "kind": "artifactReadIntent",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "name": "trust-boundary-build-output",
+          "path": "${{ runner.temp }}/trust-boundary-artifact",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "trust-boundary-build-output",
+        "runSelector": "github.event.workflow_run.id",
+        "sameObject": "unknown"
+      },
+      "facts": {
+        "producerUntrusted": "true",
+        "writeIntent": "true",
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "consumerUsesObject": "true",
+        "integrityCheckPresent": "false",
+        "integrityCheckPassed": "false",
+        "privilegedConsumer": "true",
+        "hasAuthority": "false"
+      },
+      "traceMap": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 22
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 22
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "use absent or unknown",
+          "line": 22
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "dummy publish marker, not real authority",
+          "line": 22
+        }
+      },
+      "status": "safe-within-model",
+      "hypotheticalModelVerdict": "safe",
+      "counterexampleStages": [],
+      "unknownAssumptions": [
+        "readSucceeded",
+        "sameObject",
+        "writeAuthorized",
+        "writeSucceeded"
+      ],
+      "unsupported": [],
+      "simulation": "dummy publish marker; no actual publish authority"
+    },
+    {
+      "id": "artifact-2f89fc72e64a",
+      "source": {
+        "event": "pull_request",
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 5
+      },
+      "producer": {
+        "workflow": {
+          "name": "GHA-A5 actions-attest style untrusted producer",
+          "file": ".github/workflows/artifact-a5-attest-producer.yml",
+          "event": "pull_request"
+        },
+        "operation": {
+          "id": "artifact-write:rebuild-dist:2",
+          "kind": "artifactWriteIntent",
+          "jobId": "rebuild-dist",
+          "stepIndex": 2,
+          "name": "gha-a5-rebuilt-dist",
+          "path": "research-a5-output",
+          "runId": null
+        }
+      },
+      "consumer": {
+        "workflow": {
+          "name": "GHA-A5 actions-attest style unsafe consumer",
+          "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "event": "workflow_run"
+        },
+        "operation": {
+          "id": "artifact-read:consume-untrusted-dist:0",
+          "kind": "artifactReadIntent",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "name": "gha-a5-rebuilt-dist",
+          "path": "${{ runner.temp }}/gha-a5-artifact",
+          "runId": "${{ github.event.workflow_run.id }}"
+        }
+      },
+      "sharedObject": {
+        "kind": "artifact",
+        "name": "gha-a5-rebuilt-dist",
+        "runSelector": "github.event.workflow_run.id",
+        "sameObject": "unknown"
+      },
+      "facts": {
+        "producerUntrusted": "true",
+        "writeIntent": "true",
+        "writeAuthorized": "unknown",
+        "writeSucceeded": "unknown",
+        "sameObject": "unknown",
+        "readSucceeded": "unknown",
+        "consumerUsesObject": "unknown",
+        "integrityCheckPresent": "unknown",
+        "integrityCheckPassed": "false",
+        "privilegedConsumer": "true",
+        "hasAuthority": "unknown"
+      },
+      "traceMap": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+          "workflowName": "GHA-A5 actions-attest style untrusted producer",
+          "jobId": "rebuild-dist",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 33
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+          "workflowName": "GHA-A5 actions-attest style untrusted producer",
+          "jobId": "rebuild-dist",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 33
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 24
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 24
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "use absent or unknown",
+          "line": 24
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "dummy publish marker, not real authority",
+          "line": 24
+        }
+      },
+      "status": "unknown/unsupported",
+      "hypotheticalModelVerdict": "unsafe",
+      "counterexampleStages": [
+        "start",
+        "object_written",
+        "object_restored",
+        "object_used",
+        "authority_reached"
+      ],
+      "unknownAssumptions": [
+        "consumerUsesObject",
+        "hasAuthority",
+        "integrityCheckPresent",
+        "readSucceeded",
+        "sameObject",
+        "writeAuthorized",
+        "writeSucceeded"
+      ],
+      "unsupported": [
+        "artifact use or verification is outside the supported shell subset"
+      ],
+      "simulation": "dummy publish marker; no actual publish authority"
+    }
+  ]
+}

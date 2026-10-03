@@ -14,6 +14,8 @@ FROZENVAR
   writeAuthorized : boolean;
   writeSucceeded : boolean;
   producerTaintsCache : boolean;
+  producerCallEnabled : boolean;
+  consumerCallEnabled : boolean;
   readSucceeded : boolean;
   producerActionMatches : boolean;
   consumerActionMatches : boolean;
@@ -27,8 +29,6 @@ VAR
   restored_tainted : boolean;
   bad : boolean;
 DEFINE
-  producerCallEnabled := TRUE;
-  consumerCallEnabled := TRUE;
   sameObject := FALSE;
   hasAuthority := TRUE;
 INVAR writeSucceeded -> writeAuthorized

@@ -13,7 +13,7 @@ import yaml_to_model
 
 
 def event_status(condition, event):
-    """Only exact event equality (or mismatch within AND) is decided."""
+    """Decide exact AND predicates for the modeled fork PR or push event."""
     condition = condition.strip()
     if condition.startswith('${{') and condition.endswith('}}'):
         condition = condition[3:-2].strip()
@@ -31,8 +31,21 @@ def event_status(condition, event):
             actual = event == match.group(2)
             if actual != (match.group(1) == '=='):
                 return 'false'
-        else:
-            unsupported = True
+            continue
+        fork = re.fullmatch(r"github\.event\.pull_request\.head\.repo\.fork\s*(==|!=)\s*(true|false)",
+                            part, re.I)
+        if fork and event in {'pull_request', 'pull_request_target'}:
+            matched = True
+            actual = fork.group(2).lower() == 'true'
+            if actual != (fork.group(1) == '=='):
+                return 'false'
+            continue
+        if part in ('true', 'True'):
+            matched = True
+            continue
+        if part in ('false', 'False'):
+            return 'false'
+        unsupported = True
     return 'unknown' if unsupported or not matched else 'true'
 
 
@@ -46,6 +59,12 @@ def step_enabled(condition, event):
     if condition in ('false', 'False'):
         return 'false'
     return event_status(condition, event)
+
+
+def and_status(*values):
+    if 'false' in values:
+        return 'false'
+    return 'unknown' if 'unknown' in values else 'true'
 
 
 def job_for(model, job_id):
@@ -163,9 +182,14 @@ def evaluate(root, models, inventory, contracts, nusmv, output, policy):
         facts['hasAuthority'] = authority
         write_step = next(s for s in pj['steps'] if s['index'] == write['location']['step'])
         read_step = next(s for s in cj['steps'] if s['index'] == read['location']['step'])
-        facts['producerCallEnabled'] = step_enabled(write_step.get('condition', ''), event)
-        facts['consumerCallEnabled'] = step_enabled(read_step.get('condition', ''), 'push')
-        if step_enabled(sink.get('condition', ''), 'push') == 'false':
+        facts['producerCallEnabled'] = and_status(
+            event_status(pj.get('condition', ''), event),
+            step_enabled(write_step.get('condition', ''), event))
+        facts['consumerCallEnabled'] = and_status(
+            event_status(cj.get('condition', ''), 'push'),
+            step_enabled(read_step.get('condition', ''), 'push'))
+        if and_status(event_status(cj.get('condition', ''), 'push'),
+                      step_enabled(sink.get('condition', ''), 'push')) == 'false':
             facts['sinkReachable'] = 'false'
         evidence = [
             {'file': pm['workflow']['file'],

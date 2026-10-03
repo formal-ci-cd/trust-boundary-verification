@@ -39,6 +39,12 @@ class TwoRunCacheModelTests(unittest.TestCase):
         self.assertEqual(evaluation.event_status("github.event_name == 'pull_request_target'", 'pull_request'), 'false')
         self.assertEqual(evaluation.event_status("unknown && github.event_name == 'pull_request_target'", 'pull_request'), 'false')
         self.assertEqual(evaluation.event_status("unknown || github.event_name == 'pull_request_target'", 'pull_request'), 'unknown')
+        self.assertEqual(evaluation.event_status(
+            "github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork == false",
+            'pull_request_target'), 'false')
+        self.assertEqual(evaluation.event_status(
+            "github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork == true",
+            'pull_request_target'), 'true')
 
 
 @unittest.skipUnless(NUSMV.exists(), 'NuSMV unavailable')
@@ -122,6 +128,44 @@ class TanStackCommonCachePathTests(unittest.TestCase):
                                        NUSMV, Path(directory), 'historical-pre-2026-06-26')
         self.assertEqual(rows, [])
         self.assertTrue(inventory['unsupportedActions'])
+
+    def test_fork_exclusion_removes_fork_source_candidate(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            shutil.copytree(CASE / 'pre-incident/.github/workflows', root / '.github/workflows')
+            workflow = root / '.github/workflows/bundle-size.yml'
+            workflow.write_text(workflow.read_text().replace(
+                "if: github.event_name == 'pull_request_target'",
+                "if: github.event_name == 'pull_request_target' && github.event.pull_request.head.repo.fork == false",
+                1))
+            models = yaml_to_model.load_models(root)
+            inventory = shared.extract(models, self.contracts)
+            inventory['cacheCandidates'] = shared.pair_cache(inventory['operations'])
+            rows = evaluation.evaluate(root, models, inventory, self.contracts,
+                                       NUSMV, root, 'historical-pre-2026-06-26')
+            target = [r for r in rows if r['producer']['file'].endswith('bundle-size.yml')
+                      and r['producer']['job'] == 'benchmark-pr']
+            self.assertEqual(target, [])
+
+    def test_unparsed_producer_job_condition_remains_unknown(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            shutil.copytree(CASE / 'pre-incident/.github/workflows', root / '.github/workflows')
+            workflow = root / '.github/workflows/bundle-size.yml'
+            workflow.write_text(workflow.read_text().replace(
+                "if: github.event_name == 'pull_request_target'",
+                "if: github.event_name == 'pull_request_target' && github.event.pull_request.draft == false",
+                1))
+            models = yaml_to_model.load_models(root)
+            inventory = shared.extract(models, self.contracts)
+            inventory['cacheCandidates'] = shared.pair_cache(inventory['operations'])
+            rows = evaluation.evaluate(root, models, inventory, self.contracts,
+                                       NUSMV, root, 'historical-pre-2026-06-26')
+            target = next(r for r in rows if r['producer']['file'].endswith('bundle-size.yml')
+                          and r['producer']['job'] == 'benchmark-pr'
+                          and r['consumer']['file'].endswith('release.yml'))
+            self.assertEqual(target['facts']['producerCallEnabled'], 'unknown')
+            self.assertEqual(target['unknownAssumptions']['producerCallEnabled'], True)
 
 
 if __name__ == '__main__':

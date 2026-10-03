@@ -22,6 +22,7 @@ Trace Type: Counterexample
     writeAuthorized = TRUE
     writeSucceeded = TRUE
     producerTaintsCache = TRUE
+    consumerCallEnabled = TRUE
     sameObject = TRUE
     readSucceeded = TRUE
     producerActionMatches = TRUE
@@ -35,7 +36,6 @@ Trace Type: Counterexample
     restored_tainted = FALSE
     bad = FALSE
     hasAuthority = TRUE
-    consumerCallEnabled = TRUE
     producerCallEnabled = TRUE
   -> Input: 1.2 <-
     actor = producer

@@ -1,6 +1,22 @@
 # 自動解析と比較実験の実行方法
 
-研究の現状と限界は [2026-10-02の結果](research-status-2026-10-02.md) を参照してください．以下のコマンドはrepositoryのルートから実行します．入力workflowは解析対象であり，実行しません．
+研究の中心と論文用の表は[研究整理](paper-ready-synthesis.md)を参照してください．以下のコマンドはrepositoryのルートから実行します．入力workflowは解析対象であり，実行しません．
+
+## 中心評価を第三者が再実行するための準備
+
+Python 3.12と[固定依存関係](../requirements-analysis.txt)を使う．NuSMVは評価済みの**2.7.0**を[公式配布ページ](https://nusmv.fbk.eu/downloads.html)からOS・CPUに合うarchiveと対応するSHA-256照合ファイルを取得し，checksumを照合して展開する．macOS universal版はCommand Line Toolsと`libgmp`が必要である．Linux配布binaryはx86-64向けであるため，arm64のDocker imageへそのまま入れない．入手先が一時的に利用できない場合は，未照合binaryをCIへ組み込まず，NuSMVを持つホストで再実行する．研究用macOSでは`/Applications/NuSMV-2.7.0-macos-universal/bin/NuSMV`を使った．
+
+```sh
+python3 -m venv /tmp/tbv-venv
+/tmp/tbv-venv/bin/python -m pip install -r requirements-analysis.txt
+export NUSMV_BIN=/path/to/NuSMV-2.7.0/bin/NuSMV
+"$NUSMV_BIN" -h
+/tmp/tbv-venv/bin/python tools/build_paper_evidence.py --output /tmp/tbv-paper-evidence
+```
+
+出力は`evidence-index.json`と`yaml-matrix-table.md`である．前者に68構成の期待値・実測値・生成事実，A1～A5とTanStackの保存結果との一致，既存ツール比較の固定版・入力checksumを収める．後者は論文用の集計表である．評価器はNuSMV／独立探索が不一致，主要結果が保存値と不一致，またはテストがskipされた場合に失敗し，表を書かない．[今回保存した出力](../results/paper-evidence/evidence-index.json)はNuSMV 2.7.0を使った実行結果である．既存ツールのSARIFを再生成するにはそれぞれの固定CLI／suiteが別途必要であり，このコマンドは保存済み比較索引を確認する．
+
+通常CIのDocker imageはPython解析の依存関係だけを含み，NuSMVを含まない．したがってNuSMV依存テストはその環境でskipされる．CIのgreenをNuSMV照合の成功と読まない．Dockerを使う場合も，NuSMVは対応するLinux x86-64 binaryをchecksum照合してから明示的に渡す必要がある．上記のホスト実行を再現手順の基準とする．
 
 ## 中心artifact部分集合をYAMLから再評価
 

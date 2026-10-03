@@ -1,0 +1,1783 @@
+{
+  "scope": "Fixed YAML supported subset and saved baseline runs; no general precision/recall claim",
+  "nusmv": {
+    "version": "2.7.0",
+    "localBinarySHA256": "e56c96e3f15c029f05b55843ef86ee21ed6e1fb4fc74d8b7498e62c05802d468"
+  },
+  "matrix": {
+    "count": 68,
+    "matched": 68,
+    "groups": {
+      "a5-sink": 2,
+      "artifact-boolean-4": 16,
+      "artifact-digest-guard-3": 8,
+      "artifact-single-axis": 32,
+      "tanstack-cache-control": 10
+    },
+    "rows": [
+      {
+        "group": "tanstack-cache-control",
+        "variant": "original",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "producer-disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "false",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "producer-condition-unknown",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "unknown",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "read-disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "false",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "sink-disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "authority-absent",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "false",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "fork-excluded",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "mitigation",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "false",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "mitigation-policy-unknown",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "producerTaintsCache": "unknown",
+          "producerCallEnabled": "true",
+          "consumerCallEnabled": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "producerActionMatches": "unknown",
+          "consumerActionMatches": "unknown",
+          "useSucceeded": "unknown",
+          "integrityVerified": "unknown",
+          "hasAuthority": "true",
+          "sinkReachable": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "tanstack-cache-control",
+        "variant": "composite-unsupported",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "a5-sink",
+        "variant": "original",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "a5-sink",
+        "variant": "disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=0,read=0,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=0,read=0,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=0,read=1,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=0,read=1,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=1,read=0,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=1,read=0,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=1,read=1,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=0,write=1,read=1,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=0,read=0,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=0,read=0,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=0,read=1,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=0,read=1,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=1,read=0,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=1,read=0,use=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=1,read=1,use=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-boolean-4",
+        "variant": "source=1,write=1,read=1,use=1",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "source/untrusted",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "source/trusted-push",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "source/other-literal-checkout-file",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "write-intent/absent",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "write-call/enabled",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "write-call/disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "write-call/unparsed",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "unknown",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "write-capability/runtime-unknown",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "same-object/same-name-candidate",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "same-object/different-name",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "false",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "same-object/dynamic-name",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "same-object/exact-plus-dynamic-upload",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "order/workflow-run-after-producer",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "order/unrelated-push",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "order/producer-after-consumer",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "read/present",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "read/absent",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": null,
+        "sourceLocationsChecked": false
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "read/disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "use/present",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "use/absent",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "use/disabled",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "false",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "verification/absent",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "verification/hash-only",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "verification/trusted-digest-guard",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "verification/unparsed-digest",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "authority/dummy-present",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "authority/absent",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "sink-dependency/independent-marker",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "false",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "false"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "syntax/supported",
+        "expected": "unsafe-counterexample",
+        "observed": "unsafe-counterexample",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "syntax/unsupported-action",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "syntax/early-exit-shell",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "unknown",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-single-axis",
+        "variant": "syntax/extra-if-shell",
+        "expected": "unknown/unsupported",
+        "observed": "unknown/unsupported",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "unknown",
+          "integrityCheckPresent": "unknown",
+          "integrityCheckPassed": "false",
+          "privilegedConsumer": "true",
+          "hasAuthority": "unknown"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=0,write=0,read=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=0,write=0,read=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=0,write=1,read=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=0,write=1,read=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "false",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=1,write=0,read=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=1,write=0,read=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "false",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=1,write=1,read=0",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "false",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      },
+      {
+        "group": "artifact-digest-guard-3",
+        "variant": "source=1,write=1,read=1",
+        "expected": "safe-within-model",
+        "observed": "safe-within-model",
+        "match": true,
+        "facts": {
+          "producerUntrusted": "true",
+          "writeIntent": "true",
+          "writeAuthorized": "unknown",
+          "writeSucceeded": "unknown",
+          "sameObject": "unknown",
+          "readSucceeded": "unknown",
+          "consumerUsesObject": "true",
+          "integrityCheckPresent": "true",
+          "integrityCheckPassed": "unknown",
+          "privilegedConsumer": "true",
+          "hasAuthority": "true"
+        },
+        "sourceLocationsChecked": true
+      }
+    ],
+    "additionalChecks": [
+      "two equal-name artifact uploads each remain conditional unsafe",
+      "reverse Cache schedule has no violation"
+    ]
+  },
+  "artifactCases": {
+    "A1": {
+      "status": "unsafe-counterexample",
+      "nusmv": "unsafe",
+      "independentAgreement": true,
+      "yaml": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+      "sourceLocations": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 31
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 31
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "meaning": "artifact-derived data use",
+          "line": 41
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+          "workflowName": "GHA-A1 Unverified artifact consumer",
+          "jobId": "consume-without-verification",
+          "stepIndex": 1,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 41
+        }
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "sameObject": true,
+        "readSucceeded": true,
+        "integrityCheckPresent": false
+      }
+    },
+    "A2": {
+      "status": "safe-within-model",
+      "nusmv": "safe",
+      "independentAgreement": true,
+      "yaml": ".github/workflows/artifact-a2-safe-consumer.yml",
+      "sourceLocations": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 29
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 1,
+          "meaning": "trusted digest guard",
+          "line": 38
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "meaning": "artifact-derived data use",
+          "line": 57
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a2-safe-consumer.yml",
+          "workflowName": "GHA-A2 Verified artifact consumer",
+          "jobId": "consume-after-verification",
+          "stepIndex": 2,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 57
+        }
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved",
+        "integrityCheckPassed": "unresolved"
+      }
+    },
+    "A3": {
+      "status": "safe-within-model",
+      "nusmv": "safe",
+      "independentAgreement": true,
+      "yaml": ".github/workflows/artifact-a3-download-only-consumer.yml",
+      "sourceLocations": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 23
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 23
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "use absent or unknown",
+          "line": 23
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a3-download-only-consumer.yml",
+          "workflowName": "GHA-A3 Download-only artifact consumer",
+          "jobId": "download-without-use",
+          "stepIndex": 0,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 23
+        }
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved"
+      }
+    },
+    "A4": {
+      "status": "safe-within-model",
+      "nusmv": "safe",
+      "independentAgreement": true,
+      "yaml": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+      "sourceLocations": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 37
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a1-pr-producer.yml",
+          "workflowName": "GHA-A Producer - untrusted PR artifact",
+          "jobId": "produce-artifact",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 37
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 22
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 22
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "use absent or unknown",
+          "line": 22
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a4-no-authority-consumer.yml",
+          "workflowName": "GHA-A4 Artifact consumer without authority",
+          "jobId": "consume-without-authority",
+          "stepIndex": 0,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 22
+        }
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "sameObject": "unresolved",
+        "readSucceeded": "unresolved"
+      }
+    },
+    "A5": {
+      "status": "unsafe-counterexample",
+      "nusmv": "unsafe",
+      "independentAgreement": true,
+      "yaml": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "sourceLocations": {
+        "start": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+          "workflowName": "GHA-A5 actions-attest style untrusted producer",
+          "jobId": "rebuild-dist",
+          "stepIndex": 2,
+          "meaning": "PR artifact upload intent",
+          "line": 33
+        },
+        "object_written": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-producer.yml",
+          "workflowName": "GHA-A5 actions-attest style untrusted producer",
+          "jobId": "rebuild-dist",
+          "stepIndex": 2,
+          "meaning": "upload success remains unknown",
+          "line": 33
+        },
+        "object_restored": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "same artifact and restore success remain unknown",
+          "line": 24
+        },
+        "integrity_checked": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 0,
+          "meaning": "verification absent or unknown",
+          "line": 24
+        },
+        "object_used": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 1,
+          "meaning": "artifact-derived data use",
+          "line": 33
+        },
+        "authority_reached": {
+          "workflowFile": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "workflowName": "GHA-A5 actions-attest style unsafe consumer",
+          "jobId": "consume-untrusted-dist",
+          "stepIndex": 2,
+          "meaning": "dummy publish/update marker, not real authority",
+          "line": 59
+        }
+      },
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "sameObject": true,
+        "readSucceeded": true
+      }
+    }
+  },
+  "tanstack": {
+    "pre": {
+      "status": "unsafe-counterexample",
+      "nusmv": "unsafe",
+      "independentAgreement": true,
+      "sameObject": "unknown",
+      "input": "results/tanstack-cache-chain/common-path-pre/analysis.json",
+      "unknownAssumptions": {
+        "writeAuthorized": true,
+        "writeSucceeded": true,
+        "producerTaintsCache": true,
+        "consumerCallEnabled": true,
+        "sameObject": true,
+        "readSucceeded": true,
+        "producerActionMatches": true,
+        "consumerActionMatches": true,
+        "useSucceeded": true,
+        "integrityVerified": false,
+        "sinkReachable": true
+      }
+    },
+    "mitigation": {
+      "status": "safe-within-model",
+      "nusmv": "safe",
+      "independentAgreement": true,
+      "sameObject": "false",
+      "input": "results/tanstack-cache-chain/common-path-mitigation/analysis.json",
+      "unknownAssumptions": {
+        "writeAuthorized": "unresolved",
+        "writeSucceeded": "unresolved",
+        "producerTaintsCache": "unresolved",
+        "consumerCallEnabled": "unresolved",
+        "readSucceeded": "unresolved",
+        "producerActionMatches": "unresolved",
+        "consumerActionMatches": "unresolved",
+        "useSucceeded": "unresolved",
+        "integrityVerified": "unresolved",
+        "sinkReachable": "unresolved"
+      }
+    }
+  },
+  "baselines": {
+    "artifact": {
+      "versions": {
+        "zizmor": "1.30.1",
+        "sisakulint": "0.3.7",
+        "poutine": "1.1.6",
+        "codeql": "2.27.1",
+        "codeqlQueryPack": "codeql/actions-queries@0.6.36"
+      },
+      "inputs": "CodeQL, zizmor and sisakulint: seven artifact-a*.yml workflows; Poutine: entire local research repository",
+      "inputSHA256": {
+        "artifact-a1-pr-producer.yml": "d478ad4dddad26d719ea192996cf250c6ef377925873aebe7847e83681758c26",
+        "artifact-a1-unsafe-consumer.yml": "ef9ec77563f847c78f5930de7ee76993aedc09073a751b5248dc4fe979faac20",
+        "artifact-a2-safe-consumer.yml": "2f9a0ca5248e0adde869970a036525e72aad11f4fb152d4f3d53ae0ea92bb20d",
+        "artifact-a3-download-only-consumer.yml": "b5d3c980f3cba70de8c728b4e63a74e10062ec0fffe5b58be01ac5ed20c5ca5e",
+        "artifact-a4-no-authority-consumer.yml": "77001a96e31ba0737d17ccf0c5ec6d3b67e79841aea88107b8207e425c442e17",
+        "artifact-a5-attest-consumer.yml": "706a9938d1449b4e4660b0c15918ef66957fcba46e041bfa24de1deeb1d77fe8",
+        "artifact-a5-attest-producer.yml": "048785c276cb3219a76c07ca6b93262756e8417d6ef4c46802c229a0428d03fc"
+      },
+      "savedComparison": "results/core-artifact-tool-baselines/property-level-comparison.json"
+    },
+    "tanstack": {
+      "savedComparison": "results/tanstack-cache-chain/property-level-comparison.json",
+      "toolKeys": [
+        "codeql-current-security-and-quality",
+        "codeql-incident-available-default",
+        "poutine-1.1.6-retrospective",
+        "sisakulint-current",
+        "zizmor-current-regular"
+      ]
+    }
+  }
+}

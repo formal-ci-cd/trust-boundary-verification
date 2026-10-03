@@ -1,5 +1,7 @@
 # 中心仮説と証拠の対応
 
+論文の節，六つの表，Research Question，実装への追跡先は[研究整理](paper-ready-synthesis.md)に集約した．表の数値は[再解析で生成した索引](../results/paper-evidence/evidence-index.json)と照合する．
+
 ## 論文の中心仮説
 
 [Threat Model](threat-model.md)で定義するGitHub ActionsのCache／artifact経路について，CI/CD構成と明示した実行時仮定から有限状態モデルを生成し，複数workflow又はrunを跨ぐ安全性propertyを検査すれば，**未信頼producerから同一共有状態を経てprivileged consumerの権限操作地点まで至る条件付き到達可能性**を一つの反例として提示できる．既存スキャナが危険な入口や出口を警告することと両立する主張である．

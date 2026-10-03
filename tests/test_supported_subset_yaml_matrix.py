@@ -31,6 +31,16 @@ A4 = 'artifact-a4-no-authority-consumer.yml'
 A5_PRODUCER = 'artifact-a5-attest-producer.yml'
 A5_CONSUMER = 'artifact-a5-attest-consumer.yml'
 TANSTACK = ROOT / 'experiments/public-cases/tanstack'
+EVALUATION_ROWS = []
+
+
+def record(group, variant, expected, observed, row):
+    EVALUATION_ROWS.append({
+        'group': group, 'variant': variant, 'expected': expected,
+        'observed': observed, 'match': expected == observed,
+        'facts': row['facts'] if row else None,
+        'sourceLocationsChecked': row is not None,
+    })
 
 
 def replace_once(text, old, new):
@@ -198,6 +208,7 @@ class SupportedSubsetYamlMatrix(unittest.TestCase):
                             A4 if variant in {'absent', 'independent-marker'} and axis in {'authority', 'sink-dependency'} else
                             A1)
                 status, row, count = self.analyze(consumer, producer_edit, consumer_edit)
+                record('artifact-single-axis', axis + '/' + variant, expected, status, row)
                 self.assertEqual(status, expected)
                 if row is None:
                     self.assertEqual(count, 0)
@@ -218,6 +229,7 @@ class SupportedSubsetYamlMatrix(unittest.TestCase):
 
     def test_a5_metadata_dependency_and_disabled_dummy_sink(self):
         status, row, _ = self.analyze(A5_CONSUMER, producer_name=A5_PRODUCER)
+        record('a5-sink', 'original', 'unsafe-counterexample', status, row)
         self.assertEqual(status, 'unsafe-counterexample')
         self.assertEqual(row['facts']['consumerUsesObject'], 'true')
         self.assertEqual(row['facts']['hasAuthority'], 'true')
@@ -225,6 +237,7 @@ class SupportedSubsetYamlMatrix(unittest.TestCase):
             A5_CONSUMER, producer_name=A5_PRODUCER,
             consumer_edit=("echo 'dummy_repository_update_reached=true'",
                            "echo 'dummy_repository_update_reached=false'"))
+        record('a5-sink', 'disabled', 'safe-within-model', status, row)
         self.assertEqual(status, 'safe-within-model')
         self.assertEqual(row['facts']['consumerUsesObject'], 'true')
         self.assertEqual(row['facts']['hasAuthority'], 'false')
@@ -255,6 +268,9 @@ class SupportedSubsetYamlMatrix(unittest.TestCase):
                 status, row, _ = self.analyze(A1, producer_edit, consumer_edit)
                 expected = ('unsafe-counterexample' if all((untrusted, write, read, use))
                             else 'safe-within-model')
+                record('artifact-boolean-4',
+                       f'source={int(untrusted)},write={int(write)},read={int(read)},use={int(use)}',
+                       expected, status, row)
                 self.assertEqual(status, expected)
                 if status == 'unsafe-counterexample':
                     unsafe_count += 1
@@ -282,6 +298,9 @@ class SupportedSubsetYamlMatrix(unittest.TestCase):
                     return text
 
                 status, row, _ = self.analyze(A2, producer_edit, consumer_edit)
+                record('artifact-digest-guard-3',
+                       f'source={int(untrusted)},write={int(write)},read={int(read)}',
+                       'safe-within-model', status, row)
                 self.assertEqual(status, 'safe-within-model')
                 self.assertEqual(row['facts']['integrityCheckPresent'], 'true')
                 self.assertEqual(row['counterexampleStages'], [])
@@ -374,6 +393,7 @@ class CacheYamlBoundaryMatrix(unittest.TestCase):
         for name, options, expected, fact in cases:
             with self.subTest(name=name):
                 status, row, inventory = self.analyze(**options)
+                record('tanstack-cache-control', name, expected, status, row)
                 self.assertEqual(status, expected)
                 if row is None:
                     self.assertTrue(inventory['unsupportedActions'] or name == 'fork-excluded')

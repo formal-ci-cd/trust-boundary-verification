@@ -2,6 +2,8 @@
 
 [中心Threat Model](threat-model.md)に対し，[実行可能な評価表](../tests/test_supported_subset_yaml_matrix.py)で期待結果を先に定義し，YAML読取り，workflow/run結合，事実生成，NuSMV，独立BFS／事実列挙，元行の存在確認を一連で実施する．workflowは入力として読むだけで実行しない．
 
+[評価索引生成器](../tools/build_paper_evidence.py)でテストを再実行し，[68構成の機械可読結果](../results/paper-evidence/evidence-index.json)と[論文用集計表](../results/paper-evidence/yaml-matrix-table.md)を生成した．68/68は**以下の固定した構成集合での期待値との一致**であり，任意のGitHub Actionsに対するRecall又はPrecisionの推定値ではない．
+
 | 境界軸 | YAML対照 | 期待・確認した対象結果 |
 |---|---|---|
 | Source | fork PR入力／`push`のみ／checkout内の別literal file | PR入力は条件付き反例，`push`のみは対象反例なし，別fileでもPR由来を認識 |

@@ -2,15 +2,15 @@
 
 CI/CD pipelineにおける信頼境界を形式的に検証するための研究用repositoryです．
 
-## 最新の進捗
+## 中心仮説と現在地
 
-修士研究として主張できる優位性と事例ごとの限界は，[主張と証拠の対応表](docs/thesis-claim-and-evidence.md)にまとめています．
+本研究は，GitHub Actionsで未信頼producerがCache又はartifactへ書き込み，別workflow又は別runのconsumerが同じ共有状態を完全性確認なしに利用して，privileged authorityへ至る**一つの経路**を有限状態モデルと反例で提示することを中心とします．既存ツールが入口を警告することと両立する主張です．
 
-[Clineの実侵害](docs/cline-incident-agent-cache-boundary.md)では，事件前後の全workflowを同条件で比較しました．事件当時に利用可能だった版を含むCodeQL・zizmor・actionlintはIssue→AI→共有cache→公開用資格情報の対象経路を指摘せず，限定した提案モデルは事件前だけ条件付き反例を出しました．一方，既存のPromptPwndルールはAIへの入口を検出しました．実際の攻撃者がこの入口を使ったかは未確定で，優位性の主張は複数workflowの条件付き経路説明に限定します．[marimoの公開脆弱性](docs/marimo-approval-race-case-study.md)も比較しています．[TanStackの実侵害](docs/tanstack-incident-cache-boundary.md)では事件当時のCodeQLも実際のPR攻撃入口を警告することを確認しました．提案モデルは，この入口から別workflowのcache復元とOIDC権限までの条件付き経路を示します．さらに実YAMLから得た二つのrunを独立に進めるモデルで，保存と復元の順序により到達が変わることをNuSMVと独立BFSで確認しました．公開側2件を独立に進めるモデルでも，保存が両復元の間なら後のrunだけが到達することを確認しました．[保存済みSARIFから再計算した比較](results/tanstack-cache-chain/property-level-comparison.json)では，既存ツールの個別警告と複数workflow経路の提示を分けて評価しています．[Ultralyticsの実侵害](docs/ultralytics-incident-cache-chain.md)も比較しています．[Elementary・AsyncAPI・Trivy・SpotBugsの実侵害候補の選別](docs/incident-candidate-screening.md)も残しました．[SpotBugsの事例資料](docs/spotbugs-incident-case-study.md)では事後版CodeQLの通常suiteが0件，広いsuiteも外部Actionの未固定タグだけを警告し，追加した限定解析は実際のPR攻撃入口からsecretを設定した実行stepまでをつなぎ，固定YAMLから生成した小規模モデルもNuSMVと独立BFSで条件付き反例を出しました．CodeQL 2.27.1は研究用の1箇所対照例でも通常0件・広いsuiteの同じタグ警告1件で，対象のPR参照選択を区別しませんでした．zizmorとsisakulintも原本・対照例で同じ警告を出し，sisakulintは両方に未信頼checkoutとlocal scriptの危険を警告しました．攻撃PRの公開差分には `mvnw` 冒頭への外部スクリプト取得・実行命令があり，モデルのsecret付き `./mvnw` stepとの対応を確認しました．実行ログとスクリプト本文は未取得です．sisakulintは未信頼checkoutを警告するため，既存ツール一般の見逃しとは主張しません．[Jupyterの公開脆弱性](docs/jupyter-composite-approval-race-case-study.md)では，従来の解析器が未対応だった外部Action内の時刻検査を追加し，上流の実際の修正前後を区別しました．既存ツールの広い検査には未信頼checkoutなどの警告があり，実侵害の排他的検出例ではありません．[Poutineを追加した比較](docs/additional-poutine-baseline.md)ではTanStackとClineで対象経路を結ぶ警告がないことを確認しました．[sisakulintを追加した比較](docs/additional-sisakulint-baseline.md)では，ClineのAI入口，TanStackの未信頼checkoutへの警告と，marimoの同秒承認を直す1箇所の変更で警告が変わらないことを確認しました．[研究の現状](docs/research-status-2026-10-02.md)と[再実行方法](docs/automatic-analysis-guide.md)を参照してください．既存ツール一般に対する排他的検出，汎用的な自動化，モデル検査器固有の優位性はまだ示せていません．
+対象と必要十分条件は[Threat Model](docs/threat-model.md)，A1～A5・TanStackの評価と既存ツールとのproperty-level比較は[中心仮説と証拠](docs/thesis-claim-and-evidence.md)，自動抽出できる範囲と未完了項目は[抽出範囲と評価契約](docs/scope-and-extraction.md)にまとめています．SpotBugs，Jupyter，marimo，Clineなど既存の探索結果は保存し，中心評価・補助事例・scope外に区分しています．
 
 ## 研究目的
 
-未信頼なPull Request又はMerge Requestに由来するCacheやartifactが，後続の特権を持つjobやworkflowで検証されずに利用される構成を対象にします．
+GitHub Actionsの外部Pull Request等に由来するCacheやartifactが，後続の特権を持つjobやworkflowで検証されずに利用される構成を対象にします．
 
 既存の静的解析ツールは，cache poisoningやartifact poisoningに関する既知の危険パターンを検出できます．本研究ではさらに，複数workflow及び複数runをまたぐ状態遷移として，未信頼producerから特権consumerへの到達可能性を検証します．
 
@@ -19,7 +19,7 @@ CI/CD pipelineにおける信頼境界を形式的に検証するための研究
 - GitHub ActionsのCache及びartifactを介した信頼境界．
 - CodeQL，zizmor，actionlintなどの既存ツールとの比較．
 - 危険構成と安全構成を対にした再現可能な最小実験．
-- 将来的なGitLab CI/CDとの比較に使う共通の脅威モデル．
+- 既存のGitLab CI/CD比較記録は保存しますが，現在の中心評価には含めません．
 
 ## 安全な実験範囲
 

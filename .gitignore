@@ -1,5 +1,5 @@
 __pycache__/
 
-# Local regenerated runs; keep all raw files on disk, outside Git by default.
-/outputs/runs/
+# Generated files stay on disk and are not tracked.
+/outputs/
 *.pyc

@@ -8,7 +8,8 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
 import workflow_shell_subset as shell  # noqa: E402
-from workflow_model_v2.builder import compile_pair_v2  # noqa: E402
+from workflow_model_v2.compiler import compile_workflows
+from workflow_model_v2.scenario import default_scenario  # noqa: E402
 from workflow_model_v2.independent_bfs import explore  # noqa: E402
 
 
@@ -60,96 +61,92 @@ class ShellSubsetTests(unittest.TestCase):
         self.assertEqual(program.operations[0].kind, "echo")
         self.assertEqual(program.sink_sites, [])
 
+    def test_expanded_literal_assignment_is_not_silently_treated_as_a_literal(self):
+        with self.assertRaises(shell.UnsupportedShell):
+            shell.parse_shell('value="$INPUT"')
+
+    def test_tr_deletes_internal_newlines_instead_of_only_trimming_ends(self):
+        from workflow_model_v2.shell_lowering import ShellLowering
+        self.assertEqual(ShellLowering.trim('a\nb\r\n', r'\r\n'), 'ab')
+
 
 class StatefulWorkflowModelTests(unittest.TestCase):
-    def _pair(self, producer: Path, consumer_name: str):
-        return compile_pair_v2(producer, WORKFLOWS / consumer_name)
+    def pair(self, case):
+        producer = PRODUCER_A5 if case == 'A5' else PRODUCER_A1
+        consumer = WORKFLOWS / {'A1':'artifact-a1-unsafe-consumer.yml','A2':'artifact-a2-safe-consumer.yml','A3':'artifact-a3-download-only-consumer.yml','A4':'artifact-a4-no-authority-consumer.yml','A5':'artifact-a5-attest-consumer.yml'}[case]
+        return [producer, consumer]
 
-    def test_a1_a2_a3_a4_and_a5_generate_stateful_properties(self):
-        cases = [
-            (PRODUCER_A1, "artifact-a1-unsafe-consumer.yml"),
-            (PRODUCER_A1, "artifact-a2-safe-consumer.yml"),
-            (PRODUCER_A1, "artifact-a3-download-only-consumer.yml"),
-            (PRODUCER_A1, "artifact-a4-no-authority-consumer.yml"),
-            (PRODUCER_A5, "artifact-a5-attest-consumer.yml"),
-        ]
-        for producer, consumer in cases:
-            with self.subTest(consumer=consumer):
-                smv, manifest = self._pair(producer, consumer)
-                self.assertIn("CTLSPEC AG !bad_simulated_path", smv)
-                self.assertIn("CTLSPEC AG !bad_real_authority_path", smv)
-                self.assertIn("CTLSPEC AG !artifact_dependent_use", smv)
-                self.assertIn("CTLSPEC AG !simulated_sink_site_reached", smv)
-                self.assertIn("artifact_dependent_use", smv)
-                self.assertEqual(manifest["modelVersion"], "2-stateful-prototype")
-                self.assertIn("typedIR", manifest)
-                self.assertNotIn(manifest["verdict"], {"safe", "unsafe"})
-                self.assertIn("real-authority-sink-contract-missing",
-                              {item["code"] for item in manifest["diagnostics"]})
+    def test_all_artifact_cases_use_the_same_backend_with_default_or_explicit_inputs(self):
+        for case in ('A1','A2','A3','A4','A5'):
+            paths = self.pair(case)
+            implicit, manifest = compile_workflows(paths)
+            explicit, other = compile_workflows(paths, default_scenario(paths))
+            self.assertEqual(implicit, explicit)
+            self.assertEqual(manifest['modelVersion'], '2-unified-bounded')
+            self.assertEqual(other['modelVersion'], manifest['modelVersion'])
+            self.assertIn('AG !bad_simulated_path', implicit)
+            self.assertTrue(manifest['jobs'])
 
-    def test_output_reference_lowers_to_the_same_state_symbol(self):
-        smv, manifest = self._pair(PRODUCER_A1, "artifact-a2-safe-consumer.yml")
-        self.assertIn("out_true", smv)
-        self.assertTrue(any(edge["relation"] == "if-control-reference" and
-                            ":output:verified" in edge["source_id"]
-                            for edge in manifest["typedIR"]["edges"]))
+    def test_step_output_guard_uses_the_registered_writer_symbol(self):
+        smv, manifest = compile_workflows(self.pair('A2'))
+        output = next(o for o in manifest['outputSymbols'] if o['step']=='verify-artifact' and o['output']=='verified')
+        self.assertIn('true', output['domain'])
+        self.assertIn('false', output['domain'])
+        self.assertGreater(smv.count(output['symbol']), 3)
 
-    def test_artifact_dependent_use_requires_successful_download_state(self):
-        smv, _ = self._pair(PRODUCER_A1, "artifact-a1-unsafe-consumer.yml")
-        start = smv.index("  next(artifact_dependent_use)")
-        end = smv.index("  esac;", start)
-        transition = smv[start:end]
-        self.assertIn("_state = download_succeeded", transition)
-        self.assertIn("CTLSPEC AG (artifact_dependent_use -> download_success_any)", smv)
+    def test_integrity_history_is_per_file_and_does_not_erase_prior_use(self):
+        smv, _ = compile_workflows(self.pair('A2'))
+        self.assertIn('next(verification_read)',smv)
+        self.assertIn('next(post_verification_use)',smv)
+        self.assertIn('next(integrity_',smv)
+        self.assertNotIn('AG (integrity_blocked -> !artifact_dependent_use)',smv)
+        self.assertIn('AG (artifact_dependent_use -> download_success_any)',smv)
 
-    def test_a5_runner_temp_path_and_step_outputs_are_supported_together(self):
-        smv, manifest = self._pair(PRODUCER_A5, "artifact-a5-attest-consumer.yml")
-        unsupported = {item["code"] for item in manifest["diagnostics"]
-                       if item["status"] == "unsupported"}
-        self.assertNotIn("dynamic-artifact-input", unsupported)
-        self.assertNotIn("shell-subset", unsupported)
-        self.assertNotIn("unresolved-step-output", unsupported)
-        self.assertIn("CTLSPEC AG (artifact_dependent_sink -> artifact_dependent_use)", smv)
+    def test_a5_metadata_validation_and_outputs_are_supported_without_old_builder(self):
+        smv, manifest = compile_workflows(self.pair('A5'))
+        unsupported={d['code'] for d in manifest['diagnostics'] if d['status']=='unsupported'}
+        self.assertFalse(unsupported,unsupported)
+        self.assertTrue(any(o['output']=='target_branch' for o in manifest['outputSymbols']))
+        self.assertIn('AG (artifact_dependent_sink -> artifact_dependent_use)',smv)
 
-    def test_unrelated_literal_marker_does_not_create_artifact_provenance(self):
-        original = (WORKFLOWS / "artifact-a5-attest-consumer.yml").read_text()
-        original = original.replace(
-            "      - name: Simulate privileged repository update\n",
-            "      - name: Simulate privileged repository update\n        if: false\n", 1)
-        original += "\n      - name: Record an unrelated marker\n"
-        original += "        run: echo 'dummy_repository_update_reached=true'\n"
+    def test_missing_output_binding_does_not_invent_a_metadata_dependency(self):
+        producer, consumer = self.pair('A5')
+        changed=consumer.read_text().replace("${{ steps.artifact-metadata.outputs.target_branch }}",'refs/heads/main')
         with tempfile.TemporaryDirectory() as temp:
-            consumer = Path(temp) / "consumer.yml"
-            consumer.write_text(original)
-            smv, manifest = compile_pair_v2(PRODUCER_A5, consumer)
-        self.assertTrue(any(d["code"] in {"uncontracted-simulated-sink",
-                                          "simulated-repository-update-flow"} and
-                            d["status"] == "unsupported"
-                            for d in manifest["diagnostics"]))
-        dependency_transition = next(line for line in smv.splitlines()
-                                     if line.startswith("  next(artifact_dependent_sink)"))
-        self.assertNotIn("consume_untrusted_dist_step_3", dependency_transition)
+            path=Path(temp)/'consumer.yml';path.write_text(changed)
+            _, manifest=compile_workflows([producer,path])
+        self.assertIn('uncontracted-simulated-sink',{d['code'] for d in manifest['diagnostics']})
 
-    def test_unmatched_download_candidate_keeps_a_valid_object_slot(self):
-        producer = PRODUCER_A1.read_text().replace(
-            "name: trust-boundary-build-output", "name: renamed-artifact", 1)
+    def test_digest_contract_does_not_depend_on_shell_variable_names(self):
+        producer, consumer = self.pair('A2')
+        changed=consumer.read_text().replace('expected_digest','trusted_hash').replace('actual_digest','computed_hash').replace('verified=true','accepted=true').replace('verified=false','accepted=false').replace('"$verified"','"$accepted"')
         with tempfile.TemporaryDirectory() as temp:
-            producer_path = Path(temp) / "producer.yml"
-            producer_path.write_text(producer)
-            smv, _ = compile_pair_v2(producer_path, WORKFLOWS / "artifact-a1-unsafe-consumer.yml")
-        self.assertIn("unmatched_object", smv)
-        self.assertIn("download_", smv)
+            path=Path(temp)/'consumer.yml';path.write_text(changed)
+            smv, manifest=compile_workflows([producer,path])
+        self.assertNotIn('shell-contract',{d['code'] for d in manifest['diagnostics']})
+        self.assertIn('integrity_verified',smv)
+        self.assertIn('computed_hash',{o['output'] for o in manifest['outputSymbols']})
 
-    def test_independent_bfs_separates_a1_use_from_a3_download_only(self):
-        a1 = explore(PRODUCER_A1, WORKFLOWS / "artifact-a1-unsafe-consumer.yml")
-        a3 = explore(PRODUCER_A1, WORKFLOWS / "artifact-a3-download-only-consumer.yml")
-        self.assertTrue(a1["downloadReachable"])
-        self.assertTrue(a1["artifactDependentUseReachable"])
-        self.assertTrue(a3["downloadReachable"])
-        self.assertFalse(a3["artifactDependentUseReachable"])
-        self.assertTrue(a1["useRequiresPriorSuccessfulDownload"])
-        self.assertTrue(a3["useRequiresPriorSuccessfulDownload"])
+    def test_structured_statement_span_points_to_the_source_command(self):
+        _,manifest=compile_workflows(self.pair('A2'))
+        step=next(s for j in manifest['jobs'] for s in j['steps'] if s['id']=='verify-artifact')
+        digest=next(op for op in step['program']['operations'] if op['kind']=='digest')
+        line=Path(step['source']['file']).read_text().splitlines()[digest['span']['line']-1]
+        self.assertIn('actual_digest=$(sha256sum',line)
+
+    def test_unmatched_artifact_still_has_a_total_transition_model(self):
+        producer, consumer = self.pair('A1')
+        with tempfile.TemporaryDirectory() as temp:
+            path=Path(temp)/'producer.yml';path.write_text(producer.read_text().replace('name: trust-boundary-build-output','name: renamed-artifact'))
+            smv, manifest=compile_workflows([path,consumer])
+        self.assertIn('MODULE main',smv)
+        self.assertTrue(manifest['objects'])
+
+    def test_independent_bfs_separates_download_from_use(self):
+        a1=explore(*self.pair('A1'));a3=explore(*self.pair('A3'))
+        self.assertTrue(a1['downloadReachable']);self.assertTrue(a1['artifactDependentUseReachable'])
+        self.assertTrue(a3['downloadReachable']);self.assertFalse(a3['artifactDependentUseReachable'])
 
 
-if __name__ == "__main__":
+if __name__=='__main__':
     unittest.main()

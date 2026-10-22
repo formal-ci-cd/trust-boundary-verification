@@ -156,6 +156,9 @@ def parse_shell(source: str, yaml_run_line: int = 1) -> ShellProgram:
         match = _ASSIGN_TR.fullmatch(text)
         if match:
             target, strip_chars, source_var, path_suffix = match.groups()
+            literal_chars=strip_chars.replace(r'\r','').replace(r'\n','')
+            if any(c in literal_chars for c in ('\\','-','[',']')):
+                raise UnsupportedShell('tr -d ranges and unregistered escapes are outside the literal deletion subset',span)
             op = emit("read-trim", text, line, reads=(source_var,), writes=(target,),
                       path=path_suffix, value=strip_chars)
             reads.append(op)
@@ -292,6 +295,8 @@ def parse_shell(source: str, yaml_run_line: int = 1) -> ShellProgram:
         if assign:
             target = assign.group(1) or assign.group(3)
             value = assign.group(2) if assign.group(1) else assign.group(4)
+            if assign.group(3) and any(c in value for c in ('$','`')):
+                raise UnsupportedShell('expanded double-quoted assignment is outside the literal subset',span)
             emit("literal-assign", text, line, writes=(target,), value=value)
             continue
         raise UnsupportedShell(f"unsupported shell syntax: {text}", span)

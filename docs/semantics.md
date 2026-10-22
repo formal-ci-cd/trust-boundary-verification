@@ -1,6 +1,6 @@
-# v2 bounded extension の仕様と制約（2026-10-22）
+# v2変換器の仕様と制約
 
-この拡張は既存prototypeを置換せず，`--scenario` で選択する汎用の有限run backendを追加する．任意YAMLの完全な実行系ではない．Pythonは構文・literal・候補関係を下げ，危険経路の到達判定はSMVの状態遷移とNuSMVへ残す．
+SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化している．`--scenario` は外部条件の入力を指定するもので，backendの切替えではない．省略時は宣言されたeventと対応するファイル操作から有限の既定scenarioを作る．Pythonは構文・literal・候補関係を下げ，到達判定はSMVの状態遷移とNuSMVへ残す．
 
 ## パイプラインとモジュール
 
@@ -12,7 +12,9 @@
 | `policies.py` | event filter，ordered glob subset，cache scope／key優先順位，permission規則 |
 | `action_contracts.py` | ref別contract identity／runtime／metadata URL．共通効果subsetだけをdispatchへ共有 |
 | `composites.py` | 明示registryのmetadataをSHA-256確認して展開．Actionコードは実行しない |
-| `extended.py` | 型付きrun/job/step，有限filesystemとobject候補，scheduler／contract遷移生成 |
+| `compiler.py` | 型付きrun/job/step，有限filesystemとobject候補，scheduler／contract遷移生成 |
+| `scenario.py` | 既定の有限run条件とファイル内容domainの組立て |
+| `shell_lowering.py` | ファイル内容，SHA-256比較，metadata検査，step outputと利用履歴の遷移化 |
 | `transition.py` | 状態宣言／guard付き更新／制約／CTLのIRとSMV出力 |
 | `reference_cache.py` | YAML契約から別実装したCache明示状態探索．生成SMVやtransition式を読まない |
 | `trace_mapper.py` | NuSMV state/inputの差分を保持し，実際のactor／PCをYAML stepへ戻す |
@@ -51,7 +53,7 @@
 | Cache version/protected/branch policy | 部分対応 | versionはscenarioのopaque同一性仮定．保護branchによる任意追加制限，backend hash生成，evictionは未対応 |
 | Composite | subset対応 | hash確認済metadata，単純step展開．input/output／parent guard／内部output scopeはunsupported |
 | Shell | 閉じた操作subset | literalファイル生成，cp，cat，git add，GITHUB_OUTPUT，literalログ，exit，限定sink．任意BashやGITHUB_ENVはunsupported |
-| integrity | 既存prototypeを改善 | verification read／verified後use／mismatch後useを独立履歴に分離．汎用digest guardは未実装 |
+| integrity | 有限Artifact内容のSHA-256比較 | 同じfile slotの内容からdigestとoutputを生成．検証read，検証後use，不一致後useを分離．別ファイル・書換え後へ検証状態を引き継がない．無制限の内容domainやCache bytesのdigest契約は未対応 |
 | permissions | subset対応 | workflow/job明示値，省略scope none，fork write設定，repository defaultは共有unknown enum |
 | repository write / package publish / deployment | 抽象sink対応 | 限定git push/npm publish/gh API地点．権限・認証・到達・成功を区別．外部操作は行わない |
 | OIDC / secrets | 未対応 | request/credential exchangeとsecret可用性の一般契約が未実装．該当任意command/Actionはunsupported |
@@ -88,7 +90,7 @@ schedule配信，registry snapshot選択，同時刻token policy，shell atomici
 
 ## 実行と保存
 
-[コンテナ操作手順](container-guide.md)に従い，YAML→SMV生成，NuSMV検証，集計を別々に実行する．既定CLIはArtifactのprototype backend，`--scenario` は複数runの拡張backendを選択する．必要な追加runは `--workflow third.yml` とscenario.runsの両方へ指定する．
+[コンテナ操作手順](container-guide.md)に従い，YAML→SMV生成，NuSMV検証，集計を別々に実行する．CLI・全評価・対照構成はすべて `compile_workflows` を呼ぶ．`--scenario` を指定する場合は，各runのcontextをscenario.runsへ記述する．追加runは `--workflow third.yml` で渡す．省略時の既定値は観測済みの実行条件ではないため，実事例の評価では条件を明示する．
 
 source mapの `/repo` は読取り専用repository，`/out` は専用出力を指す．NuSMV inputのactorとPCからYAML stepへ対応させる．stepをscheduleしたこと，ifの成立，処理成功は区別する．入力・SMV・対応表・ログ・反例は個別ファイルのまま残し，既存出力の上書きは拒否する．
 
@@ -106,9 +108,9 @@ source mapの `/repo` は読取り専用repository，`/out` は専用出力を�
 
 タグはimmutable SHAへ新たに解決していない．manifestには使用refとcontract identityを保存し，v4／v5のruntimeとmetadata参照を分けた．TanStack external setupは既存registryのmetadata SHAを再確認するが，実際のincident runが同じremote SHAを使った証明ではない．
 
-## 既定Artifact backendの役割
+## Artifactの値と完全性
 
-`workflow_to_smv.py` が元YAMLの行位置を保って読込み，`workflow_shell_subset.py` が限定Shellを解析する．`ir.py` が型付きIRへ下げ，`builder.py` が状態遷移とCTLを生成する．CodeQLや旧JSON schemaは使わない．
+`frontend.py` と `WorkflowLoader` がYAMLの行位置を扱い，`workflow_shell_subset.py` が限定Shellを解析する．`compiler.py` のRun/Job/Stepと `shell_lowering.py` の内容・由来・検証状態を共通の遷移IRへ下げる．旧builderと専用IRは使用しない．
 
 producer/consumerのjob・step順序，needs，成果物候補の同一性，download結果，成果物に依存したread，digest検査，模擬権限地点を区別する．`verification_read`，`post_verification_use`，`post_integrity_mismatch_use` は別の履歴であり，後から検査で遮断されても過去のreadを取り消さない．
 
@@ -117,7 +119,15 @@ producer/consumerのjob・step順序，needs，成果物候補の同一性，dow
 | `artifact_dependent_use` | downloadした成果物に依存する利用地点 |
 | `simulated_sink_site_reached` | 研究用の模擬権限地点 |
 | `bad_simulated_path` | 未信頼成果物から模擬権限地点への経路 |
-| `bad_real_authority_path` | 実権限契約に基づく経路．prototypeでの未対応を安全と解釈しない |
-| 拡張backendの `bad_authority` | scenarioと閉じた操作契約に基づく権限経路 |
+| `bad_real_authority_path` | 実権限契約に基づく経路．模擬markerから実操作の成功を推論しない |
+| `bad_authority` | scenarioと閉じた操作契約に基づく権限経路 |
 
 Pythonが最終的な危険到達Booleanを事前計算してSMVへ埋め込む構成ではない．到達性は生成した状態遷移をNuSMVで検査する．独立BFSの一致は対応subset内の実装間照合であり，GitHub全体や実際の侵害成功の証明ではない．
+
+## 既定scenarioの範囲
+
+既定値は，対応するgrepの有限候補とcopy/upload/downloadの接続から内容domainを組み立てる．metadataの文字種と長さは有限代表値で検査する．`checkoutValues` で各入力ファイルの有限内容を明示できる．内容domainは仮定であり，任意の入力値を網羅した証明ではない．
+
+`workflowTrusted` はconsumerの定義を信頼済みの検証基準として扱えるかを指定する．省略時は共有の未知Booleanとし，信頼できない定義にあるliteral digestをtrust anchorとして認めない．単にdigest文字列が一致したというログと，信頼済み定義による検証を区別する．
+
+構造化Shellのlocal変数・if/else・case・終了は順序を保って下げる．同一step内のdigest比較後のreadも，先に得た同じファイルの検証状態を使う．依存するファイル書換えの連鎖，未対応の展開や失敗後の継続を省略する場合はunsupportedを残す．

@@ -8,7 +8,7 @@ import unittest
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 from workflow_model_v2 import expressions as ex, policies as pol
-from workflow_model_v2.extended import compile_extended, shell_contract
+from workflow_model_v2.compiler import compile_workflows, shell_contract
 
 
 def context(**changes):
@@ -160,7 +160,7 @@ class ExtendedTests(unittest.TestCase):
             a, b = Path(temp) / 'a.yml', Path(temp) / 'b.yml'
             a.write_text(p or bp)
             b.write_text(c or bc)
-            return compile_extended([a, b], scenario or bs)
+            return compile_workflows([a, b], scenario or bs)
 
     def test_cache_and_sink_are_transitions(self):
         smv, manifest = self.compile()
@@ -194,7 +194,7 @@ class ExtendedTests(unittest.TestCase):
             shell_contract('echo ok\neval input\necho later')
 
     def test_dependency_cycle_rejected(self):
-        from workflow_to_smv import WorkflowError
+        from workflow_model_v2.frontend import WorkflowError
         p, c, s = cache_pair()
         p = p.replace('  write:\n', '  write:\n    needs: write\n')
         with self.assertRaises(WorkflowError):
@@ -213,17 +213,17 @@ class ExtendedTests(unittest.TestCase):
         self.assertEqual(mapping['verdict'], 'unknown/unsupported')
 
     def test_digest_reads_have_distinct_history(self):
-        from workflow_model_v2.builder import compile_pair_v2
+        from workflow_model_v2.compiler import compile_workflows
         workflows = ROOT / '.github/workflows'
-        smv, mapping = compile_pair_v2(workflows / 'artifact-a1-pr-producer.yml', workflows / 'artifact-a2-safe-consumer.yml')
+        smv, mapping = compile_workflows([workflows / 'artifact-a1-pr-producer.yml', workflows / 'artifact-a2-safe-consumer.yml'])
         self.assertIn('next(verification_read)', smv)
         self.assertIn('next(post_verification_use)', smv)
         self.assertNotIn('AG (integrity_blocked -> !artifact_dependent_use)', smv)
-        self.assertIn('CTLSPEC AG !post_integrity_mismatch_use', smv)
+        self.assertIn('AG !post_integrity_mismatch_use', smv)
 
     def test_composite_metadata_is_hash_checked(self):
         import hashlib
-        from workflow_to_smv import WorkflowError
+        from workflow_model_v2.frontend import WorkflowError
         p, c, scenario = cache_pair()
         with tempfile.TemporaryDirectory() as temp:
             action = Path(temp) / 'action.yml'

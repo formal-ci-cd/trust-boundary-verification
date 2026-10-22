@@ -1,5 +1,0 @@
-read_model -i /out/mutations/unsupported-shell/unsupported-shell.smv
-go
-compute_reachable
-print_reachable_states
-quit

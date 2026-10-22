@@ -12,7 +12,7 @@ from typing import Any
 TOOLS = Path(__file__).resolve().parents[1]
 if str(TOOLS) not in sys.path:
     sys.path.insert(0, str(TOOLS))
-import workflow_to_smv as base  # noqa: E402
+from . import frontend as base  # noqa: E402
 from workflow_shell_subset import UnsupportedShell, parse_shell  # noqa: E402
 
 
@@ -226,41 +226,13 @@ def explore(producer_path: Path, consumer_path: Path) -> dict[str, Any]:
     }
 
 
-def constrain_nusmv(smv: str) -> str:
-    paths = re.findall(r"^\s+(unknown_path_[A-Za-z0-9_]+)\s*:\s*boolean\s*;$", smv, re.M)
-    outcomes = re.findall(r"^\s+(outcome_[A-Za-z0-9_]+)\s*:\s*\{\s*success,\s*failure\s*\};$", smv, re.M)
-    invariants = ["producer_trigger", "consumer_activity = activity_completed"]
-    invariants += [f"{name} = TRUE" for name in paths]
-    old = re.search(r"(?ms)^INVAR\n(.*?)\nASSIGN$", smv)
-    if old:
-        prior = old.group(1).strip().removesuffix(";").strip()
-        formula = " & ".join([f"({prior})", *[f"({term})" for term in invariants]])
-        result = smv[:old.start()] + "INVAR\n  " + formula + ";\nASSIGN" + smv[old.end():]
-    else:
-        at = smv.find("ASSIGN\n")
-        if at < 0:
-            raise BFSUnsupported("SMV has no ASSIGN section")
-        result = smv[:at] + "INVAR\n  " + " & ".join(invariants) + ";\n" + smv[at:]
-    if not outcomes:
-        raise BFSUnsupported("SMV has no symbolic outcomes")
-    at = result.find("CTLSPEC")
-    if at < 0:
-        raise BFSUnsupported("SMV has no CTL properties")
-    return result[:at] + "TRANS " + " & ".join(f"{name} = success" for name in outcomes) + "\n" + result[at:]
-
-
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("producer", type=Path)
     parser.add_argument("consumer", type=Path)
-    parser.add_argument("--smv-input", type=Path, required=True)
-    parser.add_argument("--restricted-smv", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     result = explore(args.producer, args.consumer)
-    model = constrain_nusmv(args.smv_input.read_text(encoding="utf-8"))
-    args.restricted_smv.parent.mkdir(parents=True, exist_ok=True)
-    args.restricted_smv.write_text(model, encoding="utf-8")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False))

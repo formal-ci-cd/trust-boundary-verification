@@ -1,19 +1,10 @@
-# Trust Boundary Verification for CI/CD
+# GitHub Actions YAML→SMV変換器
 
-GitHub ActionsのCache・artifactを介した信頼境界を，YAMLから有限状態モデルへ変換して検証する研究用repositoryです．
+GitHub ActionsのYAMLからNuSMVの有限状態モデルを生成します．ArtifactやCacheを経由するworkflow間のデータ利用と，権限を伴う操作への到達可能性を調べます．SMVの生成は1つのbackendで行い，`--scenario` で評価条件を指定できます．
 
-この `feat/workflow-model-v2` ブランチは現行v2専用です．旧評価系のPythonと専用テストは削除し，必要なparser・生成器・独立探索・評価・証拠保存だけを残しています．
+## 使い方
 
-- コンテナの起動・入室・段階実行：[操作手順](docs/container-guide.md)
-- 実装の入口：[tools/README.md](tools/README.md)
-- 対応範囲と制限：[拡張仕様](docs/semantics.md)
-- 保存済み評価：[最新評価](outputs/model-v2/INDEX.md)
-- ブランチと出力の管理：[管理方針](docs/repository-maintenance.md)
-- 検証結果と未対応項目：[評価記録](docs/evaluation.md)
-
-## v2を使う
-
-PythonとNuSMVを同梱したコンテナを用意しています．ホスト側で次を実行すると，コンテナへ入れます．
+リポジトリのルートでコンテナを起動します．
 
 ```sh
 mkdir -p outputs/runs
@@ -22,10 +13,28 @@ docker compose up -d model
 docker compose exec model bash
 ```
 
-コンテナ内でYAML→SMV生成，NuSMV検証，結果確認を別々に実行します．外から1コマンドずつ呼ぶ方法と全評価の手順も[操作手順](docs/container-guide.md)に記載しています．生成した入力・SMV・ログ・反例は `outputs/runs/` にそのまま残します．自動圧縮・出力削除は廃止し，圧縮していた過去の出力も元の配置へ復元しました．
+コンテナ内で入力YAMLを指定し，モデルを生成・検証します．
 
-## 旧論文・旧評価の保存先
+```sh
+python3 tools/workflow_to_smv_v2.py \
+  .github/workflows/artifact-a1-pr-producer.yml \
+  .github/workflows/artifact-a1-unsafe-consumer.yml \
+  --output /out/example/a1.smv
 
-旧論文評価系は [research/automatic-temporal-verification](https://github.com/formal-ci-cd/trust-boundary-verification/tree/research/automatic-temporal-verification) に保存しています．整理直前の全コードは保存タグ [archive/v2-before-tool-pruning](https://github.com/formal-ci-cd/trust-boundary-verification/tree/archive/v2-before-tool-pruning) から復元できます．`main` は公開側の基準です．
+python3 -m workflow_model_v2.verification /out/example/a1.smv
+```
 
-旧CodeQL・旧実験入力・旧資料は保存版へ分けています．現行のdocsは操作・仕様・評価・保存方針の4本です．生成済みSMV・観測記録・`outputs/`・`results/` は保持しています．v2の未対応範囲とTanStackの未達成項目は[評価記録](docs/evaluation.md)を参照してください．
+結果はホストの `outputs/runs/example/` に保存されます．`outputs/` はGit管理外です．`a1.smv.stdout` にpropertyの判定と反例，`a1.smv.map.json` に入力YAMLとの対応を出力します．
+
+コンテナに入らずに実行する方法や全評価の手順は[操作手順](docs/container-guide.md)を参照してください．
+
+## ドキュメント
+
+- [操作手順](docs/container-guide.md)
+- [モデルの仕様と対応範囲](docs/semantics.md)
+- [検証結果と未対応項目](docs/evaluation.md)
+- [構成と旧版の保存先](docs/repository-maintenance.md)
+
+## 旧版
+
+v2以前の変換器と論文評価は [research/automatic-temporal-verification](https://github.com/formal-ci-cd/trust-boundary-verification/tree/research/automatic-temporal-verification) にあります．

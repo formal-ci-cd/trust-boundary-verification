@@ -1,5 +1,0 @@
-read_model -i /out/mutations/unregistered-action-ref/unregistered-action-ref.smv
-go
-compute_reachable
-print_reachable_states
-quit

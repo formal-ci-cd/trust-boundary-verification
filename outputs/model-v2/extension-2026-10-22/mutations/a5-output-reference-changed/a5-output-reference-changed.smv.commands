@@ -1,5 +1,0 @@
-read_model -i /out/mutations/a5-output-reference-changed/a5-output-reference-changed.smv
-go
-compute_reachable
-print_reachable_states
-quit

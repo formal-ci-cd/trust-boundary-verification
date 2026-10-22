@@ -1,5 +1,0 @@
-read_model -i /out/tanstack/pre-incident.smv
-go
-compute_reachable
-print_reachable_states
-quit

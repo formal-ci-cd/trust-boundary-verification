@@ -3,7 +3,7 @@ from pathlib import Path
 import copy
 import hashlib
 import yaml
-import workflow_to_smv as base
+from . import frontend as base
 from .workflow_loader import WorkflowLoader
 
 

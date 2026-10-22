@@ -1,9 +1,0 @@
-
-file /out/cases/A3.smv: line 51: at token "(": syntax error
-
-
-file /out/cases/A3.smv: line 51: Parser error
-
-NuSMV terminated by a signal
-
-Aborting batch mode

@@ -1,6 +1,0 @@
-WARNING: single-value variable 'origin_base_branch' has been stored as a constant
-WARNING: single-value variable 'origin_push_branch' has been stored as a constant
-WARNING: single-value variable 'origin_head_branch' has been stored as a constant
-real	0m 0.12s
-user	0m 0.09s
-sys	0m 0.00s

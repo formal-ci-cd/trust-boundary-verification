@@ -4,12 +4,12 @@
 
 ## 確認済みの結果
 
-- Docker内の回帰テスト：51件成功．出力保持・復元・破損検出の検査を含む．
-- 全評価：65モデル．64件でNuSMVのCTL結果・遷移全域性・非空の到達状態集合を取得．意図した構文不正の対照1件を区別する．
+- Docker内の回帰テスト：55件成功．出力保持・復元・破損検出の検査を含む．
+- 全評価：71モデル．70件でNuSMVのCTL結果・遷移全域性・非空の到達状態集合を取得．意図した構文不正の対照1件を区別する．
 - 独立BFS：22ケースについてtransfer/use/sink/success/bad-authorityの5項目を照合し，全件一致．
-- A1～A5と旧21 mutationの判定は維持．未対応をunknown/unsupportedとして残し，CTLがtrueだっただけで安全と扱わない．
+- 全モデルを同じbackendで生成する．A1～A5の保存済み50項目は一致．旧21 mutationも固定した期待値と照合し，不正metadata時の後続stepだけは下記の修正を適用する．unsupportedをCTLのtrueだけで安全と扱わない．
 
-採用済みの詳細は[出力索引](../outputs/model-v2/INDEX.md)，[65モデルの保存済み集計](../outputs/model-v2/latest/verification-summary.json)から確認できます．新規runは `outputs/runs/` に入力・SMV・ログ・反例・対応表を個別ファイルのまま保持します．
+全評価の生成・検証・集計を実行すると，指定した出力先の `verification-summary.json` に判定と照合結果を保存します．`outputs/` はGit管理外です．回帰比較に必要なA1～A5の期待値は `tests/fixtures/prototype-properties.json` にあります．
 
 ## Artifactの評価
 
@@ -33,4 +33,12 @@ TanStackは事件前と対策版のworkflow，明示的にhashを固定したCom
 
 Reusable workflowのcaller側意味論，concurrency，任意Bash，GITHUB_ENV，汎用hashFiles，OIDC・secret伝播，動的matrix，Artifact overwriteや複数download layoutなどは未対応です．詳細な境界は[対応範囲表](semantics.md#対応範囲表)を参照してください．
 
-旧評価の論文用68構成，CodeQL等との比較，個別事件の旧解析は保存版の研究成果です．現行の65モデルとは別の評価系です．
+旧評価の論文用68構成，CodeQL等との比較，個別事件の旧解析は保存版の研究成果です．現行の71モデルとは別の評価系です．
+
+## backend統合の検査
+
+旧Artifact builderを削除し，CLI・Artifact・Cache・対照構成を共通schedulerとオブジェクト状態へ移した．旧21 mutationはSMV変数への文字列注入をやめ，`stepOutcomes`，`checkoutValues`，`workflowTrusted` を入力条件として指定する．
+
+追加の6ケースで，Shell変数の改名，guardを外した不一致後利用，別ファイルへの検証状態の漏れ，検証後の書換え，consumerを先に宣言した場合，同一step内の検証後利用を確認する．
+
+旧版との差は `a5-invalid-metadata` の `AG !simulated_sink_site_reached` で，falseからtrueになる．文字種・長さの検査失敗でShell stepが失敗し，後続の既定success条件のstepが実行されなくなるためである．危険経路の到達判定が変わったものではなく，旧版で残っていた模擬地点への到達を抑える修正である．比較用fixtureに変更理由と変更前後の期待値を記録している．

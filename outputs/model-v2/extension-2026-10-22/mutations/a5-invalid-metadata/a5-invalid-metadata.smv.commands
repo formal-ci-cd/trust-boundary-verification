@@ -1,5 +1,0 @@
-read_model -i /out/mutations/a5-invalid-metadata/a5-invalid-metadata.smv
-go
-compute_reachable
-print_reachable_states
-quit

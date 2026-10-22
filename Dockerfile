@@ -13,7 +13,6 @@ COPY tools/ tools/
 COPY tests/ tests/
 COPY .github/workflows/ .github/workflows/
 COPY experiments/public-cases/tanstack/ experiments/public-cases/tanstack/
-COPY outputs/model-v2/archive/prototype-2026-10-22.tar.gz outputs/model-v2/archive/
 RUN groupadd --gid 1000 researcher \
     && useradd --uid 1000 --gid 1000 --no-create-home --home-dir /tmp --shell /bin/bash researcher \
     && mkdir /out && chown 1000:1000 /out

@@ -1,5 +1,0 @@
-read_model -i /out/baseline/A5.smv
-go
-compute_reachable
-print_reachable_states
-quit

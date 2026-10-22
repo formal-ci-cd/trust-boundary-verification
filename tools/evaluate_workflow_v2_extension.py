@@ -16,11 +16,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'tools'))
 sys.path.insert(0, str(ROOT / 'tests'))
 import yaml
-from workflow_model_v2.builder import compile_pair_v2
-from workflow_model_v2.extended import compile_extended
+from workflow_model_v2.compiler import compile_workflows
+from workflow_model_v2.scenario import default_scenario
 from workflow_model_v2.reference_cache import explore_cache
 from workflow_model_v2.trace_mapper import map_extended_trace, validate_sources
-from workflow_model_v2.evidence import read_prototype
 from test_workflow_model_v2_extended import cache_pair, context
 
 
@@ -40,17 +39,17 @@ def generate(out):
                            ('A5', 'artifact-a5-attest-consumer.yml')]:
         p = ROOT / '.github/workflows/artifact-a5-attest-producer.yml' if case == 'A5' else producer
         c = ROOT / '.github/workflows' / consumer
-        text, mapping = compile_pair_v2(p, c)
+        text, mapping = compile_workflows([p, c])
         target = out / 'baseline' / case
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix('.smv').write_text(text)
         dump(target.with_suffix('.map.json'), mapping)
-        records.append(dict(id=case, model=str(target.with_suffix('.smv').relative_to(out)), expected=None, engine='prototype'))
+        records.append(dict(id=case, model=str(target.with_suffix('.smv').relative_to(out)), expected=None, engine='unified'))
     from workflow_model_v2 import mutation_matrix
     mutation_matrix.OUT = out / 'mutations'
     mutation_matrix.main()
     for record in json.loads((mutation_matrix.OUT / 'matrix.json').read_text()):
-        records.append(dict(id='legacy-' + record['mutation'], model='mutations/' + record['model'], expected=None, engine='prototype'))
+        records.append(dict(id='legacy-' + record['mutation'], model='mutations/' + record['model'], expected=None, engine='unified'))
     # A later rejected read must not erase a preceding read history.
     audit = out / 'audit-history'
     audit.mkdir(parents=True, exist_ok=True)
@@ -64,11 +63,68 @@ def generate(out):
 '''
     a2 = a2.replace('      - name: Verify artifact before use\n', earlier + '      - name: Verify artifact before use\n')
     (audit / 'consumer.yml').write_text(a2)
-    text, mapping = compile_pair_v2(producer, audit / 'consumer.yml')
+    text, mapping = compile_workflows([producer, audit / 'consumer.yml'])
     text += '\nCTLSPEC AG !(integrity_blocked & artifact_dependent_use)\n'
     (audit / 'model.smv').write_text(text)
     dump(audit / 'model.map.json', mapping)
-    records.append(dict(id='audit-use-before-later-block', engine='prototype', model='audit-history/model.smv', expected=None))
+    records.append(dict(id='audit-use-before-later-block', engine='unified', model='audit-history/model.smv', expected=None))
+
+    # Migration checks use the same compiler, scheduler and object registry.
+    a2 = (ROOT / '.github/workflows/artifact-a2-safe-consumer.yml').read_text()
+    a1 = (ROOT / '.github/workflows/artifact-a1-unsafe-consumer.yml').read_text()
+    a5p = (ROOT / '.github/workflows/artifact-a5-attest-producer.yml').read_text()
+    a5c = (ROOT / '.github/workflows/artifact-a5-attest-consumer.yml').read_text()
+    cases = []
+    renamed = a2.replace('expected_digest','trusted_hash').replace('actual_digest','computed_hash').replace('verified=true','accepted=true').replace('verified=false','accepted=false').replace('"$verified"','"$accepted"')
+    cases.append(('digest-renamed-symbols', producer.read_text(), renamed,
+                  {'AG !bad_simulated_path':'true','AG !post_verification_use':'false','AG !verification_read':'false'}, False))
+    unguarded = a2.replace("if: steps.verify-artifact.outputs.verified == 'true'", 'if: always()')
+    cases.append(('digest-unguarded-use', producer.read_text(), unguarded,
+                  {'AG !bad_simulated_path':'false','AG !post_integrity_mismatch_use':'false'}, False))
+    second = producer.read_text() + """      - uses: actions/upload-artifact@v4
+        with: {name: second, path: .research-artifact-input/payload.txt}
+"""
+    other = a2.replace("if: steps.verify-artifact.outputs.verified == 'true'", 'if: false') + """      - uses: actions/download-artifact@v4
+        with:
+          name: second
+          path: /tmp/runner/unverified
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - env: {INPUT_FILE: /tmp/runner/unverified/payload.txt}
+        run: |
+          value=$(tr -d '\\r\\n' < "$INPUT_FILE")
+"""
+    cases.append(('verify-other-file', second, other,
+                  {'AG !post_verification_use':'true','AG !artifact_dependent_use':'false','AG !post_integrity_mismatch_use':'true'}, False))
+    overwritten = a2.replace('      - name: Use only the verified artifact', "      - run: echo 'publish=true' > /tmp/runner/trust-boundary-artifact/payload.txt\n      - name: Use only the verified artifact")
+    cases.append(('overwrite-after-verify', producer.read_text(), overwritten,
+                  {'AG !post_verification_use':'true','AG !artifact_dependent_use':'true','AG !bad_simulated_path':'true'}, False))
+    cases.append(('reader-declared-first', a5p, a5c,
+                  {'AG !bad_simulated_path':'false','AG !artifact_dependent_use':'false'}, True))
+    inline_read = """          if [ "$verified" = "true" ]; then
+            inspected=$(tr -d '\\r\\n' < "$ARTIFACT_FILE")
+          else
+            inspected='blocked'
+          fi
+
+"""
+    in_step = a2.replace("          printf 'verified=%s", inline_read + "          printf 'verified=%s", 1).replace("if: steps.verify-artifact.outputs.verified == 'true'", 'if: false')
+    cases.append(('same-step-verified-use', producer.read_text(), in_step,
+                  {'AG !post_verification_use':'false','AG !post_integrity_mismatch_use':'true','AG !bad_simulated_path':'true'}, False))
+    for name, pp, cc, expected_properties, reversed_order in cases:
+        target = out / 'migration' / name
+        target.mkdir(parents=True, exist_ok=True)
+        paths = [target / 'producer.yml', target / 'consumer.yml']
+        paths[0].write_text(pp); paths[1].write_text(cc)
+        scenario = default_scenario(paths)
+        if reversed_order:
+            paths.reverse(); scenario['runs'].reverse()
+        text, mapping = compile_workflows(paths, scenario)
+        (target / 'model.smv').write_text(text)
+        dump(target / 'model.map.json', mapping)
+        dump(target / 'scenario.json', scenario)
+        records.append(dict(id='migration-' + name, engine='unified', model=str((target / 'model.smv').relative_to(out)),
+                            expected=None, expectedProperties=expected_properties))
 
     p, c, scenario = cache_pair()
     variants = []
@@ -123,11 +179,11 @@ def generate(out):
             path.write_text(source)
         dump(target / 'scenario.json', ss)
         start = time.monotonic()
-        text, mapping = compile_extended(paths, ss)
+        text, mapping = compile_workflows(paths, ss)
         duration = time.monotonic() - start
         (target / 'model.smv').write_text(text)
         dump(target / 'model.map.json', mapping)
-        record = dict(id=name, engine='extended', model=str((target / 'model.smv').relative_to(out)), expected=expected,
+        record = dict(id=name, engine='unified', model=str((target / 'model.smv').relative_to(out)), expected=expected,
                       generationSeconds=duration, stateVariables=mapping['stateVariables'], verdict=mapping['verdict'])
         if reference:
             start = time.monotonic()
@@ -203,10 +259,10 @@ jobs:
         for path, source in zip(paths, [pp, cc]):
             path.write_text(source)
         dump(target / 'scenario.json', cfg)
-        text, mapping = compile_extended(paths, cfg)
+        text, mapping = compile_workflows(paths, cfg)
         (target / 'model.smv').write_text(text)
         dump(target / 'model.map.json', mapping)
-        records.append(dict(id=name, engine='extended', model=str((target / 'model.smv').relative_to(out)), expected=expected,
+        records.append(dict(id=name, engine='unified', model=str((target / 'model.smv').relative_to(out)), expected=expected,
                             stateVariables=mapping['stateVariables'], verdict=mapping['verdict']))
     # Real snapshots: parse with no synthetic replacement of pnpm or remote actions.
     tan = ROOT / 'experiments/public-cases/tanstack'
@@ -220,12 +276,12 @@ jobs:
         ss = dict(cachePolicy='github-historical-2025', runs=[context(id='pr', event=producer_event, activity='opened', scope='refs/heads/main' if variant == 'pre-incident' else 'refs/pull/1/merge', checkoutUntrusted=True, changedPaths=['packages/example/src/index.ts']), context(id='release', after='pr')])
         registry = json.loads((tan / 'composite-contracts.json').read_text())
         ss['compositeContracts'] = {ref: dict(path=str(ROOT / spec['path']), sha256=spec['sha256']) for ref, spec in registry.items()}
-        text, mapping = compile_extended(paths, ss)
+        text, mapping = compile_workflows(paths, ss)
         target = out / 'tanstack' / variant
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix('.smv').write_text(text)
         dump(target.with_suffix('.map.json'), mapping)
-        records.append(dict(id='tanstack-' + variant, engine='extended', model=str(target.with_suffix('.smv').relative_to(out)), expected=None, verdict=mapping['verdict']))
+        records.append(dict(id='tanstack-' + variant, engine='unified', model=str(target.with_suffix('.smv').relative_to(out)), expected=None, verdict=mapping['verdict']))
     dump(out / 'inventory.json', records)
     dump(out / 'runtime.json', dict(python=sys.version, pyyaml=yaml.__version__, platform=platform.platform(), machine=platform.machine()))
     print('Generated', len(records), 'models')
@@ -253,13 +309,25 @@ def summarize(out):
         if record['verified'] and not record['transitionTotal']:
             failed.append(record['id'] + ':transition-totality')
         if record['id'] in {'A1', 'A2', 'A3', 'A4', 'A5'}:
-            saved_path = ROOT / 'outputs/model-v2/cases' / (record['id'] + '.stdout.txt')
-            saved_text = read_prototype(ROOT / 'outputs/model-v2', 'cases/' + record['id'] + '.stdout.txt')
-            saved = dict(re.findall(r'^-- specification (.*?)\s+is (true|false)\s*$', saved_text, re.M))
-            shared = sorted(saved.keys() & properties.keys())
-            record['savedPrototypeComparison'] = {name: properties[name] == saved[name] for name in shared}
+            saved = json.loads((ROOT / "tests/fixtures/prototype-properties.json").read_text())["cases"][record["id"]]
+            record["savedPrototypeComparison"] = {name: properties.get(name) == expected for name, expected in saved.items()}
             if not all(record['savedPrototypeComparison'].values()):
                 failed.append(record['id'] + ':saved-prototype')
+        reference = json.loads((ROOT / 'tests/fixtures/prototype-properties.json').read_text())
+        if record['id'] in reference.get('mutations', {}):
+            old = reference['mutations'][record['id']]
+            adjustments = reference.get('intentionalChanges', {}).get(record['id'], {})
+            expected_properties = {name: adjustments.get(name, {}).get('after', value) for name, value in old['properties'].items()}
+            record['savedMutationComparison'] = {name: properties.get(name) == value for name, value in expected_properties.items()}
+            record['savedMutationExitcodeMatched'] = exitcode == old['exitcode']
+            if adjustments:
+                record['intentionalSemanticsChanges'] = adjustments
+            if not all(record['savedMutationComparison'].values()) or not record['savedMutationExitcodeMatched']:
+                failed.append(record['id'] + ':saved-mutation')
+        if record.get('expectedProperties'):
+            record['expectedPropertiesMatched'] = {name: properties.get(name) == value for name, value in record['expectedProperties'].items()}
+            if not all(record['expectedPropertiesMatched'].values()):
+                failed.append(record['id'] + ':migration-property')
         if record['id'] == 'audit-use-before-later-block':
             record['historyAuditPassed'] = properties.get('AG !(integrity_blocked & artifact_dependent_use)') == 'false' and properties.get('AG !post_integrity_mismatch_use') == 'true'
             if not record['historyAuditPassed']:
@@ -302,7 +370,7 @@ def summarize(out):
             for sym, source in source_symbols.items():
                 if re.search(r'\b' + re.escape(sym) + r'\s*=', trace):
                     mapped.append(dict(symbol=sym, source=source))
-            dump(Path(stem + '.source-map.json'), map_extended_trace(trace, mapping) if mapping.get('modelVersion') == '2-extended-bounded' else mapped)
+            dump(Path(stem + '.source-map.json'), map_extended_trace(trace, mapping) if mapping.get('modelVersion') == '2-unified-bounded' else mapped)
         stats_path = Path(str(path) + '.stats.stdout')
         if stats_path.exists():
             stats = stats_path.read_text()

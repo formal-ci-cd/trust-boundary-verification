@@ -1,0 +1,440 @@
+{
+  "description": "Expected shared CTL property results of the frozen Artifact prototype.",
+  "cases": {
+    "A1": {
+      "AG !artifact_dependent_sink": "false",
+      "AG !artifact_dependent_use": "false",
+      "AG !bad_real_authority_path": "true",
+      "AG !bad_simulated_path": "false",
+      "AG !integrity_blocked": "true",
+      "AG !simulated_sink_site_reached": "false",
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+      "AG (artifact_dependent_use -> download_success_any)": "true",
+      "AG integrity_state != integrity_mismatch": "true",
+      "AG integrity_state != integrity_verified": "true"
+    },
+    "A2": {
+      "AG !artifact_dependent_sink": "true",
+      "AG !artifact_dependent_use": "false",
+      "AG !bad_real_authority_path": "true",
+      "AG !bad_simulated_path": "true",
+      "AG !integrity_blocked": "false",
+      "AG !simulated_sink_site_reached": "false",
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+      "AG (artifact_dependent_use -> download_success_any)": "true",
+      "AG integrity_state != integrity_mismatch": "false",
+      "AG integrity_state != integrity_verified": "false"
+    },
+    "A3": {
+      "AG !artifact_dependent_sink": "true",
+      "AG !artifact_dependent_use": "true",
+      "AG !bad_real_authority_path": "true",
+      "AG !bad_simulated_path": "true",
+      "AG !integrity_blocked": "true",
+      "AG !simulated_sink_site_reached": "true",
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+      "AG (artifact_dependent_use -> download_success_any)": "true",
+      "AG integrity_state != integrity_mismatch": "true",
+      "AG integrity_state != integrity_verified": "true"
+    },
+    "A4": {
+      "AG !artifact_dependent_sink": "true",
+      "AG !artifact_dependent_use": "false",
+      "AG !bad_real_authority_path": "true",
+      "AG !bad_simulated_path": "true",
+      "AG !integrity_blocked": "true",
+      "AG !simulated_sink_site_reached": "true",
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+      "AG (artifact_dependent_use -> download_success_any)": "true",
+      "AG integrity_state != integrity_mismatch": "true",
+      "AG integrity_state != integrity_verified": "true"
+    },
+    "A5": {
+      "AG !artifact_dependent_sink": "false",
+      "AG !artifact_dependent_use": "false",
+      "AG !bad_real_authority_path": "true",
+      "AG !bad_simulated_path": "false",
+      "AG !integrity_blocked": "true",
+      "AG !simulated_sink_site_reached": "false",
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+      "AG (artifact_dependent_use -> download_success_any)": "true",
+      "AG integrity_state != integrity_mismatch": "true",
+      "AG integrity_state != integrity_verified": "true"
+    }
+  },
+  "mutations": {
+    "legacy-download-disabled": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-use-disabled": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-sink-disabled": {
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-upload-name-mismatch": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-workflow-run-mismatch": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-run-id-mismatch": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-upload-failure": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-download-failure": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-if-false-upload": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-same-output-reference-twice": {
+      "exitcode": 0,
+      "properties": {
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-contradictory-same-output": {
+      "exitcode": 0,
+      "properties": {
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-integrity-check-disabled": {
+      "exitcode": 0,
+      "properties": {
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-digest-success": {
+      "exitcode": 0,
+      "properties": {
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-digest-mismatch": {
+      "exitcode": 0,
+      "properties": {
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-a5-invalid-metadata": {
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-a5-output-reference-changed": {
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !bad_simulated_path": "true"
+      }
+    },
+    "legacy-unrelated-fixed-marker": {
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-unsupported-shell": {
+      "exitcode": 0,
+      "properties": {
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !verification_read": "true",
+        "AG !post_verification_use": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !integrity_blocked": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true"
+      }
+    },
+    "legacy-unregistered-action-ref": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-permission-missing": {
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      }
+    },
+    "legacy-nusmv-invalid-input": {
+      "exitcode": 1,
+      "properties": {}
+    }
+  },
+  "intentionalChanges": {
+    "legacy-a5-invalid-metadata": {
+      "AG !simulated_sink_site_reached": {
+        "before": "false",
+        "after": "true",
+        "reason": "Invalid metadata causes the strict shell step to fail; the later default-success marker step is skipped."
+      }
+    }
+  }
+}

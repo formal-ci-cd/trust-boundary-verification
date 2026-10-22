@@ -1,5 +1,0 @@
-read_model -i /out/extended/unsupported-cache-key-collation/model.smv
-go
-compute_reachable
-print_reachable_states
-quit

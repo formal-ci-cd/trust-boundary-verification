@@ -1,5 +1,0 @@
-read_model -i /out/mutations/if-false-upload/if-false-upload.smv
-go
-compute_reachable
-print_reachable_states
-quit

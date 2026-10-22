@@ -6,7 +6,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "tools"))
 
-import workflow_to_smv as compiler
+from workflow_model_v2 import frontend as compiler
+from workflow_model_v2.compiler import compile_workflows
 
 
 UPLOAD_REF = "ea165f8d65b6e75b540449e92b4886f43607fa02"
@@ -22,9 +23,11 @@ permissions:
   contents: read
 jobs:
   prepare:
+    runs-on: ubuntu-latest
     steps:
       - run: echo opaque
   upload:
+    runs-on: ubuntu-latest
     needs: prepare
     steps:
       - id: upload
@@ -48,6 +51,7 @@ permissions:
   contents: read
 jobs:
   consume:
+    runs-on: ubuntu-latest
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
     steps:
       - id: download
@@ -80,7 +84,7 @@ class WorkflowToSmvTests(unittest.TestCase):
         self.assertIn("pull_request", workflow.events)
         upload = workflow.jobs[1].steps[0]
         self.assertEqual(upload.span.file, str(self.producer_path))
-        self.assertEqual(upload.span.line, 14)
+        self.assertEqual(upload.span.line, 16)
         self.assertEqual(upload.inputs["name"], "payload")
 
     def test_expression_precedence_and_shared_context_lowering(self):
@@ -91,36 +95,24 @@ class WorkflowToSmvTests(unittest.TestCase):
         self.assertEqual(expr.kind, "||")
         self.assertEqual(expr.right.kind, "&&")
 
-        smv, mapping = compiler.compile_pair(self.producer_path, self.consumer_path)
-        event_atom = compiler._atom("origin_event", "pull_request")
-        self.assertIn(f"origin_event = {event_atom}", smv)
-        self.assertIn(f"origin_event != {event_atom}", smv)
-        self.assertIn("producer_conclusion = conclusion_success", smv)
-        self.assertIn("producer_terminal", smv)
-        self.assertTrue(mapping["downloads"][0]["runIdReferencesProducer"])
+        smv, mapping = compile_workflows([self.producer_path, self.consumer_path])
+        self.assertEqual(mapping['modelVersion'],'2-unified-bounded')
+        self.assertIn('transfer',smv)
 
     def test_models_ordered_jobs_artifact_identity_and_source_mapping(self):
-        smv, mapping = compiler.compile_pair(self.producer_path, self.consumer_path)
-        object_id = mapping["objects"][0]["token"]
-        download = mapping["downloads"][0]
-        self.assertEqual(download["candidateObjects"], [object_id])
-        self.assertEqual(download["source"]["line"], 13)
-        self.assertIn("pc_producer_prepare in { pc_producer_prepare_done, pc_producer_prepare_failed, pc_producer_prepare_skipped }", smv)
-        self.assertIn(f"{object_id}_state = {object_id}", smv)
-        self.assertIn(f": {object_id};", smv)
-        self.assertIn(f"CTLSPEC AG ({download['token']}_state = download_succeeded ->", smv)
-        self.assertIn(f"CTLSPEC AG ({download['token']}_state != download_succeeded)", smv)
-        self.assertIn("NuSMV found a reachable successful transfer", mapping["properties"][0]["meaning"])
-        self.assertTrue(mapping["boundedRuns"]["distinct"])
-        self.assertEqual(mapping["verdict"], "not-produced: shell and sink effects are opaque")
+        smv, mapping = compile_workflows([self.producer_path,self.consumer_path])
+        prepare=next(j for j in mapping['jobs'] if j['original']=='prepare')
+        upload=next(j for j in mapping['jobs'] if j['original']=='upload')
+        self.assertEqual(upload['needs'],[prepare['id']])
+        self.assertIn('pc_'+prepare['id'],smv)
+        self.assertEqual(mapping['objects'][0]['source']['file'],str(self.producer_path))
+        self.assertEqual(mapping['objects'][0]['source']['line'],16)
 
-    def test_opaque_run_is_not_treated_as_safe_or_given_a_sink(self):
-        smv, mapping = compiler.compile_pair(self.producer_path, self.consumer_path)
-        diagnostics = mapping["diagnostics"]
-        self.assertTrue(any(d["code"] == "opaque-run" for d in diagnostics))
-        self.assertNotIn("bad_real", smv)
-        self.assertNotIn("CTLSPEC AG !", smv)
-        self.assertNotIn("authority_reached", smv)
+    def test_unsupported_shell_does_not_yield_a_safety_verdict(self):
+        self.consumer_path.write_text(consumer_yaml().replace('run: echo opaque','run: eval input'))
+        _,mapping=compile_workflows([self.producer_path,self.consumer_path])
+        self.assertEqual(mapping['verdict'],'unknown/unsupported')
+        self.assertIn('shell-contract',{d['code'] for d in mapping['diagnostics']})
 
     def test_duplicate_yaml_keys_are_rejected(self):
         self.producer_path.write_text(
@@ -133,12 +125,12 @@ class WorkflowToSmvTests(unittest.TestCase):
     def test_needs_cycle_is_invalid_and_does_not_emit_smv(self):
         self.producer_path.write_text(
             "name: cycle\non: push\njobs:\n"
-            "  a:\n    needs: b\n    steps: []\n"
-            "  b:\n    needs: a\n    steps: []\n",
+            "  a:\n    runs-on: ubuntu-latest\n    needs: b\n    steps: []\n"
+            "  b:\n    runs-on: ubuntu-latest\n    needs: a\n    steps: []\n",
             encoding="utf-8",
         )
         with self.assertRaises(compiler.WorkflowError):
-            compiler.compile_pair(self.producer_path, self.consumer_path)
+            compile_workflows([self.producer_path, self.consumer_path])
 
 
 if __name__ == "__main__":

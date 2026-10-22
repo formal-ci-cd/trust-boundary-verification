@@ -1,5 +1,0 @@
-read_model -i /out/extended/cache-save-warning-no-object/model.smv
-go
-compute_reachable
-print_reachable_states
-quit

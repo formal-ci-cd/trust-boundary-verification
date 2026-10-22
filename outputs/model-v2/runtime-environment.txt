@@ -1,4 +1,0 @@
-python=3.12.3 (main, Mar  3 2026, 12:15:18) [GCC 13.3.0]
-pyyaml=6.0.1
-platform=Linux-6.12.76-linuxkit-aarch64-with-glibc2.39
-architecture=aarch64

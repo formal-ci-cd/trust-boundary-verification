@@ -11,7 +11,10 @@ ROOT = Path(__file__).resolve().parents[2]
 WORKFLOWS = ROOT / ".github" / "workflows"
 OUT = Path("/out/mutations")
 sys.path.insert(0, str(ROOT / "tools"))
-from workflow_model_v2.builder import compile_pair_v2  # noqa: E402
+from workflow_model_v2.compiler import compile_workflows  # noqa: E402
+from workflow_model_v2.scenario import default_scenario
+from workflow_model_v2.workflow_loader import WorkflowLoader
+import yaml
 
 
 CASES = {
@@ -138,40 +141,31 @@ def _mutate(slug: str, pair: str, mutation: str):
     producer_path, consumer_path = inputs / producer_name, inputs / consumer_name
     producer_path.write_text(producer)
     consumer_path.write_text(consumer)
-    smv, manifest = compile_pair_v2(producer_path, consumer_path)
-
-    if constraint:
-        transition_restriction = None
-        if constraint in {"upload_outcome=failure", "download_outcome=failure"}:
-            object_match = re.search(r"\bobject_([0-9a-f]+)_state\s*:", smv)
-            download_match = re.search(r"\bdownload_([0-9a-f]+)_state\s*:", smv)
-            token = object_match.group(1) if constraint.startswith("upload") and object_match else None
-            token = download_match.group(1) if constraint.startswith("download") and download_match else token
-            if not token:
-                raise ValueError(f"could not locate action token for {constraint}")
-            transition_restriction = "outcome_" + token + " = failure"
-            invar = None
-        elif constraint.startswith("trusted="):
-            _, payload = constraint.split(";", 1)
-            payload = payload.split("=", 1)[1]
-            invar = "consumer_workflow_trusted = TRUE & producer_payload = " + payload
-        else:
-            invar = "producer_metadata_branch = branch_invalid & producer_metadata_sha = sha_invalid"
-        if transition_restriction:
-            marker = "CTLSPEC"
-            index = smv.find(marker)
-            if index < 0:
-                raise ValueError("generated model has no CTLSPEC section for an input restriction")
-            smv = smv[:index] + "TRANS " + transition_restriction + "\n" + smv[index:]
-            manifest["experimentInputConstraint"] = "TRANS " + transition_restriction
-        else:
-            match = re.search(r"(?ms)^INVAR\n(.*?)\nASSIGN$", smv)
-            if not match:
-                raise ValueError("generated model has no INVAR section for a scenario input restriction")
-            existing_invar = match.group(1).strip().removesuffix(";").strip()
-            smv = (smv[:match.start()] + "INVAR\n  (" + invar + ") & (" + existing_invar +
-                   ");\nASSIGN" + smv[match.end():])
-            manifest["experimentInputConstraint"] = invar
+    scenario = default_scenario([producer_path, consumer_path])
+    if constraint in {'upload_outcome=failure', 'download_outcome=failure'}:
+        wi = 0 if constraint.startswith('upload') else 1
+        raw = yaml.load([producer, consumer][wi], Loader=WorkflowLoader)
+        action = 'upload-artifact' if wi == 0 else 'download-artifact'
+        scenario['stepOutcomes'] = {}
+        for name, job in raw['jobs'].items():
+            for index, step in enumerate(job['steps']):
+                if action in str(step.get('uses', '')):
+                    key = f"run{wi}:{name}:{step.get('id', f'index{index}')}"
+                    scenario['stepOutcomes'][key] = False
+    elif constraint and constraint.startswith('trusted='):
+        scenario['runs'][1]['workflowTrusted'] = True
+        value = 'publish=false\n' if 'payload_publish_false' in constraint else 'publish=true\n'
+        for path, values in scenario['runs'][0]['checkoutValues'].items():
+            if value in values:
+                scenario['runs'][0]['checkoutValues'][path] = [value]
+    elif constraint == 'metadata=invalid':
+        for path, values in scenario['runs'][0]['checkoutValues'].items():
+            invalid = [value for value in values if value.startswith('invalid')]
+            if invalid:
+                scenario['runs'][0]['checkoutValues'][path] = invalid
+    smv, manifest = compile_workflows([producer_path, consumer_path], scenario)
+    manifest['experimentInputConstraint'] = constraint
+    (dest / 'scenario.json').write_text(json.dumps(scenario, indent=2) + '\n')
 
     if model_corruption:
         smv += "\nTHIS_IS_INTENTIONALLY_INVALID_MODEL_SYNTAX\n"

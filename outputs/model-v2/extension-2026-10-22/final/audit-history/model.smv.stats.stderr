@@ -1,5 +1,0 @@
-WARNING: single-value variable 'origin_base_branch' has been stored as a constant
-WARNING: single-value variable 'origin_push_branch' has been stored as a constant
-WARNING: single-value variable 'origin_head_branch' has been stored as a constant
-The computation of reachable states has been completed.
-The diameter of the FSM is 15.

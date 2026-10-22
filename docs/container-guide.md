@@ -4,15 +4,14 @@ PythonとNuSMVを同じコンテナに入れています．YAMLを読んでSMV�
 
 ## 1．イメージを作る（ホスト側）
 
-Docker Desktopを起動し，repositoryのルートへ移動します．
+DockerとComposeを用意し，リポジトリのルートで実行します．
 
 ```sh
-cd /Users/bob/Documents/GitHub/trust-boundary-verification
 mkdir -p outputs/runs
 docker compose build model
 ```
 
-ルートの `Dockerfile` がPython 3.12.11，PyYAML 6.0.3，NuSMV 2.6.0を用意します．NuSMVに合わせて `linux/amd64` を指定しているため，Apple SiliconではDockerのエミュレーションで動きます．初回build時にはイメージとPython依存の取得が必要です．実行中のコンテナはネットワークを使いません．
+ルートの `Dockerfile` がPython 3.12.11，PyYAML 6.0.3，NuSMV 2.6.0を用意します．NuSMVのx86_64バイナリを使うため，実行環境は `linux/amd64` にしています．初回build時にはイメージとPython依存の取得が必要です．実行中のコンテナはネットワークを使いません．
 
 ## 2．コンテナを起動する（ホスト側）
 
@@ -21,7 +20,7 @@ docker compose up -d model
 docker compose ps
 ```
 
-`model` は操作待ちの状態で起動します．検証が勝手に始まることはありません．
+`model` は操作待ちの状態で起動します．
 
 | ホストの場所 | コンテナ内 | 用途 |
 |---|---|---|
@@ -68,7 +67,7 @@ head -40 /out/demo-001/a1.smv
 cat /out/demo-001/a1.smv.map.json
 ```
 
-別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` を加えると拡張backendを使い，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scopeなどの有限な外部条件です．対応範囲は [拡張仕様](semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
+別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` で外部条件を明示し，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scope，ファイル内容などの有限な外部条件です．省略時も同じbackendで既定条件を使います．対応範囲は [拡張仕様](semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
 
 ## 5．生成したSMVを検証する（コンテナ内）
 
@@ -122,7 +121,7 @@ docker compose exec -T model python3 -m workflow_model_v2.verification \
 cat outputs/runs/outside-001/a1.smv.stdout
 ```
 
-`exec` は起動済みのコンテナに処理を頼む操作です．常駐させずに1コマンドだけ実行したい場合は `run --rm -T` を使います．処理終了後にそのコンテナが終了し，出力はホストに残ります．
+`exec` は起動中のコンテナでコマンドを実行します．常駐させずに1コマンドだけ実行したい場合は `run --rm -T` を使います．処理終了後にそのコンテナが終了し，出力はホストに残ります．
 
 ```sh
 docker compose run --rm -T model python3 tools/workflow_to_smv_v2.py \
@@ -137,7 +136,7 @@ docker compose run --rm -T model python3 -m workflow_model_v2.verification \
 自分の別フォルダにあるYAMLを使う場合は，そのフォルダも読取り専用で渡せます．ホスト側のパスを自分の保存先へ置き換えてください．
 
 ```sh
-docker compose run --rm -T -v /absolute/path/to/workflows:/input:ro model \
+docker compose run --rm -T -v "$PWD/workflows":/input:ro model \
   python3 tools/workflow_to_smv_v2.py /input/producer.yml /input/consumer.yml \
   --output /out/custom-001/model.smv
 ```
@@ -145,7 +144,7 @@ docker compose run --rm -T -v /absolute/path/to/workflows:/input:ro model \
 ## 8．全評価も3段階に分けて実行する（ホスト側）
 
 ```sh
-# 生成：入力の対照構成，65モデル，対応表，独立BFSの結果を作る．
+# 生成：入力の対照構成，71モデル，対応表，独立BFSの結果を作る．
 docker compose exec -T model python3 tools/evaluate_workflow_v2_extension.py \
   generate --output /out/full-001
 
@@ -169,7 +168,7 @@ docker compose down
 
 ## 出力の保存方針
 
-生成結果を自動で圧縮・削除する処理は廃止しました．過去に圧縮した3,313ファイルは元の配置へSHA-256照合付きで復元し，直近3回のrunの詳細も復元しました．元のarchiveも追加の保存用として残しています．[保存済み出力の索引](../outputs/model-v2/INDEX.md)．
+入力YAML・SMV・検証ログ・反例は個別ファイルで保存します．archiveは必要な場合だけ追加で作成します．`outputs/` はGit管理外です．
 
 明示的に追加のarchiveを作りたい場合だけ，次を実行できます．この操作でも元ファイルは削除しません．
 

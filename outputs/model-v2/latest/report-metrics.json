@@ -1,0 +1,30 @@
+{
+  "tests": 45,
+  "bfsCases": 22,
+  "bfsDisagreement": [],
+  "traces": 189,
+  "sourceSpans": 488,
+  "minStates": 13.0,
+  "maxStates": 686324.0,
+  "maxVerificationSeconds": 1.32,
+  "preservation": true,
+  "diagnosticCounts": {
+    "action-outcome": 53,
+    "path-filter": 22,
+    "real-authority-sink-contract-missing": 27,
+    "no-upload-candidate": 3,
+    "workflow-name-mismatch": 1,
+    "dynamic-artifact-input": 1,
+    "simulated-repository-update-flow": 2,
+    "shell-subset": 1,
+    "unregistered-action-ref": 2,
+    "shell-contract": 39,
+    "unsupported-step-effects": 54,
+    "action-contract": 15,
+    "cache-key-collation": 1,
+    "concurrency": 4,
+    "expression": 2,
+    "cache-version": 2,
+    "unsupported-semantics": 4
+  }
+}

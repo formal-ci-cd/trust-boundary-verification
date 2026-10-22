@@ -7,6 +7,9 @@ from pathlib import Path
 import re
 import subprocess
 import time
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import tanstack_n_consumers as scaled
 

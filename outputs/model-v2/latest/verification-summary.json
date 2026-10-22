@@ -1,0 +1,3971 @@
+{
+  "models": [
+    {
+      "id": "A1",
+      "model": "baseline/A1.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_b46aa39068_state != download_succeeded": "false",
+        "AG (download_b46aa39068_state = download_succeeded -> download_b46aa39068_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "false",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "savedPrototypeComparison": {
+        "AG !artifact_dependent_sink": true,
+        "AG !artifact_dependent_use": true,
+        "AG !bad_real_authority_path": true,
+        "AG !bad_simulated_path": true,
+        "AG !integrity_blocked": true,
+        "AG !simulated_sink_site_reached": true,
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+        "AG (artifact_dependent_use -> download_success_any)": true,
+        "AG integrity_state != integrity_mismatch": true,
+        "AG integrity_state != integrity_verified": true
+      },
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14418 (2^13.8156) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.11,
+      "traceCount": 6
+    },
+    {
+      "id": "A2",
+      "model": "baseline/A2.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_5ae82730d8_state = download_succeeded -> download_5ae82730d8_object != no_object)": "true",
+        "AG download_5ae82730d8_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "savedPrototypeComparison": {
+        "AG !artifact_dependent_sink": true,
+        "AG !artifact_dependent_use": true,
+        "AG !bad_real_authority_path": true,
+        "AG !bad_simulated_path": true,
+        "AG !integrity_blocked": true,
+        "AG !simulated_sink_site_reached": true,
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+        "AG (artifact_dependent_use -> download_success_any)": true,
+        "AG integrity_state != integrity_mismatch": true,
+        "AG integrity_state != integrity_verified": true
+      },
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "31158 (2^14.9273) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.17,
+      "traceCount": 8
+    },
+    {
+      "id": "A3",
+      "model": "baseline/A3.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !verification_read": "true",
+        "AG !post_verification_use": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !integrity_blocked": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG download_f1bea0961d_state != download_succeeded": "false",
+        "AG (download_f1bea0961d_state = download_succeeded -> download_f1bea0961d_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "savedPrototypeComparison": {
+        "AG !artifact_dependent_sink": true,
+        "AG !artifact_dependent_use": true,
+        "AG !bad_real_authority_path": true,
+        "AG !bad_simulated_path": true,
+        "AG !integrity_blocked": true,
+        "AG !simulated_sink_site_reached": true,
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+        "AG (artifact_dependent_use -> download_success_any)": true,
+        "AG integrity_state != integrity_mismatch": true,
+        "AG integrity_state != integrity_verified": true
+      },
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14904 (2^13.8634) out of 1.64342e+17 (2^57.1895)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 1
+    },
+    {
+      "id": "A4",
+      "model": "baseline/A4.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG download_8ba75ac9b1_state != download_succeeded": "false",
+        "AG (download_8ba75ac9b1_state = download_succeeded -> download_8ba75ac9b1_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "savedPrototypeComparison": {
+        "AG !artifact_dependent_sink": true,
+        "AG !artifact_dependent_use": true,
+        "AG !bad_real_authority_path": true,
+        "AG !bad_simulated_path": true,
+        "AG !integrity_blocked": true,
+        "AG !simulated_sink_site_reached": true,
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+        "AG (artifact_dependent_use -> download_success_any)": true,
+        "AG integrity_state != integrity_mismatch": true,
+        "AG integrity_state != integrity_verified": true
+      },
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14418 (2^13.8156) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "A5",
+      "model": "baseline/A5.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_dd1690cfbd_state != download_succeeded": "false",
+        "AG (download_dd1690cfbd_state = download_succeeded -> download_dd1690cfbd_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "false",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "savedPrototypeComparison": {
+        "AG !artifact_dependent_sink": true,
+        "AG !artifact_dependent_use": true,
+        "AG !bad_real_authority_path": true,
+        "AG !bad_simulated_path": true,
+        "AG !integrity_blocked": true,
+        "AG !simulated_sink_site_reached": true,
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+        "AG (artifact_dependent_use -> download_success_any)": true,
+        "AG integrity_state != integrity_mismatch": true,
+        "AG integrity_state != integrity_verified": true
+      },
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "15066 (2^13.879) out of 2.62947e+18 (2^61.1895)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.13,
+      "traceCount": 5
+    },
+    {
+      "id": "legacy-download-disabled",
+      "model": "mutations/download-disabled/download-disabled.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_0d9b8c97b5_state != download_succeeded": "true",
+        "AG (download_0d9b8c97b5_state = download_succeeded -> download_0d9b8c97b5_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13932 (2^13.7661) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-use-disabled",
+      "model": "mutations/use-disabled/use-disabled.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_9e7e768cc3_state != download_succeeded": "false",
+        "AG (download_9e7e768cc3_state = download_succeeded -> download_9e7e768cc3_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14256 (2^13.7993) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 1
+    },
+    {
+      "id": "legacy-sink-disabled",
+      "model": "mutations/sink-disabled/sink-disabled.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_e25523e1fd_state != download_succeeded": "false",
+        "AG (download_e25523e1fd_state = download_succeeded -> download_e25523e1fd_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14904 (2^13.8634) out of 2.62947e+18 (2^61.1895)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 2
+    },
+    {
+      "id": "legacy-upload-name-mismatch",
+      "model": "mutations/upload-name-mismatch/upload-name-mismatch.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_9986b15de5_state != download_succeeded": "true",
+        "AG (download_9986b15de5_state = download_succeeded -> download_9986b15de5_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13932 (2^13.7661) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.05,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-workflow-run-mismatch",
+      "model": "mutations/workflow-run-mismatch/workflow-run-mismatch.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_0bc4f48e26_state != download_succeeded": "true",
+        "AG (download_0bc4f48e26_state = download_succeeded -> download_0bc4f48e26_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "12798 (2^13.6436) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.05,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-run-id-mismatch",
+      "model": "mutations/run-id-mismatch/run-id-mismatch.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_a931d1e01e_state != download_succeeded": "true",
+        "AG (download_a931d1e01e_state = download_succeeded -> download_a931d1e01e_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13932 (2^13.7661) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.05,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-upload-failure",
+      "model": "mutations/upload-failure/upload-failure.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_8f2a75ffac_state != download_succeeded": "true",
+        "AG (download_8f2a75ffac_state = download_succeeded -> download_8f2a75ffac_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "10692 (2^13.3842) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-download-failure",
+      "model": "mutations/download-failure/download-failure.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_4d5c788caa_state != download_succeeded": "true",
+        "AG (download_4d5c788caa_state = download_succeeded -> download_4d5c788caa_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13932 (2^13.7661) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-if-false-upload",
+      "model": "mutations/if-false-upload/if-false-upload.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_59ac9ed4b0_state != download_succeeded": "true",
+        "AG (download_59ac9ed4b0_state = download_succeeded -> download_59ac9ed4b0_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "11178 (2^13.4484) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-same-output-reference-twice",
+      "model": "mutations/same-output-reference-twice/same-output-reference-twice.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_8d69d2cea0_state = download_succeeded -> download_8d69d2cea0_object != no_object)": "true",
+        "AG download_8d69d2cea0_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "31158 (2^14.9273) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.15,
+      "traceCount": 8
+    },
+    {
+      "id": "legacy-contradictory-same-output",
+      "model": "mutations/contradictory-same-output/contradictory-same-output.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_03be4726f2_state = download_succeeded -> download_03be4726f2_object != no_object)": "true",
+        "AG download_03be4726f2_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "31050 (2^14.9223) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.13,
+      "traceCount": 5
+    },
+    {
+      "id": "legacy-integrity-check-disabled",
+      "model": "mutations/integrity-check-disabled/integrity-check-disabled.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_359339dce5_state = download_succeeded -> download_359339dce5_object != no_object)": "true",
+        "AG download_359339dce5_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "30132 (2^14.879) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 1
+    },
+    {
+      "id": "legacy-digest-success",
+      "model": "mutations/digest-success/digest-success.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_7f3be9b33c_state = download_succeeded -> download_7f3be9b33c_object != no_object)": "true",
+        "AG download_7f3be9b33c_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "5238 (2^12.3548) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.11,
+      "traceCount": 6
+    },
+    {
+      "id": "legacy-digest-mismatch",
+      "model": "mutations/digest-mismatch/digest-mismatch.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG (download_e221b5fa89_state = download_succeeded -> download_e221b5fa89_object != no_object)": "true",
+        "AG download_e221b5fa89_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "5184 (2^12.3399) out of 5.9163e+18 (2^62.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 4
+    },
+    {
+      "id": "legacy-a5-invalid-metadata",
+      "model": "mutations/a5-invalid-metadata/a5-invalid-metadata.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_f2bb816a7f_state != download_succeeded": "false",
+        "AG (download_f2bb816a7f_state = download_succeeded -> download_f2bb816a7f_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "1674 (2^10.7091) out of 2.62947e+18 (2^61.1895)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.08,
+      "traceCount": 3
+    },
+    {
+      "id": "legacy-a5-output-reference-changed",
+      "model": "mutations/a5-output-reference-changed/a5-output-reference-changed.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG download_6ec13aa647_state != download_succeeded": "false",
+        "AG (download_6ec13aa647_state = download_succeeded -> download_6ec13aa647_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !bad_simulated_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "15066 (2^13.879) out of 2.62947e+18 (2^61.1895)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 3
+    },
+    {
+      "id": "legacy-unrelated-fixed-marker",
+      "model": "mutations/unrelated-fixed-marker/unrelated-fixed-marker.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !verification_read": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_e9b09cca7a_state != download_succeeded": "false",
+        "AG (download_e9b09cca7a_state = download_succeeded -> download_e9b09cca7a_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !artifact_dependent_use": "false",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "15552 (2^13.9248) out of 2.95815e+18 (2^61.3594)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 3
+    },
+    {
+      "id": "legacy-unsupported-shell",
+      "model": "mutations/unsupported-shell/unsupported-shell.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !verification_read": "true",
+        "AG !post_verification_use": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG !integrity_blocked": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true",
+        "AG download_35dea4d35a_state != download_succeeded": "false",
+        "AG (download_35dea4d35a_state = download_succeeded -> download_35dea4d35a_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "14418 (2^13.8156) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 1
+    },
+    {
+      "id": "legacy-unregistered-action-ref",
+      "model": "mutations/unregistered-action-ref/unregistered-action-ref.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_a2bdbd33a6_state != download_succeeded": "true",
+        "AG (download_a2bdbd33a6_state = download_succeeded -> download_a2bdbd33a6_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "11178 (2^13.4484) out of 1.19832e+16 (2^53.4119)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-permission-missing",
+      "model": "mutations/permission-missing/permission-missing.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 0,
+      "properties": {
+        "AG integrity_state != integrity_verified": "true",
+        "AG integrity_state != integrity_mismatch": "true",
+        "AG download_585d258498_state != download_succeeded": "true",
+        "AG (download_585d258498_state = download_succeeded -> download_585d258498_object != no_object)": "true",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "true",
+        "AG !artifact_dependent_use": "true",
+        "AG !simulated_sink_site_reached": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "true",
+        "AG !integrity_blocked": "true",
+        "AG !artifact_dependent_sink": "true",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !bad_simulated_path": "true",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13932 (2^13.7661) out of 1.43799e+17 (2^56.9968)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "legacy-nusmv-invalid-input",
+      "model": "mutations/nusmv-invalid-input/nusmv-invalid-input.smv",
+      "expected": null,
+      "engine": "prototype",
+      "exitcode": 1,
+      "properties": {},
+      "verified": false,
+      "transitionTotal": false,
+      "syntaxFailureControlPassed": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.01,
+      "traceCount": 0
+    },
+    {
+      "id": "audit-use-before-later-block",
+      "engine": "prototype",
+      "model": "audit-history/model.smv",
+      "expected": null,
+      "exitcode": 0,
+      "properties": {
+        "AG (download_24cc62d5a2_state = download_succeeded -> download_24cc62d5a2_object != no_object)": "true",
+        "AG download_24cc62d5a2_state != download_succeeded": "false",
+        "AG (artifact_dependent_use -> download_success_any)": "true",
+        "AG !verification_read": "false",
+        "AG !artifact_dependent_use": "false",
+        "AG !simulated_sink_site_reached": "false",
+        "AG !artifact_dependent_sink": "true",
+        "AG integrity_state != integrity_verified": "false",
+        "AG integrity_state != integrity_mismatch": "false",
+        "AG (artifact_dependent_sink -> artifact_dependent_use)": "true",
+        "AG !post_integrity_mismatch_use": "true",
+        "AG !post_verification_use": "false",
+        "AG !integrity_blocked": "false",
+        "AG !bad_simulated_path": "true",
+        "AG !(integrity_blocked & artifact_dependent_use)": "false",
+        "AG !bad_real_authority_path": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "historyAuditPassed": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 9,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "33102 (2^15.0146) out of 6.57366e+18 (2^62.5114)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.24,
+      "traceCount": 9
+    },
+    {
+      "id": "cache-prefix-unsafe",
+      "engine": "extended",
+      "model": "extended/cache-prefix-unsafe/model.smv",
+      "expected": true,
+      "generationSeconds": 0.003232875000094282,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.001791916999991372
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-key-mismatch",
+      "engine": "extended",
+      "model": "extended/cache-key-mismatch/model.smv",
+      "expected": false,
+      "generationSeconds": 0.002865165999992314,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.00147225000000617
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-pr-scope-isolation",
+      "engine": "extended",
+      "model": "extended/cache-pr-scope-isolation/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0033083329999499256,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.001582166000162033
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-version-mismatch",
+      "engine": "extended",
+      "model": "extended/cache-version-mismatch/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0026147080000100686,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.002004833000000872
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-repository-mismatch",
+      "engine": "extended",
+      "model": "extended/cache-repository-mismatch/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0033482090000234166,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0016967500000646396
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-write-disabled",
+      "engine": "extended",
+      "model": "extended/cache-write-disabled/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0029776669998682337,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 161,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0016399170001477614
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "288 (2^8.16993) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-read-disabled",
+      "engine": "extended",
+      "model": "extended/cache-read-disabled/model.smv",
+      "expected": false,
+      "generationSeconds": 0.00306124999997337,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 169,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.001441708999891489
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "418 (2^8.70736) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-no-authority",
+      "engine": "extended",
+      "model": "extended/cache-no-authority/model.smv",
+      "expected": false,
+      "generationSeconds": 0.002668165999921257,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": false,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0016311250001308508
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.11,
+      "traceCount": 3
+    },
+    {
+      "id": "cache-no-stage",
+      "engine": "extended",
+      "model": "extended/cache-no-stage/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0030373749998489075,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 155,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0014502080000511341
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG !bad_authority": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 5,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "398 (2^8.63662) out of 2.28614e+16 (2^54.3438)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.08,
+      "traceCount": 4
+    },
+    {
+      "id": "cache-save-warning-no-object",
+      "engine": "extended",
+      "model": "extended/cache-save-warning-no-object/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0027446249998774874,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 193,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0016167090000180906
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "456 (2^8.83289) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-exact-hit",
+      "engine": "extended",
+      "model": "extended/cache-exact-hit/model.smv",
+      "expected": true,
+      "generationSeconds": 0.003086124999981621,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-current",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0014309159998902032
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-output-guard",
+      "engine": "extended",
+      "model": "extended/cache-output-guard/model.smv",
+      "expected": true,
+      "generationSeconds": 0.0030543330001364666,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 201,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0020434579998891422
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "496 (2^8.9542) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-output-contradiction",
+      "engine": "extended",
+      "model": "extended/cache-output-contradiction/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0033800830001382565,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 197,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0018369590000020253
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "478 (2^8.90087) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 4
+    },
+    {
+      "id": "status-failure-always-recovery",
+      "engine": "extended",
+      "model": "extended/status-failure-always-recovery/model.smv",
+      "expected": true,
+      "generationSeconds": 0.0031428750000941363,
+      "stateVariables": 35,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 393,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 5,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0024934580001172435
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "1018 (2^9.99152) out of 2.88684e+19 (2^64.6461)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "status-default-skip-after-failure",
+      "engine": "extended",
+      "model": "extended/status-default-skip-after-failure/model.smv",
+      "expected": false,
+      "generationSeconds": 0.0033425829999487178,
+      "stateVariables": 35,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": false,
+          "success": false,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0019776249998813
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "538 (2^9.07146) out of 2.88684e+19 (2^64.6461)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "status-cancelled-cleanup",
+      "engine": "extended",
+      "model": "extended/status-cancelled-cleanup/model.smv",
+      "expected": true,
+      "generationSeconds": 0.013464082999917082,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "978 (2^9.93369) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-post-save",
+      "engine": "extended",
+      "model": "extended/cache-post-save/model.smv",
+      "expected": true,
+      "generationSeconds": 0.00411133400007202,
+      "stateVariables": 35,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 193,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.002844290999973964
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "511 (2^8.99718) out of 4.97664e+18 (2^62.1099)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-post-job-failure",
+      "engine": "extended",
+      "model": "extended/cache-post-job-failure/model.smv",
+      "expected": false,
+      "generationSeconds": 0.003435332999970342,
+      "stateVariables": 37,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 289,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0018480419998923026
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "520 (2^9.02237) out of 1.77147e+20 (2^67.2635)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-post-continue-on-error",
+      "engine": "extended",
+      "model": "extended/cache-post-continue-on-error/model.smv",
+      "expected": true,
+      "generationSeconds": 0.003822540999863122,
+      "stateVariables": 37,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 289,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 3,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.002287209000087387
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 7,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "575 (2^9.16742) out of 1.77147e+20 (2^67.2635)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.11,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-current-default-read",
+      "engine": "extended",
+      "model": "extended/cache-current-default-read/model.smv",
+      "expected": false,
+      "generationSeconds": 0.003270749999956024,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 193,
+        "reachable": {
+          "transfer": false,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0017685830000573333
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "456 (2^8.83289) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 2
+    },
+    {
+      "id": "cache-current-explicit-write",
+      "engine": "extended",
+      "model": "extended/cache-current-explicit-write/model.smv",
+      "expected": true,
+      "generationSeconds": 0.003551791999825582,
+      "stateVariables": 33,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 225,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0019795839998550946
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "cache-newest-prefix-is-clean",
+      "engine": "extended",
+      "model": "extended/cache-newest-prefix-is-clean/model.smv",
+      "expected": false,
+      "generationSeconds": 0.003808542000115267,
+      "stateVariables": 39,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 13,
+        "reachable": {
+          "transfer": true,
+          "use": false,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": false
+        },
+        "counterexample": [],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0017303750000792206
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13 (2^3.70044) out of 3.0375e+22 (2^74.6853)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 3
+    },
+    {
+      "id": "cache-exact-before-newest-prefix",
+      "engine": "extended",
+      "model": "extended/cache-exact-before-newest-prefix/model.smv",
+      "expected": true,
+      "generationSeconds": 0.0038462500001514854,
+      "stateVariables": 39,
+      "verdict": "pending-model-check",
+      "bfs": {
+        "status": "complete",
+        "states": 13,
+        "reachable": {
+          "transfer": true,
+          "use": true,
+          "sink_site": true,
+          "success": true,
+          "bad_authority": true
+        },
+        "counterexample": [
+          {
+            "run": 0,
+            "pc": 0,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 1,
+            "cache": [],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 0,
+            "pc": -2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 0,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 1,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 2,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 3,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": false
+          },
+          {
+            "run": 1,
+            "pc": 4,
+            "cache": [
+              [
+                0,
+                "linux-pkg-new",
+                "version1",
+                2
+              ],
+              [
+                0,
+                "linux-pkg-clean",
+                "version1",
+                1
+              ]
+            ],
+            "bad": true
+          }
+        ],
+        "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+        "seconds": 0.0015328329998283152
+      },
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "bfsAgreement": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "13 (2^3.70044) out of 3.0375e+22 (2^74.6853)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.11,
+      "traceCount": 5
+    },
+    {
+      "id": "unsupported-shell",
+      "engine": "extended",
+      "model": "extended/unsupported-shell/model.smv",
+      "expected": null,
+      "generationSeconds": 0.003661792000002606,
+      "stateVariables": 33,
+      "verdict": "unknown/unsupported",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 5
+    },
+    {
+      "id": "unsupported-action",
+      "engine": "extended",
+      "model": "extended/unsupported-action/model.smv",
+      "expected": null,
+      "generationSeconds": 0.0029973329999393172,
+      "stateVariables": 30,
+      "verdict": "unknown/unsupported",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "456 (2^8.83289) out of 4.32e+15 (2^51.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "unsupported-cache-key-collation",
+      "engine": "extended",
+      "model": "extended/unsupported-cache-key-collation/model.smv",
+      "expected": null,
+      "generationSeconds": 0.0033133330000509886,
+      "stateVariables": 33,
+      "verdict": "unknown/unsupported",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "568 (2^9.14975) out of 8.2944e+17 (2^59.5249)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.06,
+      "traceCount": 2
+    },
+    {
+      "id": "static-matrix",
+      "engine": "extended",
+      "model": "extended/static-matrix/model.smv",
+      "expected": true,
+      "generationSeconds": 0.0036787500000627915,
+      "stateVariables": 44,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "5952 (2^12.5392) out of 4.6656e+24 (2^81.9483)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.17,
+      "traceCount": 5
+    },
+    {
+      "id": "artifact-cross-run",
+      "engine": "extended",
+      "model": "extended/artifact-cross-run/model.smv",
+      "expected": true,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "234 (2^7.87036) out of 8.64e+15 (2^52.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.08,
+      "traceCount": 5
+    },
+    {
+      "id": "artifact-name-mismatch",
+      "engine": "extended",
+      "model": "extended/artifact-name-mismatch/model.smv",
+      "expected": false,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "160 (2^7.32193) out of 8.64e+15 (2^52.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "artifact-run-mismatch",
+      "engine": "extended",
+      "model": "extended/artifact-run-mismatch/model.smv",
+      "expected": false,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "160 (2^7.32193) out of 8.64e+15 (2^52.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "artifact-token-permission",
+      "engine": "extended",
+      "model": "extended/artifact-token-permission/model.smv",
+      "expected": false,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "true",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "160 (2^7.32193) out of 8.64e+15 (2^52.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.04,
+      "traceCount": 0
+    },
+    {
+      "id": "artifact-workflow-run-context",
+      "engine": "extended",
+      "model": "extended/artifact-workflow-run-context/model.smv",
+      "expected": true,
+      "stateVariables": 31,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 6,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "85 (2^6.40939) out of 8.64e+15 (2^52.94)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.08,
+      "traceCount": 5
+    },
+    {
+      "id": "artifact-two-object-isolation",
+      "engine": "extended",
+      "model": "extended/artifact-two-object-isolation/model.smv",
+      "expected": false,
+      "stateVariables": 39,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "true",
+        "AG !bad_authority": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "true",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "367 (2^8.51964) out of 2.43e+20 (2^67.7195)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.09,
+      "traceCount": 3
+    },
+    {
+      "id": "artifact-multiple-jobs",
+      "engine": "extended",
+      "model": "extended/artifact-multiple-jobs/model.smv",
+      "expected": true,
+      "stateVariables": 43,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 8,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "696 (2^9.44294) out of 1.24416e+22 (2^73.3976)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.13,
+      "traceCount": 5
+    },
+    {
+      "id": "artifact-needs-output",
+      "engine": "extended",
+      "model": "extended/artifact-needs-output/model.smv",
+      "expected": true,
+      "stateVariables": 46,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 9,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "832 (2^9.70044) out of 6.9984e+23 (2^79.2114)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.17,
+      "traceCount": 5
+    },
+    {
+      "id": "artifact-package-publish",
+      "engine": "extended",
+      "model": "extended/artifact-package-publish/model.smv",
+      "expected": true,
+      "stateVariables": 27,
+      "verdict": "pending-model-check",
+      "exitcode": 0,
+      "properties": {
+        "AG !transfer": "false",
+        "AG !sink_site": "false",
+        "AG !sink_succeeded": "false",
+        "AG !dependent_use": "false",
+        "AG !bad_authority": "false",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "no_transfer": "false",
+        "no_use": "false",
+        "no_sink_site": "false",
+        "no_success": "false",
+        "no_bad_authority": "false"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "expectationMatched": true,
+      "sourceValidation": {
+        "checkedSteps": 4,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "136 (2^7.08746) out of 1.10592e+13 (2^43.3303)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 0,
+      "verificationRealSeconds": 0.07,
+      "traceCount": 5
+    },
+    {
+      "id": "tanstack-pre-incident",
+      "engine": "extended",
+      "model": "tanstack/pre-incident.smv",
+      "expected": null,
+      "verdict": "unknown/unsupported",
+      "exitcode": 0,
+      "properties": {
+        "AG !dependent_use": "true",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG !bad_authority": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "AG !transfer": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 37,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "686324 (2^19.3885) out of 3.83664e+74 (2^247.763)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 2,
+      "verificationRealSeconds": 1.32,
+      "traceCount": 0
+    },
+    {
+      "id": "tanstack-mitigation",
+      "engine": "extended",
+      "model": "tanstack/mitigation.smv",
+      "expected": null,
+      "verdict": "unknown/unsupported",
+      "exitcode": 0,
+      "properties": {
+        "AG !dependent_use": "true",
+        "AG !sink_site": "true",
+        "AG !sink_succeeded": "true",
+        "AG !bad_authority": "true",
+        "AG (sink_succeeded -> sink_site)": "true",
+        "AG (bad_authority -> sink_succeeded)": "true",
+        "AG !transfer": "true",
+        "no_transfer": "true",
+        "no_use": "true",
+        "no_sink_site": "true",
+        "no_success": "true",
+        "no_bad_authority": "true"
+      },
+      "verified": true,
+      "transitionTotal": true,
+      "syntaxFailureControlPassed": false,
+      "sourceValidation": {
+        "checkedSteps": 37,
+        "invalidSpans": []
+      },
+      "reachableStates": [
+        "686324 (2^19.3885) out of 3.83664e+74 (2^247.763)"
+      ],
+      "nonemptyReachableSet": true,
+      "stateEnumerationSucceeded": true,
+      "verificationWallSeconds": 1,
+      "verificationRealSeconds": 0.9,
+      "traceCount": 0
+    }
+  ],
+  "failures": [],
+  "total": 65,
+  "validated": 64,
+  "syntaxControls": 1
+}

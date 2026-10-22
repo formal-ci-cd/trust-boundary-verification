@@ -1,1 +1,5 @@
 __pycache__/
+
+# Local regenerated runs; retained research evidence is archived separately.
+/outputs/runs/
+*.pyc

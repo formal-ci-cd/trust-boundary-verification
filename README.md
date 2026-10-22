@@ -2,6 +2,23 @@
 
 CI/CD pipelineにおける信頼境界を形式的に検証するための研究用repositoryです．
 
+## 現在の開発入口
+
+`feat/workflow-model-v2` は次期YAML→SMV変換器の開発ブランチです．論文用の固定評価基準は `research/paper-baseline`，公開側の基準は `main` に分けています．
+
+- 実装・操作の入口：[tools/README.md](tools/README.md)
+- v2の対応範囲：[拡張仕様](docs/next-model-design/extension-semantics.md)
+- 保存済み結果：[最新評価](outputs/model-v2/latest/README.md)
+- ブランチ・出力・履歴の扱い：[リポジトリ管理方針](docs/repository-maintenance.md)
+
+再評価はDocker内で行います．通常の生成先はGit管理外の `outputs/runs/` です．成功したrunは要約と検証済み詳細archiveへ自動でまとめます．
+
+```sh
+sh tools/run_workflow_v2_extension.sh outputs/runs/v2-001
+```
+
+以下は従来の論文評価系についての説明です．v2の未対応構文やTanStackの未達成結果を，従来系の結果と混同しないでください．
+
 ## 中心仮説と現在地
 
 本研究は，GitHub Actionsで未信頼producerがCache又はartifactへ書き込み，別workflow又は別runのconsumerが同じ共有状態を完全性確認なしに利用して，privileged authorityへ至る**一つの経路**を有限状態モデルと反例で提示することを中心とします．既存ツールが入口を警告することと両立する主張です．

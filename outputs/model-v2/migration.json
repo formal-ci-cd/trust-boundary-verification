@@ -1,0 +1,18 @@
+{
+  "beforeFiles": 3313,
+  "afterFiles": 13,
+  "archives": [
+    {
+      "archive": "prototype-2026-10-22.tar.gz",
+      "fileCount": 646,
+      "compressedBytes": 771593
+    },
+    {
+      "archive": "extension-2026-10-22.tar.gz",
+      "fileCount": 2667,
+      "compressedBytes": 1616849
+    }
+  ],
+  "bytesVerified": true,
+  "allOriginalMembersRecoverable": true
+}

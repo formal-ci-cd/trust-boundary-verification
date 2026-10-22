@@ -6,11 +6,14 @@ import json
 from pathlib import Path
 import subprocess
 import tempfile
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 import chain_to_nusmv
 import static_chain_baseline
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 CASES = {
     'A1': ROOT / 'model/chains/gha-a1.json',
     'A5': ROOT / 'model/case-studies/gha-a5-actions-attest.json',

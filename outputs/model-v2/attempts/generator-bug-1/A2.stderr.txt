@@ -1,0 +1,9 @@
+
+file /out/cases/A2.smv: line 53: at token "(": syntax error
+
+
+file /out/cases/A2.smv: line 53: Parser error
+
+NuSMV terminated by a signal
+
+Aborting batch mode

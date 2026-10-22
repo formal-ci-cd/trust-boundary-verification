@@ -30,6 +30,8 @@ def dump(path, value):
 
 
 def generate(out):
+    if out.exists() and any(out.iterdir()):
+        raise FileExistsError(f"output directory must be empty: {out}")
     out.mkdir(parents=True, exist_ok=True)
     records = []
     producer = ROOT / '.github/workflows/artifact-a1-pr-producer.yml'
@@ -230,6 +232,8 @@ jobs:
 
 
 def summarize(out):
+    if (out / "verification-summary.json").exists():
+        raise FileExistsError(f"summary already exists; use a new output directory: {out}")
     inventory = json.loads((out / 'inventory.json').read_text())
     failed = []
     for record in inventory:

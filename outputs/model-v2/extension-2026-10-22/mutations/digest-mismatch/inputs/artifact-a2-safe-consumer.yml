@@ -1,0 +1,97 @@
+# GHA-A1と同じ成果物を取得するが，信頼済みのdigestと一致する場合だけ利用する．
+# 不一致時は模擬publish判断へ渡さず，遮断した事実だけを記録する．
+name: GHA-A2 Verified artifact consumer
+
+on:
+  workflow_run:
+    workflows: ["GHA-A Producer - untrusted PR artifact"]
+    types: [completed]
+
+permissions:
+  # 起動元runの成果物を取得するために必要．
+  actions: read
+  # workflow定義以外のrepository内容は変更しない．
+  contents: read
+
+concurrency:
+  group: gha-a2-${{ github.event.workflow_run.id }}
+  cancel-in-progress: false
+
+jobs:
+  consume-after-verification:
+    name: Verify the artifact before use
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from the producer run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: trust-boundary-build-output
+          path: ${{ runner.temp }}/trust-boundary-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # main側で信頼したpublish=falseの内容と一致するかを利用前に確認する．
+      - name: Verify artifact before use
+        id: verify-artifact
+        env:
+          ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt
+        run: |
+          set -eu
+          expected_digest='c94960cc45713534adb51efee8152237985399b2963cf364817d8362b2a2dc1b'
+          actual_digest=$(sha256sum "$ARTIFACT_FILE" | cut -d ' ' -f 1)
+
+          if [ "$actual_digest" = "$expected_digest" ]; then
+            verified=true
+          else
+            verified=false
+          fi
+
+          printf 'verified=%s\n' "$verified" >> "$GITHUB_OUTPUT"
+          printf 'actual_digest=%s\n' "$actual_digest" >> "$GITHUB_OUTPUT"
+
+      # hashが一致した場合だけ，成果物の内容を模擬publish判断へ渡す．
+      - name: Use only the verified artifact
+        if: steps.verify-artifact.outputs.verified == 'true'
+        env:
+          ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt
+          ACTUAL_DIGEST: ${{ steps.verify-artifact.outputs.actual_digest }}
+          PRODUCER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -eu
+          request=$(tr -d '\r\n' < "$ARTIFACT_FILE")
+
+          if [ "$request" = "publish=true" ]; then
+            authority_reached=true
+          else
+            authority_reached=false
+          fi
+
+          {
+            echo '### GHA-A2 実験結果'
+            echo
+            echo "producer_run_id=$PRODUCER_RUN_ID"
+            echo "artifact_sha256=$ACTUAL_DIGEST"
+            echo 'integrity_verified=true'
+            echo "dummy_publish_authority_reached=$authority_reached"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # 攻撃者が内容を変更した場合に，完全性確認で遮断されたことを記録する．
+      - name: Record rejected artifact
+        if: steps.verify-artifact.outputs.verified != 'true'
+        env:
+          ACTUAL_DIGEST: ${{ steps.verify-artifact.outputs.actual_digest }}
+          PRODUCER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          {
+            echo '### GHA-A2 実験結果'
+            echo
+            echo "producer_run_id=$PRODUCER_RUN_ID"
+            echo "artifact_sha256=$ACTUAL_DIGEST"
+            echo 'integrity_verified=false'
+            echo 'dummy_publish_authority_reached=false'
+            echo 'reason=digest_mismatch'
+          } >> "$GITHUB_STEP_SUMMARY"

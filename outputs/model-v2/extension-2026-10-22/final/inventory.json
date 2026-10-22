@@ -1,0 +1,1706 @@
+[
+  {
+    "id": "A1",
+    "model": "baseline/A1.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "A2",
+    "model": "baseline/A2.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "A3",
+    "model": "baseline/A3.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "A4",
+    "model": "baseline/A4.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "A5",
+    "model": "baseline/A5.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-download-disabled",
+    "model": "mutations/download-disabled/download-disabled.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-use-disabled",
+    "model": "mutations/use-disabled/use-disabled.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-sink-disabled",
+    "model": "mutations/sink-disabled/sink-disabled.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-upload-name-mismatch",
+    "model": "mutations/upload-name-mismatch/upload-name-mismatch.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-workflow-run-mismatch",
+    "model": "mutations/workflow-run-mismatch/workflow-run-mismatch.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-run-id-mismatch",
+    "model": "mutations/run-id-mismatch/run-id-mismatch.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-upload-failure",
+    "model": "mutations/upload-failure/upload-failure.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-download-failure",
+    "model": "mutations/download-failure/download-failure.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-if-false-upload",
+    "model": "mutations/if-false-upload/if-false-upload.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-same-output-reference-twice",
+    "model": "mutations/same-output-reference-twice/same-output-reference-twice.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-contradictory-same-output",
+    "model": "mutations/contradictory-same-output/contradictory-same-output.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-integrity-check-disabled",
+    "model": "mutations/integrity-check-disabled/integrity-check-disabled.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-digest-success",
+    "model": "mutations/digest-success/digest-success.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-digest-mismatch",
+    "model": "mutations/digest-mismatch/digest-mismatch.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-a5-invalid-metadata",
+    "model": "mutations/a5-invalid-metadata/a5-invalid-metadata.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-a5-output-reference-changed",
+    "model": "mutations/a5-output-reference-changed/a5-output-reference-changed.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-unrelated-fixed-marker",
+    "model": "mutations/unrelated-fixed-marker/unrelated-fixed-marker.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-unsupported-shell",
+    "model": "mutations/unsupported-shell/unsupported-shell.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-unregistered-action-ref",
+    "model": "mutations/unregistered-action-ref/unregistered-action-ref.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-permission-missing",
+    "model": "mutations/permission-missing/permission-missing.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "legacy-nusmv-invalid-input",
+    "model": "mutations/nusmv-invalid-input/nusmv-invalid-input.smv",
+    "expected": null,
+    "engine": "prototype"
+  },
+  {
+    "id": "audit-use-before-later-block",
+    "engine": "prototype",
+    "model": "audit-history/model.smv",
+    "expected": null
+  },
+  {
+    "id": "cache-prefix-unsafe",
+    "engine": "extended",
+    "model": "extended/cache-prefix-unsafe/model.smv",
+    "expected": true,
+    "generationSeconds": 0.003232875000094282,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.001791916999991372
+    }
+  },
+  {
+    "id": "cache-key-mismatch",
+    "engine": "extended",
+    "model": "extended/cache-key-mismatch/model.smv",
+    "expected": false,
+    "generationSeconds": 0.002865165999992314,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.00147225000000617
+    }
+  },
+  {
+    "id": "cache-pr-scope-isolation",
+    "engine": "extended",
+    "model": "extended/cache-pr-scope-isolation/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0033083329999499256,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.001582166000162033
+    }
+  },
+  {
+    "id": "cache-version-mismatch",
+    "engine": "extended",
+    "model": "extended/cache-version-mismatch/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0026147080000100686,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.002004833000000872
+    }
+  },
+  {
+    "id": "cache-repository-mismatch",
+    "engine": "extended",
+    "model": "extended/cache-repository-mismatch/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0033482090000234166,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0016967500000646396
+    }
+  },
+  {
+    "id": "cache-write-disabled",
+    "engine": "extended",
+    "model": "extended/cache-write-disabled/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0029776669998682337,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 161,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0016399170001477614
+    }
+  },
+  {
+    "id": "cache-read-disabled",
+    "engine": "extended",
+    "model": "extended/cache-read-disabled/model.smv",
+    "expected": false,
+    "generationSeconds": 0.00306124999997337,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 169,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.001441708999891489
+    }
+  },
+  {
+    "id": "cache-no-authority",
+    "engine": "extended",
+    "model": "extended/cache-no-authority/model.smv",
+    "expected": false,
+    "generationSeconds": 0.002668165999921257,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": false,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0016311250001308508
+    }
+  },
+  {
+    "id": "cache-no-stage",
+    "engine": "extended",
+    "model": "extended/cache-no-stage/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0030373749998489075,
+    "stateVariables": 31,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 155,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0014502080000511341
+    }
+  },
+  {
+    "id": "cache-save-warning-no-object",
+    "engine": "extended",
+    "model": "extended/cache-save-warning-no-object/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0027446249998774874,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 193,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0016167090000180906
+    }
+  },
+  {
+    "id": "cache-exact-hit",
+    "engine": "extended",
+    "model": "extended/cache-exact-hit/model.smv",
+    "expected": true,
+    "generationSeconds": 0.003086124999981621,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-current",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0014309159998902032
+    }
+  },
+  {
+    "id": "cache-output-guard",
+    "engine": "extended",
+    "model": "extended/cache-output-guard/model.smv",
+    "expected": true,
+    "generationSeconds": 0.0030543330001364666,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 201,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0020434579998891422
+    }
+  },
+  {
+    "id": "cache-output-contradiction",
+    "engine": "extended",
+    "model": "extended/cache-output-contradiction/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0033800830001382565,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 197,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0018369590000020253
+    }
+  },
+  {
+    "id": "status-failure-always-recovery",
+    "engine": "extended",
+    "model": "extended/status-failure-always-recovery/model.smv",
+    "expected": true,
+    "generationSeconds": 0.0031428750000941363,
+    "stateVariables": 35,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 393,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 5,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0024934580001172435
+    }
+  },
+  {
+    "id": "status-default-skip-after-failure",
+    "engine": "extended",
+    "model": "extended/status-default-skip-after-failure/model.smv",
+    "expected": false,
+    "generationSeconds": 0.0033425829999487178,
+    "stateVariables": 35,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": false,
+        "success": false,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0019776249998813
+    }
+  },
+  {
+    "id": "status-cancelled-cleanup",
+    "engine": "extended",
+    "model": "extended/status-cancelled-cleanup/model.smv",
+    "expected": true,
+    "generationSeconds": 0.013464082999917082,
+    "stateVariables": 33,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "cache-post-save",
+    "engine": "extended",
+    "model": "extended/cache-post-save/model.smv",
+    "expected": true,
+    "generationSeconds": 0.00411133400007202,
+    "stateVariables": 35,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 193,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.002844290999973964
+    }
+  },
+  {
+    "id": "cache-post-job-failure",
+    "engine": "extended",
+    "model": "extended/cache-post-job-failure/model.smv",
+    "expected": false,
+    "generationSeconds": 0.003435332999970342,
+    "stateVariables": 37,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 289,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0018480419998923026
+    }
+  },
+  {
+    "id": "cache-post-continue-on-error",
+    "engine": "extended",
+    "model": "extended/cache-post-continue-on-error/model.smv",
+    "expected": true,
+    "generationSeconds": 0.003822540999863122,
+    "stateVariables": 37,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 289,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 3,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.002287209000087387
+    }
+  },
+  {
+    "id": "cache-current-default-read",
+    "engine": "extended",
+    "model": "extended/cache-current-default-read/model.smv",
+    "expected": false,
+    "generationSeconds": 0.003270749999956024,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 193,
+      "reachable": {
+        "transfer": false,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0017685830000573333
+    }
+  },
+  {
+    "id": "cache-current-explicit-write",
+    "engine": "extended",
+    "model": "extended/cache-current-explicit-write/model.smv",
+    "expected": true,
+    "generationSeconds": 0.003551791999825582,
+    "stateVariables": 33,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 225,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0019795839998550946
+    }
+  },
+  {
+    "id": "cache-newest-prefix-is-clean",
+    "engine": "extended",
+    "model": "extended/cache-newest-prefix-is-clean/model.smv",
+    "expected": false,
+    "generationSeconds": 0.003808542000115267,
+    "stateVariables": 39,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 13,
+      "reachable": {
+        "transfer": true,
+        "use": false,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": false
+      },
+      "counterexample": [],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0017303750000792206
+    }
+  },
+  {
+    "id": "cache-exact-before-newest-prefix",
+    "engine": "extended",
+    "model": "extended/cache-exact-before-newest-prefix/model.smv",
+    "expected": true,
+    "generationSeconds": 0.0038462500001514854,
+    "stateVariables": 39,
+    "verdict": "pending-model-check",
+    "bfs": {
+      "status": "complete",
+      "states": 13,
+      "reachable": {
+        "transfer": true,
+        "use": true,
+        "sink_site": true,
+        "success": true,
+        "bad_authority": true
+      },
+      "counterexample": [
+        {
+          "run": 0,
+          "pc": 0,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 1,
+          "cache": [],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 0,
+          "pc": -2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 0,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 1,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 2,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 3,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": false
+        },
+        {
+          "run": 1,
+          "pc": 4,
+          "cache": [
+            [
+              0,
+              "linux-pkg-new",
+              "version1",
+              2
+            ],
+            [
+              0,
+              "linux-pkg-clean",
+              "version1",
+              1
+            ]
+          ],
+          "bad": true
+        }
+      ],
+      "scope": "closed cache/checkout/read/stage/push contracts; excludes arbitrary Shell, matrix and multi-job",
+      "seconds": 0.0015328329998283152
+    }
+  },
+  {
+    "id": "unsupported-shell",
+    "engine": "extended",
+    "model": "extended/unsupported-shell/model.smv",
+    "expected": null,
+    "generationSeconds": 0.003661792000002606,
+    "stateVariables": 33,
+    "verdict": "unknown/unsupported"
+  },
+  {
+    "id": "unsupported-action",
+    "engine": "extended",
+    "model": "extended/unsupported-action/model.smv",
+    "expected": null,
+    "generationSeconds": 0.0029973329999393172,
+    "stateVariables": 30,
+    "verdict": "unknown/unsupported"
+  },
+  {
+    "id": "unsupported-cache-key-collation",
+    "engine": "extended",
+    "model": "extended/unsupported-cache-key-collation/model.smv",
+    "expected": null,
+    "generationSeconds": 0.0033133330000509886,
+    "stateVariables": 33,
+    "verdict": "unknown/unsupported"
+  },
+  {
+    "id": "static-matrix",
+    "engine": "extended",
+    "model": "extended/static-matrix/model.smv",
+    "expected": true,
+    "generationSeconds": 0.0036787500000627915,
+    "stateVariables": 44,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-cross-run",
+    "engine": "extended",
+    "model": "extended/artifact-cross-run/model.smv",
+    "expected": true,
+    "stateVariables": 31,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-name-mismatch",
+    "engine": "extended",
+    "model": "extended/artifact-name-mismatch/model.smv",
+    "expected": false,
+    "stateVariables": 31,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-run-mismatch",
+    "engine": "extended",
+    "model": "extended/artifact-run-mismatch/model.smv",
+    "expected": false,
+    "stateVariables": 31,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-token-permission",
+    "engine": "extended",
+    "model": "extended/artifact-token-permission/model.smv",
+    "expected": false,
+    "stateVariables": 31,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-workflow-run-context",
+    "engine": "extended",
+    "model": "extended/artifact-workflow-run-context/model.smv",
+    "expected": true,
+    "stateVariables": 31,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-two-object-isolation",
+    "engine": "extended",
+    "model": "extended/artifact-two-object-isolation/model.smv",
+    "expected": false,
+    "stateVariables": 39,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-multiple-jobs",
+    "engine": "extended",
+    "model": "extended/artifact-multiple-jobs/model.smv",
+    "expected": true,
+    "stateVariables": 43,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-needs-output",
+    "engine": "extended",
+    "model": "extended/artifact-needs-output/model.smv",
+    "expected": true,
+    "stateVariables": 46,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "artifact-package-publish",
+    "engine": "extended",
+    "model": "extended/artifact-package-publish/model.smv",
+    "expected": true,
+    "stateVariables": 27,
+    "verdict": "pending-model-check"
+  },
+  {
+    "id": "tanstack-pre-incident",
+    "engine": "extended",
+    "model": "tanstack/pre-incident.smv",
+    "expected": null,
+    "verdict": "unknown/unsupported"
+  },
+  {
+    "id": "tanstack-mitigation",
+    "engine": "extended",
+    "model": "tanstack/mitigation.smv",
+    "expected": null,
+    "verdict": "unknown/unsupported"
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "semantics": "yaml-operational-bfs-download-use-subset-v1",
+  "sources": [
+    {
+      "path": ".github/workflows/artifact-a1-pr-producer.yml",
+      "sha256": "459f7b60cfa1cad7c456a2c8ecf0422f6273be9553761c4a627495e1086fc4b7"
+    },
+    {
+      "path": ".github/workflows/artifact-a1-unsafe-consumer.yml",
+      "sha256": "9bd6dab061ed36552aff0e21a28e73b0f37a596194d70b0f9458becdea2fb3e7"
+    }
+  ],
+  "scenario": {
+    "producerEvent": "pull_request",
+    "producerPathFilter": "true (fixed unknown input)",
+    "stepOutcomes": "all success",
+    "workflowRunActivity": "completed",
+    "actionPermission": "read"
+  },
+  "reachableProjectedStateCount": 11,
+  "exploredEdges": 16,
+  "downloadReachable": true,
+  "artifactDependentUseReachable": true,
+  "useRequiresPriorSuccessfulDownload": true,
+  "limits": [
+    "one job per workflow and one upload/download",
+    "only Artifact-file reads count as dependent use",
+    "integrity, sink, actual run ID/artifact ID, and runner behavior are excluded"
+  ],
+  "nuSMV": {
+    "exitCode": 0,
+    "totalityExitCode": 0,
+    "reachableStateCount": 2592,
+    "downloadReachable": true,
+    "artifactDependentUseReachable": true,
+    "useAfterDownloadInvariant": true,
+    "observableReachabilityMatchesBFS": true
+  },
+  "stateCountComparison": "not compared: BFS counts the 5-field projection; NuSMV counts all model variables"
+}

@@ -1,0 +1,22 @@
+name: Artifact Consumer
+on: push
+permissions: {actions: read, contents: write}
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: pr-head, persist-credentials: false}
+      - uses: actions/upload-artifact@v4
+        with: {name: local, path: data}
+  read:
+    needs: upload
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: local
+          path: data
+      - run: cat data
+      - run: git add data
+      - run: git push

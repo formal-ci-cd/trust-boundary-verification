@@ -1,0 +1,15 @@
+--- /Users/bob/Documents/GitHub/trust-boundary-verification/tools/workflow_model_v2/policies.py	2026-10-22 19:04:54
++++ extension-work/tools/workflow_model_v2/policies.py	2026-10-22 19:10:34
+@@ -151,6 +151,12 @@
+ 
+ def cache_rank(saved, requested, restore_keys):
+     """Ordered key search; scope precedence is applied by the caller."""
++    if any(not value.isascii() for value in [saved, requested, *restore_keys]):
++        raise UnsupportedPolicy('locale-sensitive non-ASCII cache keys require a service matching contract')
++    if (saved.lower() == requested.lower() and saved != requested) or any(
++            saved.lower().startswith(prefix.lower()) and not saved.startswith(prefix)
++            for prefix in [requested, *restore_keys]):
++        raise UnsupportedPolicy('case-only cache matching is unspecified here; action exact-hit uses locale comparison')
+     if saved == requested:
+         return 0
+     if saved.startswith(requested):

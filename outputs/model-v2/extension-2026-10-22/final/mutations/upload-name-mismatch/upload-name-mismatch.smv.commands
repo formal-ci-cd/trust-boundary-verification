@@ -1,0 +1,5 @@
+read_model -i /out/mutations/upload-name-mismatch/upload-name-mismatch.smv
+go
+compute_reachable
+print_reachable_states
+quit

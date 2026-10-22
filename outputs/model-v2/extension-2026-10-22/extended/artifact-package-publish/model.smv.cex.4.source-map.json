@@ -1,0 +1,86 @@
+[
+  {
+    "state": "4.2",
+    "job": "j_b3fa588af440",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-package-publish/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "4.3",
+    "job": "j_b3fa588af440",
+    "step": "upload",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-package-publish/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "4.6",
+    "job": "j_bff83956f72f",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "id_object_445e0a6b890b"
+    },
+    "source": {
+      "file": "/out/extended/artifact-package-publish/consumer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 14,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "4.7",
+    "job": "j_bff83956f72f",
+    "step": "index1",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-package-publish/consumer.yml",
+      "line": 14,
+      "column": 9,
+      "endLine": 15,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  }
+]

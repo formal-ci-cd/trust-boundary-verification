@@ -1,0 +1,23 @@
+services:
+  model:
+    image: tbv-model-v2:local
+    platform: linux/amd64
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sleep", "infinity"]
+    init: true
+    user: "1000:1000"
+    network_mode: none
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: ["no-new-privileges:true"]
+    mem_limit: 2g
+    cpus: 2
+    pids_limit: 128
+    tmpfs:
+      - /tmp:rw,nosuid,nodev,size=512m
+    volumes:
+      - .:/repo:ro
+      - ./outputs/runs:/out:rw
+    working_dir: /repo

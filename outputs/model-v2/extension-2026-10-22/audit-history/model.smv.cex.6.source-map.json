@@ -1,0 +1,174 @@
+[
+  {
+    "symbol": "perm_artifact_a1_pr_producer_produce_artifact_actions",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a1-pr-producer.yml",
+          "line": 20,
+          "column": 5,
+          "endLine": 56,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_artifact_a1_pr_producer_produce_artifact_contents",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a1-pr-producer.yml",
+          "line": 20,
+          "column": 5,
+          "endLine": 56,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_consumer_consume_after_verification_actions",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 22,
+          "column": 5,
+          "endLine": 104,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_consumer_consume_after_verification_contents",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 22,
+          "column": 5,
+          "endLine": 104,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "ctx_25282f8add",
+    "source": {
+      "kind": "unknown-context",
+      "sources": []
+    }
+  },
+  {
+    "symbol": "object_548fbdc0e9_state",
+    "source": {
+      "kind": "artifact-object-slot",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a1-pr-producer.yml",
+          "line": 37,
+          "column": 9,
+          "endLine": 47,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "download_24cc62d5a2_state",
+    "source": {
+      "kind": "download-result",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 29,
+          "column": 9,
+          "endLine": 38,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "download_24cc62d5a2_object",
+    "source": {
+      "kind": "downloaded-object-id",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 29,
+          "column": 9,
+          "endLine": 38,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "pc_artifact_a1_pr_producer_produce_artifact",
+    "source": {
+      "kind": "job-program-counter",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a1-pr-producer.yml",
+          "line": 20,
+          "column": 5,
+          "endLine": 56,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "failed_pc_artifact_a1_pr_producer_produce_artifact",
+    "source": {
+      "kind": "job-failure-latch",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a1-pr-producer.yml",
+          "line": 20,
+          "column": 5,
+          "endLine": 56,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "pc_consumer_consume_after_verification",
+    "source": {
+      "kind": "job-program-counter",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 22,
+          "column": 5,
+          "endLine": 104,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "failed_pc_consumer_consume_after_verification",
+    "source": {
+      "kind": "job-failure-latch",
+      "sources": [
+        {
+          "file": "/out/audit-history/consumer.yml",
+          "line": 22,
+          "column": 5,
+          "endLine": 104,
+          "endColumn": 1
+        }
+      ]
+    }
+  }
+]

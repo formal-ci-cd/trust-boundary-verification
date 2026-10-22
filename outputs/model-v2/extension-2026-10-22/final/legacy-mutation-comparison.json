@@ -1,0 +1,409 @@
+[
+  {
+    "case": "download-disabled",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_0d9b8c97b5_state = download_succeeded -> download_0d9b8c97b5_object != no_object)": true,
+      "AG download_0d9b8c97b5_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "use-disabled",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_9e7e768cc3_state = download_succeeded -> download_9e7e768cc3_object != no_object)": true,
+      "AG download_9e7e768cc3_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "sink-disabled",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_e25523e1fd_state = download_succeeded -> download_e25523e1fd_object != no_object)": true,
+      "AG download_e25523e1fd_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "upload-name-mismatch",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_9986b15de5_state = download_succeeded -> download_9986b15de5_object != no_object)": true,
+      "AG download_9986b15de5_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "workflow-run-mismatch",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_0bc4f48e26_state = download_succeeded -> download_0bc4f48e26_object != no_object)": true,
+      "AG download_0bc4f48e26_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "run-id-mismatch",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_a931d1e01e_state = download_succeeded -> download_a931d1e01e_object != no_object)": true,
+      "AG download_a931d1e01e_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "upload-failure",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_8f2a75ffac_state = download_succeeded -> download_8f2a75ffac_object != no_object)": true,
+      "AG download_8f2a75ffac_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "download-failure",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_4d5c788caa_state = download_succeeded -> download_4d5c788caa_object != no_object)": true,
+      "AG download_4d5c788caa_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "if-false-upload",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_59ac9ed4b0_state = download_succeeded -> download_59ac9ed4b0_object != no_object)": true,
+      "AG download_59ac9ed4b0_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "same-output-reference-twice",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_8d69d2cea0_state = download_succeeded -> download_8d69d2cea0_object != no_object)": true,
+      "AG download_8d69d2cea0_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "contradictory-same-output",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_03be4726f2_state = download_succeeded -> download_03be4726f2_object != no_object)": true,
+      "AG download_03be4726f2_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "integrity-check-disabled",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_359339dce5_state = download_succeeded -> download_359339dce5_object != no_object)": true,
+      "AG download_359339dce5_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "digest-success",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_7f3be9b33c_state = download_succeeded -> download_7f3be9b33c_object != no_object)": true,
+      "AG download_7f3be9b33c_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "digest-mismatch",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_e221b5fa89_state = download_succeeded -> download_e221b5fa89_object != no_object)": true,
+      "AG download_e221b5fa89_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "a5-invalid-metadata",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_f2bb816a7f_state = download_succeeded -> download_f2bb816a7f_object != no_object)": true,
+      "AG download_f2bb816a7f_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "a5-output-reference-changed",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_6ec13aa647_state = download_succeeded -> download_6ec13aa647_object != no_object)": true,
+      "AG download_6ec13aa647_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "unrelated-fixed-marker",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_e9b09cca7a_state = download_succeeded -> download_e9b09cca7a_object != no_object)": true,
+      "AG download_e9b09cca7a_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "unsupported-shell",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_35dea4d35a_state = download_succeeded -> download_35dea4d35a_object != no_object)": true,
+      "AG download_35dea4d35a_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "unregistered-action-ref",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_a2bdbd33a6_state = download_succeeded -> download_a2bdbd33a6_object != no_object)": true,
+      "AG download_a2bdbd33a6_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "permission-missing",
+    "sharedProperties": {
+      "AG !artifact_dependent_sink": true,
+      "AG !artifact_dependent_use": true,
+      "AG !bad_real_authority_path": true,
+      "AG !bad_simulated_path": true,
+      "AG !integrity_blocked": true,
+      "AG !simulated_sink_site_reached": true,
+      "AG (artifact_dependent_sink -> artifact_dependent_use)": true,
+      "AG (artifact_dependent_use -> download_success_any)": true,
+      "AG (download_585d258498_state = download_succeeded -> download_585d258498_object != no_object)": true,
+      "AG download_585d258498_state != download_succeeded": true,
+      "AG integrity_state != integrity_mismatch": true,
+      "AG integrity_state != integrity_verified": true
+    },
+    "oldExit": 0,
+    "newExit": 0,
+    "matched": true
+  },
+  {
+    "case": "nusmv-invalid-input",
+    "sharedProperties": {},
+    "oldExit": 1,
+    "newExit": 1,
+    "matched": true
+  }
+]

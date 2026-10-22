@@ -1,0 +1,2 @@
+-- specification AG !bad_simulated_path  is true
+\n

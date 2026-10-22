@@ -1,0 +1,119 @@
+-- specification AG !bad_authority  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 5.1 <-
+    transfer = FALSE
+    dependent_use = FALSE
+    sink_site = FALSE
+    authority_available = FALSE
+    sink_succeeded = FALSE
+    bad_authority = FALSE
+    pc_j_4378a73c41c5 = pending
+    failed_j_4378a73c41c5 = FALSE
+    cancelled_j_4378a73c41c5 = FALSE
+    staged_j_4378a73c41c5 = FALSE
+    outcome_a57c85ac747d = unset
+    outcome_a57c85ac747d_conclusion = unset
+    outcome_1dd9e3f5ef9d = unset
+    outcome_1dd9e3f5ef9d_conclusion = unset
+    object_0349dded4944 = absent
+    age_object_0349dded4944 = 0
+    outcome_9f0c31a12c82 = unset
+    outcome_9f0c31a12c82_conclusion = unset
+    outcome_c88736ee9648 = unset
+    outcome_c88736ee9648_conclusion = unset
+    object_5247b0629208 = absent
+    age_object_5247b0629208 = 0
+    pc_j_bff83956f72f = pending
+    failed_j_bff83956f72f = FALSE
+    cancelled_j_bff83956f72f = FALSE
+    staged_j_bff83956f72f = FALSE
+    outcome_fce64512b29c = unset
+    outcome_fce64512b29c_conclusion = unset
+    out_5e07f46448c3 = v_12ae32cb1ec0
+    cache_exact_outcome_fce64512b29c = FALSE
+    outcome_bef83fa3717e = unset
+    outcome_bef83fa3717e_conclusion = unset
+    outcome_2075cd8bd66c = unset
+    outcome_2075cd8bd66c_conclusion = unset
+    outcome_299352ae45a3 = unset
+    outcome_299352ae45a3_conclusion = unset
+    save_clock = 0
+    file_1cd1865017cb = absent
+    file_a8714a71f1e0 = absent
+  -> Input: 5.2 <-
+    actor = j_4378a73c41c5
+    operation_ok = TRUE
+    cache_io_ok = TRUE
+    cancel_request = FALSE
+    select_a64859d3c55b = none
+  -> State: 5.2 <-
+    pc_j_4378a73c41c5 = s0
+  -> Input: 5.3 <-
+  -> State: 5.3 <-
+    pc_j_4378a73c41c5 = s1
+    outcome_a57c85ac747d = success
+    outcome_a57c85ac747d_conclusion = success
+    file_1cd1865017cb = tainted
+  -> Input: 5.4 <-
+  -> State: 5.4 <-
+    pc_j_4378a73c41c5 = s2
+    outcome_1dd9e3f5ef9d = success
+    outcome_1dd9e3f5ef9d_conclusion = success
+    object_0349dded4944 = tainted
+    age_object_0349dded4944 = 1
+    save_clock = 1
+  -> Input: 5.5 <-
+  -> State: 5.5 <-
+    pc_j_4378a73c41c5 = s3
+    outcome_9f0c31a12c82 = success
+    outcome_9f0c31a12c82_conclusion = success
+    file_1cd1865017cb = clean
+  -> Input: 5.6 <-
+  -> State: 5.6 <-
+    pc_j_4378a73c41c5 = s4
+    outcome_c88736ee9648 = success
+    outcome_c88736ee9648_conclusion = success
+    object_5247b0629208 = clean
+    age_object_5247b0629208 = 2
+    save_clock = 2
+  -> Input: 5.7 <-
+  -> State: 5.7 <-
+    pc_j_4378a73c41c5 = success
+  -> Input: 5.8 <-
+    actor = j_bff83956f72f
+  -> State: 5.8 <-
+    pc_j_bff83956f72f = s0
+  -> Input: 5.9 <-
+    select_a64859d3c55b = id_object_0349dded4944
+  -> State: 5.9 <-
+    transfer = TRUE
+    pc_j_bff83956f72f = s1
+    outcome_fce64512b29c = success
+    outcome_fce64512b29c_conclusion = success
+    out_5e07f46448c3 = v_18d10c7d2b4b
+    cache_exact_outcome_fce64512b29c = TRUE
+    file_a8714a71f1e0 = tainted
+  -> Input: 5.10 <-
+    select_a64859d3c55b = none
+  -> State: 5.10 <-
+    dependent_use = TRUE
+    pc_j_bff83956f72f = s2
+    outcome_bef83fa3717e = success
+    outcome_bef83fa3717e_conclusion = success
+  -> Input: 5.11 <-
+  -> State: 5.11 <-
+    pc_j_bff83956f72f = s3
+    staged_j_bff83956f72f = TRUE
+    outcome_2075cd8bd66c = success
+    outcome_2075cd8bd66c_conclusion = success
+  -> Input: 5.12 <-
+  -> State: 5.12 <-
+    sink_site = TRUE
+    authority_available = TRUE
+    sink_succeeded = TRUE
+    bad_authority = TRUE
+    pc_j_bff83956f72f = s4
+    outcome_299352ae45a3 = success
+    outcome_299352ae45a3_conclusion = success

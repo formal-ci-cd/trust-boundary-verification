@@ -1,0 +1,307 @@
+-- Finite bounded runs; nondeterministic outcomes are not observations.
+MODULE main
+IVAR
+  actor : { idle, j_b3fa588af440, j_bff83956f72f };
+  operation_ok : boolean;
+  cache_io_ok : boolean;
+  cancel_request : boolean;
+  select_cc417ad2e740 : { none, id_object_552db84a97ab };
+VAR
+  transfer : boolean;
+  dependent_use : boolean;
+  sink_site : boolean;
+  authority_available : boolean;
+  sink_succeeded : boolean;
+  bad_authority : boolean;
+  pc_j_b3fa588af440 : { pending, success, failure, skipped, cancelled, s0, s1, s2, s3, s4 };
+  failed_j_b3fa588af440 : boolean;
+  cancelled_j_b3fa588af440 : boolean;
+  staged_j_b3fa588af440 : boolean;
+  outcome_dd4fbda768b4 : { unset, success, failure, skipped, cancelled };
+  outcome_dd4fbda768b4_conclusion : { unset, success, failure, skipped, cancelled };
+  outcome_b4fea0b611f1 : { unset, success, failure, skipped, cancelled };
+  outcome_b4fea0b611f1_conclusion : { unset, success, failure, skipped, cancelled };
+  object_445e0a6b890b : { absent, clean, tainted };
+  out_0026caf1f097 : { v_12ae32cb1ec0, v_cfb7ee15f4f6 };
+  out_9d9fb50e47a6 : { v_12ae32cb1ec0, v_104c8abe2676 };
+  outcome_c97d4e1a242b : { unset, success, failure, skipped, cancelled };
+  outcome_c97d4e1a242b_conclusion : { unset, success, failure, skipped, cancelled };
+  outcome_02cc95eb64aa : { unset, success, failure, skipped, cancelled };
+  outcome_02cc95eb64aa_conclusion : { unset, success, failure, skipped, cancelled };
+  object_552db84a97ab : { absent, clean, tainted };
+  out_a7717e95ec7c : { v_12ae32cb1ec0, v_6ba66713adae };
+  out_cf714cd3ccf3 : { v_12ae32cb1ec0, v_104c8abe2676 };
+  pc_j_bff83956f72f : { pending, success, failure, skipped, cancelled, s0, s1, s2, s3, s4 };
+  failed_j_bff83956f72f : boolean;
+  cancelled_j_bff83956f72f : boolean;
+  staged_j_bff83956f72f : boolean;
+  outcome_8a7fb9016790 : { unset, success, failure, skipped, cancelled };
+  outcome_8a7fb9016790_conclusion : { unset, success, failure, skipped, cancelled };
+  outcome_bef83fa3717e : { unset, success, failure, skipped, cancelled };
+  outcome_bef83fa3717e_conclusion : { unset, success, failure, skipped, cancelled };
+  outcome_2075cd8bd66c : { unset, success, failure, skipped, cancelled };
+  outcome_2075cd8bd66c_conclusion : { unset, success, failure, skipped, cancelled };
+  outcome_299352ae45a3 : { unset, success, failure, skipped, cancelled };
+  outcome_299352ae45a3_conclusion : { unset, success, failure, skipped, cancelled };
+  file_d1e1d998b911 : { absent, clean, tainted };
+  file_900cff11c1fb : { absent, clean, tainted };
+  file_a8714a71f1e0 : { absent, clean, tainted };
+ASSIGN
+  init(transfer) := FALSE;
+  next(transfer) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE))))))))) & (select_cc417ad2e740 = id_object_552db84a97ab)) : TRUE;
+    TRUE : transfer;
+  esac;
+  init(dependent_use) := FALSE;
+  next(dependent_use) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (file_a8714a71f1e0 = tainted)) : TRUE;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (file_a8714a71f1e0 = tainted)) : TRUE;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (staged_j_bff83956f72f)) : TRUE;
+    TRUE : dependent_use;
+  esac;
+  init(sink_site) := FALSE;
+  next(sink_site) := case
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (TRUE)) : TRUE;
+    TRUE : sink_site;
+  esac;
+  init(authority_available) := FALSE;
+  next(authority_available) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (TRUE))) & (((((TRUE) & (TRUE))) & (TRUE)))) : TRUE;
+    TRUE : authority_available;
+  esac;
+  init(sink_succeeded) := FALSE;
+  next(sink_succeeded) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((TRUE) & (TRUE))) & (TRUE)))) : TRUE;
+    TRUE : sink_succeeded;
+  esac;
+  init(bad_authority) := FALSE;
+  next(bad_authority) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((TRUE) & (TRUE))) & (TRUE))) & (staged_j_bff83956f72f)) : TRUE;
+    TRUE : bad_authority;
+  esac;
+  init(pc_j_b3fa588af440) := pending;
+  next(pc_j_b3fa588af440) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = pending) & (TRUE) & (TRUE))) & (TRUE)) : s0;
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = pending) & (TRUE) & (TRUE))) & (!(TRUE))) : skipped;
+    ((actor = j_b3fa588af440) & (!cancel_request) & (pc_j_b3fa588af440 = s4) & (cancelled_j_b3fa588af440)) : cancelled;
+    ((actor = j_b3fa588af440) & (!cancel_request) & (pc_j_b3fa588af440 = s4) & (!cancelled_j_b3fa588af440) & (failed_j_b3fa588af440)) : failure;
+    ((actor = j_b3fa588af440) & (!cancel_request) & (pc_j_b3fa588af440 = s4) & (!cancelled_j_b3fa588af440) & (!failed_j_b3fa588af440)) : success;
+    ((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request)) : s1;
+    ((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request)) : s2;
+    ((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request)) : s3;
+    ((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request)) : s4;
+    TRUE : pc_j_b3fa588af440;
+  esac;
+  init(failed_j_b3fa588af440) := FALSE;
+  next(failed_j_b3fa588af440) := case
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : TRUE;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : TRUE;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : TRUE;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : TRUE;
+    TRUE : failed_j_b3fa588af440;
+  esac;
+  init(cancelled_j_b3fa588af440) := FALSE;
+  next(cancelled_j_b3fa588af440) := case
+    ((actor = j_b3fa588af440) & (cancel_request) & (!(pc_j_b3fa588af440 in { pending, success, failure, skipped, cancelled }))) : TRUE;
+    TRUE : cancelled_j_b3fa588af440;
+  esac;
+  init(staged_j_b3fa588af440) := FALSE;
+  next(staged_j_b3fa588af440) := case
+    TRUE : staged_j_b3fa588af440;
+  esac;
+  init(outcome_dd4fbda768b4) := unset;
+  next(outcome_dd4fbda768b4) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_dd4fbda768b4;
+  esac;
+  init(outcome_dd4fbda768b4_conclusion) := unset;
+  next(outcome_dd4fbda768b4_conclusion) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_dd4fbda768b4_conclusion;
+  esac;
+  init(outcome_b4fea0b611f1) := unset;
+  next(outcome_b4fea0b611f1) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_b4fea0b611f1;
+  esac;
+  init(outcome_b4fea0b611f1_conclusion) := unset;
+  next(outcome_b4fea0b611f1_conclusion) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_b4fea0b611f1_conclusion;
+  esac;
+  init(object_445e0a6b890b) := absent;
+  next(object_445e0a6b890b) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_d1e1d998b911 != absent)) : file_d1e1d998b911;
+    TRUE : object_445e0a6b890b;
+  esac;
+  init(out_0026caf1f097) := v_12ae32cb1ec0;
+  next(out_0026caf1f097) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_d1e1d998b911 != absent)) : v_cfb7ee15f4f6;
+    TRUE : out_0026caf1f097;
+  esac;
+  init(out_9d9fb50e47a6) := v_12ae32cb1ec0;
+  next(out_9d9fb50e47a6) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s1) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_d1e1d998b911 != absent)) : v_104c8abe2676;
+    TRUE : out_9d9fb50e47a6;
+  esac;
+  init(outcome_c97d4e1a242b) := unset;
+  next(outcome_c97d4e1a242b) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_c97d4e1a242b;
+  esac;
+  init(outcome_c97d4e1a242b_conclusion) := unset;
+  next(outcome_c97d4e1a242b_conclusion) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_c97d4e1a242b_conclusion;
+  esac;
+  init(outcome_02cc95eb64aa) := unset;
+  next(outcome_02cc95eb64aa) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_02cc95eb64aa;
+  esac;
+  init(outcome_02cc95eb64aa_conclusion) := unset;
+  next(outcome_02cc95eb64aa_conclusion) := case
+    ((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (!(((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) : skipped;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : success;
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (!operation_ok)) : failure;
+    TRUE : outcome_02cc95eb64aa_conclusion;
+  esac;
+  init(object_552db84a97ab) := absent;
+  next(object_552db84a97ab) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_900cff11c1fb != absent)) : file_900cff11c1fb;
+    TRUE : object_552db84a97ab;
+  esac;
+  init(out_a7717e95ec7c) := v_12ae32cb1ec0;
+  next(out_a7717e95ec7c) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_900cff11c1fb != absent)) : v_6ba66713adae;
+    TRUE : out_a7717e95ec7c;
+  esac;
+  init(out_cf714cd3ccf3) := v_12ae32cb1ec0;
+  next(out_cf714cd3ccf3) := case
+    ((((((((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s3) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok))) & (TRUE))))) & (file_900cff11c1fb != absent)) : v_104c8abe2676;
+    TRUE : out_cf714cd3ccf3;
+  esac;
+  init(pc_j_bff83956f72f) := pending;
+  next(pc_j_bff83956f72f) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = pending) & (((TRUE) & (pc_j_b3fa588af440 in { success, failure, skipped, cancelled }))) & (TRUE))) & (TRUE)) : s0;
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = pending) & (((TRUE) & (pc_j_b3fa588af440 in { success, failure, skipped, cancelled }))) & (TRUE))) & (!(TRUE))) : skipped;
+    ((actor = j_bff83956f72f) & (!cancel_request) & (pc_j_bff83956f72f = s4) & (cancelled_j_bff83956f72f)) : cancelled;
+    ((actor = j_bff83956f72f) & (!cancel_request) & (pc_j_bff83956f72f = s4) & (!cancelled_j_bff83956f72f) & (failed_j_bff83956f72f)) : failure;
+    ((actor = j_bff83956f72f) & (!cancel_request) & (pc_j_bff83956f72f = s4) & (!cancelled_j_bff83956f72f) & (!failed_j_bff83956f72f)) : success;
+    ((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request)) : s1;
+    ((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request)) : s2;
+    ((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request)) : s3;
+    ((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request)) : s4;
+    TRUE : pc_j_bff83956f72f;
+  esac;
+  init(failed_j_bff83956f72f) := FALSE;
+  next(failed_j_bff83956f72f) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok))) | (((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))))) : TRUE;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : TRUE;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : TRUE;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : TRUE;
+    TRUE : failed_j_bff83956f72f;
+  esac;
+  init(cancelled_j_bff83956f72f) := FALSE;
+  next(cancelled_j_bff83956f72f) := case
+    ((actor = j_bff83956f72f) & (cancel_request) & (!(pc_j_bff83956f72f in { pending, success, failure, skipped, cancelled }))) : TRUE;
+    TRUE : cancelled_j_bff83956f72f;
+  esac;
+  init(staged_j_bff83956f72f) := FALSE;
+  next(staged_j_bff83956f72f) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (file_a8714a71f1e0 = tainted)) : TRUE;
+    TRUE : staged_j_bff83956f72f;
+  esac;
+  init(outcome_8a7fb9016790) := unset;
+  next(outcome_8a7fb9016790) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))) : success;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok))) | (((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))))) : failure;
+    TRUE : outcome_8a7fb9016790;
+  esac;
+  init(outcome_8a7fb9016790_conclusion) := unset;
+  next(outcome_8a7fb9016790_conclusion) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))) : success;
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok))) | (((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))))) : failure;
+    TRUE : outcome_8a7fb9016790_conclusion;
+  esac;
+  init(outcome_bef83fa3717e) := unset;
+  next(outcome_bef83fa3717e) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_bef83fa3717e;
+  esac;
+  init(outcome_bef83fa3717e_conclusion) := unset;
+  next(outcome_bef83fa3717e_conclusion) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s1) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_bef83fa3717e_conclusion;
+  esac;
+  init(outcome_2075cd8bd66c) := unset;
+  next(outcome_2075cd8bd66c) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_2075cd8bd66c;
+  esac;
+  init(outcome_2075cd8bd66c_conclusion) := unset;
+  next(outcome_2075cd8bd66c_conclusion) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s2) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_2075cd8bd66c_conclusion;
+  esac;
+  init(outcome_299352ae45a3) := unset;
+  next(outcome_299352ae45a3) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_299352ae45a3;
+  esac;
+  init(outcome_299352ae45a3_conclusion) := unset;
+  next(outcome_299352ae45a3_conclusion) := case
+    ((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (!(((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) : skipped;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok)) : success;
+    ((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s3) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (!operation_ok)) : failure;
+    TRUE : outcome_299352ae45a3_conclusion;
+  esac;
+  init(file_d1e1d998b911) := absent;
+  next(file_d1e1d998b911) := case
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s0) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : tainted;
+    TRUE : file_d1e1d998b911;
+  esac;
+  init(file_900cff11c1fb) := absent;
+  next(file_900cff11c1fb) := case
+    ((((((actor = j_b3fa588af440) & (pc_j_b3fa588af440 = s2) & (!cancel_request))) & (((!failed_j_b3fa588af440) & (!cancelled_j_b3fa588af440))))) & (operation_ok)) : clean;
+    TRUE : file_900cff11c1fb;
+  esac;
+  init(file_a8714a71f1e0) := absent;
+  next(file_a8714a71f1e0) := case
+    ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE))))))))) & (select_cc417ad2e740 = id_object_552db84a97ab)) : object_552db84a97ab;
+    TRUE : file_a8714a71f1e0;
+  esac;
+TRANS ((((((((actor = j_bff83956f72f) & (pc_j_bff83956f72f = s0) & (!cancel_request))) & (((!failed_j_bff83956f72f) & (!cancelled_j_bff83956f72f))))) & (operation_ok))) & (((((((object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE)))))))))))) -> ((((select_cc417ad2e740 = id_object_552db84a97ab) & (object_552db84a97ab != absent) & (((TRUE) & (TRUE) & (TRUE) & (((TRUE) & (TRUE))))))))
+CTLSPEC NAME no_transfer := AG !transfer;
+CTLSPEC NAME no_use := AG !dependent_use;
+CTLSPEC NAME no_sink_site := AG !sink_site;
+CTLSPEC NAME no_success := AG !sink_succeeded;
+CTLSPEC NAME no_bad_authority := AG !bad_authority;
+CTLSPEC NAME success_requires_site := AG (sink_succeeded -> sink_site);
+CTLSPEC NAME bad_requires_success := AG (bad_authority -> sink_succeeded);

@@ -1,0 +1,17 @@
+name: Restore
+on: push
+permissions: {contents: write}
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - id: cache
+        uses: actions/cache/restore@v4
+        with:
+          key: linux-pkg-current
+          restore-keys: linux-pkg-
+          path: data
+      - run: cat data
+      - if: steps.cache.outputs.cache-hit == 'false'
+        run: git add data
+      - run: git push

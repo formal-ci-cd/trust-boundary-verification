@@ -4,21 +4,25 @@ GitHub ActionsのCache・artifactを介した信頼境界を，YAMLから有限�
 
 この `feat/workflow-model-v2` ブランチは現行v2専用です．旧評価系のPythonと専用テストは削除し，必要なparser・生成器・独立探索・評価・証拠保存だけを残しています．
 
-- 操作と実装：[tools/README.md](tools/README.md)
+- コンテナの起動・入室・段階実行：[操作手順](docs/container-guide.md)
+- 実装の入口：[tools/README.md](tools/README.md)
 - 対応範囲と制限：[拡張仕様](docs/next-model-design/extension-semantics.md)
-- 保存済み評価：[最新評価](outputs/model-v2/latest/README.md)
+- 保存済み評価：[最新評価](outputs/model-v2/INDEX.md)
 - ブランチと出力の管理：[管理方針](docs/repository-maintenance.md)
 - 削除した旧Pythonの保存先：[照合済み一覧](docs/v2-tool-removal-inventory.md)
 
-## v2の再評価
+## v2を使う
 
-Dockerを使用します．通常の生成先はGit管理外の `outputs/runs/` です．成功したrunは要約と検証済み詳細archiveへ自動でまとめます．
+PythonとNuSMVを同梱したコンテナを用意しています．ホスト側で次を実行すると，コンテナへ入れます．
 
 ```sh
-sh tools/run_workflow_v2_extension.sh outputs/runs/v2-001
+mkdir -p outputs/runs
+docker compose build model
+docker compose up -d model
+docker compose exec model bash
 ```
 
-GitHub CIはv2の回帰テストを実行します．NuSMVと独立探索の照合を含む全評価には，上記runnerを使います．原本workflow・外部Action・実際のpublish操作を実行する評価ではありません．
+コンテナ内でYAML→SMV生成，NuSMV検証，結果確認を別々に実行します．外から1コマンドずつ呼ぶ方法と全評価の手順も[操作手順](docs/container-guide.md)に記載しています．生成した入力・SMV・ログ・反例は `outputs/runs/` にそのまま残します．自動圧縮・出力削除は廃止し，圧縮していた過去の出力も元の配置へ復元しました．
 
 ## 旧論文・旧評価の保存先
 

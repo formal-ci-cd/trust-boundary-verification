@@ -1,4 +1,4 @@
-> 保管場所更新：この報告は整理前の実装・評価記録です．最新の配置と保存方針は [リポジトリ管理](../repository-maintenance.md)，要約は [latest](../../outputs/model-v2/latest/README.md)．当時の全詳細はarchiveから復元できます．
+> 保管場所更新：この報告は整理前の実装・評価記録です．最新の配置と保存方針は [リポジトリ管理](../repository-maintenance.md)，要約は [latest](../../outputs/model-v2/latest/README.md)．当時の全詳細は元の配置へ復元済みです．[現在の索引](../../outputs/model-v2/INDEX.md)を参照してください．
 
 # 次期YAML→SMV変換器 v2 prototype 実装・検証報告
 

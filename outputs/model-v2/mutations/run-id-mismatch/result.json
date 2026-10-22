@@ -1,0 +1,74 @@
+{
+  "case": "A1",
+  "mutation": "run-id-mismatch",
+  "inputDiff": "run-id-mismatch/input.diff",
+  "model": "run-id-mismatch/run-id-mismatch.smv",
+  "modelCorruptionControl": false,
+  "experimentInputConstraint": null,
+  "sourceHashes": [
+    "459f7b60cfa1cad7c456a2c8ecf0422f6273be9553761c4a627495e1086fc4b7",
+    "6ba7e016c90cfb642631f7f7ad530f6b060b48ee12802d111098860bbf5b1ce6"
+  ],
+  "diagnostics": [
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/run-id-mismatch/inputs/artifact-a1-pr-producer.yml",
+        "line": 37,
+        "column": 9,
+        "endLine": 47,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/run-id-mismatch/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unsupported",
+      "code": "dynamic-artifact-input",
+      "message": "input 'run-id' must be a literal in this prototype",
+      "source": {
+        "file": "/out/mutations/run-id-mismatch/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "no-upload-candidate",
+      "message": "no producer upload with this name/run identity was found",
+      "source": {
+        "file": "/out/mutations/run-id-mismatch/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "path-filter",
+      "message": "path filters are abstracted as an unknown trigger input",
+      "source": null
+    },
+    {
+      "status": "unsupported",
+      "code": "real-authority-sink-contract-missing",
+      "message": "no real authority-requiring operation contract is implemented; bad_real_authority_path is not an evaluated safety result",
+      "source": null
+    }
+  ]
+}

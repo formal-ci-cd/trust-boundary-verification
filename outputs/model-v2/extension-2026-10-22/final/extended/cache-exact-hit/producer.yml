@@ -1,0 +1,11 @@
+name: Save
+on: pull_request_target
+permissions: {contents: read}
+jobs:
+  write:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {ref: pr-head, persist-credentials: false}
+      - uses: actions/cache/save@v4
+        with: {key: linux-pkg-current, path: data}

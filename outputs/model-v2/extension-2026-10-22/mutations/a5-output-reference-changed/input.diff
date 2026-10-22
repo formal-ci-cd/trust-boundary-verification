@@ -1,0 +1,11 @@
+--- original/artifact-a5-attest-consumer.yml
++++ mutated/artifact-a5-attest-consumer.yml
+@@ -59,7 +59,7 @@
+       - name: Simulate privileged repository update
+         env:
+           ARTIFACT_DIR: ${{ runner.temp }}/gha-a5-artifact
+-          TARGET_BRANCH: ${{ steps.artifact-metadata.outputs.target_branch }}
++          TARGET_BRANCH: refs/heads/main
+           TARGET_SHA: ${{ steps.artifact-metadata.outputs.target_sha }}
+           PRODUCER_RUN_ID: ${{ github.event.workflow_run.id }}
+         run: |

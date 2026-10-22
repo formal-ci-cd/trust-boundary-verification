@@ -1,0 +1,30 @@
+{
+  "policy": "retain every original output; archives are additional copies",
+  "evidence": [
+    {
+      "archive": "prototype-2026-10-22.tar.gz",
+      "originalPathsVerified": 646,
+      "archiveSHA256": "541ba0c23f989be65b528a1b2c4c0ca460af4850e08c2c8aa799e2063a66d487"
+    },
+    {
+      "archive": "extension-2026-10-22.tar.gz",
+      "originalPathsVerified": 2667,
+      "archiveSHA256": "1691f96bbb5b14cce3fa66ed15f3cb4cb6631ae50e48acc8c41c321e294f4884"
+    }
+  ],
+  "localRuns": [
+    {
+      "run": "repository-cleanup-check",
+      "originalPathsVerified": 1316
+    },
+    {
+      "run": "test",
+      "originalPathsVerified": 1316
+    },
+    {
+      "run": "v2-tools-only-check",
+      "originalPathsVerified": 1316
+    }
+  ],
+  "allBytesMatch": true
+}

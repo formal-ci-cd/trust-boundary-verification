@@ -1,0 +1,82 @@
+--- /Users/bob/Documents/GitHub/trust-boundary-verification/docs/next-model-design/extension-report-2026-10-22.md	2026-10-22 19:08:31
++++ /Users/bob/Documents/GitHub/trust-boundary-verification/outputs/model-v2/extension-2026-10-22/final/extension-report-2026-10-22.md	2026-10-22 19:11:53
+@@ -6,7 +6,7 @@
+ 
+ branch：`research/automatic-temporal-verification`．HEAD：`8ecb091f540065057e2c4045e21678494eba19b5`．commit/push/branch操作は行っていない．開始時からA1 producer/consumerの2 YAMLに変更があり，保持した．Lunaの未追跡ファイルを基盤とし，既存builderとCLIの2ファイルだけに差分を適用した．元ファイルはaudit/originalsへ退避した．
+ 
+-既存1107ファイルのhash照合：`True`．既存ファイルの変化は `['tools/workflow_model_v2/builder.py', 'tools/workflow_to_smv_v2.py']`，欠落は `[]`．A1～A5 YAML，旧解析器，旧results，既存outputs/model-v2記録，元implementation-reportは保持した．詳細は [preservation-audit.json](../../outputs/model-v2/extension-2026-10-22/preservation-audit.json)．
++既存1107ファイルのhash照合：`True`．既存ファイルの変化は `['tools/workflow_model_v2/builder.py', 'tools/workflow_to_smv_v2.py']`，欠落は `[]`．A1～A5 YAML，旧解析器，旧results，既存outputs/model-v2記録，元implementation-reportは保持した．詳細は [preservation-audit.json](../../outputs/model-v2/extension-2026-10-22/final/preservation-audit.json)．
+ 
+ 初回のまとめた反映処理は，既存未追跡ファイルの退避確認が不十分との理由で自動承認レビューに拒否された．その処理は実行されず，独立したbackupとSHA-256一致確認を済ませ，新規ファイルの上書き禁止追加と既存2ファイルへの限定patchで反映した．
+ 
+@@ -20,11 +20,11 @@
+ 
+ ## 3．回帰・mutation・NuSMV
+ 
+-既存18件を含む回帰テストは **44件成功**（base 6件，v2 38件）．元の21 mutationを再生成・再検証し，追加fixtureと履歴監査を含む **64モデル**を検査した．63件でCTL結果を取得し，意図的構文不正1件はexit code 1／propertyなしとなった．集計失敗一覧：`[]`．
++既存18件を含む回帰テストは **45件成功**（base 6件，v2 39件）．元の21 mutationを再生成・再検証し，追加fixtureと履歴監査を含む **65モデル**を検査した．64件でCTL結果を取得し，意図的構文不正1件はexit code 1／propertyなしとなった．集計失敗一覧：`[]`．
+ 
+-有効63モデル全てで `-ctt` のtotal transition確認と非空の到達状態集合を取得した．property falseには反例があり，**187本のproperty別trace**を保存した．source span検査は482 step出現分で不正0件．拡張traceではactorとPCを対応させ，従来traceでは既存source symbolの対応を保持した．
++有効64モデル全てで `-ctt` のtotal transition確認と非空の到達状態集合を取得した．property falseには反例があり，**189本のproperty別trace**を保存した．source span検査は488 step出現分で不正0件．拡張traceではactorとPCを対応させ，従来traceでは既存source symbolの対応を保持した．
+ 
+-unsupported fixtureのCTLがtrueでもmanifestはunknown/unsupportedを保持し，安全判定へ変換しない．SMV生成失敗・構文不正・property欠落は成功扱いしない．[全検証結果](../../outputs/model-v2/extension-2026-10-22/verification-summary.json)．
++unsupported fixtureのCTLがtrueでもmanifestはunknown/unsupportedを保持し，安全判定へ変換しない．SMV生成失敗・構文不正・property欠落は成功扱いしない．[全検証結果](../../outputs/model-v2/extension-2026-10-22/final/verification-summary.json)．
+ 
+ ## 4．A1～A5比較
+ 
+@@ -57,7 +57,7 @@
+ 
+ TanStackは旧評価と同じbundle-size.yml／release.ymlをpre-incident／mitigation双方で入力し，既存hash-checked setup compositeも展開した．両方とも **unknown/unsupported**．旧方式のpre-incident conditional counterexample／mitigation safe-within-modelと同じ結論を出せたとは主張しない．
+ 
+-差の原因は，現行snapshotのcheckout@v6.0.2，pnpm/setup-node等のAction，STORE_PATHを設定するGITHUB_ENV，hashFiles由来key，pnpm実行によるcache taint，OIDCの契約が揃っていないこと，concurrencyや複数動的pathが未対応であることにある．期待値へ合わせるために未知のShell効果を固定したり，旧モデルをv2生成結果として流用していない．全diagnosticを[一覧](../../outputs/model-v2/extension-2026-10-22/unknown-unsupported-inventory.json)へ保存した．
++差の原因は，現行snapshotのcheckout@v6.0.2，pnpm/setup-node等のAction，STORE_PATHを設定するGITHUB_ENV，hashFiles由来key，pnpm実行によるcache taint，OIDCの契約が揃っていないこと，concurrencyや複数動的pathが未対応であることにある．期待値へ合わせるために未知のShell効果を固定したり，旧モデルをv2生成結果として流用していない．全diagnosticを[一覧](../../outputs/model-v2/extension-2026-10-22/final/unknown-unsupported-inventory.json)へ保存した．
+ 
+ ## 6．実権限sinkの検証範囲
+ 
+@@ -83,27 +83,27 @@
+ 
+ ## 10．状態数と時間
+ 
+-NuSMVの到達状態数は有効モデル全体で 13～686324．検査時間はtime出力から取得し，63件で計測した．最小0.04秒，最大1.28秒，合計7.81秒（到達状態数の追加計測，generation，Docker起動時間は別）．
++NuSMVの到達状態数は有効モデル全体で 13～686324．検査時間はtime出力から取得し，64件で計測した．最小0.04秒，最大1.32秒，合計7.40秒（到達状態数の追加計測，generation，Docker起動時間は別）．
+ 
+ | Case | 到達状態数 | CTL検査実時間（秒） |
+ |---|---:|---:|
+ | A1 | 14418 | 0.11 |
+-| A2 | 31158 | 0.16 |
+-| A3 | 14904 | 0.07 |
+-| A4 | 14418 | 0.08 |
++| A2 | 31158 | 0.17 |
++| A3 | 14904 | 0.06 |
++| A4 | 14418 | 0.07 |
+ | A5 | 15066 | 0.13 |
+-| cache-prefix-unsafe | 568 | 0.08 |
+-| cache-newest-prefix-is-clean | 13 | 0.12 |
+-| artifact-multiple-jobs | 696 | 0.15 |
+-| static-matrix | 5952 | 0.2 |
+-| tanstack-pre-incident | 686324 | 1.28 |
+-| tanstack-mitigation | 686324 | 1.01 |
++| cache-prefix-unsafe | 568 | 0.09 |
++| cache-newest-prefix-is-clean | 13 | 0.09 |
++| artifact-multiple-jobs | 696 | 0.13 |
++| static-matrix | 5952 | 0.17 |
++| tanstack-pre-incident | 686324 | 1.32 |
++| tanstack-mitigation | 686324 | 0.9 |
+ 
+ Python/PyYAMLのversionとarchitectureはruntime.json，Docker image IDはdocker-images.txt，NuSMV 2.6.0は各stdoutに記録した．Pythonはarm64 container，NuSMVはamd64 imageをemulationで実行した．runtime条件が違う性能比較へ直接外挿しない．
+ 
+ ## 11．未達と旧方式との差
+ 
+-未達：Reusable Workflowのcaller/callee契約，concurrency，matrix include/exclude/fail-fast，任意Bash，GITHUB_ENV，汎用hashFiles／digest guard，Artifact overwrite／複数取得layout，完全なsecret/OIDC契約，platform policyの全差異，TanStack全経路のv2結論再現．unsupportedの影響範囲は保守的に広く付与しており，完全なproperty slicingは未実装．
++未達：Reusable Workflowのcaller/callee契約，concurrency，matrix include/exclude/fail-fast，Cache keyのcase／locale境界，任意Bash，GITHUB_ENV，汎用hashFiles／digest guard，Artifact overwrite／複数取得layout，完全なsecret/OIDC契約，platform policyの全差異，TanStack全経路のv2結論再現．unsupportedの影響範囲は保守的に広く付与しており，完全なproperty slicingは未実装．
+ 
+ 旧prototypeはA1～A5特有の有限payload／metadata domainを残す．新backendは一般のfile-taint／shared-object契約を持つが，既存A2/A5の詳細意味を全て移植したわけではない．別backendを設けた理由は既存評価の再現性を保持するためであり，二つを単一の完全対応器と呼ばない．BFS一致はsubset内の一致であり，GitHub実意味論への健全性定理ではない．
+ 
+@@ -114,3 +114,7 @@
+ 開始／終了status，HEAD，差分patch，変更前backup，hash auditは出力内audit/に保存する．既存tracked差分は開始時のA1 YAML2ファイルのままであり，新規実装の多くは元から未追跡だったv2領域に存在する．
+ 
+ 再現コマンド：`sh tools/run_workflow_v2_extension.sh outputs/model-v2/<未作成の名前>`．実行は全てDocker内，非root，network none，repo ro，outputのみrw，capabilitiesなし，read-only rootfs．host依存package追加，既存service変更，credential/socket転送，workflowの実起動は行っていない．
++
++## 補足：既存mutationとの比較と変更一覧
++
++保存済み21 mutationの共通propertyとexit codeを比較し，21/21件一致した．完全な比較は [legacy-mutation-comparison.json](../../outputs/model-v2/extension-2026-10-22/final/legacy-mutation-comparison.json)，変更項目は [change-inventory.json](../../outputs/model-v2/extension-2026-10-22/final/audit/change-inventory.json)．

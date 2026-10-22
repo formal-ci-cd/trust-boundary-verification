@@ -1,0 +1,13 @@
+
+file /out/mutations/nusmv-invalid-input/nusmv-invalid-input.smv: line 246: at token "THIS_IS_INTENTIONALLY_INVALID_MODEL_SYNTAX": syntax error
+
+
+file /out/mutations/nusmv-invalid-input/nusmv-invalid-input.smv: line 246: Parser error
+
+NuSMV terminated by a signal
+
+Aborting batch mode
+Command exited with non-zero status 1
+real	0m 0.01s
+user	0m 0.01s
+sys	0m 0.00s

@@ -1,0 +1,5 @@
+read_model -i /out/mutations/digest-mismatch/digest-mismatch.smv
+go
+compute_reachable
+print_reachable_states
+quit

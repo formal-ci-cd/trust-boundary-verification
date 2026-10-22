@@ -1,0 +1,107 @@
+[
+  {
+    "state": "1.2",
+    "job": "j_b3fa588af440",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "1.3",
+    "job": "j_b3fa588af440",
+    "step": "upload",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "1.6",
+    "job": "j_e09843efeece",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_e09843efeece",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "1.7",
+    "job": "j_e09843efeece",
+    "step": "index1",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_e09843efeece",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "1.10",
+    "job": "j_bff83956f72f",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "id_object_acc2f907b960"
+    },
+    "source": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 16,
+      "column": 9,
+      "endLine": 20,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  }
+]

@@ -20,13 +20,13 @@ jobs:
           persist-credentials: false
 
       - name: Build isolated analysis environment
-        run: docker build -f experiments/analysis.Dockerfile -t research-validation .
+        run: docker build --platform linux/amd64 -t research-validation .
 
       # 原本workflowや外部Actionは実行せず，v2の回帰テストを行う．
-      # NuSMVを含む全評価は tools/run_workflow_v2_extension.sh で別途実施する．
+      # 段階的なNuSMV評価は docs/container-guide.md を参照する．
       - name: Test workflow model v2
         run: |
-          docker run --rm --network none --read-only --user 1000:1000 \
+          docker run --rm --platform linux/amd64 --network none --read-only --user 1000:1000 \
             --cap-drop ALL --security-opt no-new-privileges \
             --memory 2g --cpus 2 --pids-limit 128 \
             --tmpfs /tmp:rw,nosuid,nodev,size=512m \

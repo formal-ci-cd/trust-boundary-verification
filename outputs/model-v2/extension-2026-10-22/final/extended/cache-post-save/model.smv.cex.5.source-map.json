@@ -1,0 +1,134 @@
+[
+  {
+    "state": "5.2",
+    "job": "j_4378a73c41c5",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_4378a73c41c5",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "none"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.3",
+    "job": "j_4378a73c41c5",
+    "step": "index1",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_4378a73c41c5",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "none"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 12,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.6",
+    "job": "j_bff83956f72f",
+    "step": "cache",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "id_object_0349dded4944"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/consumer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 14,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.7",
+    "job": "j_bff83956f72f",
+    "step": "index1",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "none"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/consumer.yml",
+      "line": 14,
+      "column": 9,
+      "endLine": 15,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.8",
+    "job": "j_bff83956f72f",
+    "step": "index2",
+    "pc": "s2",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "none"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/consumer.yml",
+      "line": 15,
+      "column": 9,
+      "endLine": 16,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.9",
+    "job": "j_bff83956f72f",
+    "step": "index3",
+    "pc": "s3",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_a11c15468b9b": "none",
+      "select_a64859d3c55b": "none"
+    },
+    "source": {
+      "file": "/out/extended/cache-post-save/consumer.yml",
+      "line": 16,
+      "column": 9,
+      "endLine": 17,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  }
+]

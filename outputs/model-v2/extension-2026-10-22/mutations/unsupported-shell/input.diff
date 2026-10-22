@@ -1,0 +1,10 @@
+--- original/artifact-a1-unsafe-consumer.yml
++++ mutated/artifact-a1-unsafe-consumer.yml
+@@ -46,6 +46,7 @@
+         run: |
+           set -eu
+           request=$(tr -d '\r\n' < "$ARTIFACT_FILE")
++          eval "$request"
+           digest=$(sha256sum "$ARTIFACT_FILE" | cut -d ' ' -f 1)
+ 
+           if [ "$request" = "publish=true" ]; then

@@ -1,0 +1,11 @@
+--- /Users/bob/Documents/GitHub/trust-boundary-verification/tools/evaluate_workflow_v2_extension.py	2026-10-22 19:04:54
++++ extension-work/tools/evaluate_workflow_v2_extension.py	2026-10-22 19:07:20
+@@ -310,7 +310,7 @@
+             record['verificationWallSeconds'] = int(elapsed.read_text())
+         timing_path = Path(str(path) + '.timing')
+         if timing_path.exists():
+-            match = re.search(r'real\s+(\d+)m\s*([0-9.]+)s', timing_path.read_text())
++            match = re.search(r'real\s+(\d+)m\s*([0-9.]+)s', timing_path.read_text() + '\n' + stderr)
+             if match:
+                 record['verificationRealSeconds'] = int(match.group(1)) * 60 + float(match.group(2))
+         record['traceCount'] = trace_count

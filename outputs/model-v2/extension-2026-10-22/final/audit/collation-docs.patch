@@ -1,0 +1,11 @@
+--- /Users/bob/Documents/GitHub/trust-boundary-verification/docs/next-model-design/extension-semantics.md	2026-10-22 19:04:54
++++ extension-work/docs/extension-semantics.md	2026-10-22 19:10:34
+@@ -72,6 +72,8 @@
+ 
+ Cache versionは `cacheVersion: {literal-path: opaque-version-token}` で与える．path文字列が同じというだけで実サービス上のversion同一性を断定しない．GitHub仕様にないprotected-cache境界を追加しない．未知のplatform制限はこのモデルの保証外である．
+ 
++Cache Actionのexact-hit判定はlocale比較を使うため，caseだけが異なるkeyや非ASCII keyをPythonの単純一致で安全扱いしない．serviceのkey探索との対応が未確認の組合せはcache-key-collation unsupportedとする．[確認したutility実装](https://github.com/actions/cache/blob/v4/src/utils/actionUtils.ts)．
++
+ ## 権限sinkの意味
+ 
+ `sink_site` はcommand地点到達履歴，`authority_available` は必要scopeと認証条件，`sink_succeeded` はさらに非決定的操作成功，`bad_authority` はそれらとtainted file依存が同時に成立した履歴である．権限だけで成功させない．git pushはgit add由来のtaintを要求し，npm publishは指定pathと外部registry credentialを用いる．認証の事実はscenarioまたは共有unknown入力であり，実credentialは渡さない．

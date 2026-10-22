@@ -1,0 +1,5 @@
+read_model -i /out/extended/status-default-skip-after-failure/model.smv
+go
+compute_reachable
+print_reachable_states
+quit

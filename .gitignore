@@ -1,5 +1,5 @@
 __pycache__/
 
-# Local regenerated runs; retained research evidence is archived separately.
+# Local regenerated runs; keep all raw files on disk, outside Git by default.
 /outputs/runs/
 *.pyc

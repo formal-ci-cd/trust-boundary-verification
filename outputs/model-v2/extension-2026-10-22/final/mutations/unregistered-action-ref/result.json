@@ -1,0 +1,74 @@
+{
+  "case": "A1",
+  "mutation": "unregistered-action-ref",
+  "inputDiff": "unregistered-action-ref/input.diff",
+  "model": "unregistered-action-ref/unregistered-action-ref.smv",
+  "modelCorruptionControl": false,
+  "experimentInputConstraint": null,
+  "sourceHashes": [
+    "5c23a682dbd284bcb67420d7f05ccf9f19552c635df38ae610a93a6eadc511c7",
+    "9bd6dab061ed36552aff0e21a28e73b0f37a596194d70b0f9458becdea2fb3e7"
+  ],
+  "diagnostics": [
+    {
+      "status": "unsupported",
+      "code": "unregistered-action-ref",
+      "message": "'actions/upload-artifact@unregistered-ref' is not in the pinned prototype contract registry",
+      "source": {
+        "file": "/out/mutations/unregistered-action-ref/inputs/artifact-a1-pr-producer.yml",
+        "line": 37,
+        "column": 9,
+        "endLine": 47,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/unregistered-action-ref/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "no-upload-candidate",
+      "message": "no producer upload with this name/run identity was found",
+      "source": {
+        "file": "/out/mutations/unregistered-action-ref/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "path-filter",
+      "message": "path filters are abstracted as an unknown trigger input",
+      "source": null
+    },
+    {
+      "status": "unsupported",
+      "code": "real-authority-sink-contract-missing",
+      "message": "no real authority-requiring operation contract is implemented; bad_real_authority_path is not an evaluated safety result",
+      "source": null
+    },
+    {
+      "status": "unsupported",
+      "code": "unregistered-action-ref",
+      "message": "No effect contract is registered for 'actions/upload-artifact@unregistered-ref'",
+      "source": {
+        "file": "/out/mutations/unregistered-action-ref/inputs/artifact-a1-pr-producer.yml",
+        "line": 37,
+        "column": 9,
+        "endLine": 47,
+        "endColumn": 7
+      }
+    }
+  ]
+}

@@ -1,0 +1,252 @@
+MODULE main
+FROZENVAR
+  origin_event : { v_849b493c1f, v_32da458dc8 };
+  origin_pr_activity : { v_4a400040a2, v_41596caca1, v_07e72d7d5f, v_87eb610bc2 };
+  origin_base_branch : { v_3eb8dfee60 };
+  origin_push_branch : { v_d5bae92cf6 };
+  origin_head_branch : { v_7f5428820f };
+  consumer_activity : { activity_requested, activity_in_progress, activity_completed };
+  perm_artifact_a1_pr_producer_produce_artifact_actions : { perm_none, perm_read, perm_write };
+  perm_artifact_a1_pr_producer_produce_artifact_contents : { perm_none, perm_read, perm_write };
+  perm_artifact_a2_safe_consumer_consume_after_verification_actions : { perm_none, perm_read, perm_write };
+  perm_artifact_a2_safe_consumer_consume_after_verification_contents : { perm_none, perm_read, perm_write };
+  ctx_8b3319f1ca : { v_da3b95a75e, v_e84dea521b };
+  producer_payload : { payload_publish_true, payload_publish_false, payload_other };
+  producer_metadata_branch : { branch_main, branch_other, branch_invalid };
+  producer_metadata_sha : { sha_valid, sha_other_valid, sha_invalid };
+  consumer_workflow_trusted : boolean;
+  unknown_path_0c4a88b7b8 : boolean;
+IVAR
+  scheduler : { sched_pc_artifact_a1_pr_producer_produce_artifact, sched_pc_artifact_a2_safe_consumer_consume_after_verification };
+  outcome_a2f51e01ad : { success, failure };
+  outcome_efdb4cf5fd : { success, failure };
+  outcome_a81db5b596 : { success, failure };
+  outcome_5280cc3838 : { success, failure };
+  outcome_7d3bd6b0b7 : { success, failure };
+  outcome_7104be4221 : { success, failure };
+  outcome_71744c830b : { success, failure };
+  outcome_84f8996d13 : { success, failure };
+VAR
+  producer_phase : { run_not_created, run_requested, run_in_progress, run_completed_success, run_completed_failure, run_completed_unknown };
+  producer_has_started : boolean;
+  producer_conclusion : { conclusion_success, conclusion_failure, conclusion_other };
+  pc_artifact_a1_pr_producer_produce_artifact : { pc_artifact_a1_pr_producer_produce_artifact_dormant, pc_artifact_a1_pr_producer_produce_artifact_ready, pc_artifact_a1_pr_producer_produce_artifact_step_0, pc_artifact_a1_pr_producer_produce_artifact_step_1, pc_artifact_a1_pr_producer_produce_artifact_step_2, pc_artifact_a1_pr_producer_produce_artifact_step_3, pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped };
+  failed_pc_artifact_a1_pr_producer_produce_artifact : boolean;
+  pc_artifact_a2_safe_consumer_consume_after_verification : { pc_artifact_a2_safe_consumer_consume_after_verification_dormant, pc_artifact_a2_safe_consumer_consume_after_verification_ready, pc_artifact_a2_safe_consumer_consume_after_verification_step_0, pc_artifact_a2_safe_consumer_consume_after_verification_step_1, pc_artifact_a2_safe_consumer_consume_after_verification_step_2, pc_artifact_a2_safe_consumer_consume_after_verification_step_3, pc_artifact_a2_safe_consumer_consume_after_verification_done, pc_artifact_a2_safe_consumer_consume_after_verification_failed, pc_artifact_a2_safe_consumer_consume_after_verification_skipped };
+  failed_pc_artifact_a2_safe_consumer_consume_after_verification : boolean;
+  object_a81db5b596_state : { not_uploaded, upload_failed, object_a81db5b596 };
+  download_7d3bd6b0b7_state : { not_attempted, download_failed, download_succeeded };
+  download_7d3bd6b0b7_object : { no_object, object_a81db5b596 };
+  artifact_read : boolean;
+  artifact_dependent_use : boolean;
+  integrity_state : { integrity_not_run, integrity_verified, integrity_mismatch, integrity_unverifiable };
+  integrity_blocked : boolean;
+  consumer_payload : { value_unset, value_publish_true, value_publish_false, value_other };
+  object_metadata_branch : { branch_unset, branch_main, branch_other, branch_invalid };
+  object_metadata_sha : { sha_unset, sha_valid, sha_other_valid, sha_invalid };
+  artifact_has_dist : boolean;
+  simulated_sink_site_reached : boolean;
+  artifact_dependent_sink : boolean;
+  simulated_sink_result_true : boolean;
+  real_authority_sink_site_reached : boolean;
+  authority_operation_succeeded : boolean;
+  Workflow(path='.github/workflows/artifact-a1-pr-producer.yml', name='GHA-A Producer - untrusted PR artifact', events={'pull_request': {'paths': ['.research-artifact-input/payload.txt', '.github/workflows/artifact-a1-pr-producer.yml']}}, permissions={'contents': 'read'}, permissions_declared=True, jobs=[Job(job_id='produce-artifact', needs=[], condition_text=None, condition=None, permissions=None, permissions_declared=False, steps=[Step(index=0, step_id='', uses='actions/checkout@11d5960a326750d5838078e36cf38b85af677262', run=None, inputs={'persist-credentials': False}, condition_text=None, condition=None, span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=25, column=9, end_line=31, end_column=7), run_span=None, env={}, name='Checkout Pull Request content'), Step(index=1, step_id='', uses=None, run="set -eu\ngrep -Eq '^publish=(true|false)$' .research-artifact-input/payload.txt\n", inputs={}, condition_text=None, condition=None, span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=31, column=9, end_line=37, end_column=7), run_span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=32, column=14, end_line=36, end_column=1), env={}, name='Check artifact input format'), Step(index=2, step_id='upload-artifact', uses='actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02', run=None, inputs={'name': 'trust-boundary-build-output', 'path': '.research-artifact-input/payload.txt', 'if-no-files-found': 'error', 'retention-days': 1}, condition_text=None, condition=None, span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=37, column=9, end_line=47, end_column=7), run_span=None, env={}, name='Upload PR-controlled artifact'), Step(index=3, step_id='', uses=None, run='printf \'producer_run_id=%s\\n\' "$GITHUB_RUN_ID"\nprintf \'producer_head_sha=%s\\n\' "$GITHUB_SHA"\nprintf \'artifact_id=%s\\n\' "$ARTIFACT_ID"\nprintf \'artifact_digest=%s\\n\' "$ARTIFACT_DIGEST"\n', inputs={}, condition_text=None, condition=None, span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=47, column=9, end_line=56, end_column=1), run_span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=51, column=14, end_line=56, end_column=1), env={'ARTIFACT_ID': '${{ steps.upload-artifact.outputs.artifact-id }}', 'ARTIFACT_DIGEST': '${{ steps.upload-artifact.outputs.artifact-digest }}'}, name='Record producer identity')], span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=20, column=5, end_line=56, end_column=1))], sha256='459f7b60cfa1cad7c456a2c8ecf0422f6273be9553761c4a627495e1086fc4b7', diagnostics=[Diagnostic(status='unsupported', code='opaque-run', message='run body is retained but its dataflow/effects are not analyzed', span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=32, column=14, end_line=36, end_column=1)), Diagnostic(status='unsupported', code='opaque-run', message='run body is retained but its dataflow/effects are not analyzed', span=Span(file='.github/workflows/artifact-a1-pr-producer.yml', line=51, column=14, end_line=56, end_column=1))])_payload : { value_unset, value_publish_true, value_publish_false, value_other };
+  output_151b577871 : { out_unset, out_digest_equal, out_digest_different, out_other };
+  output_fb6c700051 : { out_unset, out_true, out_false, out_other };
+DEFINE
+  producer_trigger := ((origin_event = v_849b493c1f & (origin_pr_activity = v_4a400040a2 | origin_pr_activity = v_07e72d7d5f | origin_pr_activity = v_41596caca1) & unknown_path_0c4a88b7b8));
+  producer_terminal := producer_phase in { run_completed_success, run_completed_failure, run_completed_unknown };
+  consumer_trigger := (TRUE & (consumer_activity = activity_completed) & TRUE & ((consumer_activity = activity_requested & producer_trigger) | (consumer_activity = activity_in_progress & producer_trigger & producer_has_started) | (consumer_activity = activity_completed & producer_trigger & producer_terminal)));
+  can_download_7d3bd6b0b7 := ((object_a81db5b596_state = object_a81db5b596) & (perm_artifact_a2_safe_consumer_consume_after_verification_actions in { perm_read, perm_write }) & TRUE);
+  same_object_download_7d3bd6b0b7 := (download_7d3bd6b0b7_state = download_succeeded & download_7d3bd6b0b7_object != no_object);
+  bad_simulated_path := artifact_dependent_sink & simulated_sink_site_reached & simulated_sink_result_true;
+  bad_real_authority_path := artifact_dependent_sink & real_authority_sink_site_reached & effective_contents_write & authority_operation_succeeded;
+  integrity_trust_anchor_available := consumer_workflow_trusted;
+  download_success_any := download_7d3bd6b0b7_state = download_succeeded;
+  selected_payload_download_7d3bd6b0b7 := case
+    download_7d3bd6b0b7_object = object_a81db5b596 : object_a81db5b596_payload;
+    TRUE : value_other;
+  esac;
+  effective_contents_write := perm_artifact_a2_safe_consumer_consume_after_verification_contents = perm_write;
+  effective_authority_available := effective_contents_write;
+INVAR
+(perm_artifact_a1_pr_producer_produce_artifact_actions = perm_none) & (perm_artifact_a1_pr_producer_produce_artifact_contents = perm_read) & (perm_artifact_a2_safe_consumer_consume_after_verification_actions = perm_read) & (perm_artifact_a2_safe_consumer_consume_after_verification_contents = perm_read);
+ASSIGN
+  init(producer_phase) := run_not_created;
+  next(producer_phase) := case
+    !producer_trigger : run_not_created;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) & (pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_failed) : run_completed_failure;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) & !(pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_done) : run_completed_unknown;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) : run_completed_success;
+    producer_has_started : run_in_progress;
+    TRUE : run_requested;
+  esac;
+  init(producer_has_started) := FALSE;
+  next(producer_has_started) := producer_has_started | (producer_trigger & (pc_artifact_a1_pr_producer_produce_artifact != pc_artifact_a1_pr_producer_produce_artifact_dormant));
+  init(producer_conclusion) := conclusion_other;
+  next(producer_conclusion) := case
+    producer_terminal : producer_conclusion;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) & (pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_failed) : conclusion_failure;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) & (pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_done) : conclusion_success;
+    (pc_artifact_a1_pr_producer_produce_artifact in { pc_artifact_a1_pr_producer_produce_artifact_done, pc_artifact_a1_pr_producer_produce_artifact_failed, pc_artifact_a1_pr_producer_produce_artifact_skipped }) : { conclusion_success, conclusion_other };
+    TRUE : conclusion_other;
+  esac;
+  init(pc_artifact_a1_pr_producer_produce_artifact) := pc_artifact_a1_pr_producer_produce_artifact_dormant;
+  next(pc_artifact_a1_pr_producer_produce_artifact) := case
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_dormant & producer_trigger & (TRUE) & !(TRUE) : pc_artifact_a1_pr_producer_produce_artifact_skipped;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_dormant & producer_trigger & (TRUE) & (TRUE) : pc_artifact_a1_pr_producer_produce_artifact_ready;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_ready : pc_artifact_a1_pr_producer_produce_artifact_step_0;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_0 & !(!failed_pc_artifact_a1_pr_producer_produce_artifact) : pc_artifact_a1_pr_producer_produce_artifact_step_1;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_0 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (TRUE) & outcome_a2f51e01ad = success : pc_artifact_a1_pr_producer_produce_artifact_step_1;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_0 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & ((!( TRUE )) | outcome_a2f51e01ad = failure) : pc_artifact_a1_pr_producer_produce_artifact_step_1;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_1 & !(!failed_pc_artifact_a1_pr_producer_produce_artifact) : pc_artifact_a1_pr_producer_produce_artifact_step_2;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_1 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (TRUE) & outcome_efdb4cf5fd = success : pc_artifact_a1_pr_producer_produce_artifact_step_2;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_1 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & ((!( TRUE )) | outcome_efdb4cf5fd = failure) : pc_artifact_a1_pr_producer_produce_artifact_step_2;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & !(!failed_pc_artifact_a1_pr_producer_produce_artifact) : pc_artifact_a1_pr_producer_produce_artifact_step_3;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (TRUE) & outcome_a81db5b596 = success : pc_artifact_a1_pr_producer_produce_artifact_step_3;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & ((!( TRUE )) | outcome_a81db5b596 = failure) : pc_artifact_a1_pr_producer_produce_artifact_step_3;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & !(!failed_pc_artifact_a1_pr_producer_produce_artifact) & failed_pc_artifact_a1_pr_producer_produce_artifact : pc_artifact_a1_pr_producer_produce_artifact_failed;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & !(!failed_pc_artifact_a1_pr_producer_produce_artifact) & !failed_pc_artifact_a1_pr_producer_produce_artifact : pc_artifact_a1_pr_producer_produce_artifact_done;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (TRUE) & outcome_5280cc3838 = success & failed_pc_artifact_a1_pr_producer_produce_artifact : pc_artifact_a1_pr_producer_produce_artifact_failed;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (TRUE) & outcome_5280cc3838 = success & !failed_pc_artifact_a1_pr_producer_produce_artifact : pc_artifact_a1_pr_producer_produce_artifact_done;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & ((!( TRUE )) | outcome_5280cc3838 = failure) : pc_artifact_a1_pr_producer_produce_artifact_failed;
+    TRUE : pc_artifact_a1_pr_producer_produce_artifact;
+  esac;
+  init(failed_pc_artifact_a1_pr_producer_produce_artifact) := FALSE;
+  next(failed_pc_artifact_a1_pr_producer_produce_artifact) := case
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_0 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (outcome_a2f51e01ad = failure) : TRUE;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_1 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (outcome_efdb4cf5fd = failure) : TRUE;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (outcome_a81db5b596 = failure) : TRUE;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & (outcome_5280cc3838 = failure) : TRUE;
+    TRUE : failed_pc_artifact_a1_pr_producer_produce_artifact;
+  esac;
+  init(pc_artifact_a2_safe_consumer_consume_after_verification) := pc_artifact_a2_safe_consumer_consume_after_verification_dormant;
+  next(pc_artifact_a2_safe_consumer_consume_after_verification) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_dormant & consumer_trigger & (TRUE) & !((TRUE & (((producer_conclusion = conclusion_success) & (origin_event = v_849b493c1f))))) : pc_artifact_a2_safe_consumer_consume_after_verification_skipped;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_dormant & consumer_trigger & (TRUE) & ((TRUE & (((producer_conclusion = conclusion_success) & (origin_event = v_849b493c1f))))) : pc_artifact_a2_safe_consumer_consume_after_verification_ready;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_ready : pc_artifact_a2_safe_consumer_consume_after_verification_step_0;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & !(!failed_pc_artifact_a2_safe_consumer_consume_after_verification) : pc_artifact_a2_safe_consumer_consume_after_verification_step_1;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & (can_download_7d3bd6b0b7) & outcome_7d3bd6b0b7 = success : pc_artifact_a2_safe_consumer_consume_after_verification_step_1;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & ((!( can_download_7d3bd6b0b7 )) | outcome_7d3bd6b0b7 = failure) : pc_artifact_a2_safe_consumer_consume_after_verification_step_1;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & !(!failed_pc_artifact_a2_safe_consumer_consume_after_verification) : pc_artifact_a2_safe_consumer_consume_after_verification_step_2;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & (TRUE) & outcome_7104be4221 = success : pc_artifact_a2_safe_consumer_consume_after_verification_step_2;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & ((!( TRUE )) | outcome_7104be4221 = failure) : pc_artifact_a2_safe_consumer_consume_after_verification_step_2;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & !((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) : pc_artifact_a2_safe_consumer_consume_after_verification_step_3;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & (TRUE) & outcome_71744c830b = success : pc_artifact_a2_safe_consumer_consume_after_verification_step_3;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & ((!( TRUE )) | outcome_71744c830b = failure) : pc_artifact_a2_safe_consumer_consume_after_verification_step_3;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & !((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & failed_pc_artifact_a2_safe_consumer_consume_after_verification : pc_artifact_a2_safe_consumer_consume_after_verification_failed;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & !((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & !failed_pc_artifact_a2_safe_consumer_consume_after_verification : pc_artifact_a2_safe_consumer_consume_after_verification_done;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & (TRUE) & outcome_84f8996d13 = success & failed_pc_artifact_a2_safe_consumer_consume_after_verification : pc_artifact_a2_safe_consumer_consume_after_verification_failed;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & (TRUE) & outcome_84f8996d13 = success & !failed_pc_artifact_a2_safe_consumer_consume_after_verification : pc_artifact_a2_safe_consumer_consume_after_verification_done;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & ((!( TRUE )) | outcome_84f8996d13 = failure) : pc_artifact_a2_safe_consumer_consume_after_verification_failed;
+    TRUE : pc_artifact_a2_safe_consumer_consume_after_verification;
+  esac;
+  init(failed_pc_artifact_a2_safe_consumer_consume_after_verification) := FALSE;
+  next(failed_pc_artifact_a2_safe_consumer_consume_after_verification) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & ((outcome_7d3bd6b0b7 = failure | !can_download_7d3bd6b0b7)) : TRUE;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & (outcome_7104be4221 = failure) : TRUE;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & (outcome_71744c830b = failure) : TRUE;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_3 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & (!(output_fb6c700051 = out_true)))) & (outcome_84f8996d13 = failure) : TRUE;
+    TRUE : failed_pc_artifact_a2_safe_consumer_consume_after_verification;
+  esac;
+  init(object_a81db5b596_state) := not_uploaded;
+  next(object_a81db5b596_state) := case
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & outcome_a81db5b596 = success : object_a81db5b596;
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & outcome_a81db5b596 = failure : upload_failed;
+    TRUE : object_a81db5b596_state;
+  esac;
+  init(download_7d3bd6b0b7_state) := not_attempted;
+  next(download_7d3bd6b0b7_state) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & (can_download_7d3bd6b0b7) & outcome_7d3bd6b0b7 = success : download_succeeded;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) : download_failed;
+    TRUE : download_7d3bd6b0b7_state;
+  esac;
+  init(download_7d3bd6b0b7_object) := no_object;
+  next(download_7d3bd6b0b7_object) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & (can_download_7d3bd6b0b7) & outcome_7d3bd6b0b7 = success : object_a81db5b596;
+    TRUE : download_7d3bd6b0b7_object;
+  esac;
+  init(object_metadata_branch) := branch_unset;
+  init(object_metadata_sha) := sha_unset;
+  init(artifact_has_dist) := FALSE;
+  init(object_a81db5b596_payload) := value_unset;
+  next(object_a81db5b596_payload) := case
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact & pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2 & (!failed_pc_artifact_a1_pr_producer_produce_artifact) & outcome_a81db5b596 = success : case
+      producer_payload = payload_publish_true : value_publish_true;
+      producer_payload = payload_publish_false : value_publish_false;
+      TRUE : value_other;
+    esac;
+    TRUE : object_a81db5b596_payload;
+  esac;
+  next(object_metadata_branch) := case
+    TRUE : object_metadata_branch;
+  esac;
+  next(object_metadata_sha) := case
+    TRUE : object_metadata_sha;
+  esac;
+  next(artifact_has_dist) := case
+    TRUE : artifact_has_dist;
+  esac;
+  init(artifact_read) := FALSE;
+  next(artifact_read) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success : TRUE;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success : TRUE;
+    TRUE : artifact_read;
+  esac;
+  init(artifact_dependent_use) := FALSE;
+  next(artifact_dependent_use) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success : TRUE;
+    TRUE : artifact_dependent_use;
+  esac;
+  init(consumer_payload) := value_unset;
+  next(consumer_payload) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success & download_7d3bd6b0b7_state = download_succeeded : selected_payload_download_7d3bd6b0b7;
+    TRUE : consumer_payload;
+  esac;
+  init(integrity_state) := integrity_not_run;
+  next(integrity_state) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & !consumer_workflow_trusted : integrity_unverifiable;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & (selected_payload_download_7d3bd6b0b7 = value_publish_false) : integrity_verified;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & !(selected_payload_download_7d3bd6b0b7 = value_publish_false) : integrity_mismatch;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & !(same_object_download_7d3bd6b0b7) : integrity_unverifiable;
+    TRUE : integrity_state;
+  esac;
+  init(output_fb6c700051) := out_unset;
+  next(output_fb6c700051) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & (selected_payload_download_7d3bd6b0b7 = value_publish_false) : out_true;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & !(selected_payload_download_7d3bd6b0b7 = value_publish_false) : out_false;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & !consumer_workflow_trusted : out_other;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & !(same_object_download_7d3bd6b0b7) : out_other;
+    TRUE : output_fb6c700051;
+  esac;
+  init(output_151b577871) := out_unset;
+  next(output_151b577871) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & (selected_payload_download_7d3bd6b0b7 = value_publish_false) : out_digest_equal;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & consumer_workflow_trusted & !(selected_payload_download_7d3bd6b0b7 = value_publish_false) : out_digest_different;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & (same_object_download_7d3bd6b0b7) & !consumer_workflow_trusted : out_other;
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1 & (!failed_pc_artifact_a2_safe_consumer_consume_after_verification) & outcome_7104be4221 = success & !(same_object_download_7d3bd6b0b7) : out_other;
+    TRUE : output_151b577871;
+  esac;
+  init(integrity_blocked) := FALSE;
+  next(integrity_blocked) := case
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & !((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & integrity_state = integrity_mismatch : TRUE;
+    TRUE : integrity_blocked;
+  esac;
+  init(simulated_sink_site_reached) := FALSE;
+  init(artifact_dependent_sink) := FALSE;
+  init(simulated_sink_result_true) := FALSE;
+  init(real_authority_sink_site_reached) := FALSE;
+  next(real_authority_sink_site_reached) := real_authority_sink_site_reached;
+  init(authority_operation_succeeded) := FALSE;
+  next(authority_operation_succeeded) := authority_operation_succeeded;
+  next(simulated_sink_site_reached) := case ((scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success)) : TRUE; TRUE : simulated_sink_site_reached; esac;
+  next(artifact_dependent_sink) := case ((scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success & (selected_payload_download_7d3bd6b0b7 = value_publish_true))) : TRUE; TRUE : artifact_dependent_sink; esac;
+  next(simulated_sink_result_true) := case ((scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification & pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2 & ((!failed_pc_artifact_a2_safe_consumer_consume_after_verification & ((output_fb6c700051 = out_true)))) & outcome_71744c830b = success & (selected_payload_download_7d3bd6b0b7 = value_publish_true))) : TRUE; TRUE : simulated_sink_result_true; esac;
+CTLSPEC AG (download_7d3bd6b0b7_state = download_succeeded -> download_7d3bd6b0b7_object != no_object)
+CTLSPEC AG (download_7d3bd6b0b7_state != download_succeeded)
+CTLSPEC AG !bad_simulated_path
+CTLSPEC AG !bad_real_authority_path
+CTLSPEC AG (artifact_dependent_use -> download_success_any)
+CTLSPEC AG (artifact_dependent_sink -> artifact_dependent_use)
+CTLSPEC AG (integrity_blocked -> !artifact_dependent_use)
+-- v2 stateful value-flow model; real authority and simulated sinks are separate.

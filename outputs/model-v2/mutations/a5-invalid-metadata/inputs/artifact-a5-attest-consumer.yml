@@ -1,0 +1,79 @@
+# actions/attestで報告された成果物汚染の構造を，repositoryを書き換えずに確認する取得側．
+name: GHA-A5 actions-attest style unsafe consumer
+
+on:
+  workflow_run:
+    workflows: ["GHA-A5 actions-attest style untrusted producer"]
+    types: [completed]
+
+# 実在脆弱性ではcontents: writeでbranchへpushしていた．
+# この実験では実被害を避けるためcontents: readとし，書込み地点への到達だけを記録する．
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  consume-untrusted-dist:
+    name: Simulate repository update with artifact content
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download artifact from the producer run
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: gha-a5-rebuilt-dist
+          path: ${{ runner.temp }}/gha-a5-artifact
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
+
+      # 実在脆弱性と同じく，文字種だけを確認し，起動元repositoryとの対応は確認しない．
+      - name: Read artifact-supplied target branch
+        id: artifact-metadata
+        env:
+          ARTIFACT_DIR: ${{ runner.temp }}/gha-a5-artifact
+        run: |
+          set -eu
+          target_branch=$(tr -d '\r\n' < "$ARTIFACT_DIR/dist-meta/head-ref")
+          target_sha=$(tr -d '\r\n' < "$ARTIFACT_DIR/dist-meta/head-sha")
+          case "$target_branch" in
+            *[!A-Za-z0-9._/-]*|'')
+              echo 'invalid branch name' >&2
+              exit 1
+              ;;
+          esac
+          case "$target_sha" in
+            *[!0-9a-f]*|'')
+              echo 'invalid commit SHA' >&2
+              exit 1
+              ;;
+          esac
+          test "${#target_sha}" -eq 40
+          printf 'target_branch=%s\n' "$target_branch" >> "$GITHUB_OUTPUT"
+          printf 'target_sha=%s\n' "$target_sha" >> "$GITHUB_OUTPUT"
+
+      # 本物のcheckout，commit及びpushは行わない．
+      # PR由来のdistとbranchがrepository更新相当の処理へ届いたことだけを記録する．
+      - name: Simulate privileged repository update
+        env:
+          ARTIFACT_DIR: ${{ runner.temp }}/gha-a5-artifact
+          TARGET_BRANCH: ${{ steps.artifact-metadata.outputs.target_branch }}
+          TARGET_SHA: ${{ steps.artifact-metadata.outputs.target_sha }}
+          PRODUCER_RUN_ID: ${{ github.event.workflow_run.id }}
+        run: |
+          set -eu
+          test -f "$ARTIFACT_DIR/dist/index.js"
+          {
+            echo '### GHA-A5 取得側の実験結果'
+            echo
+            echo 'artifact_downloaded=true'
+            echo 'artifact_used=true'
+            echo 'integrity_verified=false'
+            echo "artifact_target_branch=$TARGET_BRANCH"
+            echo "artifact_target_sha=$TARGET_SHA"
+            echo 'simulated_contents_write_authority=true'
+            echo 'dummy_repository_update_reached=true'
+            echo "producer_run_id=$PRODUCER_RUN_ID"
+          } | tee -a "$GITHUB_STEP_SUMMARY"

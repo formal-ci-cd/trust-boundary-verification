@@ -1,0 +1,83 @@
+-- specification AG !dependent_use  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 4.1 <-
+    transfer = FALSE
+    dependent_use = FALSE
+    sink_site = FALSE
+    authority_available = FALSE
+    sink_succeeded = FALSE
+    bad_authority = FALSE
+    pc_j_b3fa588af440 = pending
+    failed_j_b3fa588af440 = FALSE
+    cancelled_j_b3fa588af440 = FALSE
+    staged_j_b3fa588af440 = FALSE
+    outcome_dd4fbda768b4 = unset
+    outcome_dd4fbda768b4_conclusion = unset
+    outcome_b4fea0b611f1 = unset
+    outcome_b4fea0b611f1_conclusion = unset
+    object_445e0a6b890b = absent
+    out_0026caf1f097 = v_12ae32cb1ec0
+    out_9d9fb50e47a6 = v_12ae32cb1ec0
+    pc_j_bff83956f72f = pending
+    failed_j_bff83956f72f = FALSE
+    cancelled_j_bff83956f72f = FALSE
+    staged_j_bff83956f72f = FALSE
+    outcome_8a7fb9016790 = unset
+    outcome_8a7fb9016790_conclusion = unset
+    outcome_bef83fa3717e = unset
+    outcome_bef83fa3717e_conclusion = unset
+    outcome_2075cd8bd66c = unset
+    outcome_2075cd8bd66c_conclusion = unset
+    outcome_299352ae45a3 = unset
+    outcome_299352ae45a3_conclusion = unset
+    file_d1e1d998b911 = absent
+    file_a8714a71f1e0 = absent
+  -> Input: 4.2 <-
+    actor = j_b3fa588af440
+    operation_ok = FALSE
+    cache_io_ok = FALSE
+    cancel_request = FALSE
+    select_cc417ad2e740 = none
+  -> State: 4.2 <-
+    pc_j_b3fa588af440 = s0
+  -> Input: 4.3 <-
+    operation_ok = TRUE
+  -> State: 4.3 <-
+    pc_j_b3fa588af440 = s1
+    outcome_dd4fbda768b4 = success
+    outcome_dd4fbda768b4_conclusion = success
+    file_d1e1d998b911 = tainted
+  -> Input: 4.4 <-
+  -> State: 4.4 <-
+    pc_j_b3fa588af440 = s2
+    outcome_b4fea0b611f1 = success
+    outcome_b4fea0b611f1_conclusion = success
+    object_445e0a6b890b = tainted
+    out_0026caf1f097 = v_cfb7ee15f4f6
+    out_9d9fb50e47a6 = v_104c8abe2676
+  -> Input: 4.5 <-
+    operation_ok = FALSE
+  -> State: 4.5 <-
+    pc_j_b3fa588af440 = success
+  -> Input: 4.6 <-
+    actor = j_bff83956f72f
+  -> State: 4.6 <-
+    pc_j_bff83956f72f = s0
+  -> Input: 4.7 <-
+    operation_ok = TRUE
+    select_cc417ad2e740 = id_object_445e0a6b890b
+  -> State: 4.7 <-
+    transfer = TRUE
+    pc_j_bff83956f72f = s1
+    outcome_8a7fb9016790 = success
+    outcome_8a7fb9016790_conclusion = success
+    file_a8714a71f1e0 = tainted
+  -> Input: 4.8 <-
+    select_cc417ad2e740 = none
+  -> State: 4.8 <-
+    dependent_use = TRUE
+    pc_j_bff83956f72f = s2
+    outcome_bef83fa3717e = success
+    outcome_bef83fa3717e_conclusion = success

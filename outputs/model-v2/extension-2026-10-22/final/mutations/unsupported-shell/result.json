@@ -1,0 +1,62 @@
+{
+  "case": "A1",
+  "mutation": "unsupported-shell",
+  "inputDiff": "unsupported-shell/input.diff",
+  "model": "unsupported-shell/unsupported-shell.smv",
+  "modelCorruptionControl": false,
+  "experimentInputConstraint": null,
+  "sourceHashes": [
+    "459f7b60cfa1cad7c456a2c8ecf0422f6273be9553761c4a627495e1086fc4b7",
+    "7f6d76c405d633dbf8dc74f543e44324e16f8afdc2936218b77e7f135db8f219"
+  ],
+  "diagnostics": [
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/unsupported-shell/inputs/artifact-a1-pr-producer.yml",
+        "line": 37,
+        "column": 9,
+        "endLine": 47,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/unsupported-shell/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 32,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "path-filter",
+      "message": "path filters are abstracted as an unknown trigger input",
+      "source": null
+    },
+    {
+      "status": "unsupported",
+      "code": "real-authority-sink-contract-missing",
+      "message": "no real authority-requiring operation contract is implemented; bad_real_authority_path is not an evaluated safety result",
+      "source": null
+    },
+    {
+      "status": "unsupported",
+      "code": "shell-subset",
+      "message": "unsupported shell syntax: eval \"$request\"",
+      "source": {
+        "file": "/out/mutations/unsupported-shell/inputs/artifact-a1-unsafe-consumer.yml",
+        "line": 49,
+        "column": 1,
+        "endLine": 49,
+        "endColumn": 16
+      }
+    }
+  ]
+}

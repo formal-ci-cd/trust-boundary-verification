@@ -26,6 +26,10 @@ def main() -> int:
     parser.add_argument("--workflow", type=Path, action="append", default=[],
                         help="additional bounded run workflow; requires --scenario")
     args = parser.parse_args()
+    map_path = args.map_path or Path(str(args.output) + ".map.json")
+    for target in (args.output, map_path):
+        if target.exists() or target.is_symlink():
+            parser.error(f"output already exists; use a new output path: {target}")
     try:
         if args.scenario:
             from workflow_model_v2.extended import compile_extended
@@ -37,7 +41,6 @@ def main() -> int:
             smv, manifest = compile_pair_v2(args.producer, args.consumer)
     except base.WorkflowError as exc:
         parser.error(str(exc))
-    map_path = args.map_path or Path(str(args.output) + ".map.json")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     map_path.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(smv, encoding="utf-8")

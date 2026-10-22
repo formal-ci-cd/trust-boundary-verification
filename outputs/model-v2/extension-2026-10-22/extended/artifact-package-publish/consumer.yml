@@ -1,0 +1,14 @@
+name: Artifact Consumer
+on: push
+permissions: {actions: read, contents: write}
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: payload
+          path: data
+          run-id: writer
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - run: npm publish data

@@ -1,0 +1,167 @@
+[
+  {
+    "symbol": "perm_artifact_a5_attest_producer_rebuild_dist_actions",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-producer.yml",
+          "line": 13,
+          "column": 5,
+          "endLine": 52,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_artifact_a5_attest_producer_rebuild_dist_contents",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-producer.yml",
+          "line": 13,
+          "column": 5,
+          "endLine": 52,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_artifact_a5_attest_consumer_consume_untrusted_dist_actions",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 17,
+          "column": 5,
+          "endLine": 80,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "perm_artifact_a5_attest_consumer_consume_untrusted_dist_contents",
+    "source": {
+      "kind": "effective-token-permission",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 17,
+          "column": 5,
+          "endLine": 80,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "object_321d6c8fef_state",
+    "source": {
+      "kind": "artifact-object-slot",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-producer.yml",
+          "line": 33,
+          "column": 9,
+          "endLine": 42,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "download_dd1690cfbd_state",
+    "source": {
+      "kind": "download-result",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 24,
+          "column": 9,
+          "endLine": 33,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "download_dd1690cfbd_object",
+    "source": {
+      "kind": "downloaded-object-id",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 24,
+          "column": 9,
+          "endLine": 33,
+          "endColumn": 7
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "pc_artifact_a5_attest_producer_rebuild_dist",
+    "source": {
+      "kind": "job-program-counter",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-producer.yml",
+          "line": 13,
+          "column": 5,
+          "endLine": 52,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "failed_pc_artifact_a5_attest_producer_rebuild_dist",
+    "source": {
+      "kind": "job-failure-latch",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-producer.yml",
+          "line": 13,
+          "column": 5,
+          "endLine": 52,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+    "source": {
+      "kind": "job-program-counter",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 17,
+          "column": 5,
+          "endLine": 80,
+          "endColumn": 1
+        }
+      ]
+    }
+  },
+  {
+    "symbol": "failed_pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+    "source": {
+      "kind": "job-failure-latch",
+      "sources": [
+        {
+          "file": "/repo/.github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 17,
+          "column": 5,
+          "endLine": 80,
+          "endColumn": 1
+        }
+      ]
+    }
+  }
+]

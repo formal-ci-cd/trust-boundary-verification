@@ -1,0 +1,124 @@
+-- specification AG !verification_read  is false
+-- as demonstrated by the following execution sequence
+Trace Description: CTL Counterexample 
+Trace Type: Counterexample 
+  -> State: 2.1 <-
+    origin_event = v_849b493c1f
+    origin_pr_activity = v_41596caca1
+    consumer_activity = activity_completed
+    perm_artifact_a1_pr_producer_produce_artifact_actions = perm_none
+    perm_artifact_a1_pr_producer_produce_artifact_contents = perm_read
+    perm_artifact_a2_safe_consumer_consume_after_verification_actions = perm_read
+    perm_artifact_a2_safe_consumer_consume_after_verification_contents = perm_read
+    ctx_5c0eb2e795 = v_1d2ed54306
+    producer_payload = payload_publish_true
+    producer_metadata_branch = branch_main
+    producer_metadata_sha = sha_valid
+    consumer_workflow_trusted = FALSE
+    unknown_path_815986aec9 = TRUE
+    producer_phase = run_not_created
+    producer_has_started = FALSE
+    producer_conclusion = conclusion_other
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_dormant
+    failed_pc_artifact_a1_pr_producer_produce_artifact = FALSE
+    pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_dormant
+    failed_pc_artifact_a2_safe_consumer_consume_after_verification = FALSE
+    object_f0b371c6bb_state = not_uploaded
+    download_03be4726f2_state = not_attempted
+    download_03be4726f2_object = no_object
+    artifact_read = FALSE
+    verification_read = FALSE
+    post_verification_use = FALSE
+    post_integrity_mismatch_use = FALSE
+    artifact_dependent_use = FALSE
+    integrity_state = integrity_not_run
+    integrity_blocked = FALSE
+    consumer_payload = value_unset
+    object_metadata_branch = branch_unset
+    object_metadata_sha = sha_unset
+    artifact_has_dist = FALSE
+    simulated_sink_site_reached = FALSE
+    artifact_dependent_sink = FALSE
+    simulated_sink_result_true = FALSE
+    real_authority_sink_site_reached = FALSE
+    authority_operation_succeeded = FALSE
+    object_f0b371c6bb_payload = value_unset
+    output_4c06154179 = out_unset
+    output_97cfd6d660 = out_unset
+    effective_authority_available = FALSE
+    effective_contents_write = FALSE
+    selected_payload_download_03be4726f2 = value_other
+    download_success_any = FALSE
+    integrity_trust_anchor_available = FALSE
+    bad_real_authority_path = FALSE
+    bad_simulated_path = FALSE
+    same_object_download_03be4726f2 = FALSE
+    can_download_03be4726f2 = FALSE
+    consumer_trigger = FALSE
+    producer_terminal = FALSE
+    producer_trigger = TRUE
+    origin_base_branch = v_3eb8dfee60
+    origin_push_branch = v_d5bae92cf6
+    origin_head_branch = v_7f5428820f
+  -> Input: 2.2 <-
+    scheduler = sched_pc_artifact_a1_pr_producer_produce_artifact
+    outcome_ab41449b62 = success
+    outcome_bcd962d418 = success
+    outcome_f0b371c6bb = success
+    outcome_7b47bf5f96 = success
+    outcome_03be4726f2 = success
+    outcome_395ffbc9ea = success
+    outcome_d92d9f3298 = success
+    outcome_62c89072b1 = success
+  -> State: 2.2 <-
+    producer_phase = run_requested
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_ready
+  -> Input: 2.3 <-
+  -> State: 2.3 <-
+    producer_has_started = TRUE
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_0
+  -> Input: 2.4 <-
+  -> State: 2.4 <-
+    producer_phase = run_in_progress
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_1
+  -> Input: 2.5 <-
+  -> State: 2.5 <-
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_2
+  -> Input: 2.6 <-
+  -> State: 2.6 <-
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_step_3
+    object_f0b371c6bb_state = object_f0b371c6bb
+    object_f0b371c6bb_payload = value_publish_true
+    can_download_03be4726f2 = TRUE
+  -> Input: 2.7 <-
+  -> State: 2.7 <-
+    pc_artifact_a1_pr_producer_produce_artifact = pc_artifact_a1_pr_producer_produce_artifact_done
+  -> Input: 2.8 <-
+  -> State: 2.8 <-
+    producer_phase = run_completed_success
+    producer_conclusion = conclusion_success
+    consumer_trigger = TRUE
+    producer_terminal = TRUE
+  -> Input: 2.9 <-
+    scheduler = sched_pc_artifact_a2_safe_consumer_consume_after_verification
+  -> State: 2.9 <-
+    pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_ready
+  -> Input: 2.10 <-
+  -> State: 2.10 <-
+    pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_0
+  -> Input: 2.11 <-
+  -> State: 2.11 <-
+    pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_1
+    download_03be4726f2_state = download_succeeded
+    download_03be4726f2_object = object_f0b371c6bb
+    selected_payload_download_03be4726f2 = value_publish_true
+    download_success_any = TRUE
+    same_object_download_03be4726f2 = TRUE
+  -> Input: 2.12 <-
+  -> State: 2.12 <-
+    pc_artifact_a2_safe_consumer_consume_after_verification = pc_artifact_a2_safe_consumer_consume_after_verification_step_2
+    artifact_read = TRUE
+    verification_read = TRUE
+    integrity_state = integrity_unverifiable
+    output_4c06154179 = out_other
+    output_97cfd6d660 = out_other

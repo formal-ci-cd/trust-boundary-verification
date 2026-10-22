@@ -1,0 +1,90 @@
+{
+  "property": "AG download_31ab2292c8_state != download_succeeded",
+  "trace": "cases/A5.cex.AG_download_31ab2292c8_state_download_succeeded.trace.txt",
+  "sourceMappedPcTransitions": [
+    {
+      "traceState": "1.3",
+      "pcSymbol": "pc_artifact_a5_attest_producer_rebuild_dist",
+      "activeStep": "pc_artifact_a5_attest_producer_rebuild_dist_step_0",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-producer.yml",
+          "line": 18,
+          "column": 9,
+          "endLine": 25,
+          "endColumn": 7
+        }
+      ]
+    },
+    {
+      "traceState": "1.4",
+      "pcSymbol": "pc_artifact_a5_attest_producer_rebuild_dist",
+      "activeStep": "pc_artifact_a5_attest_producer_rebuild_dist_step_1",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-producer.yml",
+          "line": 25,
+          "column": 9,
+          "endLine": 33,
+          "endColumn": 7
+        }
+      ]
+    },
+    {
+      "traceState": "1.5",
+      "pcSymbol": "pc_artifact_a5_attest_producer_rebuild_dist",
+      "activeStep": "pc_artifact_a5_attest_producer_rebuild_dist_step_2",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-producer.yml",
+          "line": 33,
+          "column": 9,
+          "endLine": 42,
+          "endColumn": 7
+        }
+      ]
+    },
+    {
+      "traceState": "1.6",
+      "pcSymbol": "pc_artifact_a5_attest_producer_rebuild_dist",
+      "activeStep": "pc_artifact_a5_attest_producer_rebuild_dist_step_3",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-producer.yml",
+          "line": 42,
+          "column": 9,
+          "endLine": 52,
+          "endColumn": 1
+        }
+      ]
+    },
+    {
+      "traceState": "1.10",
+      "pcSymbol": "pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+      "activeStep": "pc_artifact_a5_attest_consumer_consume_untrusted_dist_step_0",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 24,
+          "column": 9,
+          "endLine": 33,
+          "endColumn": 7
+        }
+      ]
+    },
+    {
+      "traceState": "1.11",
+      "pcSymbol": "pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+      "activeStep": "pc_artifact_a5_attest_consumer_consume_untrusted_dist_step_1",
+      "yamlSources": [
+        {
+          "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 33,
+          "column": 9,
+          "endLine": 59,
+          "endColumn": 7
+        }
+      ]
+    }
+  ]
+}

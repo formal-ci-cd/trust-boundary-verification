@@ -1,0 +1,10 @@
+--- original/artifact-a2-safe-consumer.yml
++++ mutated/artifact-a2-safe-consumer.yml
+@@ -36,6 +36,7 @@
+ 
+       # main側で信頼したpublish=falseの内容と一致するかを利用前に確認する．
+       - name: Verify artifact before use
++        if: false
+         id: verify-artifact
+         env:
+           ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt

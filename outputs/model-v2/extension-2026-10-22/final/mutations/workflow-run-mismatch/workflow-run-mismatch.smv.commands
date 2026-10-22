@@ -1,0 +1,5 @@
+read_model -i /out/mutations/workflow-run-mismatch/workflow-run-mismatch.smv
+go
+compute_reachable
+print_reachable_states
+quit

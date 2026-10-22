@@ -1,0 +1,43 @@
+test_digest_output_is_a_step_output_write (test_workflow_model_v2.ShellSubsetTests.test_digest_output_is_a_step_output_write) ... ok
+test_literal_true_dummy_marker_is_a_sink_but_false_is_not (test_workflow_model_v2.ShellSubsetTests.test_literal_true_dummy_marker_is_a_sink_but_false_is_not) ... ok
+test_recognizes_data_read_output_and_marker_relations (test_workflow_model_v2.ShellSubsetTests.test_recognizes_data_read_output_and_marker_relations) ... ok
+test_rejects_unknown_shell_without_ignoring_the_rest_of_the_script (test_workflow_model_v2.ShellSubsetTests.test_rejects_unknown_shell_without_ignoring_the_rest_of_the_script) ... ok
+test_stderr_redirection_is_accepted_as_echo_presentation_only (test_workflow_model_v2.ShellSubsetTests.test_stderr_redirection_is_accepted_as_echo_presentation_only) ... ok
+test_a1_a2_a3_a4_and_a5_generate_stateful_properties (test_workflow_model_v2.StatefulWorkflowModelTests.test_a1_a2_a3_a4_and_a5_generate_stateful_properties) ... ok
+test_a5_runner_temp_path_and_step_outputs_are_supported_together (test_workflow_model_v2.StatefulWorkflowModelTests.test_a5_runner_temp_path_and_step_outputs_are_supported_together) ... ok
+test_artifact_dependent_use_requires_successful_download_state (test_workflow_model_v2.StatefulWorkflowModelTests.test_artifact_dependent_use_requires_successful_download_state) ... ok
+test_independent_bfs_separates_a1_use_from_a3_download_only (test_workflow_model_v2.StatefulWorkflowModelTests.test_independent_bfs_separates_a1_use_from_a3_download_only) ... ok
+test_output_reference_lowers_to_the_same_state_symbol (test_workflow_model_v2.StatefulWorkflowModelTests.test_output_reference_lowers_to_the_same_state_symbol) ... ok
+test_unmatched_download_candidate_keeps_a_valid_object_slot (test_workflow_model_v2.StatefulWorkflowModelTests.test_unmatched_download_candidate_keeps_a_valid_object_slot) ... ok
+test_unrelated_literal_marker_does_not_create_artifact_provenance (test_workflow_model_v2.StatefulWorkflowModelTests.test_unrelated_literal_marker_does_not_create_artifact_provenance) ... ok
+test_boolean_precedence (test_workflow_model_v2_extended.ExpressionTests.test_boolean_precedence) ... ok
+test_functions (test_workflow_model_v2_extended.ExpressionTests.test_functions) ... ok
+test_github_coercion (test_workflow_model_v2_extended.ExpressionTests.test_github_coercion) ... ok
+test_operand_preserving_boolean (test_workflow_model_v2_extended.ExpressionTests.test_operand_preserving_boolean) ... ok
+test_rejects_unsupported (test_workflow_model_v2_extended.ExpressionTests.test_rejects_unsupported) ... ok
+test_repeated_reference_is_correlated (test_workflow_model_v2_extended.ExpressionTests.test_repeated_reference_is_correlated) ... ok
+test_action_version_contracts_keep_distinct_identity (test_workflow_model_v2_extended.ExtendedTests.test_action_version_contracts_keep_distinct_identity) ... ok
+test_cache_and_sink_are_transitions (test_workflow_model_v2_extended.ExtendedTests.test_cache_and_sink_are_transitions) ... ok
+test_cancel_status_and_cleanup_have_state (test_workflow_model_v2_extended.ExtendedTests.test_cancel_status_and_cleanup_have_state) ... ok
+test_composite_metadata_is_hash_checked (test_workflow_model_v2_extended.ExtendedTests.test_composite_metadata_is_hash_checked) ... ok
+test_dependency_cycle_rejected (test_workflow_model_v2_extended.ExtendedTests.test_dependency_cycle_rejected) ... ok
+test_digest_reads_have_distinct_history (test_workflow_model_v2_extended.ExtendedTests.test_digest_reads_have_distinct_history) ... ok
+test_matrix_needs_and_continue_on_error (test_workflow_model_v2_extended.ExtendedTests.test_matrix_needs_and_continue_on_error) ... ok
+test_missing_version_stays_unsupported (test_workflow_model_v2_extended.ExtendedTests.test_missing_version_stays_unsupported) ... ok
+test_repository_defaults_share_one_permission_symbol (test_workflow_model_v2_extended.ExtendedTests.test_repository_defaults_share_one_permission_symbol) ... ok
+test_trace_mapper_retains_previous_state_values (test_workflow_model_v2_extended.ExtendedTests.test_trace_mapper_retains_previous_state_values) ... ok
+test_unknown_shell_never_yields_safety (test_workflow_model_v2_extended.ExtendedTests.test_unknown_shell_never_yields_safety) ... ok
+test_unknown_workflow_keys_block_safety (test_workflow_model_v2_extended.ExtendedTests.test_unknown_workflow_keys_block_safety) ... ok
+test_whole_shell_rejection (test_workflow_model_v2_extended.ExtendedTests.test_whole_shell_rejection) ... ok
+test_all_priority_events (test_workflow_model_v2_extended.PolicyTests.test_all_priority_events) ... ok
+test_cache_key_priority (test_workflow_model_v2_extended.PolicyTests.test_cache_key_priority) ... ok
+test_filters (test_workflow_model_v2_extended.PolicyTests.test_filters) ... ok
+test_glob_order_and_directories (test_workflow_model_v2_extended.PolicyTests.test_glob_order_and_directories) ... ok
+test_permissions_and_fork_downgrade (test_workflow_model_v2_extended.PolicyTests.test_permissions_and_fork_downgrade) ... ok
+test_push_tag_branch_filter_exclusion (test_workflow_model_v2_extended.PolicyTests.test_push_tag_branch_filter_exclusion) ... ok
+test_scope_and_policy (test_workflow_model_v2_extended.PolicyTests.test_scope_and_policy) ... ok
+
+----------------------------------------------------------------------
+Ran 38 tests in 0.179s
+
+OK

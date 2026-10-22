@@ -1,0 +1,204 @@
+{
+  "case": "A5",
+  "property": "AG !bad_simulated_path",
+  "traceFile": "A5.bad_simulated_path.trace.txt",
+  "initialModelChoices": {
+    "origin_event": "v_849b493c1f",
+    "origin_pr_activity": "v_41596caca1",
+    "origin_base_branch": "v_8cba18442d",
+    "consumer_activity": "activity_completed",
+    "producer_payload": "payload_publish_true",
+    "producer_metadata_branch": "branch_other",
+    "producer_metadata_sha": "sha_other_valid",
+    "consumer_workflow_trusted": "FALSE",
+    "producer_trigger": "TRUE",
+    "origin_push_branch": "v_d5bae92cf6",
+    "origin_head_branch": "v_7f5428820f"
+  },
+  "workflowTransitions": [
+    {
+      "fromState": "5.3",
+      "toState": "5.4",
+      "programCounter": "pc_artifact_a5_attest_producer_rebuild_dist_step_0",
+      "scheduler": "sched_pc_artifact_a5_attest_producer_rebuild_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-producer.yml",
+      "job": "rebuild-dist",
+      "stepIndex": 0,
+      "stepName": "Checkout pull request content",
+      "stepId": "",
+      "action": "actions/checkout@11d5960a326750d5838078e36cf38b85af677262",
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 18,
+        "column": 9,
+        "endLine": 25,
+        "endColumn": 7
+      },
+      "runSource": null
+    },
+    {
+      "fromState": "5.4",
+      "toState": "5.5",
+      "programCounter": "pc_artifact_a5_attest_producer_rebuild_dist_step_1",
+      "scheduler": "sched_pc_artifact_a5_attest_producer_rebuild_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-producer.yml",
+      "job": "rebuild-dist",
+      "stepIndex": 1,
+      "stepName": "Prepare PR-controlled artifact",
+      "stepId": "",
+      "action": null,
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 25,
+        "column": 9,
+        "endLine": 33,
+        "endColumn": 7
+      },
+      "runSource": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 26,
+        "column": 14,
+        "endLine": 33,
+        "endColumn": 1
+      }
+    },
+    {
+      "fromState": "5.5",
+      "toState": "5.6",
+      "programCounter": "pc_artifact_a5_attest_producer_rebuild_dist_step_2",
+      "scheduler": "sched_pc_artifact_a5_attest_producer_rebuild_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-producer.yml",
+      "job": "rebuild-dist",
+      "stepIndex": 2,
+      "stepName": "Upload rebuilt dist and metadata",
+      "stepId": "upload-artifact",
+      "action": "actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 33,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      },
+      "runSource": null
+    },
+    {
+      "fromState": "5.6",
+      "toState": "5.7",
+      "programCounter": "pc_artifact_a5_attest_producer_rebuild_dist_step_3",
+      "scheduler": "sched_pc_artifact_a5_attest_producer_rebuild_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-producer.yml",
+      "job": "rebuild-dist",
+      "stepIndex": 3,
+      "stepName": "Record producer result",
+      "stepId": "",
+      "action": null,
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 42,
+        "column": 9,
+        "endLine": 52,
+        "endColumn": 1
+      },
+      "runSource": {
+        "file": ".github/workflows/artifact-a5-attest-producer.yml",
+        "line": 43,
+        "column": 14,
+        "endLine": 52,
+        "endColumn": 1
+      }
+    },
+    {
+      "fromState": "5.10",
+      "toState": "5.11",
+      "programCounter": "pc_artifact_a5_attest_consumer_consume_untrusted_dist_step_0",
+      "scheduler": "sched_pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "job": "consume-untrusted-dist",
+      "stepIndex": 0,
+      "stepName": "Download artifact from the producer run",
+      "stepId": "",
+      "action": "actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "line": 24,
+        "column": 9,
+        "endLine": 33,
+        "endColumn": 7
+      },
+      "runSource": null
+    },
+    {
+      "fromState": "5.11",
+      "toState": "5.12",
+      "programCounter": "pc_artifact_a5_attest_consumer_consume_untrusted_dist_step_1",
+      "scheduler": "sched_pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "job": "consume-untrusted-dist",
+      "stepIndex": 1,
+      "stepName": "Read artifact-supplied target branch",
+      "stepId": "artifact-metadata",
+      "action": null,
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "line": 33,
+        "column": 9,
+        "endLine": 59,
+        "endColumn": 7
+      },
+      "runSource": {
+        "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "line": 37,
+        "column": 14,
+        "endLine": 57,
+        "endColumn": 1
+      }
+    },
+    {
+      "fromState": "5.12",
+      "toState": "5.13",
+      "programCounter": "pc_artifact_a5_attest_consumer_consume_untrusted_dist_step_2",
+      "scheduler": "sched_pc_artifact_a5_attest_consumer_consume_untrusted_dist",
+      "workflow": ".github/workflows/artifact-a5-attest-consumer.yml",
+      "job": "consume-untrusted-dist",
+      "stepIndex": 2,
+      "stepName": "Simulate privileged repository update",
+      "stepId": "",
+      "action": null,
+      "source": {
+        "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "line": 59,
+        "column": 9,
+        "endLine": 80,
+        "endColumn": 1
+      },
+      "runSource": {
+        "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "line": 65,
+        "column": 14,
+        "endLine": 80,
+        "endColumn": 1
+      },
+      "shellContract": {
+        "workflow": ".github/workflows/artifact-a5-attest-consumer.yml",
+        "job": "consume-untrusted-dist",
+        "step": 2,
+        "kind": "simulated-repository-update-marker",
+        "predicate": "(output_432cc6cf5d != out_unset & output_e5022fc863 != out_unset & artifact_has_dist & same_object_download_31ab2292c8)",
+        "source": {
+          "file": ".github/workflows/artifact-a5-attest-consumer.yml",
+          "line": 77,
+          "column": 3,
+          "endLine": 77,
+          "endColumn": 46
+        },
+        "workflowHash": "706a9938d1449b4e4660b0c15918ef66957fcba46e041bfa24de1deeb1d77fe8",
+        "dependsOn": [
+          "output_432cc6cf5d",
+          "output_e5022fc863",
+          "downloaded artifact file test"
+        ]
+      }
+    }
+  ]
+}

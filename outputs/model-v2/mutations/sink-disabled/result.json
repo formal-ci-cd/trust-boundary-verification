@@ -1,0 +1,44 @@
+{
+  "case": "A5",
+  "mutation": "sink-disabled",
+  "inputDiff": "sink-disabled/input.diff",
+  "model": "sink-disabled/sink-disabled.smv",
+  "modelCorruptionControl": false,
+  "experimentInputConstraint": null,
+  "sourceHashes": [
+    "048785c276cb3219a76c07ca6b93262756e8417d6ef4c46802c229a0428d03fc",
+    "edb739ec1bc248bdb60472361820097a4588fbcad5a9bb096738896735eda58e"
+  ],
+  "diagnostics": [
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/sink-disabled/inputs/artifact-a5-attest-producer.yml",
+        "line": 33,
+        "column": 9,
+        "endLine": 42,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unknown",
+      "code": "action-outcome",
+      "message": "the action's success/failure outcome is selected once at this step and latched in model state",
+      "source": {
+        "file": "/out/mutations/sink-disabled/inputs/artifact-a5-attest-consumer.yml",
+        "line": 24,
+        "column": 9,
+        "endLine": 33,
+        "endColumn": 7
+      }
+    },
+    {
+      "status": "unsupported",
+      "code": "real-authority-sink-contract-missing",
+      "message": "no real authority-requiring operation contract is implemented; bad_real_authority_path is not an evaluated safety result",
+      "source": null
+    }
+  ]
+}

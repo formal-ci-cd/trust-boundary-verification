@@ -1,0 +1,758 @@
+{
+  "modelVersion": "2-extended-bounded",
+  "contractVersion": "bounded-contracts-2026-10-22.1",
+  "cachePolicy": "github-historical-2025",
+  "scenario": {
+    "cachePolicy": "github-historical-2025",
+    "runs": [
+      {
+        "event": "pull_request",
+        "activity": "opened",
+        "branch": "main",
+        "scope": "refs/pull/1/merge",
+        "repository": "test/repo",
+        "defaultBranch": "refs/heads/main",
+        "baseBranch": "refs/heads/main",
+        "fork": false,
+        "sendWriteTokens": false,
+        "defaultBranchWorkflow": true,
+        "refType": "branch",
+        "runnerOS": "Linux",
+        "runnerArch": "X64",
+        "cacheVersion": {
+          "data": "version1"
+        },
+        "checkoutFiles": [
+          "data"
+        ],
+        "changedPaths": [
+          "src/code.py"
+        ],
+        "diffComplete": true,
+        "tokenAuthenticated": {
+          "contents": true
+        },
+        "id": "writer"
+      },
+      {
+        "event": "push",
+        "activity": "",
+        "branch": "main",
+        "scope": "refs/heads/main",
+        "repository": "test/repo",
+        "defaultBranch": "refs/heads/main",
+        "baseBranch": "refs/heads/main",
+        "fork": false,
+        "sendWriteTokens": false,
+        "defaultBranchWorkflow": true,
+        "refType": "branch",
+        "runnerOS": "Linux",
+        "runnerArch": "X64",
+        "cacheVersion": {
+          "data": "version1"
+        },
+        "checkoutFiles": [
+          "data"
+        ],
+        "changedPaths": [
+          "src/code.py"
+        ],
+        "diffComplete": true,
+        "tokenAuthenticated": {
+          "contents": true
+        },
+        "id": "reader",
+        "after": "writer",
+        "checkoutUntrusted": true
+      }
+    ]
+  },
+  "sources": [
+    {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "sha256": "5a57b676e31d0d7dbff1eb328293c7916427c4bdaa71aa0b4ac70f7bffa082af"
+    },
+    {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "sha256": "94c40fd610c83d071698f6d3cd533c71ff8ac5c785ff009a06341b698c44dcdc"
+    }
+  ],
+  "jobs": [
+    {
+      "id": "j_b3fa588af440",
+      "original": "build",
+      "run": 0,
+      "raw": {
+        "runs-on": "ubuntu-latest",
+        "steps": [
+          {
+            "uses": "actions/checkout@v4",
+            "with": {
+              "persist-credentials": false
+            }
+          },
+          {
+            "id": "upload",
+            "uses": "actions/upload-artifact@v4",
+            "with": {
+              "name": "payload",
+              "path": "data"
+            }
+          }
+        ]
+      },
+      "matrix": {},
+      "source": {
+        "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+        "line": 6,
+        "column": 5,
+        "endLine": 13,
+        "endColumn": 1
+      },
+      "steps": [
+        {
+          "id": "index0",
+          "raw": {
+            "uses": "actions/checkout@v4",
+            "with": {
+              "persist-credentials": false
+            }
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+            "line": 8,
+            "column": 9,
+            "endLine": 10,
+            "endColumn": 7
+          },
+          "contract": "actions/checkout-v4",
+          "ops": [],
+          "versioned_contract": {
+            "identity": "actions/checkout@v4:bounded-effects-v1",
+            "action": "actions/checkout",
+            "reference": "v4",
+            "major": 4,
+            "runtime": "node20",
+            "effect": "actions/checkout-v4",
+            "metadata": "https://raw.githubusercontent.com/actions/checkout/v4/action.yml"
+          }
+        },
+        {
+          "id": "upload",
+          "raw": {
+            "id": "upload",
+            "uses": "actions/upload-artifact@v4",
+            "with": {
+              "name": "payload",
+              "path": "data"
+            }
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+            "line": 10,
+            "column": 9,
+            "endLine": 13,
+            "endColumn": 1
+          },
+          "contract": "actions/upload-artifact-v4",
+          "ops": [],
+          "versioned_contract": {
+            "identity": "actions/upload-artifact@v4:bounded-effects-v1",
+            "action": "actions/upload-artifact",
+            "reference": "v4",
+            "major": 4,
+            "runtime": "node20",
+            "effect": "actions/upload-artifact-v4",
+            "metadata": "https://raw.githubusercontent.com/actions/upload-artifact/v4/action.yml"
+          }
+        }
+      ],
+      "needs": []
+    },
+    {
+      "id": "j_e09843efeece",
+      "original": "upload",
+      "run": 1,
+      "raw": {
+        "runs-on": "ubuntu-latest",
+        "steps": [
+          {
+            "uses": "actions/checkout@v4",
+            "with": {
+              "ref": "pr-head",
+              "persist-credentials": false
+            }
+          },
+          {
+            "uses": "actions/upload-artifact@v4",
+            "with": {
+              "name": "local",
+              "path": "data"
+            }
+          }
+        ]
+      },
+      "matrix": {},
+      "source": {
+        "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+        "line": 6,
+        "column": 5,
+        "endLine": 12,
+        "endColumn": 3
+      },
+      "steps": [
+        {
+          "id": "index0",
+          "raw": {
+            "uses": "actions/checkout@v4",
+            "with": {
+              "ref": "pr-head",
+              "persist-credentials": false
+            }
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 8,
+            "column": 9,
+            "endLine": 10,
+            "endColumn": 7
+          },
+          "contract": "actions/checkout-v4",
+          "ops": [],
+          "versioned_contract": {
+            "identity": "actions/checkout@v4:bounded-effects-v1",
+            "action": "actions/checkout",
+            "reference": "v4",
+            "major": 4,
+            "runtime": "node20",
+            "effect": "actions/checkout-v4",
+            "metadata": "https://raw.githubusercontent.com/actions/checkout/v4/action.yml"
+          }
+        },
+        {
+          "id": "index1",
+          "raw": {
+            "uses": "actions/upload-artifact@v4",
+            "with": {
+              "name": "local",
+              "path": "data"
+            }
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 10,
+            "column": 9,
+            "endLine": 12,
+            "endColumn": 3
+          },
+          "contract": "actions/upload-artifact-v4",
+          "ops": [],
+          "versioned_contract": {
+            "identity": "actions/upload-artifact@v4:bounded-effects-v1",
+            "action": "actions/upload-artifact",
+            "reference": "v4",
+            "major": 4,
+            "runtime": "node20",
+            "effect": "actions/upload-artifact-v4",
+            "metadata": "https://raw.githubusercontent.com/actions/upload-artifact/v4/action.yml"
+          }
+        }
+      ],
+      "needs": []
+    },
+    {
+      "id": "j_bff83956f72f",
+      "original": "read",
+      "run": 1,
+      "raw": {
+        "needs": "upload",
+        "runs-on": "ubuntu-latest",
+        "steps": [
+          {
+            "uses": "actions/download-artifact@v4",
+            "with": {
+              "name": "local",
+              "path": "data"
+            }
+          },
+          {
+            "run": "cat data"
+          },
+          {
+            "run": "git add data"
+          },
+          {
+            "run": "git push"
+          }
+        ]
+      },
+      "matrix": {},
+      "source": {
+        "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+        "line": 13,
+        "column": 5,
+        "endLine": 23,
+        "endColumn": 1
+      },
+      "steps": [
+        {
+          "id": "index0",
+          "raw": {
+            "uses": "actions/download-artifact@v4",
+            "with": {
+              "name": "local",
+              "path": "data"
+            }
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 16,
+            "column": 9,
+            "endLine": 20,
+            "endColumn": 7
+          },
+          "contract": "actions/download-artifact-v4",
+          "ops": [],
+          "versioned_contract": {
+            "identity": "actions/download-artifact@v4:bounded-effects-v1",
+            "action": "actions/download-artifact",
+            "reference": "v4",
+            "major": 4,
+            "runtime": "node20",
+            "effect": "actions/download-artifact-v4",
+            "metadata": "https://raw.githubusercontent.com/actions/download-artifact/v4/action.yml"
+          }
+        },
+        {
+          "id": "index1",
+          "raw": {
+            "run": "cat data"
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 20,
+            "column": 9,
+            "endLine": 21,
+            "endColumn": 7
+          },
+          "contract": "shell-operations-v1",
+          "ops": [
+            [
+              "read",
+              "data"
+            ]
+          ],
+          "versioned_contract": null
+        },
+        {
+          "id": "index2",
+          "raw": {
+            "run": "git add data"
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 21,
+            "column": 9,
+            "endLine": 22,
+            "endColumn": 7
+          },
+          "contract": "shell-operations-v1",
+          "ops": [
+            [
+              "stage",
+              "data"
+            ]
+          ],
+          "versioned_contract": null
+        },
+        {
+          "id": "index3",
+          "raw": {
+            "run": "git push"
+          },
+          "source": {
+            "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+            "line": 22,
+            "column": 9,
+            "endLine": 23,
+            "endColumn": 1
+          },
+          "contract": "shell-operations-v1",
+          "ops": [
+            [
+              "sink",
+              "contents",
+              "staged"
+            ]
+          ],
+          "versioned_contract": null
+        }
+      ],
+      "needs": [
+        "j_e09843efeece"
+      ]
+    }
+  ],
+  "objects": [
+    {
+      "token": "object_445e0a6b890b",
+      "index": 1,
+      "name": "payload",
+      "guard": "TRUE",
+      "kind": "artifact",
+      "path": "data",
+      "source": {
+        "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+        "line": 10,
+        "column": 9,
+        "endLine": 13,
+        "endColumn": 1
+      },
+      "job": "j_b3fa588af440",
+      "step": "upload"
+    },
+    {
+      "token": "object_acc2f907b960",
+      "index": 1,
+      "name": "local",
+      "guard": "TRUE",
+      "kind": "artifact",
+      "path": "data",
+      "source": {
+        "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+        "line": 10,
+        "column": 9,
+        "endLine": 12,
+        "endColumn": 3
+      },
+      "job": "j_e09843efeece",
+      "step": "index1"
+    }
+  ],
+  "symbols": {
+    "pc_j_b3fa588af440": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "failed_j_b3fa588af440": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "cancelled_j_b3fa588af440": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "staged_j_b3fa588af440": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "outcome_dd4fbda768b4": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "outcome_dd4fbda768b4_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "outcome_b4fea0b611f1": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "outcome_b4fea0b611f1_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "object_445e0a6b890b": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "out_0026caf1f097": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "out_9d9fb50e47a6": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "pc_j_e09843efeece": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "failed_j_e09843efeece": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "cancelled_j_e09843efeece": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "staged_j_e09843efeece": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "outcome_f0b969ca92ca": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "outcome_f0b969ca92ca_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "outcome_fb9ac6d5d66a": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "outcome_fb9ac6d5d66a_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "object_acc2f907b960": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "out_1e03915041f2": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "out_830d86a09aa8": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "pc_j_bff83956f72f": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 13,
+      "column": 5,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "failed_j_bff83956f72f": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 13,
+      "column": 5,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "cancelled_j_bff83956f72f": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 13,
+      "column": 5,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "staged_j_bff83956f72f": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 13,
+      "column": 5,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "outcome_8a7fb9016790": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 16,
+      "column": 9,
+      "endLine": 20,
+      "endColumn": 7
+    },
+    "outcome_8a7fb9016790_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 16,
+      "column": 9,
+      "endLine": 20,
+      "endColumn": 7
+    },
+    "outcome_bef83fa3717e": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 20,
+      "column": 9,
+      "endLine": 21,
+      "endColumn": 7
+    },
+    "outcome_bef83fa3717e_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 20,
+      "column": 9,
+      "endLine": 21,
+      "endColumn": 7
+    },
+    "outcome_2075cd8bd66c": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 21,
+      "column": 9,
+      "endLine": 22,
+      "endColumn": 7
+    },
+    "outcome_2075cd8bd66c_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 21,
+      "column": 9,
+      "endLine": 22,
+      "endColumn": 7
+    },
+    "outcome_299352ae45a3": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 22,
+      "column": 9,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "outcome_299352ae45a3_conclusion": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 22,
+      "column": 9,
+      "endLine": 23,
+      "endColumn": 1
+    },
+    "file_d1e1d998b911": {
+      "file": "/out/extended/artifact-multiple-jobs/producer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "file_05333fb43996": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 6,
+      "column": 5,
+      "endLine": 12,
+      "endColumn": 3
+    },
+    "file_a8714a71f1e0": {
+      "file": "/out/extended/artifact-multiple-jobs/consumer.yml",
+      "line": 13,
+      "column": 5,
+      "endLine": 23,
+      "endColumn": 1
+    }
+  },
+  "outputSymbols": [
+    {
+      "job": "j_b3fa588af440",
+      "step": "upload",
+      "output": "artifact-id",
+      "symbol": "out_0026caf1f097",
+      "domain": [
+        "",
+        "object_445e0a6b890b"
+      ]
+    },
+    {
+      "job": "j_b3fa588af440",
+      "step": "upload",
+      "output": "artifact-digest",
+      "symbol": "out_9d9fb50e47a6",
+      "domain": [
+        "",
+        "runtime-digest-unknown"
+      ]
+    },
+    {
+      "job": "j_e09843efeece",
+      "step": "index1",
+      "output": "artifact-id",
+      "symbol": "out_1e03915041f2",
+      "domain": [
+        "",
+        "object_acc2f907b960"
+      ]
+    },
+    {
+      "job": "j_e09843efeece",
+      "step": "index1",
+      "output": "artifact-digest",
+      "symbol": "out_830d86a09aa8",
+      "domain": [
+        "",
+        "runtime-digest-unknown"
+      ]
+    }
+  ],
+  "diagnostics": [],
+  "actionRefs": [
+    "actions/checkout@v4",
+    "actions/download-artifact@v4",
+    "actions/upload-artifact@v4"
+  ],
+  "verdict": "pending-model-check",
+  "assumptions": [
+    "one bounded run per supplied workflow; no eviction/retention expiry",
+    "scenario contexts and opaque cache versions are assumptions, not runtime evidence",
+    "nondeterministic action/network success; shell operations are atomic per step",
+    "tag contracts are version families; tags are not resolved to immutable source commits"
+  ],
+  "properties": {
+    "no_transfer": "AG !transfer",
+    "no_use": "AG !dependent_use",
+    "no_sink_site": "AG !sink_site",
+    "no_success": "AG !sink_succeeded",
+    "no_bad_authority": "AG !bad_authority",
+    "success_requires_site": "AG (sink_succeeded -> sink_site)",
+    "bad_requires_success": "AG (bad_authority -> sink_succeeded)"
+  },
+  "stateVariables": 43
+}

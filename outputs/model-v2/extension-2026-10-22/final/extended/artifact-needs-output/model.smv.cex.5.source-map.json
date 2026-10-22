@@ -1,0 +1,191 @@
+[
+  {
+    "state": "5.2",
+    "job": "j_b3fa588af440",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/producer.yml",
+      "line": 8,
+      "column": 9,
+      "endLine": 10,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.3",
+    "job": "j_b3fa588af440",
+    "step": "upload",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_b3fa588af440",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/producer.yml",
+      "line": 10,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.6",
+    "job": "j_e09843efeece",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_e09843efeece",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 9,
+      "column": 9,
+      "endLine": 11,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.7",
+    "job": "j_e09843efeece",
+    "step": "flag",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_e09843efeece",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 11,
+      "column": 9,
+      "endLine": 13,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.8",
+    "job": "j_e09843efeece",
+    "step": "index2",
+    "pc": "s2",
+    "inputs": {
+      "actor": "j_e09843efeece",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 13,
+      "column": 9,
+      "endLine": 15,
+      "endColumn": 3
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.11",
+    "job": "j_bff83956f72f",
+    "step": "index0",
+    "pc": "s0",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "id_object_7b8abfae8722"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 20,
+      "column": 9,
+      "endLine": 24,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.12",
+    "job": "j_bff83956f72f",
+    "step": "index1",
+    "pc": "s1",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 24,
+      "column": 9,
+      "endLine": 25,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.13",
+    "job": "j_bff83956f72f",
+    "step": "index2",
+    "pc": "s2",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 25,
+      "column": 9,
+      "endLine": 26,
+      "endColumn": 7
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  },
+  {
+    "state": "5.14",
+    "job": "j_bff83956f72f",
+    "step": "index3",
+    "pc": "s3",
+    "inputs": {
+      "actor": "j_bff83956f72f",
+      "operation_ok": "TRUE",
+      "cache_io_ok": "FALSE",
+      "cancel_request": "FALSE",
+      "select_cc417ad2e740": "none"
+    },
+    "source": {
+      "file": "/out/extended/artifact-needs-output/consumer.yml",
+      "line": 26,
+      "column": 9,
+      "endLine": 27,
+      "endColumn": 1
+    },
+    "meaning": "transition scheduled at this source step; if/outcome may skip or fail"
+  }
+]

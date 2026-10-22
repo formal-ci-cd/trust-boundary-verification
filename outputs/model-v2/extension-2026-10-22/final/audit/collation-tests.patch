@@ -1,0 +1,14 @@
+--- /Users/bob/Documents/GitHub/trust-boundary-verification/tests/test_workflow_model_v2_extended.py	2026-10-22 19:04:54
++++ extension-work/tests/test_workflow_model_v2_extended.py	2026-10-22 19:10:34
+@@ -142,6 +142,11 @@
+         self.assertEqual(pol.cache_rank('pkg-z', 'not', ['other', 'pkg-']), 3)
+         self.assertIsNone(pol.cache_rank('x', 'y', ['z']))
+ 
++    def test_cache_case_boundary_is_explicitly_unsupported(self):
++        with self.assertRaises(pol.UnsupportedPolicy):
++            pol.cache_rank('Linux-deps', 'linux-deps', [])
++        self.assertEqual(pol.cache_rank('Linux-deps', 'Linux-deps', []), 0)
++
+     def test_permissions_and_fork_downgrade(self):
+         self.assertEqual(pol.permission({'permissions': {'contents': 'write'}}, {}, context(event='pull_request', fork=True), 'contents'), 'read')
+         self.assertEqual(pol.permission({'permissions': {'contents': 'write'}}, {'permissions': {}}, context(), 'contents'), 'none')

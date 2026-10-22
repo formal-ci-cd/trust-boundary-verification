@@ -1,0 +1,11 @@
+--- original/artifact-a2-safe-consumer.yml
++++ mutated/artifact-a2-safe-consumer.yml
+@@ -55,7 +55,7 @@
+ 
+       # hashが一致した場合だけ，成果物の内容を模擬publish判断へ渡す．
+       - name: Use only the verified artifact
+-        if: steps.verify-artifact.outputs.verified == 'true'
++        if: steps.verify-artifact.outputs.verified == 'true' && steps.verify-artifact.outputs.verified != 'true'
+         env:
+           ARTIFACT_FILE: ${{ runner.temp }}/trust-boundary-artifact/payload.txt
+           ACTUAL_DIGEST: ${{ steps.verify-artifact.outputs.actual_digest }}

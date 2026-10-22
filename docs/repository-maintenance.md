@@ -11,7 +11,7 @@
 
 新規作業は `feat/<機能名>`，不具合修正は `fix/<対象>` を使います．A1等の評価ケースごと，出力結果だけのためにはブランチを作りません．統合済みの作業ブランチは整理し，未統合のものは内容確認なしに消しません．`research/` は固定比較基準，`archive/` は必要な退避に限定します．
 
-今回，元の全refをGit bundleへ退避・検証してから，現在の研究HEADへ統合済みだったローカル11ブランチを削除しました．消失済み `/private/tmp/tbv-a5-worktree` のmetadataも除きました．リモートブランチはPush禁止の範囲を維持して変更していません．名前やupstream設定はローカルで整理したもので，GitHub側をrenameしたものではありません．
+今回，元の全refをGit bundleへ退避・検証してから，現在の研究HEADへ統合済みだったローカル11ブランチを削除しました．消失済み `/private/tmp/tbv-a5-worktree` のmetadataも除きました．その後，ユーザーのPush許可を受けてGitHubの最新refと進行中PRを確認し，統合済みのリモート12ブランチも整理しました．`feat/workflow-model-v2` を公開し，GitHub側は15本から4本になります．PR #15が使う `research/automatic-temporal-verification` は元の名前で保持し，未統合commitが1件ある `experiment/github-actions-artifact-runtime` も残します．`main` と合わせ，GitHub側に残すのはこの4本です．ローカルの `research/paper-baseline` は既存PRのheadを動かさずに基準を示す名前です．
 
 ## Python
 
@@ -33,13 +33,13 @@ archive作成後は全memberのhashを照合し，その後にのみ展開済み
 
 整理前の全branch/stashのbundleと未コミット作業ツリー全体は，この作業のチャットworkspaceにある `maintenance-backups/2026-10-22/` へ保存しました．元ref名とSHAも同じ場所に記録しています．作業ツリー退避はGit未追跡だったLunaのコードと出力も含みます．
 
-既存stashは削除していません．Commitは今回の明示許可に基づくローカル保存のみで，Pushは行いません．
+既存stashは削除していません．CommitとPushは今回の明示許可に基づき実施します．ブランチ削除は最新確認時のSHAが変わっていないことを条件にし，新規開発ブランチの公開と同時に反映します．削除対象のコミットは研究基準ブランチに含まれ，削除前のbundleにも保存されています．
 
 ## 整理後の確認
 
 - ローカルブランチ：14本から4本．基準branchと未統合backupは保持．
 - 保存済み評価：展開済み3,313ファイルから，要約・archive・索引の13ファイル．全3,313 memberを再照合済み．
-- 出力のdisk使用量：約34MBから約4.2MB（新しいGit除外runも含む）．
+- 出力のdisk使用量：約34MBから約3.9MB（新しいGit除外runも含む）．
 - 整理後のDocker検証：49テスト成功，65モデル中64モデルでproperty結果取得，意図した構文不正対照1件．BFS22ケース一致．
 - 新規run：詳細1,316ファイルを検証済archiveへまとめ，通常見える出力は6ファイル．`outputs/runs/repository-cleanup-check/` に保存し，Gitへ追加しない．
 - `tools/legacy/` の6 CLIは移動後の `--help` 起動を確認した．

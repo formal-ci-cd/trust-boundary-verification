@@ -15,4 +15,4 @@ Pythonは直下4本とpackage内16本です．`workflow_to_smv.py` は共通pars
 
 シェルrunnerを廃止し，モデル生成・検証・集計を明示的に分けました．自動圧縮・出力削除は行いません．任意の `evidence backup` も元ファイルを残してarchiveを追加するだけです．
 
-旧評価系52本と専用テスト32本はこのブランチから削除済みです．旧論文の再現には `research/automatic-temporal-verification` を使ってください．整理直前の全ファイルは保存タグ `archive/v2-before-tool-pruning` に固定しています．[削除一覧と照合済みblob](../docs/v2-tool-removal-inventory.md)．過去の資料にある旧scriptの手順は保存版用です．
+旧評価系52本と専用テスト32本はこのブランチから削除済みです．旧論文の再現には `research/automatic-temporal-verification` を使ってください．整理直前の全ファイルは保存タグ `archive/v2-before-tool-pruning` に固定しています．[旧版の保存先](../docs/repository-maintenance.md#旧smv変換器の保存先)．過去の資料にある旧scriptの手順は保存版用です．

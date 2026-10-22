@@ -86,13 +86,11 @@ Cache Actionのexact-hit判定はlocale比較を使うため，caseだけが異�
 
 schedule配信，registry snapshot選択，同時刻token policy，shell atomicity，cache version，同一object候補範囲は明示した有限scenarioの仮定である．BFS一致は下記subsetの二つの実装間の一致であり，外部platformの正しさの証明ではない．
 
-## 再実行
+## 実行と保存
 
-`tools/run_workflow_v2_extension.sh <新しい出力ディレクトリ>` はホストではDocker起動のみを行い，Python／テスト／NuSMVは全て非rootコンテナ内で実行する．既存ディレクトリの上書きを拒否する．入力repoはro，出力だけrw，network none，read-only rootfs，cap-drop ALL，no-new-privileges，tmpfsを使う．既存Docker serviceやhost packageを変更しない．
+[コンテナ操作手順](container-guide.md)に従い，YAML→SMV生成，NuSMV検証，集計を別々に実行する．既定CLIはArtifactのprototype backend，`--scenario` は複数runの拡張backendを選択する．必要な追加runは `--workflow third.yml` とscenario.runsの両方へ指定する．
 
-個別生成はcontainer内で `python3 tools/workflow_to_smv_v2.py producer.yml consumer.yml --scenario scenario.json --output /out/model.smv`．追加runは `--workflow third.yml` を指定し，scenario.runsにも対応するcontextを追加する．既定CLIは従来prototypeのままである．
-
-source mapの `/repo` はread-only repository，`/out` は専用評価出力を指す．NuSMV inputのactorとPCを使ってstepを対応させる．地点をscheduleしたことと，if成立／処理成功は別であり，trace中のinput/outcomeと併せて読む．
+source mapの `/repo` は読取り専用repository，`/out` は専用出力を指す．NuSMV inputのactorとPCからYAML stepへ対応させる．stepをscheduleしたこと，ifの成立，処理成功は区別する．入力・SMV・対応表・ログ・反例は個別ファイルのまま残し，既存出力の上書きは拒否する．
 
 ## 確認した公式資料
 
@@ -107,3 +105,19 @@ source mapの `/repo` はread-only repository，`/out` は専用評価出力を�
 - [Upload v4 metadata](https://github.com/actions/upload-artifact/blob/v4/action.yml)，[Download v4 metadata](https://github.com/actions/download-artifact/blob/v4/action.yml)
 
 タグはimmutable SHAへ新たに解決していない．manifestには使用refとcontract identityを保存し，v4／v5のruntimeとmetadata参照を分けた．TanStack external setupは既存registryのmetadata SHAを再確認するが，実際のincident runが同じremote SHAを使った証明ではない．
+
+## 既定Artifact backendの役割
+
+`workflow_to_smv.py` が元YAMLの行位置を保って読込み，`workflow_shell_subset.py` が限定Shellを解析する．`ir.py` が型付きIRへ下げ，`builder.py` が状態遷移とCTLを生成する．CodeQLや旧JSON schemaは使わない．
+
+producer/consumerのjob・step順序，needs，成果物候補の同一性，download結果，成果物に依存したread，digest検査，模擬権限地点を区別する．`verification_read`，`post_verification_use`，`post_integrity_mismatch_use` は別の履歴であり，後から検査で遮断されても過去のreadを取り消さない．
+
+| 主なproperty対象 | 意味 |
+|---|---|
+| `artifact_dependent_use` | downloadした成果物に依存する利用地点 |
+| `simulated_sink_site_reached` | 研究用の模擬権限地点 |
+| `bad_simulated_path` | 未信頼成果物から模擬権限地点への経路 |
+| `bad_real_authority_path` | 実権限契約に基づく経路．prototypeでの未対応を安全と解釈しない |
+| 拡張backendの `bad_authority` | scenarioと閉じた操作契約に基づく権限経路 |
+
+Pythonが最終的な危険到達Booleanを事前計算してSMVへ埋め込む構成ではない．到達性は生成した状態遷移をNuSMVで検査する．独立BFSの一致は対応subset内の実装間照合であり，GitHub全体や実際の侵害成功の証明ではない．

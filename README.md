@@ -6,10 +6,10 @@ GitHub ActionsのCache・artifactを介した信頼境界を，YAMLから有限�
 
 - コンテナの起動・入室・段階実行：[操作手順](docs/container-guide.md)
 - 実装の入口：[tools/README.md](tools/README.md)
-- 対応範囲と制限：[拡張仕様](docs/next-model-design/extension-semantics.md)
+- 対応範囲と制限：[拡張仕様](docs/semantics.md)
 - 保存済み評価：[最新評価](outputs/model-v2/INDEX.md)
 - ブランチと出力の管理：[管理方針](docs/repository-maintenance.md)
-- 削除した旧Pythonの保存先：[照合済み一覧](docs/v2-tool-removal-inventory.md)
+- 検証結果と未対応項目：[評価記録](docs/evaluation.md)
 
 ## v2を使う
 
@@ -28,4 +28,4 @@ docker compose exec model bash
 
 旧論文評価系は [research/automatic-temporal-verification](https://github.com/formal-ci-cd/trust-boundary-verification/tree/research/automatic-temporal-verification) に保存しています．整理直前の全コードは保存タグ [archive/v2-before-tool-pruning](https://github.com/formal-ci-cd/trust-boundary-verification/tree/archive/v2-before-tool-pruning) から復元できます．`main` は公開側の基準です．
 
-過去の `docs/`・`results/`・`experiments/` は研究記録として保持しています．そこにある旧scriptの実行手順は上記の旧版用です．旧評価の結果を，v2で再現できた結果として扱わないでください．v2の未対応構文やTanStackの未達成項目は[実装報告](docs/next-model-design/extension-report-2026-10-22.md)に記録しています．
+旧CodeQL・旧実験入力・旧資料は保存版へ分けています．現行のdocsは操作・仕様・評価・保存方針の4本です．生成済みSMV・観測記録・`outputs/`・`results/` は保持しています．v2の未対応範囲とTanStackの未達成項目は[評価記録](docs/evaluation.md)を参照してください．

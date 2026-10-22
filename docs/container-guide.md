@@ -68,7 +68,7 @@ head -40 /out/demo-001/a1.smv
 cat /out/demo-001/a1.smv.map.json
 ```
 
-別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` を加えると拡張backendを使い，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scopeなどの有限な外部条件です．対応範囲は [拡張仕様](next-model-design/extension-semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
+別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` を加えると拡張backendを使い，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scopeなどの有限な外部条件です．対応範囲は [拡張仕様](semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
 
 ## 5．生成したSMVを検証する（コンテナ内）
 

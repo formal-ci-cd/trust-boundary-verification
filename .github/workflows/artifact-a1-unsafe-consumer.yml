@@ -3,7 +3,7 @@
 name: GHA-A1 Unverified artifact consumer
 
 on:
-  workflow_run:
+  workflow_run: # producerが完了したときに起動する．
     workflows: ["GHA-A Producer - untrusted PR artifact"]
     types: [completed]
 
@@ -21,6 +21,7 @@ concurrency:
 jobs:
   consume-without-verification:
     name: Use the artifact without integrity verification
+    # 起動元のワークフローが成功 & PRによって起動したものの場合
     if: >-
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.event == 'pull_request'
@@ -32,10 +33,10 @@ jobs:
         id: download-artifact
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
         with:
-          name: trust-boundary-build-output
-          path: ${{ runner.temp }}/trust-boundary-artifact
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          run-id: ${{ github.event.workflow_run.id }}
+          name: trust-boundary-build-output # ダウンロードする成果物名
+          path: ${{ runner.temp }}/trust-boundary-artifact # ダウンロード先
+          github-token: ${{ secrets.GITHUB_TOKEN }} # Artifactの取得には，起動元runのGITHUB_TOKENを使用する．
+          run-id: ${{ github.event.workflow_run.id }} # 起動元runのIDを指定することで，PRによって起動されたrunの成果物を取得する．
 
       # 成果物のhashを確認せず，内容を模擬publish判断へ使用する．
       - name: Use artifact for a dummy publish decision

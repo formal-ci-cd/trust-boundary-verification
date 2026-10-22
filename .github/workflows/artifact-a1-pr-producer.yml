@@ -8,12 +8,12 @@ on:
       - ".research-artifact-input/payload.txt"
       - ".github/workflows/artifact-a1-pr-producer.yml"
 
-permissions:
+permissions: # 権限
   contents: read
 
-concurrency:
-  group: gha-artifact-producer-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
+concurrency: # 一度に1つのPRの成果物を生成する (同じPRの複数runが同時に成果物を生成することを防ぐ)
+  group: gha-artifact-producer-${{ github.event.pull_request.number }} # PR番号ごとにグループ化
+  cancel-in-progress: true # 同じPRのrunが新たに開始された場合，古いrunは中止される．
 
 jobs:
   produce-artifact:
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout Pull Request content
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
-          persist-credentials: false
+          persist-credentials: false # 認証情報を渡さない
 
       # 形式だけを確認し，値がpublish=trueかどうかは信頼しない．
       - name: Check artifact input format
@@ -38,8 +38,8 @@ jobs:
         id: upload-artifact
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
-          name: trust-boundary-build-output
-          path: .research-artifact-input/payload.txt
+          name: trust-boundary-build-output # 成果物名
+          path: .research-artifact-input/payload.txt # 成果物として保存するfile
           if-no-files-found: error
           retention-days: 1
 

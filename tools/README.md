@@ -1,31 +1,16 @@
-# ツールの入口
+# v2の入口
 
-## 現在のv2開発
+このブランチの `tools/` は現行v2の生成・評価・証拠保存に必要なものだけを置きます．
 
 | 操作 | 入口 |
 |---|---|
-| Docker内で回帰・モデル生成・NuSMV・BFS照合・圧縮保存 | `sh tools/run_workflow_v2_extension.sh outputs/runs/<新規名>` |
-| YAMLから個別モデルを生成 | `workflow_to_smv_v2.py`（container内で実行） |
-| 実装 | `workflow_model_v2/` |
-| 限定Shell parser | `workflow_shell_subset.py` |
+| 回帰・モデル生成・NuSMV・BFS照合・圧縮保存 | `sh tools/run_workflow_v2_extension.sh outputs/runs/<新規名>` |
+| 個別のYAML→SMV生成 | `workflow_to_smv_v2.py`（Docker内で実行） |
+| 評価用モデル生成・結果集計 | `evaluate_workflow_v2_extension.py`（runnerから呼出し） |
+| NuSMV実行 | `verify_v2_extension_models.sh`（runnerから呼出し） |
 
-`workflow_to_smv.py` はv2が継承するscheduler/parserでもあり，不要な旧ファイルではありません．`workflow_model_v2/` 内でParser，契約，遷移，SMV backend，独立探索，evidence保存を分けています．
+Pythonは直下4本とpackage内15本です．直下の `workflow_to_smv.py` はv2のparser・共通処理，`workflow_shell_subset.py` は限定Shell parserとして必要です．`workflow_model_v2/` はIR，遷移，SMV生成，Action契約，式評価，独立探索，証拠保存を担当します．`workflow_loader.py` は旧評価系から独立させたYAML loaderです．
 
-## 論文の固定評価系
+旧評価系52本とその専用テスト32本をこのブランチから削除しました．旧論文の再現はGitHubの `research/automatic-temporal-verification` を使用してください．整理直前の配置を含む全ファイルは保存タグ `archive/v2-before-tool-pruning` に固定しています．[削除一覧と照合済みblob](../docs/v2-tool-removal-inventory.md)．
 
-主入口は `build_paper_evidence.py`．`yaml_to_model.py`，`automatic_artifact_analysis.py`，`evaluate_artifact_subset.py`，`evaluate_cache_subset.py` とその依存を使います．A1～A5／TanStackや他事例の比較・再現用scriptもテスト・資料の参照があるため維持しています．ファイル名が古いだけで削除してはいけません．
-
-## 履歴用
-
-`legacy/` は現在のsource/test/docsから参照されていなかった6本の単独CLIをまとめたものです．過去の収集・比較・検証の再実行用として保持し，不要と断定して削除しません．移動後も `python3 tools/legacy/<名前>.py --help` が使えます．
-
-| 履歴用CLI | 役割 |
-|---|---|
-| `collect_cline_case.py` | 過去のCline評価出力の収集 |
-| `collect_tanstack_case.py` | 固定TanStack評価出力の収集 |
-| `evaluate_core_boundary_controls.py` | 旧モデルの1因子対照評価 |
-| `inspect_codeql_repository_check.py` | 固定CodeQL packの規則確認 |
-| `summarize_core_tool_baselines.py` | 固定A1～A5ツール出力の集計 |
-| `verify_tanstack_n_consumers.py` | 保存済みN-consumerモデルの再検査 |
-
-新規の機能実装は原則 `workflow_model_v2/` に追加し，root直下には利用者向けの入口だけを追加します．評価ケースごとのPython，途中版の `*_new.py`／`*_final.py` は作りません．
+過去の報告・資料にある削除済みscriptのコマンドは，保存先の版で実行する手順です．現行v2の対応範囲は [拡張仕様](../docs/next-model-design/extension-semantics.md) を参照してください．新機能は原則package内へ追加し，評価ケースごとの単独Pythonを増やしません．

@@ -17,7 +17,7 @@ import shlex
 
 import yaml
 import workflow_to_smv as base
-from yaml_to_model import WorkflowLoader
+from .workflow_loader import WorkflowLoader
 from . import expressions as ex
 from . import policies as pol
 from .transition import TransitionSystem, atom, symbol, conjunction as AND, disjunction as OR

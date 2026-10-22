@@ -4,7 +4,7 @@ import copy
 import hashlib
 import yaml
 import workflow_to_smv as base
-from yaml_to_model import WorkflowLoader
+from .workflow_loader import WorkflowLoader
 
 
 def expand(steps, node, file, registry, diagnostic, stack=()):

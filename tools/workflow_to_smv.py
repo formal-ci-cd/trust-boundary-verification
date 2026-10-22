@@ -18,7 +18,7 @@ from typing import Any
 import yaml
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import yaml_to_model  # noqa: E402
+from workflow_model_v2.workflow_loader import WorkflowLoader  # noqa: E402
 
 GH_EXPR_PREFIX = chr(36) + "{{"
 SUPPORTED_ACTIONS = {
@@ -229,8 +229,8 @@ def _permission_map(value: Any, span: Span, diagnostics: list[Diagnostic]) -> di
 def load_workflow(path: Path, root: Path | None = None) -> Workflow:
     source = path.read_text(encoding="utf-8")
     try:
-        data = yaml.load(source, Loader=yaml_to_model.WorkflowLoader)
-        tree = yaml.compose(source, Loader=yaml_to_model.WorkflowLoader)
+        data = yaml.load(source, Loader=WorkflowLoader)
+        tree = yaml.compose(source, Loader=WorkflowLoader)
     except Exception as exc:
         raise WorkflowError(f"{path}: {exc}") from exc
     if not isinstance(data, dict) or not isinstance(data.get("jobs"), dict):

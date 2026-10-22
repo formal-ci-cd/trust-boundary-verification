@@ -1,4 +1,4 @@
-name: Research validation
+name: Workflow model v2 regression
 
 on:
   push:
@@ -22,46 +22,14 @@ jobs:
       - name: Build isolated analysis environment
         run: docker build -f experiments/analysis.Dockerfile -t research-validation .
 
-      # 原本workflowは実行せず，解析と状態探索の回帰テストを行う．
-      - name: Test parsers, automatic rules and model baselines
+      # 原本workflowや外部Actionは実行せず，v2の回帰テストを行う．
+      # NuSMVを含む全評価は tools/run_workflow_v2_extension.sh で別途実施する．
+      - name: Test workflow model v2
         run: |
-          docker run --rm --network none \
+          docker run --rm --network none --read-only --user 1000:1000 \
+            --cap-drop ALL --security-opt no-new-privileges \
+            --memory 2g --cpus 2 --pids-limit 128 \
+            --tmpfs /tmp:rw,nosuid,nodev,size=512m \
             -e PYTHONDONTWRITEBYTECODE=1 \
             -v "$PWD:/repo:ro" -w /repo research-validation \
             python3 -m unittest discover -s tests -v
-
-      # gitは記録専用スタブに置換し，ネットワークと実際の書込み権限を使わない．
-      - name: Replay harmless local artifact case
-        run: |
-          docker run --rm --network none \
-            -e PYTHONDONTWRITEBYTECODE=1 \
-            -v "$PWD:/repo:ro" -w /repo research-validation \
-            python3 tools/replay_attest_case.py experiments/public-cases/actions-attest \
-            --output /tmp/local-replay.json
-
-      # 公開済みのmarimo YAMLを入力として読み，GitHub APIと公開処理はスタブ化する．
-      - name: Check the marimo approval-race counterexample
-        run: |
-          docker run --rm --network none \
-            -e PYTHONDONTWRITEBYTECODE=1 \
-            -v "$PWD:/repo:ro" -w /repo research-validation \
-            python3 tools/evaluate_approval_race.py experiments/public-cases/marimo \
-            --output /tmp/marimo-evaluation --replay
-
-      # 実事件の原本YAMLはデータとして解析し，外部Actionや公開処理は実行しない．
-      - name: Check the Ultralytics conditional cache-chain model
-        run: |
-          docker run --rm --network none \
-            -e PYTHONDONTWRITEBYTECODE=1 \
-            -v "$PWD:/repo:ro" -w /repo research-validation \
-            python3 tools/ultralytics_cache_chain.py experiments/public-cases/ultralytics \
-            --output /tmp/ultralytics-cache-chain
-
-      # TanStackの実事件で，事件前と対策版のfork→main cache経路を比較する．
-      - name: Check the TanStack incident cache-boundary model
-        run: |
-          docker run --rm --network none \
-            -e PYTHONDONTWRITEBYTECODE=1 \
-            -v "$PWD:/repo:ro" -w /repo research-validation \
-            python3 tools/tanstack_cache_chain.py experiments/public-cases/tanstack \
-            --output /tmp/tanstack-cache-chain

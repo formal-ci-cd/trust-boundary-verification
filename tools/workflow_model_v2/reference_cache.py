@@ -7,7 +7,7 @@ from collections import deque
 from itertools import product
 from pathlib import Path
 import yaml
-from yaml_to_model import WorkflowLoader
+from .workflow_loader import WorkflowLoader
 from . import expressions as ex
 
 

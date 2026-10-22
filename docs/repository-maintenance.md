@@ -15,9 +15,11 @@
 
 ## Python
 
-現行の入口と依存関係は [tools/README.md](../tools/README.md) を参照してください．source/test/docs等の参照を調べ，未参照の単独CLI6本を `tools/legacy/` へまとめました．「未参照」は未使用の証明ではなく，過去の再現用として価値があるため，コードの破棄はしていません．
+このブランチは現行v2専用です．旧評価系52本と専用テスト32本は削除し，Pythonは `tools/` が70本から19本（直下4本，package内15本），`tests/` が36本から4本になりました．旧変換器のYAML loaderだけを `workflow_model_v2/workflow_loader.py` へ切り出し，旧評価系への依存をなくしました．
 
-既存 `build_trust_chain.py`，`chain_to_nusmv.py` 等は現行解析・テストから参照されています．rootの見た目だけを理由に一括削除・移動すると再現性を壊すため維持します．新しいv2機能はpackage内へ追加し，rootに実験ごとのscriptを増やさない運用へ切り替えます．
+旧論文評価は既存の `research/automatic-temporal-verification` に残っています．整理直前の全84ファイルは保存タグ `archive/v2-before-tool-pruning`（`9827794`）ともblobを照合済みです．[削除一覧と保存先](v2-tool-removal-inventory.md)．`tools/legacy/` も削除しました．
+
+CIはv2の回帰テストへ合わせ，削除した旧replayや事例別scriptの呼出しを除いています．過去の資料に残る旧scriptの手順は保存版用です．現行の入口は [tools/README.md](../tools/README.md) を参照してください．
 
 ## 評価結果
 
@@ -42,6 +44,14 @@ archive作成後は全memberのhashを照合し，その後にのみ展開済み
 - 出力のdisk使用量：約34MBから約3.9MB（新しいGit除外runも含む）．
 - 整理後のDocker検証：49テスト成功，65モデル中64モデルでproperty結果取得，意図した構文不正対照1件．BFS22ケース一致．
 - 新規run：詳細1,316ファイルを検証済archiveへまとめ，通常見える出力は6ファイル．`outputs/runs/repository-cleanup-check/` に保存し，Gitへ追加しない．
-- `tools/legacy/` の6 CLIは移動後の `--help` 起動を確認した．
+- 前回の整理では `tools/legacy/` の6 CLIの起動を確認した．今回は保存タグへ固定して削除した．
 
 旧採用結果latestの45テストはv2機能の評価時点の数で，整理後の49テストには無損失圧縮の4テストを加えている．モデルの判定結果を変える整理ではない．
+
+## v2専用化後の確認
+
+- Dockerで全テスト探索を実行し，残した4テストファイルの49テストが成功した．
+- `outputs/runs/v2-tools-only-check/` で全評価を再実行した．65モデル中64件の検証と意図した構文不正対照1件を確認し，全65件のproperty判定・終了コードが削除前と一致した．独立BFS22ケースとの照合も一致し，予期しない失敗は0件だった．
+- v2 CLIの起動とCI YAMLの読込みを確認した．GitHub上のCI実行結果を示すものではない．
+- 削除前に残存コードの静的importと49テストの実行時importを確認し，旧52ツールが依存に含まれないことを検査した．削除前に自動承認レビューが指摘した旧CIのscript参照は，v2用CIへの変更で解消した．
+- 追加評価の出力は6ファイルに圧縮し，Git管理外とした．既存の採用済み評価・研究資料は変更していない．

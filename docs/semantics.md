@@ -1,6 +1,6 @@
 # v2変換器の仕様と制約
 
-SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化している．`--scenario` は外部条件の入力を指定するもので，backendの切替えではない．省略時は宣言されたeventと対応するファイル操作から有限の既定scenarioを作る．Pythonは構文・literal・候補関係を下げ，到達判定はSMVの状態遷移とNuSMVへ残す．
+SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化している．`--scenario` は外部条件の入力を指定するもので，backendの切替えではない．省略時は外部条件IRから合法な有限context候補を作り，共通backendの規則を候補選択guard付きで結合する．Pythonは構文・literal・候補関係を下げ，到達判定はSMVの状態遷移とNuSMVへ残す．
 
 ## パイプラインとモジュール
 
@@ -13,7 +13,9 @@ SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化してい
 | `action_contracts.py` | ref別contract identity／runtime／metadata URL．共通効果subsetだけをdispatchへ共有 |
 | `composites.py` | 明示registryのmetadataをSHA-256確認して展開．Actionコードは実行しない |
 | `compiler.py` | 型付きrun/job/step，有限filesystemとobject候補，scheduler／contract遷移生成 |
-| `scenario.py` | 既定の有限run条件とファイル内容domainの組立て |
+| `scenario.py` | 従来の固定run条件とファイル内容domainの組立て |
+| `external_conditions.py` | 条件IR，有限候補，CLI/JSONの共通制約，共有repository設定，既存backendの遷移IR結合 |
+| `conditional_verification.py` | 反例条件の復号，Boolean両値での到達性再検査，有限モデル内の必要条件の区別 |
 | `dataflow.py` | GITHUB_ENV，output，入力contextの共有値と依存ラベル，snapshotとhashFilesの有限計算 |
 | `shell_lowering.py` | ファイル内容，SHA-256比較，metadata検査，step outputと利用履歴の遷移化 |
 | `transition.py` | 状態宣言／guard付き更新／制約／CTLのIRとSMV出力 |
@@ -92,15 +94,17 @@ schedule配信，registry snapshot選択，同時刻token policy，shell atomici
 
 ## 実行と保存
 
-[コンテナ操作手順](container-guide.md)に従い，YAML→SMV生成，NuSMV検証，集計を別々に実行する．CLI・全評価・対照構成はすべて `compile_workflows` を呼ぶ．`--scenario` を指定する場合は，各runのcontextをscenario.runsへ記述する．追加runは `--workflow third.yml` で渡す．省略時の既定値は観測済みの実行条件ではないため，実事例の評価では条件を明示する．
+[コンテナ操作手順](container-guide.md)に従い，YAML→SMV生成，NuSMV検証，集計を別々に実行する．CLI・全評価・対照構成はすべて `compile_workflows` を呼ぶ．`--scenario`は部分的な`conditions`または旧形式の完全な`runs`を受け付ける．追加runは `--workflow third.yml` で渡す．省略時の既定値は観測済みの実行条件ではないため，実事例の評価では条件を明示する．
 
-source mapの `/repo` は読取り専用repository，`/out` は専用出力を指す．NuSMV inputのactorとPCからYAML stepへ対応させる．stepをscheduleしたこと，ifの成立，処理成功は区別する．入力・SMV・対応表・ログ・反例は個別ファイルのまま残し，既存出力の上書きは拒否する．
+source mapの `/repo` は読取り専用repository，`/out` は専用出力を指す．NuSMV inputのactorとPCからYAML stepへ対応させる．stepをscheduleしたこと，ifの成立，処理成功は区別する．SMVと対応表を保存し，反例・コマンド・診断・時間は1つの検証ログへまとめる．既存出力の上書きは拒否する．
 
 ## 確認した公式資料
 
 確認日：2026-10-23．仕様から導入した具体的な規則は上表の限定範囲である．
 
 - [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
+- [Hosted runners](https://docs.github.com/en/actions/reference/runners/github-hosted-runners)
+- [Repository Actions settings](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository)
 - [Expressions](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions)
 - [Trigger events](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows)
 - [Dependency caching](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)
@@ -126,7 +130,54 @@ producer/consumerのjob・step順序，needs，成果物候補の同一性，dow
 
 Pythonが最終的な危険到達Booleanを事前計算してSMVへ埋め込む構成ではない．到達性は生成した状態遷移をNuSMVで検査する．独立BFSの一致は対応subset内の実装間照合であり，GitHub全体や実際の侵害成功の証明ではない．
 
-## 既定scenarioの範囲
+## 外部条件IRと探索
+
+最初に指定したworkflowは，宣言eventとfilterに整合する実行が開始済みとする．その起動可否はpropertyにしない．Jobのif・needs・stepの順序と成否は通常どおり探索する．後続workflowはYAMLのworkflow名・activity・branch filter・default branch上のworkflow存在条件・上流Jobの終端状態を開始guardへ下げる．初期workflowが開始済みでも，schedulerが必ず進むfairnessは追加しない．
+
+`ExternalCondition`は条件名，型，domain，共有単位，根拠，網羅性，制約，SMV記号と復号表を保持する．`ConditionSpace`は同じrun内で整合するevent/activity/fork/head/base/ref/runner候補をprofileへまとめる．`FROZENVAR external_run_*`でprofileを選び，実行途中でeventやforkが変わらないようにする．
+
+Pythonは各合法profileを既存の`WorkflowCompiler`で遷移IRへ下げる．`compile_space`は同じPC・file・object変数を共有し，profileのguardで更新規則・DEFINE・TRANSを結合する．異なるbackendや別々の検証モデルを選ぶ方式ではない．caseの優先順を保つため，同一の規則列全体だけをまとめる．初期値がprofile間で異なる未対応ケースは黙って併合せず生成を拒否する．
+
+| 条件 | 自動解析での扱い | 制約と限界 |
+|---|---|---|
+| event/activity | YAMLの全宣言event，明示typesまたは対応済み既定types | pushにfork=trueを組み合わせない．未知eventの意味は診断を残す |
+| PRのfork/head/base/ref | fork両値と対応するrepository役割，PR merge refとPR_target base refを一組で選ぶ | 実PR番号や全head repositoryを列挙しない．checkoutのtaint規則は既存契約 |
+| branch/tag/path filter | filter literal・対応if式のliteral・一致/非一致の有限例 | globや任意文字列・変更集合の完全分割ではなくunsupportedを記録する |
+| default branch/repository | 同一repository役割を共有し，明示default branchを全runへ伝播する | 未指定default branchはmainという代表値．実repository設定を取得しない |
+| token defaults | 参照されたscopeに対してrestricted/permissive profileをrepositoryで共有 | contents/packages readまたは対応scope write，id-token既定none．組織の追加上限制約は未対応 |
+| fork write token | repository共有BooleanとvisibilityをINITで制約する | publicではprivate/internal用write-token設定を許さない．明示した矛盾は入力エラー |
+| workflow_run | 同じrepositoryで名前が合う全供給runを上流候補とする | completedは上流全Job終端を待つ．requested/in_progressは順序意味が未対応 |
+| runner | 既知runs-on labelと静的matrixのOS/architectureをJob別に解決する | 未知labelは有限候補と診断．異種OSの複数Jobへのrun単位OS制限は曖昧として拒否 |
+| Artifact/Cache | 各profileのrepository/ref/scopeを既存の取得・保存・selector契約へ接続する | Cache policy/versionの実環境からの自動発見や完全なversion導出は未対応 |
+| credential/trust/file存在 | 利用する既存契約のFROZENVARを条件IRへ登録する | 可用性は未知の抽象Booleanであり，実認証や外部交換を再現しない |
+
+repository既定permissionsはworkflow/jobの明示permissionsとは別階層である．明示permissionsが既定値と違うだけで矛盾にはしない．同じrepositoryの外部設定を別runへ相反する値で指定した場合はエラーにする．自動の標準permission profile外の設定は，完全な旧scenarioで明示する必要がある．
+
+`bounds.conditionConfigurations`の既定値256は，全runのprofile直積の上限である．超過時は候補を切り落とさず生成エラーにする．自由文字列，default branch代表値，file内容，未対応認証等の制約は`externalConditions.coverage`へ保存する．`coverage.complete`がfalseのとき，不達をGitHub全体の安全保証にはしない．
+
+完全な旧scenarioは従来の固定contextとして同じbackendへ渡す．既存実験の互換性のため，旧scenarioのtrigger規則や生成SMVを維持する．新しい開始済みrootの契約と自動候補探索は，自動/部分条件モードの範囲である．`mode: automatic`を付ければ，`runs`が完全に見える場合でも自動候補の制約として解釈する．
+
+## 条件付き到達性
+
+全候補の中に到達経路があるかは`AG !target`の反例で判断する．複数の初期状態のすべてで評価される`EF target`のfalseを，全候補で不達という意味には使わない．反例中に表示された固定条件だけを`witnessConditions`へ復号し，未表示値を推測しない．
+
+Boolean条件は両側を一時SMVのINITで制限し，非空状態集合・遷移全域性・NuSMV完了を確認する．片側だけ到達した場合に限り，その有限モデル内で必要な値と呼ぶ．両側到達なら必要条件ではない．timeout・空の制限domain・未完了は必要性未確定とする．Boolean条件の既定追加検査数は8で，残りは未検査として記録する．複数条件の最小必要集合や文字列条件の必要性は計算しない．
+
+`conditionalReport`は到達性，検証完了，coverage，unsupported/unknown，反例値，Boolean再検査，確認済みの必要条件を分けて記録する．`--property`で報告対象を選び，`--no-condition-checks`で追加検査を省ける．生成モデルのproperty自体は削除しない．コマンド・出力・エラー・時間は追加検査も含めて同じ`.smv.log`へ保存する．
+
+## 自動file候補と既存契約の範囲
+
+通常のCLI入力はYAMLだけでよい．部分JSONとCLIは候補を制限し，競合時は上書きせずエラーにする．対応表の`externalConditions`が候補とSMV記号を，`automaticAssumptions`がfile候補を保持する．`inputMode`は`automatic`，`constrained-automatic`，`explicit-scenario`を区別する．
+
+checkoutのあるJobが静的な単一相対pathをuploadし，そのfileが既存のcopy/grep候補や先行書込みから供給されない場合，そのpathをcheckout候補へ追加する．`optionalCheckoutFiles`の各pathにはrun・pathで共有するBooleanのFROZENVARを宣言する．TRUEならcheckout成功時にfileと内容を供給し，FALSEなら存在しない初期状態を保つ．後のuploadは存在条件を要求するため，非存在を勝手に保存成功へ置き換えない．
+
+追加fileの内容は空文字と`untrusted\n`の有限代表値である．任意の内容を覆う抽象値ではなく，代表値を本物のrepository内容とも扱わない．PR由来のcheckoutはtainted，その他は既存のeventベースの信頼規則を使う．単一fileという解釈，内容domain，存在分岐，根拠のworkflow・job・stepを`automaticAssumptions`へ残す．単純なcatの場合もArtifact memberの相対名を保持してdownload先のfileへ対応付ける．
+
+`workflow_run.workflows`の名前と供給YAMLの`name`が一意に一致する場合，上流runとして結ぶ．入力順は名前による上流選択の根拠にしない．自動条件では複数候補を探索し，候補なしは`external-workflow-run`，旧固定scenarioの導出では候補なし・複数候補を`automatic-workflow-run`，directory末尾指定・glob・動的式・複数path等を単一checkout fileへ導出できない場合は`automatic-checkout-path`の未対応診断を残す．既存のShell・Actionの未対応診断も維持する．
+
+自動モードは全宣言eventとPRのfork両値を探索するが，main default branch，合成repository，無限文字列の有限代表値などは仮定として残る．この有限内容domainやcontextの外側へ不達を一般化しない．明示scenarioを指定すれば，入力fileの在庫や内容，event等を固定できる．自動条件を土台に内容を差し替えた場合は明示値を優先し，そのfileの未知存在条件を外す．snapshotを指定した場合も自動代表値を実ファイルより優先せず，変更理由を`automaticAssumptionOverrides`へ記録する．
+
+検証ログの冒頭に，対応表から解析条件・自動仮定・未対応を表示する．SMV本文の`modelSha256`を照合し，別モデルの対応表なら条件を根拠として表示しない．古いhashなし対応表は未照合と明示する．未対応があれば画面とログにも警告し，NuSMVのpropertyのtrueとモデル全体の解釈を分ける．
 
 既定値は，対応するgrepの有限候補とcopy/upload/downloadの接続から内容domainを組み立てる．metadataの文字種と長さは有限代表値で検査する．`checkoutValues` で各入力ファイルの有限内容を明示できる．内容domainは仮定であり，任意の入力値を網羅した証明ではない．
 
@@ -156,7 +207,7 @@ globには`fileInventoryComplete`による完全な在庫の仮定が必要で�
 
 workflow_dispatchのchoiceは宣言されたoptions，booleanはtrue/falseを共有FROZENVARへ変換する．明示scenarioの値と`domains`を優先する．自由文字列・数値や未指定repository varsには完全なdomainがないため，代表値とunsupported診断を使う．
 
-scenarioの`bounds`で`runs`，`jobs`，`objects`，`matrix`，`domainPasses`，`expressionProducts`，`hashFiles`を指定できる．run/job/object上限を超えた場合は生成を拒否する．matrixや式の探索範囲を表現できない場合もdiagnosticを残し，切り落とした経路を安全と扱わない．
+scenarioの`bounds`で`runs`，`jobs`，`objects`，`matrix`，`domainPasses`，`expressionProducts`，`hashFiles`，`conditionConfigurations`を指定できる．run/job/object上限を超えた場合は生成を拒否する．matrixや式の探索範囲を表現できない場合もdiagnosticを残し，切り落とした経路を安全と扱わない．
 
 今回確認した規則は[環境ファイル](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-an-environment-variable)，[hashFiles](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions#hashfiles)，[Cache探索](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)，[matrix include/exclude](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations)を参照した．hashの集約は[toolkit実装](https://github.com/actions/toolkit/blob/main/packages/glob/src/internal-hash-files.ts)も確認した．これらのリンク先全体を実装したことは意味しない．
 

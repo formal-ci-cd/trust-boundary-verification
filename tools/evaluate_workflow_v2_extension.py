@@ -112,6 +112,8 @@ def generate_dataflow_cases(out):
         if missing:
             raise AssertionError((spec['id'], 'missing diagnostics', sorted(missing)))
         (target / 'model.smv').write_text(text)
+        # probeを追加した場合も，ログに表示する条件がこのSMVに対応することをhashで照合する．
+        mapping['modelSha256'] = hashlib.sha256(text.encode('utf-8')).hexdigest()
         dump(target / 'model.map.json', mapping)
         dump(target / 'scenario.json', scenario)
         records.append(dict(
@@ -145,7 +147,7 @@ def generate(out):
         p = ROOT / '.github/workflows/artifact-a5-attest-producer.yml' if case == 'A5' else producer
         c = ROOT / '.github/workflows' / consumer
         # 入力コピーを共通backendへ渡し，SMV本体と元YAMLへの対応表を同時に得る．
-        text, mapping = compile_workflows([p, c])
+        text, mapping = compile_workflows([p, c],default_scenario([p,c]))
         target = out / 'baseline' / case
         target.parent.mkdir(parents=True, exist_ok=True)
         target.with_suffix('.smv').write_text(text)
@@ -179,9 +181,11 @@ def generate(out):
     )
     (audit / 'consumer.yml').write_text(a2)
     # 入力コピーを共通backendへ渡し，SMV本体と元YAMLへの対応表を同時に得る．
-    text, mapping = compile_workflows([producer, audit / 'consumer.yml'])
+    text, mapping = compile_workflows([producer, audit / 'consumer.yml'],default_scenario([producer,audit / 'consumer.yml']))
     text += '\nCTLSPEC AG !(integrity_blocked & artifact_dependent_use)\n'
     (audit / 'model.smv').write_text(text)
+    # 履歴監査用CTLを追加した最終本文と，ログに表示する条件の対応を保つ．
+    mapping['modelSha256'] = hashlib.sha256(text.encode('utf-8')).hexdigest()
     dump(audit / 'model.map.json', mapping)
     records.append(dict(
         id='audit-use-before-later-block',
@@ -684,6 +688,9 @@ def summarize(out):
         mapping = json.loads(mapping_path.read_text()) if mapping_path.exists() else {}
         record['diagnostics'] = mapping.get('diagnostics', [])
         record['assumptions'] = mapping.get('assumptions', [])
+        record['automaticAssumptions'] = mapping.get('automaticAssumptions', [])
+        record['inputMode'] = mapping.get('inputMode')
+        record['analysisScope'] = mapping.get('analysisScope')
         record['modelVerdict'] = mapping.get('verdict', 'unknown/unsupported')
         record['stateVariables'] = mapping.get('stateVariables')
         record['generationSeconds'] = mapping.get('generationSeconds', record.get('generationSeconds'))
@@ -719,6 +726,7 @@ def summarize(out):
                 sourceMap=map_extended_trace(trace, mapping) if mapping.get('modelVersion') == '2-unified-bounded' else mapped,
             ))
         record['counterexamples'] = counterexamples
+        record['conditionalReport'] = result.get('conditionalReport')
         # 到達状態の出力と終了状態も，同じ統合ログの別phaseから読む．
         if reachability:
             record['reachableStates'] = re.findall(r'reachable states:\s*([^\n]+)', reachability['stdout'], re.I)

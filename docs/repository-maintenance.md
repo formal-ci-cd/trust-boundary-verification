@@ -6,7 +6,7 @@
 |---|---|
 | `tools/` | YAML読込み，モデル生成，検証，結果の集計 |
 | `tests/` | 回帰テストと固定した対照fixture |
-| `examples/` | Artifactの到達・不達を比較する短い例と共通scenario．専用回帰テストで確認 |
+| `examples/` | YAMLだけでArtifactの到達・不達を比較する短い例．scenarioは任意．専用回帰テストで確認 |
 | `.github/workflows/` | Artifactの評価入力とCI |
 | `experiments/public-cases/tanstack/` | v2で使用するworkflowとCompositeのsnapshot |
 | `outputs/` | 生成した入力・モデル・ログ・反例．Git管理外 |

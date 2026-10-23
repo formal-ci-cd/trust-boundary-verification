@@ -83,7 +83,10 @@ class StatefulWorkflowModelTests(unittest.TestCase):
             paths = self.pair(case)
             implicit, manifest = compile_workflows(paths)
             explicit, other = compile_workflows(paths, default_scenario(paths))
-            self.assertEqual(implicit, explicit)
+            self.assertIn('external_run_',implicit)
+            self.assertNotIn('external_run_',explicit)
+            self.assertEqual(manifest['inputMode'],'automatic')
+            self.assertEqual(other['inputMode'],'explicit-scenario')
             self.assertEqual(manifest['modelVersion'], '2-unified-bounded')
             self.assertEqual(other['modelVersion'], manifest['modelVersion'])
             self.assertIn('AG !bad_simulated_path', implicit)
@@ -107,7 +110,7 @@ class StatefulWorkflowModelTests(unittest.TestCase):
     def test_a5_metadata_validation_and_outputs_are_supported_without_old_builder(self):
         smv, manifest = compile_workflows(self.pair('A5'))
         unsupported={d['code'] for d in manifest['diagnostics'] if d['status']=='unsupported'}
-        self.assertFalse(unsupported,unsupported)
+        self.assertEqual(unsupported,{'external-file-content-domain','external-branch-domain'})
         self.assertTrue(any(o['output']=='target_branch' for o in manifest['outputSymbols']))
         self.assertIn('AG (artifact_dependent_sink -> artifact_dependent_use)',smv)
 

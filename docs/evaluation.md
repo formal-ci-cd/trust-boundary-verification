@@ -4,7 +4,7 @@
 
 ## 保存済み評価で確認した結果（2026-10-23）
 
-- Docker内の回帰テスト：76件成功．Artifactデモの到達・不達2件を含む．出力保持・復元・破損検出と，統合ログの正常・異常・時間切れ・旧形式互換の検査を含む．
+- Docker内の回帰テスト：111件成功．Artifactデモの到達・不達2件と，YAML単独入力の自動仮定・存在分岐・ログ・CLI・未対応保持・明示入力とsnapshot優先の12件を含む．出力保持・復元・破損検出と，統合ログの正常・異常・時間切れ・旧形式互換の検査を含む．
 - 全評価：101モデル．100件でNuSMVのCTL結果・遷移全域性・非空の到達状態集合を取得．意図した構文不正の対照1件を区別する．
 - 独立BFS：22ケースについてtransfer/use/sink/success/bad-authorityの5項目を照合し，全件一致．
 - 全モデルを同じbackendで生成する．A1～A5の保存済み50項目は一致．旧21 mutationも固定した期待値と照合し，不正metadata時の後続stepだけは下記の修正を適用する．unsupportedをCTLのtrueだけで安全と扱わない．
@@ -87,3 +87,23 @@ GITHUB_ENVの単純な1行書込み，output経由の有限値伝播，literal p
 | Shell/Action | 任意Bashではなく，pnpm等の必要操作を出典付きの共通操作契約へ追加 |
 
 再開時は`compiler.py`と`dataflow.py`を基準にし，機能別backendを増やさない．新しい契約には正常・遮断・未対応の対照を追加し，既存の期待値を目的の結論へ合わせて変更しない．
+
+## YAMLだけを入力する場合の自動仮定
+
+`examples/`の到達版とsafe版を`--scenario`なしで生成し，両方で`AG !transfer`がfalse，`AG !dependent_use`と`AG !artifact_dependent_use`が到達版ではfalse，safe版ではtrueになることを実NuSMVで確認する．自動で補ったfileの存在はFROZENVARの両側を持ち，非存在なら転送しないこともCTLで照合する．実ファイル内容を観測したり，任意の入力値の安全を証明したりする評価ではない．
+
+Consumerを先に入力する場合の名前接続，単純catのmember復元，曖昧な上流・未対応path・Shellの診断維持，明示scenarioの互換性，ログ内の仮定とSMVのhash照合を回帰テストへ含める．
+
+変更後に全101モデルを再生成・検証・集計し，100件の正常検証と1件の意図的不正構文対照，property期待値，反例数，独立BFS22ケースの一致を維持した．既存SMVは100件で一致し，`legacy-workflow-run-mismatch`だけは名前が一致しない上流へ自動接続しなくなったため本文が変わるが，property結果は変わらない．全ログで対応表と最終SMVのhashが一致することも確認した．
+
+## 外部条件探索の追加検証（2026-10-23）
+
+既存88件に23件を追加し，条件IR，event/fork/branch/runnerの実NuSMV到達性，後続workflowの上流完了待機，CLIと部分JSONの制限・矛盾，共有repository設定，条件付き反例の復号とBoolean再検査を確認した．timeout対照では必要性未確定を保つ．fixtureは`tests/fixtures/external-conditions/`に置く．
+
+既存101モデルは従来の固定contextで比較した．正常100件と意図した構文不正1件を区別し，CTL結果・反例数・モデル解釈・非空状態集合・SMV本文は変更前と一致した．独立BFS22ケースも一致した．評価スクリプトのA1〜A5等には従来の`default_scenario`を明示し，過去の固定条件の比較と，新しい自動候補モデルの比較を混同しない．
+
+新しい自動解析では，`on: [push, pull_request]`の両eventとPRのfork両値，release filterに合う開始済みroot，Windowsのrunner条件，workflow_runの完了順序を検査した．Artifactデモでは取得と利用を区別し，到達版とsafe版の`dependent_use`の差を維持した．
+
+条件付きsink fixtureは，forkへのwrite token提供を無効にしcontents認証をtrueへ制限した場合，`AG !bad_authority`がfork=false側でfalse，fork=true側でtrueとなる．自動候補全体ではprivate/internal fork policyによるfork=true側の経路もあり，fork=falseを必要条件とすることはできない．必要条件という説明は，Boolean両側の非空・検査完了を確認した有限モデルに限る．file内容等の未対応診断は消していない．
+
+default branchの代表値，任意branch/path文字列の分割，Cacheの外部policy/versionの自動導出，secret/OIDC交換，組織の追加権限制約等は引き続き完全対応ではない．探索domainと未対応はmanifest・統合ログへ記録し，不達を実GitHub Actions全体の安全判定へ変換しない．

@@ -1,0 +1,12 @@
+name: Conditional sink
+on: pull_request
+permissions: {contents: write}
+jobs:
+  job:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - run: cp source.txt data
+      - run: git add data
+      - run: git push

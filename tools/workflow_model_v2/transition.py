@@ -61,6 +61,8 @@ class TransitionSystem:
         self.sources = {}
         # 全遷移に課す条件を順に保存し，renderでTRANSへ出力する．
         self.constraints = []
+        # 初期状態の外部設定を制限し，不可能な固定設定をdeadlock状態として残さない．
+        self.initial_constraints = []
 
     # 状態変数の有限domainと初期値を登録し，必要ならsource位置も保存する．
     def var(self, name, values, initial, source=None):
@@ -139,6 +141,7 @@ class TransitionSystem:
             lines.extend([f'    TRUE : {name};', '  esac;'])
         # TRANSは許される遷移を絞る条件．
         # 候補選択の整合や固定した成否入力を，全遷移に課す．
+        lines.extend(('INIT ' + constraint for constraint in self.initial_constraints))
         lines.extend(('TRANS ' + constraint for constraint in self.constraints))
         # CTLSPECは検査する性質．
         # 文字列を書き出すだけで，true/falseや反例はNuSMVが求める．

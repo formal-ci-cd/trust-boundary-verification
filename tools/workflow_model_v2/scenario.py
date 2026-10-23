@@ -4,11 +4,12 @@
 
 入力はworkflowのPath列，出力はrunごとのevent・scope・file在庫・内容候補等の辞書である．
 宣言イベントを読み，限定Shellのcopy/grepとupload/downloadの接続から代表値を作る．
+checkout後に静的な単一fileをuploadする場合は，未知の存在と有限内容候補を補い，根拠を記録する．
 branchやrepository，metadataの代表値は実際の実行の観測値ではなく，モデル生成用の仮定である．
 未対応Shellはこの導出では読み飛ばし，効果の診断は共通compilerが担当する．
 compile_workflowsがscenario省略時に呼び，backendの種類は切り替えない．
 """
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import yaml
 from .workflow_loader import WorkflowLoader
@@ -18,6 +19,67 @@ def normalized(value):
     """既知のworkspace/temp表記をモデル用path表記へそろえる．"""
     # runner.tempとgithub.workspaceの既知表記だけをモデルの固定pathへ置換し，末尾/を除く．
     return str(value).replace('${{ runner.temp }}', '/tmp/runner').replace('${{ github.workspace }}', '/workspace').rstrip('/')
+
+def _infer_upload_inputs(raw, cfg, workflow_path):
+    """静的upload元の未供給fileを，存在が未知のcheckout候補として追加する．
+
+    repositoryの実ファイルは開かず，YAMLに現れる単一の相対pathだけを対象にする．
+    内容は空文字と代表文字列の有限候補であり，任意のbyte列を網羅する主張ではない．
+    """
+    assumptions = []
+    diagnostics = []
+    for name, job in raw['jobs'].items():
+        steps = job.get('steps', [])
+        # checkoutがないJobへ，ローカルにあるというだけの理由で入力fileを生やさない．
+        if not any(str(step.get('uses', '')).startswith('actions/checkout@') for step in steps):
+            continue
+        produced = set()
+        for index, step in enumerate(steps):
+            script = step.get('run', '')
+            try:
+                program = parse_shell(script)
+            except UnsupportedShell:
+                program = None
+            if program:
+                # 前のstepで作るcopy先は，checkoutから来たfileとは扱わない．
+                produced.update(op.path.split('->')[1] for op in program.operations if op.kind == 'copy')
+            # 単純literal書込みも既存Shell契約と同じ引用・単一pathの形だけを認識する．
+            for line in script.splitlines():
+                match = re.fullmatch(r"(?:echo|printf)\s+(['\"])(.*?)\1\s*>\s*([\w./-]+)", line.strip())
+                if match:
+                    produced.add(normalized(match[3]))
+            if not str(step.get('uses', '')).startswith('actions/upload-artifact@'):
+                continue
+            value = step.get('with', {}).get('path', '')
+            path = normalized(value)
+            evidence = dict(file=str(workflow_path), job=str(name), step=index, key='with.path')
+            # 既にcopy/grepから内容が供給されるpathや，先行stepが生成するpathは従来の規則を使う．
+            if path in cfg['checkoutValues'] or any(p == path or p.startswith(path + '/') for p in produced):
+                continue
+            # glob・式・複数path・directory指定を，存在する単一fileへ勝手に置換しない．
+            if (not isinstance(value, str) or not re.fullmatch(r'[\w./-]+', path)
+                    or path in {'', '.', '/'} or value.endswith('/')
+                    or PurePosixPath(path).is_absolute() or '..' in PurePosixPath(path).parts):
+                diagnostics.append(dict(
+                    code='automatic-checkout-path',
+                    message='YAML-only checkout inference requires one static relative file path: ' + str(value),
+                    evidence=evidence,
+                ))
+                continue
+            cfg['checkoutValues'][path] = ['', 'untrusted\n']
+            # 実在は確認していないため，後でFROZENVARのTRUE/FALSEを両方探索する．
+            cfg.setdefault('optionalCheckoutFiles', []).append(path)
+            assumptions.append(dict(
+                kind='checkout-file', run=cfg['id'], path=path, evidence=evidence,
+                presence='unknown; both present and absent are modeled',
+                pathKind='single regular file; directory layouts are outside this assumption',
+                contents=['', 'untrusted\n'],
+                contentScope='finite representatives only; not all possible file contents',
+                provenance='checkout trust follows the selected event; pull_request is untrusted',
+            ))
+    cfg['optionalCheckoutFiles'] = sorted(set(cfg.get('optionalCheckoutFiles', [])))
+    return assumptions, diagnostics
+
 
 # 宣言されたイベントと対応済み操作から，生成に必要な有限の代表条件を組み立てる．
 def default_scenario(paths):
@@ -62,13 +124,18 @@ def default_scenario(paths):
             checkoutFiles=[],
             checkoutValues={}
         )
-        # 先行入力があるworkflow_runには，直前のworkflowを代表上流として結ぶ．
-        if event == 'workflow_run' and index:
-            # 上流run idとworkflow名をcontextへ補い，schedulerと名前filterが参照できるようにする．
-            cfg.update(
-                upstreamRun=f'run{index - 1}',
-                upstreamName=workflows[index - 1].get('name', f'run{index - 1}')
-            )
+        # workflow_run.workflowsの名前を照合し，入力の並び順から上流を決めない．
+        if event == 'workflow_run':
+            names = event_config.get('workflows', []) if isinstance(event_config, dict) else []
+            names = [names] if isinstance(names, str) else names
+            candidates = [i for i, workflow in enumerate(workflows)
+                          if i != index and workflow.get('name') in names]
+            if len(candidates) == 1:
+                upstream = candidates[0]
+                cfg.update(upstreamRun=f'run{upstream}', upstreamName=workflows[upstream]['name'])
+            else:
+                # 候補なし・複数候補は推測で接続せず，後で未対応診断に残す．
+                cfg['automaticUpstreamIssue'] = dict(names=names, candidates=candidates)
         for pattern in event_config.get('paths', []) if isinstance(event_config, dict) else []:
             # 肯定literal pathだけを代表変更一覧へ入れ，globの一致fileを推測して生成しない．
             if not pattern.startswith('!') and (not any((c in pattern for c in '*?['))):
@@ -154,10 +221,23 @@ def default_scenario(paths):
                                             if any((target == normalized(u['with']['path']) + suffix for u in uploads)):
                                                 # consumerで試すmetadata候補を，同じmemberを生成するproducerのコピー元内容へ設定する．
                                                 configs[wi]['checkoutValues'][src] = values
-    for cfg in configs:
+    assumptions = []
+    diagnostics = []
+    for raw, cfg, path in zip(workflows, configs, paths):
+        inferred, issues = _infer_upload_inputs(raw, cfg, path)
+        assumptions.extend(inferred)
+        diagnostics.extend(issues)
+        if 'automaticUpstreamIssue' in cfg:
+            diagnostics.append(dict(
+                code='automatic-workflow-run',
+                message='workflow_run requires exactly one supplied workflow matching its name filter',
+                evidence=dict(file=str(path), **cfg['automaticUpstreamIssue']),
+            ))
         # 内容候補が得られたpath名を安定した順に並べ，有限checkout在庫として使う．
         cfg['checkoutFiles'] = sorted(cfg['checkoutValues'])
     return dict(
         runs=configs,
+        automaticAssumptions=assumptions,
+        automaticDiagnostics=diagnostics,
         defaultContext='synthetic finite contexts inferred from declared events and closed file operations; not observed GitHub runs'
     )

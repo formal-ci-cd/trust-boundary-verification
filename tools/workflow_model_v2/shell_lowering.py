@@ -27,6 +27,8 @@ class ShellLowering:
         """内容候補・完全性状態・利用履歴を宣言する．"""
         # 構造化ShellまたはhashFilesを使う入力があるか調べ，内容の詳細状態が必要かを決める．
         self.has_structured = any((s.program for j in self.jobs for s in j.steps)) or any(('hashfiles(' in str(r.raw).lower() for r in self.runs))
+        # 自動導出したupload fileは，単純なcatを使う場合もmember名を保持してdownload先へ復元する．
+        self.has_structured = self.has_structured or bool(self.scenario.get('automaticAssumptions'))
         # Jobとpathから内容VARを引く表を作り，absent/clean/taintedの状態とは分ける．
         self.contents = {}
         # 同じfileのArtifact由来フラグを保持し，汚染の有無とは別の軸で追跡する．

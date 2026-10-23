@@ -67,7 +67,7 @@ head -40 /out/demo-001/a1.smv
 cat /out/demo-001/a1.smv.map.json
 ```
 
-別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` で外部条件を明示し，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scope，ファイル内容などの有限な外部条件です．省略時も同じbackendで既定条件を使います．対応範囲は [拡張仕様](semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
+別の入力を使う場合はproducerとconsumerのパスを置き換えます．`--scenario 入力.json` で外部条件を明示し，必要な追加runは `--workflow 別のworkflow.yml` で指定します．シナリオはrunのevent，repository，scope，ファイル内容などの有限な外部条件です．通常はYAMLだけを指定し，省略時も同じbackendで有限条件を自動構成します．静的な単一upload元fileは存在・非存在を両方残し，自動条件を対応表へ記録します．対応範囲は [拡張仕様](semantics.md) を参照してください．既存の結果を比較できるよう，別の実験には `demo-002` 等の新しい出力先を使います．
 
 ## 5．生成したSMVを検証する（コンテナ内）
 
@@ -89,7 +89,7 @@ python3 -m workflow_model_v2.verification /out/demo-001/a1.smv
 
 ログには，次の順序で記録します．
 
-1. 対象モデル，起動コマンド，開始時刻，時間上限．
+1. 対象モデル，起動コマンド，開始時刻，時間上限と，対応表から読み取った解析条件・自動仮定・未対応事項．対応表とSMVのhashが異なる場合は条件の不一致を警告します．
 2. CTL検査・遷移全域性のコマンド，標準出力（propertyのtrue/falseと反例trace），標準エラー，終了時刻，終了コード，実行時間．
 3. 到達状態数計算のコマンドと入力コマンド列，標準出力，標準エラー，終了時刻，終了コード，実行時間．CTL検査が失敗した場合は実行しません．
 4. 全体の終了状態と合計実行時間．
@@ -217,7 +217,7 @@ docker run --rm --platform linux/amd64 --network none --read-only \
 
 上記の補助moduleは`tools/workflow_model_v2/`にあります．Python，Dockerfile，Composeのコメントに，各処理の目的と前提を日本語で記載しています．`guard`は状態を更新する条件，`domain`は有限の値候補，`PC`はjob内の実行位置，`latch`は一度起きた事象を保持する履歴です．
 
-`examples/`には，同じProducerとscenarioでArtifactの利用へ到達するConsumerと，到達しないsafe Consumerがあります．実行方法は[examplesの入力を試す場合](#examplesの入力を試す場合)を参照してください．`.github/workflows/`には置かず，全101モデルの評価とは別に回帰テストで確認します．
+`examples/`には，同じProducerと自動導出した有限条件でArtifactの利用へ到達するConsumerと，到達しないsafe Consumerがあります．実行方法は[examplesの入力を試す場合](#examplesの入力を試す場合)を参照してください．`.github/workflows/`には置かず，全101モデルの評価とは別に回帰テストで確認します．
 
 ## outputsを整理するときの注意と復旧
 
@@ -267,17 +267,17 @@ docker compose exec -T model python3 tools/workflow_model_v2/verification.py --h
 
 ## examplesの入力を試す場合
 
-短いProducerと2つのConsumerを，同じ`artifact-scenario.json`で比較します．コマンドはコンテナ内の`/repo`で実行します．出力先が既にある場合は別名にしてください．
+短いProducerと2つのConsumerを，YAMLだけの入力で比較します．scenarioファイルは指定しません．コマンドはコンテナ内の`/repo`で実行します．出力先が既にある場合は別名にしてください．
 
 ```sh
-python3 tools/workflow_to_smv_v2.py examples/artifact-producer.yml examples/artifact-consumer.yml --scenario examples/artifact-scenario.json --output /out/example-unsafe-001/model.smv
-python3 tools/workflow_model_v2/verification.py /out/example-unsafe-001/model.smv
+python3 tools/workflow_to_smv_v2.py examples/artifact-producer.yml examples/artifact-consumer.yml --output /out/yaml-only-unsafe-001/model.smv
+python3 tools/workflow_model_v2/verification.py /out/yaml-only-unsafe-001/model.smv
 
-python3 tools/workflow_to_smv_v2.py examples/artifact-producer.yml examples/artifact-safe-consumer.yml --scenario examples/artifact-scenario.json --output /out/example-safe-001/model.smv
-python3 tools/workflow_model_v2/verification.py /out/example-safe-001/model.smv
+python3 tools/workflow_to_smv_v2.py examples/artifact-producer.yml examples/artifact-safe-consumer.yml --output /out/yaml-only-safe-001/model.smv
+python3 tools/workflow_model_v2/verification.py /out/yaml-only-safe-001/model.smv
 
-grep -- '-- specification AG !dependent_use' /out/example-unsafe-001/model.smv.log
-grep -- '-- specification AG !dependent_use' /out/example-safe-001/model.smv.log
+grep -- '-- specification AG !dependent_use' /out/yaml-only-unsafe-001/model.smv.log
+grep -- '-- specification AG !dependent_use' /out/yaml-only-safe-001/model.smv.log
 ```
 
 | Consumer | `AG !transfer` | `AG !dependent_use` | 意味 |
@@ -287,6 +287,63 @@ grep -- '-- specification AG !dependent_use' /out/example-safe-001/model.smv.log
 
 Producerはcheckoutした`examples/payload.txt`をそのままuploadします．Consumerはdownload先の`payload/payload.txt`を読み，`tr`で改行を除いて`value`へ格納します．この読取りは対応済みの構造化Shell契約を使い，Artifact memberの内容・由来を追跡します．safe版との処理上の差は，読取りstepの`if`だけです．
 
-scenarioはProducerがPR由来であること，checkoutで得るファイル在庫と有限の内容候補，Consumerと上流runの対応を明示します．両Consumerへ同じscenarioを渡してください．`--scenario`を省略するとcheckout在庫を確定できず，未対応診断になるため，この比較の前提を満たしません．これは有限モデルの条件であり，実際のGitHub runを観測した記録ではありません．
+YAMLから，ProducerがPR由来であること，upload元の単一file候補，workflow名による上流runの対応を導出します．実際のrepository fileは読まず，checkout対象の`examples/payload.txt`は「存在する／存在しない」の両方を探索します．内容は空文字と代表値`untrusted\n`の有限候補です．これは実ファイルの内容を確認した値でも，任意のbyte列を網羅するdomainでもありません．
+
+自動条件はSMVの対応表の`externalConditions`と`automaticAssumptions`，検証ログの「解析条件・仮定・未対応事項」に残ります．自動条件の`externalConditions`には全宣言event，PRのfork両値，runner labelからのOS等を保存します．default branchのmainや合成repository等は代表値として残ります．到達・不達はこの有限条件の下での結果です．directory・glob・動的なupload元，未対応Shell等を自動で解決できたとは扱いません．
+
+`artifact-scenario.json`は条件を固定したい場合の任意入力として残しています．その場合だけ`--scenario examples/artifact-scenario.json`を指定します．以前scenarioを省略して生成したSMVは自動更新されないため，更新後の変換器で別の出力先へ再生成してください．
 
 両方とも対応表の`diagnostics`が空であることを回帰テストで確認しています．safeはこのPR入力での利用遮断を指し，あらゆるイベントに対する安全性を意味しません．権限sinkはこのデモに含めていません．
+
+## 外部条件の自動探索と条件指定
+
+以下はコンテナ内の`/repo`で実行します．最初のYAMLは，宣言されたeventに整合する実行が開始済みという前提です．後続YAMLのworkflow_run等の起動可否は，上流完了を含めて検証します．開始済みという前提はJobやstepのifを無条件にtrueへ置き換えるものではありません．
+
+```sh
+# YAMLだけで，対応する外部条件の有限候補を探索する．
+python3 tools/workflow_to_smv_v2.py producer.yml consumer.yml --output /out/auto-001/model.smv
+
+# 最初のworkflowのPRとforkへ制限する．
+python3 tools/workflow_to_smv_v2.py producer.yml consumer.yml --event pull_request --fork true --output /out/fork-001/model.smv
+
+# 後続workflowのdefault branch上の存在条件を制限する．
+python3 tools/workflow_to_smv_v2.py producer.yml consumer.yml --run run1 --workflow-present true --output /out/present-001/model.smv
+
+# 確認対象のpropertyを選び，条件付き反例とBoolean両値の検査を行う．
+python3 tools/workflow_model_v2/verification.py /out/auto-001/model.smv --property dependent_use
+```
+
+`--run`は入力順の`run0`，`run1`等，または一意なworkflow名です．省略時は`run0`です．一度のCLI指定は1つのrunへ適用し，複数runを制限する場合は次の部分JSONを`--scenario partial.json`として指定します．単一workflowならConsumerの位置引数を省略できます．
+
+```json
+{
+  "conditions": [
+    {"run": "run0", "event": "pull_request", "fork": true, "sendWriteTokens": false},
+    {"run": "run1", "defaultBranchWorkflow": true, "tokenAuthenticated": {"actions": true}}
+  ],
+  "bounds": {"conditionConfigurations": 256}
+}
+```
+
+JSONには必要な条件だけを書けます．CLIは同じ条件へ追加制約として適用し，違う値が指定されたらエラーにします．完全な旧scenarioは従来の固定条件モードです．JSONに`"mode": "automatic"`を指定すれば，`runs`も自動候補の制限として扱います．
+
+CLIで指定できるのは`--event`，`--activity`，`--fork true|false`，`--head-branch`，`--base-branch`，`--default-branch`，`--repository`，`--repository-visibility public|private|internal`，`--runner-os`，`--runner-arch`，`--send-write-tokens true|false`，`--workflow-present true|false`です．権限scopeごとの既定値，認証，snapshot/file内容，Cache policy/version等の複雑な条件はJSONで指定します．hosted runnerのOS指定には`Linux`，`Windows`，`macOS`，architectureには`X64`，`ARM64`を使います．
+
+ログの`conditionalReport`で次を区別します．
+
+- `reachability`：記録したモデルでの到達・不達・未完了です．
+- `witnessConditions`：一つの反例で観測した条件です．その値が必要とは限りません．
+- `booleanChecks`：Booleanの両側へ制限した実NuSMV結果です．
+- `necessaryConditionsWithinModel`：両側の非空・完了を確認し，片側だけ到達した場合の必要値です．
+- `coverage`，`unsupported`，`unknown`，`validation`：網羅性，未対応，未知仮定，検査の完了状態です．
+
+必要条件の再検査はBoolean最大8件です．timeoutは各NuSMV呼出しに適用するため，全体の時間は呼出し回数に応じて増えます．`--no-condition-checks`なら追加検査を省き，必要性は未確認と表示します．検査コマンド・反例・エラー・時間は追加分も同じ`model.smv.log`に残り，一時的な制限SMVは保存物を増やしません．
+
+`tests/fixtures/external-conditions/conditional-sink.yml`は，モデル内でforkとtoken条件の違いを確認する小さなfixtureです．記述中の`git push`を実行するものではありません．変換器は文字列を既存の抽象sink契約へ下げ，NuSMVだけを実行します．
+
+```sh
+python3 tools/workflow_to_smv_v2.py tests/fixtures/external-conditions/conditional-sink.yml --scenario tests/fixtures/external-conditions/read-only-fork-policy.json --output /out/conditional-001/model.smv
+python3 tools/workflow_model_v2/verification.py /out/conditional-001/model.smv
+```
+
+この条件ではfork=false側だけ`bad_authority`へ到達します．一方，自動候補全体ではprivate/internalのfork write token設定などによりfork=true側にも経路があります．単に反例へfork=falseが出たことを「fork=falseが必要」とは報告しません．file内容等の未対応domainは別軸で残り，実repositoryの侵害成功や安全性を保証しません．

@@ -214,13 +214,49 @@ class WorkflowCompiler(ShellLowering, Dataflow):
         self._unknowns = {}
         # YAMLの位置情報付き構文木をファイル名ごとに再利用する表を作る．
         self.source_trees = {}
+        # snapshotを指定した場合，自動の代表内容を実ファイルより優先する明示値とは扱わない．
+        for assumption in scenario.get('automaticAssumptions', []):
+            context = next((run for run in scenario.get('runs', []) if run.get('id') == assumption['run']), {})
+            path = assumption['path']
+            if context.get('repositorySnapshot') and context.get('checkoutValues', {}).get(path) == assumption['contents']:
+                context['checkoutValues'].pop(path)
+                context['checkoutFiles'] = [p for p in context.get('checkoutFiles', []) if p != path]
         # 明示されたsnapshotだけを読んで，有限のファイル在庫と内容候補をscenarioへ補う．
         self.prepare_snapshots()
+        # default_scenarioを土台に研究用の在庫・内容を明示した場合は，その指定を自動候補より優先する．
+        # snapshotの完全在庫や差し替えた内容へ，古い「存在が未知」の条件を残さない．
+        active_assumptions = []
+        for assumption in scenario.get('automaticAssumptions', []):
+            context = next((run for run in scenario.get('runs', []) if run.get('id') == assumption['run']), {})
+            path = assumption['path']
+            overridden = (context.get('fileInventoryComplete')
+                          or path not in context.get('checkoutFiles', [])
+                          or path not in context.get('checkoutValues', {})
+                          or context['checkoutValues'][path] != assumption['contents'])
+            if overridden:
+                context['optionalCheckoutFiles'] = [p for p in context.get('optionalCheckoutFiles', []) if p != path]
+                scenario.setdefault('automaticAssumptionOverrides', []).append(dict(
+                    run=assumption['run'], path=path,
+                    reason='explicit contents or complete snapshot replace the inferred file candidate',
+                ))
+            else:
+                active_assumptions.append(assumption)
+        if 'automaticAssumptions' in scenario:
+            scenario['automaticAssumptions'] = active_assumptions
         # 入力run数が設定上限を超えた場合は，切り捨てたモデルを作らず変換を停止する．
         if len(paths) > scenario.get('bounds', {}).get('runs', 32):
             raise base.WorkflowError('run bound exceeded; model was not generated')
         # YAMLをRun/Job/Stepへ読み替え，matrix展開とneeds参照の検査を済ませる．
         self._load(paths)
+        # 自動導出の失敗を，IRが保持する実際のYAML位置へ対応付けて診断する．
+        for issue in scenario.get('automaticDiagnostics', []):
+            evidence = issue.get('evidence', {})
+            source = next((step.source for job in self.jobs
+                           if self.runs[job.run].path == evidence.get('file')
+                           and job.original == evidence.get('job')
+                           for index, step in enumerate(job.steps)
+                           if index == evidence.get('step')), None)
+            self.diagnostic(issue['code'], issue['message'], source)
         # matrix展開後のJob数も上限を確認し，巨大化を黙って省略しない．
         if len(self.jobs) > scenario.get('bounds', {}).get('jobs', 128):
             raise base.WorkflowError('job bound exceeded; model was not generated')
@@ -866,7 +902,7 @@ class WorkflowCompiler(ShellLowering, Dataflow):
         # github/runner/strategyの固定contextを値へ対応付け，後続の解決分岐でSMV条件TRUEの候補として返す．
         constants = {
             'github.event_name': ctx['event'],
-            'github.ref_name': ctx['branch'],
+            'github.ref_name': ctx.get('refName',ctx['branch']),
             'github.ref': ctx['scope'],
             'github.repository': ctx['repository'],
             'github.run_id': run.id,
@@ -880,6 +916,30 @@ class WorkflowCompiler(ShellLowering, Dataflow):
             'strategy.job-index': [j for j in run.jobs if j.original == job.original].index(job),
             'strategy.job-total': len([j for j in run.jobs if j.original == job.original])
         }
+        if ctx.get('externalProfile'):
+            # PRのhead/baseと実行refを分け，event固有の権限・taintとは同じprofileで相関させる．
+            constants.update({
+                'github.event.action': ctx['activity'],
+                'github.ref_type': ctx['refType'],
+                'github.event.pull_request.head.ref': ctx.get('headBranch','') if ctx['event'] in {'pull_request','pull_request_target'} else '',
+                'github.event.pull_request.base.ref': ctx.get('baseBranchName','') if ctx['event'] in {'pull_request','pull_request_target'} else '',
+                'github.head_ref': ctx.get('headBranch','') if ctx['event'] in {'pull_request','pull_request_target'} else '',
+                'github.base_ref': ctx.get('baseBranchName','') if ctx['event'] in {'pull_request','pull_request_target'} else '',
+                'github.event.pull_request.head.repo.fork': ctx['fork'],
+                'github.event.pull_request.head.repo.full_name': ctx.get('headRepository',ctx['repository']),
+                'github.event.pull_request.base.repo.full_name': ctx['repository'],
+                'github.event.repository.default_branch': ctx['defaultBranch'].removeprefix('refs/heads/'),
+            })
+            if ref in {'github.event.repository.private','github.event.repository.visibility'}:
+                # repositoryの公開範囲も，forkへのwrite token条件と同じ固定記号を参照する．
+                token=symbol('repository_visibility',ctx['repository'])
+                values=[ctx['repositoryVisibility']] if 'repositoryVisibility' in ctx else ['public','private','internal']
+                self.ts.frozen[token]=values
+                return [(value!='public' if ref.endswith('.private') else value,token+' = '+value) for value in values]
+            from .external_conditions import runner_labels
+            os_name,arch_name = runner_labels(job.raw.get('runs-on'),job.matrix)
+            constants['runner.os'] = os_name or ctx['runnerOS']
+            constants['runner.arch'] = arch_name or ctx['runnerArch']
         # 通常のcontext参照と区別したhashFiles専用参照なら，現在のfile状態からhash候補を求める．
         if ref.startswith('__hashFiles.'):
             return self.hash_values(ref[len('__hashFiles.'):], job, step)
@@ -894,7 +954,7 @@ class WorkflowCompiler(ShellLowering, Dataflow):
             if upstream and ref == 'github.event.workflow_run.event':
                 return [(upstream.context['event'], 'TRUE')]
             if upstream and ref == 'github.event.workflow_run.head_branch':
-                return [(upstream.context['branch'], 'TRUE')]
+                return [(upstream.context.get('headBranch',upstream.context['branch']), 'TRUE')]
             if upstream and ref == 'github.event.workflow_run.conclusion':
                 # 上流run内の全Jobが成功・失敗・取消・skipのいずれかへ達した条件を作る．
                 terminal = AND(*(f'pc_{j.id} in {{ success, failure, cancelled, skipped }}' for j in upstream.jobs))
@@ -1098,6 +1158,9 @@ class WorkflowCompiler(ShellLowering, Dataflow):
     # イベントfilterと，workflow_runが待つ上流runの完了条件を組み合わせる．
     def _enabled(self, run):
         """event filterと上流run完了から，runを開始できる条件を作る．"""
+        # 最初のworkflowのrunは開始済みとし，Job自身のif/needsは別のguardで検査する．
+        if run.context.get('assumeStarted'):
+            return 'TRUE'
         # YAMLのonを読み，単一文字列・リスト・辞書を後段が扱えるイベント辞書へそろえる．
         events = run.raw.get('on', {})
         if isinstance(events, str):
@@ -1107,8 +1170,14 @@ class WorkflowCompiler(ShellLowering, Dataflow):
             # on: [push, pull_request]を各イベントがキーの辞書へ変換する．
             events = dict.fromkeys(events)
         try:
-            # イベント名・activity・branch/path等のfilterをscenarioへ適用し，開始できる固定条件へ変換する．
-            enabled = 'TRUE' if pol.trigger(events, run.context) else 'FALSE'
+            context = dict(run.context)
+            if context.get('externalProfile') and context['event']=='workflow_run':
+                # 後続のbranches filterは，Consumer自身でなく選ばれた上流のhead branchへ適用する．
+                upstream = next((r for r in self.runs if r.id==str(context.get('upstreamRun'))),None)
+                if upstream:
+                    context['branch']=upstream.context.get('headBranch',upstream.context['branch'])
+            # rootは整合するtriggerで開始済み．後続の起動可否は従来の規則を条件ごとに評価する．
+            enabled = 'TRUE' if context.get('assumeStarted') else 'TRUE' if pol.trigger(events, context) else 'FALSE'
         except (pol.UnsupportedPolicy, KeyError, TypeError) as exc:
             enabled = self.unknown((run.id, 'trigger'), str(exc))
         # scenarioで明示された実行順制約の上流run idを読む．
@@ -1797,9 +1866,16 @@ class WorkflowCompiler(ShellLowering, Dataflow):
                         untrusted = default_untrusted
                     for path in run.context.get('checkoutFiles', []):
                         # checkout成功時だけ，在庫にある各ファイルを信頼条件に対応するclean/taintedへ更新する．
-                        self.ts.update(self.file(job, path), success, 'tainted' if untrusted else 'clean')
-                        # taint状態とは別に，供給された有限の内容候補を同じcheckout成功guardで設定する．
-                        self._checkout_contents(job, path, success)
+                        checkout_guard = success
+                        if path in run.context.get('optionalCheckoutFiles', []) and not run.context.get('fileInventoryComplete'):
+                            # YAMLだけでは実在を確定できないfileは，存在する場合としない場合の両方を残す．
+                            # FROZENVARをrun・pathで共有し，同じrunの別Jobでも実在の選択を変えない．
+                            present = symbol('input_present', run.id + ':' + path)
+                            self.ts.frozen[present] = ['FALSE', 'TRUE']
+                            checkout_guard = AND(success, present)
+                        self.ts.update(self.file(job, path), checkout_guard, 'tainted' if untrusted else 'clean')
+                        # 内容も同じ存在条件で写し，存在しないfileに内容だけを供給しない．
+                        self._checkout_contents(job, path, checkout_guard)
                     if not run.context.get('checkoutFiles'):
                         self.diagnostic(
                             'checkout-files',
@@ -1942,6 +2018,8 @@ class WorkflowCompiler(ShellLowering, Dataflow):
             'contractVersion': CONTRACT_VERSION,
             'cachePolicy': self.policy,
             'scenario': self.scenario,
+            'automaticAssumptions': self.scenario.get('automaticAssumptions', []),
+            'analysisScope': 'reachability under the recorded finite assumptions; not observed execution',
             'sources': [{
                 'file': r.path,
                 'sha256': hashlib.sha256(Path(r.path).read_bytes()).hexdigest()
@@ -1975,26 +2053,38 @@ class WorkflowCompiler(ShellLowering, Dataflow):
                 'scenario contexts and opaque cache versions are assumptions, not runtime evidence',
                 'nondeterministic action/network success; shell operations are atomic per step',
                 'tag contracts are version families; tags are not resolved to immutable source commits'
-            ],
+            ] + ([
+                'YAML-only defaults select the first declared event, main branch, Linux/X64 and a synthetic shared repository; these are assumptions, not observations',
+                'automatically inferred checkout paths are single-file candidates with both presence choices and finite representative contents; non-reachability applies only to this finite content domain'
+            ] if self.scenario.get('defaultContext') else []),
             'properties': self.ts.properties,
             'stateVariables': len(self.ts.variables)
         }
         # 共通IRをSMVへ出力し，元YAMLへの対応表を別の戻り値として返す．
-        return (self.ts.render(), manifest)
+        text = self.ts.render()
+        # ログが別モデルの対応表を誤って条件表示に使わないよう，SMV本文のhashも保存する．
+        manifest['modelSha256'] = hashlib.sha256(text.encode('utf-8')).hexdigest()
+        return (text, manifest)
 
 # CLIと全評価が使う共通入口．
 # scenarioの有無は入力条件だけを変え，同じbackendへ渡す．
-def compile_workflows(paths, scenario=None):
+def compile_workflows(paths, scenario=None, *, restrictions=None):
     """CLI・評価で共用する変換の入口．"""
     try:
         from .scenario import default_scenario
         # 変換時間の計測を開始し，モデルの意味に関わる状態変数には含めない．
         started = time.perf_counter()
         # scenario省略時だけ既定条件を生成し，同じ変換器でIR構築とSMV生成を行う．
-        text, manifest = WorkflowCompiler(
-            paths,
-            default_scenario(paths) if scenario is None else scenario
-        ).build()
+        from .external_conditions import is_complete_scenario,build_space,compile_space,constrain_complete,fixed_condition_manifest
+        if is_complete_scenario(scenario,len(paths)):
+            fixed = constrain_complete(paths,scenario,restrictions)
+            backend=WorkflowCompiler(paths,fixed)
+            text,manifest = backend.build()
+            manifest['externalConditions']=fixed_condition_manifest(paths,backend.scenario,backend.ts)
+            manifest['inputMode']='explicit-scenario'
+        else:
+            space = build_space(paths,scenario,restrictions)
+            text,manifest = compile_space(space,WorkflowCompiler)
         # 実行ごとに変わる所要時間を対応表へ追加し，SMV本文とは切り離して記録する．
         manifest['generationSeconds'] = time.perf_counter() - started
         return (text, manifest)

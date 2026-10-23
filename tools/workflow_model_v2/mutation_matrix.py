@@ -11,6 +11,7 @@ mainは既定の21対照を作り，評価スクリプトはOUTを専用出力�
 """
 from __future__ import annotations
 import difflib
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -227,6 +228,8 @@ def _mutate(slug: str, pair: str, mutation: str):
     model_path = dest / (slug + ".smv")
     # 対照のSMVを専用directoryへ保存し，通常modelや過去の実験結果を上書きしない．
     model_path.write_text(smv)
+    # 意図的な不正構文を含む対照も，実際にNuSMVへ渡す本文のhashを記録する．
+    manifest['modelSha256'] = hashlib.sha256(smv.encode('utf-8')).hexdigest()
     (dest / (slug + ".map.json")).write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n")
     diff = "".join(difflib.unified_diff(
         (WORKFLOWS / producer_name).read_text().splitlines(keepends=True),

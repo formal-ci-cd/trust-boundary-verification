@@ -9,6 +9,7 @@ workflowのShellやGitHub操作は実行しない．
 from __future__ import annotations
 
 import argparse
+import hashlib
 from datetime import datetime, timezone
 import json
 from pathlib import Path
@@ -136,7 +137,42 @@ def read_verification(model):
     return dict(format='legacy-sidecars', modelCheck=check, reachability=stats)
 
 
-def verify(model, executable='NuSMV', timeout=120):
+def _analysis_context(model):
+    """対応表から有限仮定と未対応事項を取得し，SMVとのhash対応も確認する．"""
+    candidates = [Path(str(model) + '.map.json'), model.with_suffix('.map.json')]
+    mapping = next((path for path in candidates if path.is_file()), None)
+    if mapping is None:
+        return dict(status='unavailable', warning='対応表がないため，解析条件と未対応事項は確認できません．')
+    try:
+        manifest = json.loads(mapping.read_text())
+        expected = manifest.get('modelSha256')
+        if expected and expected != hashlib.sha256(model.read_bytes()).hexdigest():
+            return dict(status='mismatch', sourceMap=str(mapping), warning='対応表とSMVのhashが一致しません．対応表の条件をこのモデルの根拠には使えません．')
+        scenario = manifest.get('scenario', {})
+        # 実際の遷移に使ったcontextの代表値を示し，YAMLの観測事実と区別する．
+        keys = ('id', 'source', 'event', 'activity', 'branch', 'scope', 'repository', 'fork',
+                'defaultBranch', 'baseBranch', 'defaultBranchWorkflow', 'sendWriteTokens',
+                'runnerOS', 'runnerArch', 'upstreamRun', 'upstreamName')
+        return dict(
+            status='matched' if expected else 'legacy-unbound', sourceMap=str(mapping),
+            inputMode=manifest.get('inputMode', 'not-recorded'),
+            verdict=manifest.get('verdict', 'unknown/unsupported'),
+            analysisScope=manifest.get('analysisScope', '有限モデルの条件は対応表を参照してください．'),
+            assumptions=manifest.get('assumptions', []),
+            automaticAssumptions=manifest.get('automaticAssumptions', []),
+            defaultContext=scenario.get('defaultContext'),
+            runContexts=[{key: run[key] for key in keys if key in run} for run in scenario.get('runs', [])],
+            diagnostics=manifest.get('diagnostics', []),
+            externalConditions=manifest.get('externalConditions'),
+            properties=manifest.get('properties',{}),
+            warning=None if expected else '旧対応表にはSMVのhashがなく，モデルとの一致は未確認です．',
+        )
+    except (OSError, ValueError, TypeError, AttributeError) as exc:
+        # 診断情報を読めない場合もNuSMV単独の検査は行い，条件確認失敗を隠さない．
+        return dict(status='unreadable', sourceMap=str(mapping), warning='対応表を読み取れません: ' + str(exc))
+
+
+def verify(model, executable='NuSMV', timeout=120, *, condition_property='no_bad_authority', check_conditions=True):
     """CTL検査と状態列挙を実行し，1つのログと2つの終了コードを返す．"""
     if timeout <= 0:
         raise ValueError('timeout must be positive')
@@ -153,10 +189,24 @@ def verify(model, executable='NuSMV', timeout=120):
         invocation=[sys.executable, *sys.argv], startedAt=_now(),
         modelCheck=None, reachability=None,
     )
+    metadata['analysisContext'] = _analysis_context(model)
+    context = metadata['analysisContext']
+    if context.get('verdict') == 'unknown/unsupported':
+        print('注意: unknown/unsupportedです．CTLのtrueを安全判定に使わず，ログの未対応事項を確認してください．', flush=True)
+    elif context.get('inputMode') == 'yaml-only':
+        print('解析条件: YAMLから自動構成した有限仮定の下で検証します．仮定はログに記録します．', flush=True)
+    if context.get('warning'):
+        print('注意: ' + context['warning'], flush=True)
     started = time.monotonic()
     # 無bufferのbinary fileにし，子プロセスが書いた後のbyte位置も同じfile descriptorで取得する．
     with log.open('xb', buffering=0) as stream:
         _write(stream, f'NuSMV 検証ログ\nモデル: {model}\n開始: {metadata["startedAt"]}\n起動: {shlex.join(metadata["invocation"])}\n1回の時間上限（秒）: {timeout}\n')
+        # propertyを読む前に，適用条件と未対応を同じログ内で確認できるようにする．
+        _write(stream, '\n=== 解析条件・仮定・未対応事項 ===\n')
+        if context.get('verdict') == 'unknown/unsupported':
+            _write(stream, '注意: unknown/unsupported．以下のCTL結果だけから安全とは判断できません．\n')
+        _write(stream, '到達性は記録した有限仮定の下での結果であり，実際の実行の観測ではありません．\n')
+        _write(stream, json.dumps(context, ensure_ascii=False, indent=2) + '\n')
         check = _run_phase(stream, 'CTL検査・遷移全域性', [executable, '-ctt', str(model)], timeout)
         metadata['modelCheck'] = check
         if check['exitcode'] == 0:
@@ -182,6 +232,35 @@ def verify(model, executable='NuSMV', timeout=120):
                 stats['diagnostic'] = 'NuSMV returned 0 but no positive reachable-state count was produced.'
                 _write(stream, '\n検証支援の診断: ' + stats['diagnostic'] + '\n判定用終了コード: 1\n')
             metadata['reachability'] = stats
+        if (metadata['analysisContext'].get('externalConditions') and check['exitcode']==0
+                and metadata['reachability'] and metadata['reachability']['exitcode']==0):
+            from workflow_model_v2.conditional_verification import explain
+            with log.open('rb') as saved:
+                saved.seek(check['stdout']['offset'])
+                primary_stdout=saved.read(check['stdout']['length']).decode('utf-8',errors='replace')
+            report=explain(model,metadata['analysisContext'],primary_stdout,stream,_run_phase,_write,
+                           executable,timeout,condition_property,check_conditions)
+            report['validation']=dict(ctlExitcode=check['exitcode'],stateEnumerationExitcode=metadata['reachability']['exitcode'],nonemptyReachableSet=metadata['reachability']['nonemptyReachableSet'],totalTransitionRelation='The transition relation is total: No deadlock state exists' in primary_stdout)
+            if not report['validation']['totalTransitionRelation']:
+                report['reachability']='incomplete'
+                report['necessaryConditionsWithinModel']=[]
+            metadata['conditionalReport']=report
+            _write(stream,'\n=== 外部条件と到達性の報告 ===\n'+json.dumps(report,ensure_ascii=False,indent=2)+'\n')
+            print(f'Property: {report["property"]}; Reachability: {report["reachability"]}; Boolean checks: {report["booleanCheckStatus"]}',flush=True)
+            for observed in report['witnessConditions']:
+                if observed['name'] in {'event','activity','fork','headBranch','baseBranchName','tokenPolicy','sendWriteTokens'}:
+                    print(f'  反例中の値（必要条件とは未確認）: {observed["owner"]}.{observed["name"]}={observed["value"]}',flush=True)
+            for necessary in report['necessaryConditionsWithinModel']:
+                print(f'  有限モデル内の必要条件: {necessary["owner"]}.{necessary["name"]}={necessary["value"]}',flush=True)
+        elif metadata['analysisContext'].get('externalConditions'):
+            # CTLまたは状態列挙が未完了なら，true/falseを補わず検証失敗の軸だけを残す．
+            metadata['conditionalReport']=dict(property=condition_property,reachability='incomplete',
+                validation=dict(modelCheck=check,reachability=metadata['reachability']),
+                coverage=metadata['analysisContext']['externalConditions'].get('coverage',{}),
+                unsupported=[item for item in context.get('diagnostics',[]) if item['status']=='unsupported'],
+                unknown=[item for item in context.get('diagnostics',[]) if item['status']=='unknown'],
+                witnessConditions=[],necessaryConditionsWithinModel=[],booleanChecks=[],booleanCheckStatus='incomplete-primary-verification')
+            _write(stream,'\n=== 外部条件と到達性の報告 ===\n'+json.dumps(metadata['conditionalReport'],ensure_ascii=False,indent=2)+'\n')
         metadata['finishedAt'] = _now()
         metadata['totalSeconds'] = time.monotonic() - started
         stats = metadata['reachability']
@@ -200,17 +279,19 @@ def main():
     # Path/floatは引数の文字列を変換し，存在や正の時間はverifyで別途確認する．
     parser.add_argument('target', type=Path, help='one .smv file, or an evaluation directory containing inventory.json')
     parser.add_argument('--timeout', type=float, default=120, help='seconds allowed per NuSMV invocation; timeout is incomplete, not safe')
+    parser.add_argument('--property',dest='condition_property',default='no_bad_authority',help='named AG !target property for external-condition analysis')
+    parser.add_argument('--no-condition-checks',action='store_true',help='decode witness only; do not establish Boolean necessary conditions')
     args = parser.parse_args()
     try:
         if args.target.is_dir():
             inventory = json.loads((args.target / 'inventory.json').read_text())
             failed = False
             for item in inventory:
-                code, stats_code = verify(args.target / item['model'], timeout=args.timeout)
+                code, stats_code = verify(args.target / item['model'], timeout=args.timeout,condition_property=args.condition_property,check_conditions=not args.no_condition_checks)
                 intentional = item['id'] == 'legacy-nusmv-invalid-input'
                 failed |= code == 0 if intentional else code != 0 or stats_code != 0
             return int(failed)
-        code, stats_code = verify(args.target, timeout=args.timeout)
+        code, stats_code = verify(args.target, timeout=args.timeout,condition_property=args.condition_property,check_conditions=not args.no_condition_checks)
         return int(code != 0 or stats_code != 0)
     except (OSError, ValueError) as exc:
         parser.error(str(exc))

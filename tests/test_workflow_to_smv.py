@@ -1,3 +1,5 @@
+# YAMLの読取り，source位置，needs，未対応処理の診断を確認する．旧backendを呼ぶテストではない．
+
 import sys
 import tempfile
 import unittest

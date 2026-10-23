@@ -1,3 +1,5 @@
+# 出力の追加archiveと復元を確認する．照合失敗や既存ファイルがある場合も元データを保持する．
+
 import hashlib
 import json
 from pathlib import Path

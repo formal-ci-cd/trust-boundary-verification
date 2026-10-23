@@ -1,3 +1,5 @@
+# 式・イベント・権限・Cache・複数job等の有限モデルを，正常系と遮断系で確認する．
+
 """Run only inside the isolated analysis container."""
 import json
 from pathlib import Path

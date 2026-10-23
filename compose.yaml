@@ -1,3 +1,4 @@
+# 解析用コンテナを常駐させ，生成・検証・集計を個別に呼び出せるようにする．
 services:
   model:
     image: tbv-model-v2:local
@@ -5,19 +6,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    # この常駐処理自体は解析しない．処理はdocker compose execで指定する．
     command: ["sleep", "infinity"]
     init: true
     user: "1000:1000"
+    # 実行時は通信を切り，rootfsを読取り専用にする．必要な一時領域だけ下で許可する．
     network_mode: none
     read_only: true
     cap_drop: [ALL]
     security_opt: ["no-new-privileges:true"]
+    # 状態探索による資源消費に上限を設ける．探索完了の確認は検証結果側で行う．
     mem_limit: 2g
     cpus: 2
     pids_limit: 128
     tmpfs:
       - /tmp:rw,nosuid,nodev,size=512m
     volumes:
+      # 入力ソースは読取り専用，生成結果はホストのoutputs/runsへ保存する．
       - .:/repo:ro
       - ./outputs/runs:/out:rw
     working_dir: /repo

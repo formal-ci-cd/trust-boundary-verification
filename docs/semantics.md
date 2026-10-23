@@ -14,6 +14,7 @@ SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化してい
 | `composites.py` | 明示registryのmetadataをSHA-256確認して展開．Actionコードは実行しない |
 | `compiler.py` | 型付きrun/job/step，有限filesystemとobject候補，scheduler／contract遷移生成 |
 | `scenario.py` | 既定の有限run条件とファイル内容domainの組立て |
+| `dataflow.py` | GITHUB_ENV，output，入力contextの共有値と依存ラベル，snapshotとhashFilesの有限計算 |
 | `shell_lowering.py` | ファイル内容，SHA-256比較，metadata検査，step outputと利用履歴の遷移化 |
 | `transition.py` | 状態宣言／guard付き更新／制約／CTLのIRとSMV出力 |
 | `reference_cache.py` | YAML契約から別実装したCache明示状態探索．生成SMVやtransition式を読まない |
@@ -28,31 +29,32 @@ SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化してい
 | pull_request / pull_request_target / push | subset対応 | supplied event，activity，base/head branch，tag，完全なchangedPathsでfilter |
 | workflow_dispatch / repository_dispatch | subset対応 | 配信済みイベントのscenario．外部API／認証は実行しない |
 | schedule | 部分対応 | cron宣言と配信scenario．時刻計算，遅延，配信dropは非モデル化 |
-| workflow_run | subset対応 | supplied upstream runのcompleted後．単一upstream jobのconclusion/event/head_branch参照 |
+| workflow_run | subset対応 | supplied upstream runの全Job終端を待つcompleted順序．event/head_branchと，終端結果を集約したconclusion参照 |
 | workflow_call / reusable workflow | 未対応 | 宣言を認識するがcaller payload／permission／secret伝播はunsupported |
 | types / branches / paths / ignore | subset対応 | ordered `!`，`*`，`**`，`?`．`[]`／`+`／escape，diff打切り条件はunsupported |
 | needs / 複数job | 対応 | job PC，terminal status，既定success依存，interleaving．needs cycleは生成拒否 |
 | job/step if・status関数 | subset対応 | success/failure/always/cancelled．暗黙successを加え，明示status時は加えない |
 | failure / skip / cancel | subset対応 | 失敗履歴，step outcome/conclusion，cancel latch後のcleanup．外部runner停止やtimeoutは未対応 |
 | continue-on-error | step literal対応 | 元outcome failureとconclusion successを区別．job-level／動的式はunsupported |
-| strategy.matrix | static cartesian対応 | 最大32展開，fail-fast:false．include/exclude，max-parallel，動的matrixはunsupported |
+| strategy.matrix | static cartesian対応 | 既定上限32展開，include/exclude，fail-fast:false．max-parallel，動的matrix，fail-fastによる取消はunsupported |
 | concurrency | 未対応 | キュー置換／cancel-in-progressのrun間意味を省略して安全判定しない |
 | Boolean / 比較 / 括弧 / null / number | subset対応 | loose型変換，case-insensitive string比較．配列／objectのinstance equalityはunsupported |
 | github / needs / steps | subset対応 | 有限context，step output/result，単一needs job output．matrix集約outputはunsupported |
-| env / inputs / matrix / runner / strategy / vars | subset対応 | 有限scenario値，envのprecedence，静的matrix．完全domainがないcontextはunsupported |
+| env / inputs / matrix / runner / strategy / vars | subset対応 | 有限scenario値，envのprecedenceとGITHUB_ENV，静的matrix，dispatchのchoice/boolean．自由文字列や未指定varsは診断付き共有代表値 |
 | contains/startsWith/endsWith/fromJSON/toJSON/format | subset対応 | 有限値上の評価．invalid JSON等の実行時式エラーはunsupported |
 | upload/download Artifact | subset対応 | objectごとの存在・taint，literal／静的context name/path，複数object，run/repository selector |
 | Artifact outputs | 部分対応 | artifact-idは抽象object token，digestはopaque値．実ID／hashを知ったとは扱わない |
 | artifact-ids | subset対応 | 抽象ID outputの取得．実APIの数値IDは未観測 |
 | pattern / merge-multiple | 未完成 | pattern候補は作れるが複数取得先layout／mergeをunsupportedにする |
-| overwrite / if-no-files-found | 未対応 | 指定があればunsupported．削除／再生成，warn/error差の全意味は未モデル化 |
+| overwrite | 未対応 | 有効化を検出した保存規則でdiagnostic．削除／再生成による同一性の変化は非モデル化 |
+| if-no-files-found / retention-days | 意味未実装 | withキーとしては受理するが，warn/error差・期限の効果は生成しない．指定だけで必ずdiagnosticになる実装ではなく，対応済みとは判断しない |
 | cache/save/restore | subset対応 | v4，combined v5.0.4の共通効果契約．主key，prefix，restore-keys順序，scope優先，最新保存順 |
 | Cache共有 | subset対応 | repository／scope／opaque versionが対応する保存済みslotだけ取得．複数候補から同一slotを選択 |
 | Cache post-save | subset対応 | successful job後，exact-hitで保存しない．複数combined actionのpost順序はunsupported |
-| Cache key/path動的式 | 部分対応 | env/inputs/matrix等の有限値．step/job output依存keyの遅延候補展開，hashFiles，複数動的pathはunsupported |
+| Cache key/path動的式 | 部分対応 | env/inputs/matrix/step/job output依存のkeyと単一pathを有限候補へ展開．値とpathの条件を共有する．複数path・glob layoutはunsupported |
 | Cache version/protected/branch policy | 部分対応 | versionはscenarioのopaque同一性仮定．保護branchによる任意追加制限，backend hash生成，evictionは未対応 |
 | Composite | subset対応 | hash確認済metadata，単純step展開．input/output／parent guard／内部output scopeはunsupported |
-| Shell | 閉じた操作subset | literalファイル生成，cp，cat，git add，GITHUB_OUTPUT，literalログ，exit，限定sink．任意BashやGITHUB_ENVはunsupported |
+| Shell | 閉じた操作subset | literalファイル生成，cp，cat，git add，GITHUB_OUTPUT，literalログ，exit，限定sink．GITHUB_ENVの単純な1行書込みと引用済み変数展開を追加．任意Bash，複数行環境ファイル，command substitutionはunsupported |
 | integrity | 有限Artifact内容のSHA-256比較 | 同じfile slotの内容からdigestとoutputを生成．検証read，検証後use，不一致後useを分離．別ファイル・書換え後へ検証状態を引き継がない．無制限の内容domainやCache bytesのdigest契約は未対応 |
 | permissions | subset対応 | workflow/job明示値，省略scope none，fork write設定，repository defaultは共有unknown enum |
 | repository write / package publish / deployment | 抽象sink対応 | 限定git push/npm publish/gh API地点．権限・認証・到達・成功を区別．外部操作は行わない |
@@ -64,7 +66,7 @@ SMV生成は `compiler.py` と共通の `TransitionSystem` に一本化してい
 
 有限context domainはscenarioの仮定である．literal以外の全実文字列を網羅したと主張しない．未指定contextを便宜的な「その他」1値へ押し込めず，診断を残す．式積の上限8192を超えた場合もunsupportedである．
 
-filesystemはjobごとのliteral path slotに `absent/clean/tainted` を保持する．Artifact/Cache slotは別の同じ3値domainを持ち，保存時のfilesystem値を保持する．restoreは選択したslotの値だけを同じjob filesystemへ移す．実byte列，path内の個別file layout，digestの等価性は表していない．
+filesystemはjobごとのliteral path slotに `absent/clean/tainted` を保持する．Artifact/Cache slotは別の同じ3値domainを持ち，保存時のfilesystem値を保持する．restoreは選択したslotの値だけを同じjob filesystemへ移す．構造化ShellとhashFilesで扱うfileには，有限のUTF-8内容候補を別に保持する．Artifactの対応member以外の汎用layoutや，Cacheの実byte列は表していない．
 
 stepはatomic契約で，操作結果は非決定的な入力である．同一Shell中のwrite後read等，microstepが必要な依存はunsupportedにする．Cache保存のI/O成功はstep outcomeと別入力であり，保存がwarningで終わってもstepがsuccessとなる状態を残す．保存順clockは有限step数から上限を取り，slot作成は1回以下なので到達状態でwrapしない．
 
@@ -96,7 +98,7 @@ source mapの `/repo` は読取り専用repository，`/out` は専用出力を�
 
 ## 確認した公式資料
 
-確認日：2026-10-22．仕様から導入した具体的な規則は上表の限定範囲である．
+確認日：2026-10-23．仕様から導入した具体的な規則は上表の限定範囲である．
 
 - [Workflow syntax](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax)
 - [Expressions](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions)
@@ -131,3 +133,39 @@ Pythonが最終的な危険到達Booleanを事前計算してSMVへ埋め込む�
 `workflowTrusted` はconsumerの定義を信頼済みの検証基準として扱えるかを指定する．省略時は共有の未知Booleanとし，信頼できない定義にあるliteral digestをtrust anchorとして認めない．単にdigest文字列が一致したというログと，信頼済み定義による検証を区別する．
 
 構造化Shellのlocal変数・if/else・case・終了は順序を保って下げる．同一step内のdigest比較後のreadも，先に得た同じファイルの検証状態を使う．依存するファイル書換えの連鎖，未対応の展開や失敗後の継続を省略する場合はunsupportedを残す．
+
+## 2026-10-23のデータフロー拡張
+
+`GITHUB_ENV`の単純な1行書込みをjobごとの状態に保持する．同じstep内の参照には書込み前の値を使い，後続stepへ反映する．未設定と空文字の設定を区別する．step-level envは実行時envより優先し，実行時envはjob/workflowのenvより優先する．別jobへは自動継承しない．同じstep内の無条件の複数書込みは後勝ちとする．
+
+`GITHUB_OUTPUT`，job outputs，`needs.<job>.outputs`へ同じ有限値と条件を引き継ぐ．完了したjobのoutputは失敗後の`always()`経路からも参照できる．step/job output，実行時envを用いるArtifact name・Cache keyと単一pathの候補は，domainの収束後に宣言する．combined Cacheのpost-saveはrestore時点のkey/path条件を保持し，後続stepの値変更で保存先を変えない．
+
+値，Artifact由来の印，taint，データ依存，制御依存は別の状態である．`dataflowLabels`にoutput/envの各ラベルを記録し，`runtimeEnvironment`に値のdomainと設定済みフラグを保存する．由来ラベルはArtifact由来かを表すBooleanであり，全source集合を列挙する汎用provenance graphではない．どのobjectが選ばれたかは反例の選択入力とobject/source mapから確認する．
+
+環境ファイルの複数行delimiter，予約変数への書込み，未認識のリダイレクト，Shellの注入効果を伴う式展開は対応済みとは扱わない．これらにはdiagnosticを残す．Shellを実行して内容を取得することはない．
+
+### hashFilesとsnapshot
+
+literal patternの`hashFiles()`を，呼出し時点のfile存在・有限内容候補に依存する式へ変換する．各fileのSHA-256のbyte列を連結し，再度SHA-256を計算する．一致fileがなければ空文字となる．同じ呼出しを複数回参照しても，別々の無関係なBooleanにはしない．対応するfile書換え後は，更新後の内容状態から計算する．
+
+scenarioの各runへ`repositorySnapshot`を指定すると，そのディレクトリのUTF-8通常fileを読み，内容hashと在庫を`hashInputs`へ記録する．`.git`は除外し，symlinkとbinaryは未対応診断にする．これは「指定snapshotが実行時checkoutを表す」という外部仮定であり，現在のcheckoutを過去の実行の内容と自動的に同一視しない．明示した`checkoutValues`はsnapshotより優先する．
+
+globには`fileInventoryComplete`による完全な在庫の仮定が必要である．Linuxの限定globを使い，複数fileの集約順はpathのソート順という仮定を記録する．Windows・複雑なpattern・Cache復元後のbyte列・完全な内容domainがない場合は診断を残す．不明なhashの有限代表値は実hashではなく，`hashfiles-domain`があるモデルから安全を結論しない．
+
+### 入力と上限
+
+workflow_dispatchのchoiceは宣言されたoptions，booleanはtrue/falseを共有FROZENVARへ変換する．明示scenarioの値と`domains`を優先する．自由文字列・数値や未指定repository varsには完全なdomainがないため，代表値とunsupported診断を使う．
+
+scenarioの`bounds`で`runs`，`jobs`，`objects`，`matrix`，`domainPasses`，`expressionProducts`，`hashFiles`を指定できる．run/job/object上限を超えた場合は生成を拒否する．matrixや式の探索範囲を表現できない場合もdiagnosticを残し，切り落とした経路を安全と扱わない．
+
+今回確認した規則は[環境ファイル](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-commands#setting-an-environment-variable)，[hashFiles](https://docs.github.com/en/actions/reference/workflows-and-actions/expressions#hashfiles)，[Cache探索](https://docs.github.com/en/actions/reference/workflows-and-actions/dependency-caching)，[matrix include/exclude](https://docs.github.com/en/actions/how-tos/write-workflows/choose-what-workflows-do/run-job-variations)を参照した．hashの集約は[toolkit実装](https://github.com/actions/toolkit/blob/main/packages/glob/src/internal-hash-files.ts)も確認した．これらのリンク先全体を実装したことは意味しない．
+
+## 検証コマンドと出力の注意
+
+検証プログラムの実体は`tools/workflow_model_v2/verification.py`です．コンテナの`/repo`から`python3 tools/workflow_model_v2/verification.py /out/example/model.smv`の形で起動できます．`python3 -m workflow_model_v2.verification`は同じmoduleを検索して起動する別表記です．具体的な英数字の出力先と手順は[コンテナ操作手順](container-guide.md)を参照してください．
+
+wrapperは実行コマンド，CTLと状態数列挙の生出力・診断，時刻，実行時間，終了コードを`model.smv.log`へまとめる．末尾のJSONは集計情報と生出力のbyte位置を持つ．末尾情報のないログは未完了とし，状態列挙はNuSMVの0終了に加えて正の到達状態数を要求する．日本語パスはUTF-8で渡す．旧形式の個別ログも読めるが，新規生成はしない．この保存形式の変更はSMVの変換規則を変更しない．
+
+`outputs/`はGit管理外の生成結果で，解析器の依存ではありません．削除すると過去の入力コピー・外部条件・検証証拠も失うため，必要な実験を退避してから不要分を整理します．
+
+ホストの`outputs/runs/`はコンテナの`/out`のmount元です．起動中にそのdirectory自体を削除すると接続が無効になり，変換前の出力先確認でもPermissionErrorになる場合があります．不要な結果の削除とmount元directoryの削除を区別し，後者は[保存先とコンテナの再接続手順](container-guide.md#outputsを整理するときの注意と復旧)に従います．

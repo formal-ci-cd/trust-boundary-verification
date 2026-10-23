@@ -1,0 +1,1351 @@
+{
+  "cases": [
+    {
+      "id": "env-next-step",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=runtime\" >> \"$GITHUB_ENV\"",
+                  "id": "writer"
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          },
+          "env": {
+            "MODE": "workflow"
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "runtime"
+        }
+      ]
+    },
+    {
+      "id": "env-same-step-old",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=runtime\" >> \"$GITHUB_ENV\"\necho \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ],
+              "env": {
+                "MODE": "job"
+              }
+            }
+          },
+          "env": {
+            "MODE": "workflow"
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "job"
+        }
+      ]
+    },
+    {
+      "id": "env-step-precedence",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=runtime\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report",
+                  "env": {
+                    "MODE": "step"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "step"
+        }
+      ]
+    },
+    {
+      "id": "env-skipped-writer",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=runtime\" >> \"$GITHUB_ENV\"",
+                  "if": false
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          },
+          "env": {
+            "MODE": "workflow"
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "workflow"
+        }
+      ]
+    },
+    {
+      "id": "env-last-write",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=first\" >> \"$GITHUB_ENV\"\necho \"MODE=last\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "last"
+        }
+      ]
+    },
+    {
+      "id": "env-single-quote-literal",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo 'MODE=$OTHER' >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "$OTHER"
+        }
+      ]
+    },
+    {
+      "id": "env-job-isolation",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=runtime\" >> \"$GITHUB_ENV\""
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "env-reserved",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"NODE_OPTIONS=x\" >> \"$GITHUB_ENV\""
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [
+        "reserved-environment"
+      ]
+    },
+    {
+      "id": "env-multiline-unsupported",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"MODE=$VALUE\" >> \"$GITHUB_ENV\"",
+                  "env": {
+                    "VALUE": "first\nsecond"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [
+        "environment-file-multiline"
+      ]
+    },
+    {
+      "id": "cache-job-output-key",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"key=shared-key\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "make"
+                }
+              ],
+              "outputs": {
+                "key": "${{ steps.make.outputs.key }}"
+              }
+            },
+            "save": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "env": {
+                "KEY": "${{ needs.work.outputs.key }}"
+              },
+              "steps": [
+                {
+                  "run": "echo 'data' > data"
+                },
+                {
+                  "uses": "actions/cache/save@v4",
+                  "with": {
+                    "key": "${{ env.KEY }}",
+                    "path": "data"
+                  }
+                }
+              ]
+            },
+            "read": {
+              "runs-on": "ubuntu-latest",
+              "needs": [
+                "work",
+                "save"
+              ],
+              "steps": [
+                {
+                  "uses": "actions/cache/restore@v4",
+                  "with": {
+                    "key": "${{ needs.work.outputs.key }}",
+                    "path": "data"
+                  }
+                },
+                {
+                  "run": "cat data"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false",
+        "no_use": "true"
+      },
+      "scenario": {
+        "cachePolicy": "github-historical-2025",
+        "runs": [
+          {
+            "cacheVersion": {
+              "data": "v"
+            }
+          }
+        ]
+      },
+      "reason": "payload is written as clean literal data; transfer occurs but dependent tainted use does not"
+    },
+    {
+      "id": "cache-env-key",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"KEY=shared-key\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo 'data' > data"
+                },
+                {
+                  "uses": "actions/cache/save@v4",
+                  "with": {
+                    "key": "${{ env.KEY }}",
+                    "path": "data"
+                  }
+                },
+                {
+                  "uses": "actions/cache/restore@v4",
+                  "with": {
+                    "key": "shared-key",
+                    "path": "data"
+                  }
+                },
+                {
+                  "run": "cat data"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false"
+      },
+      "scenario": {
+        "cachePolicy": "github-historical-2025",
+        "runs": [
+          {
+            "cacheVersion": {
+              "data": "v"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cache-key-mismatch",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"KEY=one\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo 'data' > data"
+                },
+                {
+                  "uses": "actions/cache/save@v4",
+                  "with": {
+                    "key": "${{ env.KEY }}",
+                    "path": "data"
+                  }
+                },
+                {
+                  "uses": "actions/cache/restore@v4",
+                  "with": {
+                    "key": "two",
+                    "path": "data"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "true"
+      },
+      "scenario": {
+        "cachePolicy": "github-historical-2025",
+        "runs": [
+          {
+            "cacheVersion": {
+              "data": "v"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "hash-generated-file",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo 'lock' > lock.txt"
+                },
+                {
+                  "run": "echo \"seen=${{ hashFiles('lock.txt') }}\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "558f08ab17103e4aa60b92475675ae7a1eb9e3d1c0c5d7941649ae6b58583991"
+        }
+      ]
+    },
+    {
+      "id": "hash-no-match",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"seen=${{ hashFiles('missing.txt') }}\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": ""
+        }
+      ]
+    },
+    {
+      "id": "hash-unknown-glob",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"seen=${{ hashFiles('**/lock.txt') }}\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [
+        "hashfiles-domain"
+      ]
+    },
+    {
+      "id": "hash-snapshot",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "run": "echo \"seen=${{ hashFiles('lock.txt') }}\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "3a30f29bd013b7cc06f3db7fb28fdb14d515d5fcd7cd6bc8b7dec90e4594791b"
+        }
+      ],
+      "snapshotFiles": {
+        "lock.txt": "snapshot\n"
+      }
+    },
+    {
+      "id": "hash-mutated-file",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "run": "echo 'new' > lock.txt"
+                },
+                {
+                  "run": "echo \"seen=${{ hashFiles('lock.txt') }}\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "6c6732cb67aeee111dc52c19bd9c5534afbb4e46070c2688f12cdffdf42bac07"
+        }
+      ],
+      "snapshotFiles": {
+        "lock.txt": "old\n"
+      }
+    },
+    {
+      "id": "artifact-env-output",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "pull_request",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "uses": "actions/upload-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "data"
+                  }
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "uses": "actions/download-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "restored"
+                  }
+                },
+                {
+                  "run": "set -eu\nrequest=$(tr -d '\\r\\n' < \"$FILE\")\nprintf 'MODE=%s\\n' \"$request\" >> \"$GITHUB_ENV\"",
+                  "env": {
+                    "FILE": "restored/data"
+                  }
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false",
+        "no_use": "false"
+      },
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": "payload"
+        }
+      ],
+      "probeLabels": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "origin": true,
+          "taint": true,
+          "dataDependency": true,
+          "controlDependency": false
+        }
+      ],
+      "scenario": {
+        "runs": [
+          {
+            "checkoutFiles": [
+              "data"
+            ],
+            "checkoutValues": {
+              "data": [
+                "payload\n"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cache-dynamic-path",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"KEY=shared-key\" >> \"$GITHUB_ENV\"\necho \"PATH_VALUE=data\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo 'data' > data"
+                },
+                {
+                  "uses": "actions/cache/save@v4",
+                  "with": {
+                    "key": "${{ env.KEY }}",
+                    "path": "${{ env.PATH_VALUE }}"
+                  }
+                },
+                {
+                  "uses": "actions/cache/restore@v4",
+                  "with": {
+                    "key": "shared-key",
+                    "path": "${{ env.PATH_VALUE }}"
+                  }
+                },
+                {
+                  "run": "cat data"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false"
+      },
+      "scenario": {
+        "cachePolicy": "github-historical-2025",
+        "runs": [
+          {
+            "cacheVersion": {
+              "data": "v"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "cache-post-key-captured",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "run": "echo \"KEY=shared-key\" >> \"$GITHUB_ENV\""
+                },
+                {
+                  "run": "echo 'data' > data"
+                },
+                {
+                  "uses": "actions/cache@v4",
+                  "with": {
+                    "key": "${{ env.KEY }}",
+                    "path": "data"
+                  }
+                },
+                {
+                  "run": "echo \"KEY=changed\" >> \"$GITHUB_ENV\""
+                }
+              ]
+            },
+            "read": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "uses": "actions/cache/restore@v4",
+                  "with": {
+                    "key": "shared-key",
+                    "path": "data"
+                  }
+                },
+                {
+                  "run": "cat data"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false"
+      },
+      "scenario": {
+        "cachePolicy": "github-historical-2025",
+        "runs": [
+          {
+            "cacheVersion": {
+              "data": "v"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "artifact-clean-env-origin",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "uses": "actions/upload-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "data"
+                  }
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "uses": "actions/download-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "restored"
+                  }
+                },
+                {
+                  "run": "set -eu\nrequest=$(tr -d '\\r\\n' < \"$FILE\")\nprintf 'MODE=%s\\n' \"$request\" >> \"$GITHUB_ENV\"",
+                  "env": {
+                    "FILE": "restored/data"
+                  }
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false",
+        "no_use": "true"
+      },
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": "payload"
+        }
+      ],
+      "probeLabels": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "origin": true,
+          "taint": false,
+          "dataDependency": true,
+          "controlDependency": false
+        }
+      ],
+      "scenario": {
+        "runs": [
+          {
+            "checkoutFiles": [
+              "data"
+            ],
+            "checkoutValues": {
+              "data": [
+                "payload\n"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "artifact-env-writer-blocked",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "pull_request",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "uses": "actions/upload-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "data"
+                  }
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "uses": "actions/download-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "restored"
+                  }
+                },
+                {
+                  "run": "set -eu\nrequest=$(tr -d '\\r\\n' < \"$FILE\")\nprintf 'MODE=%s\\n' \"$request\" >> \"$GITHUB_ENV\"",
+                  "env": {
+                    "FILE": "restored/data"
+                  },
+                  "if": false
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false",
+        "no_use": "true"
+      },
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": ""
+        }
+      ],
+      "probeLabels": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "origin": false,
+          "taint": false,
+          "dataDependency": false,
+          "controlDependency": false
+        }
+      ],
+      "scenario": {
+        "runs": [
+          {
+            "checkoutFiles": [
+              "data"
+            ],
+            "checkoutValues": {
+              "data": [
+                "payload\n"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "matrix-include",
+      "workflows": [
+        {
+          "name": "Matrix",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "strategy": {
+                "fail-fast": false,
+                "matrix": {
+                  "value": [
+                    "a"
+                  ],
+                  "include": [
+                    {
+                      "value": "b"
+                    }
+                  ]
+                }
+              },
+              "steps": [
+                {
+                  "run": "echo ok"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_bad_authority": "true"
+      },
+      "expectedDiagnostics": []
+    },
+    {
+      "id": "matrix-exclude",
+      "workflows": [
+        {
+          "name": "Matrix",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "strategy": {
+                "fail-fast": false,
+                "matrix": {
+                  "value": [
+                    "a",
+                    "b"
+                  ],
+                  "exclude": [
+                    {
+                      "value": "b"
+                    }
+                  ]
+                }
+              },
+              "steps": [
+                {
+                  "run": "echo ok"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_bad_authority": "true"
+      },
+      "expectedDiagnostics": []
+    },
+    {
+      "id": "matrix-dynamic-unsupported",
+      "workflows": [
+        {
+          "name": "Matrix",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "strategy": {
+                "fail-fast": false,
+                "matrix": "${{ inputs.matrix }}"
+              },
+              "steps": [
+                {
+                  "run": "echo ok"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_bad_authority": "true"
+      },
+      "expectedDiagnostics": [
+        "matrix"
+      ]
+    },
+    {
+      "id": "input-choice",
+      "workflows": [
+        {
+          "name": "Input",
+          "on": {
+            "workflow_dispatch": {
+              "inputs": {
+                "choice": {
+                  "type": "choice",
+                  "options": [
+                    "a",
+                    "b"
+                  ]
+                }
+              }
+            }
+          },
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "id": "report",
+                  "run": "echo \"seen=${{ inputs.choice == 'a' || inputs.choice == 'b' }}\" >> \"$GITHUB_OUTPUT\""
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [],
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "id": "input-boolean",
+      "workflows": [
+        {
+          "name": "Input",
+          "on": {
+            "workflow_dispatch": {
+              "inputs": {
+                "choice": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "id": "report",
+                  "run": "echo \"seen=${{ inputs.choice == true || inputs.choice == false }}\" >> \"$GITHUB_OUTPUT\""
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [],
+      "probeEquals": [
+        {
+          "job": "work",
+          "step": "report",
+          "output": "seen",
+          "value": "true"
+        }
+      ]
+    },
+    {
+      "id": "input-string-unknown",
+      "workflows": [
+        {
+          "name": "Input",
+          "on": {
+            "workflow_dispatch": {
+              "inputs": {
+                "choice": {
+                  "type": "string",
+                  "default": "a"
+                }
+              }
+            }
+          },
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "id": "report",
+                  "run": "echo \"seen=${{ inputs.choice == 'a' }}\" >> \"$GITHUB_OUTPUT\""
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "expectedDiagnostics": [
+        "context-domain"
+      ]
+    },
+    {
+      "id": "artifact-control-dependency",
+      "workflows": [
+        {
+          "name": "Flow",
+          "on": "pull_request",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "steps": [
+                {
+                  "uses": "actions/checkout@v4"
+                },
+                {
+                  "uses": "actions/upload-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "data"
+                  }
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "steps": [
+                {
+                  "uses": "actions/download-artifact@v4",
+                  "with": {
+                    "name": "payload",
+                    "path": "restored"
+                  }
+                },
+                {
+                  "run": "set -eu\nrequest=$(tr -d '\\r\\n' < \"$FILE\")\nif [ \"$request\" = \"payload\" ]; then\n  result='accepted'\nelse\n  result='rejected'\nfi\nprintf 'MODE=%s\\n' \"$result\" >> \"$GITHUB_ENV\"",
+                  "env": {
+                    "FILE": "restored/data"
+                  }
+                },
+                {
+                  "run": "echo \"seen=$MODE\" >> \"$GITHUB_OUTPUT\"",
+                  "id": "report"
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {
+        "no_transfer": "false",
+        "no_use": "false"
+      },
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": "accepted"
+        }
+      ],
+      "probeLabels": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "origin": true,
+          "taint": true,
+          "dataDependency": false,
+          "controlDependency": true
+        }
+      ],
+      "scenario": {
+        "runs": [
+          {
+            "checkoutFiles": [
+              "data"
+            ],
+            "checkoutValues": {
+              "data": [
+                "payload\n"
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "job-output-after-failure",
+      "workflows": [
+        {
+          "name": "Outputs",
+          "on": "workflow_dispatch",
+          "jobs": {
+            "work": {
+              "runs-on": "ubuntu-latest",
+              "outputs": {
+                "value": "${{ steps.make.outputs.value }}"
+              },
+              "steps": [
+                {
+                  "id": "make",
+                  "run": "echo \"value=retained\" >> \"$GITHUB_OUTPUT\""
+                },
+                {
+                  "run": "exit 1"
+                }
+              ]
+            },
+            "reader": {
+              "runs-on": "ubuntu-latest",
+              "needs": "work",
+              "if": "always()",
+              "steps": [
+                {
+                  "id": "report",
+                  "run": "echo \"seen=${{ needs.work.outputs.value }}\" >> \"$GITHUB_OUTPUT\""
+                }
+              ]
+            }
+          }
+        }
+      ],
+      "expectedProperties": {},
+      "probeEquals": [
+        {
+          "job": "reader",
+          "step": "report",
+          "output": "seen",
+          "value": "retained"
+        }
+      ]
+    }
+  ]
+}

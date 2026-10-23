@@ -21,10 +21,12 @@ python3 tools/workflow_to_smv_v2.py \
   .github/workflows/artifact-a1-unsafe-consumer.yml \
   --output /out/example/a1.smv
 
-python3 -m workflow_model_v2.verification /out/example/a1.smv
+python3 tools/workflow_model_v2/verification.py /out/example/a1.smv
 ```
 
-結果はホストの `outputs/runs/example/` に保存されます．`outputs/` はGit管理外です．`a1.smv.stdout` にpropertyの判定と反例，`a1.smv.map.json` に入力YAMLとの対応を出力します．
+検証用の実ファイルは `tools/workflow_model_v2/verification.py` です．上のコマンドはコンテナ内の `/repo` で実行します．`python3 -m workflow_model_v2.verification` でも同じ処理を呼べますが，こちらはファイル名ではなくPythonのモジュール名を指定する書き方です．
+
+結果はホストの `outputs/runs/example/` に保存されます．`outputs/` はGit管理外の生成結果で，変換器の動作には不要です．不要な実験結果は削除できますが，残したいログ・反例・scenarioは先に別の場所へ保存してください．起動中のmount元である`outputs/runs/`自体は残し，不要な実験directoryだけを整理します．mount元を削除して`/out`へアクセスできなくなった場合は，[保存先とコンテナの再接続手順](docs/container-guide.md#outputsを整理するときの注意と復旧)を参照してください．`a1.smv.log` に実行コマンド・propertyの判定・反例・エラー・実行時間・終了状態，`a1.smv.map.json` に入力YAMLとの対応を出力します．
 
 コンテナに入らずに実行する方法や全評価の手順は[操作手順](docs/container-guide.md)を参照してください．
 

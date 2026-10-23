@@ -1,3 +1,5 @@
+# Shellの認識，Artifactの内容・検証履歴，既定scenarioと明示条件の一致を調べる回帰テスト．
+
 """Container-only regression checks for the stateful v2 model generator."""
 import sys
 import tempfile

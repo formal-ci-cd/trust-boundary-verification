@@ -1,57 +1,216 @@
-"""Run NuSMV explicitly, preserving each model's stdout, stderr and statistics."""
+# NuSMVのコマンド・出力・エラー・時間・終了状態を，1つのログへ保存する．
+"""SMVを検査し，実行記録をmodel.smv.logの1ファイルへまとめる．
+
+CTL検査と到達状態列挙を別phaseで実行し，NuSMVの生出力を読みやすい区切り付きで残す．
+末尾のJSONは出力のbyte位置と実行状態を持ち，集計側が本文を重複保存せず読み出せる．
+既存ログは上書きしない．旧形式の個別ログもread_verificationから読み取れる．
+workflowのShellやGitHub操作は実行しない．
+"""
 from __future__ import annotations
 
 import argparse
+from datetime import datetime, timezone
 import json
 from pathlib import Path
+import re
+import shlex
 import subprocess
+import sys
+import tempfile
 import time
 
+# この区切り以降に実行状態と生出力の位置を記録する．最後の区切りだけを使うため，本文中の同じ文字列とは混同しない．
+_METADATA_MARKER = b'\n=== TBV-VERIFICATION-METADATA-V1 ===\n'
+_LEGACY_SUFFIXES = (
+    '.stdout', '.stderr', '.exitcode', '.seconds', '.timing', '.commands',
+    '.stats.stdout', '.stats.stderr', '.stats.exitcode',
+)
 
-def verify(model, executable='NuSMV'):
+
+def _now():
+    """ログの開始・終了時刻を，timezone付きUTCで返す．"""
+    return datetime.now(timezone.utc).isoformat(timespec='milliseconds')
+
+
+def _write(stream, text):
+    """文字列をUTF-8へ変換して書き，出力位置の単位をbyteにそろえる．"""
+    stream.write(text.encode('utf-8'))
+
+
+def _run_phase(stream, name, command, timeout, input_commands=None):
+    """1回のNuSMV実行を記録し，生出力の位置と終了状態を返す．"""
+    started_at = _now()
+    _write(stream, f'\n=== {name} ===\n開始時刻: {started_at}\n実行コマンド: {shlex.join(command)}\n')
+    if input_commands is not None:
+        # 一時command fileは残さず，その内容をログに埋め込んで再確認できるようにする．
+        _write(stream, '\n[NuSMVへの入力コマンド]\n' + input_commands)
+    _write(stream, '\n[標準出力]\n')
+    stdout_start = stream.tell()
+    started = time.monotonic()
+    timed_out = False
+    # stderrの作業領域はコンテナの一時領域だけに作り，終了・失敗時とも最後にログへ回収する．
+    with tempfile.TemporaryFile() as errors:
+        try:
+            # stdoutは直接ログへ流すため，大きな反例や時間切れ直前の出力も保持できる．
+            result = subprocess.run(command, stdout=stream, stderr=errors, timeout=timeout)
+            process_code = result.returncode
+        except subprocess.TimeoutExpired:
+            process_code = 124
+            timed_out = True
+            errors.write(f'\nTimeout after {timeout} seconds; no reachability verdict.\n'.encode())
+        except OSError as exc:
+            # NuSMVの起動失敗も同じログへ残し，成功したphaseとして扱わない．
+            process_code = 127
+            errors.write(f'\nCannot start NuSMV: {exc}\n'.encode())
+        seconds = time.monotonic() - started
+        stdout_end = stream.tell()
+        _write(stream, '\n[標準エラー・NuSMV診断]\n')
+        stderr_start = stream.tell()
+        errors.seek(0)
+        while block := errors.read(65536):
+            stream.write(block)
+        stderr_end = stream.tell()
+    finished_at = _now()
+    _write(stream, f'\n終了時刻: {finished_at}\nプロセス終了コード: {process_code}\n実行時間（秒）: {seconds:.6f}\n')
+    return dict(
+        name=name, command=command, inputCommands=input_commands,
+        startedAt=started_at, finishedAt=finished_at, seconds=seconds,
+        processExitcode=process_code, exitcode=process_code, timedOut=timed_out,
+        stdout=dict(offset=stdout_start, length=stdout_end - stdout_start),
+        stderr=dict(offset=stderr_start, length=stderr_end - stderr_start),
+    )
+
+
+def _read_text(path):
+    """旧形式の任意ログを読み，未存在なら空文字を返す．"""
+    return path.read_text() if path.exists() else ''
+
+
+def read_verification(model):
+    """新しい統合ログ，または旧sidecarから，集計用の共通辞書を返す．"""
+    model = Path(model)
+    log = Path(str(model) + '.log')
+    if log.exists():
+        raw = log.read_bytes()
+        # 末尾まで書かれていないログは，古い結果にfallbackせず未完了として扱う．
+        body, marker, footer = raw.rpartition(_METADATA_MARKER)
+        if not marker:
+            return dict(format='incomplete', modelCheck=dict(
+                stdout='', stderr='Verification log is incomplete; no reachability verdict.',
+                exitcode=None, seconds=None, timedOut=False,
+            ), reachability=None)
+        metadata = json.loads(footer)
+        if metadata.get('format') != 'tbv-verification-log-v1':
+            raise ValueError('unsupported verification log format: ' + str(log))
+        for key in ('modelCheck', 'reachability'):
+            phase = metadata[key]
+            if phase is None:
+                continue
+            for channel in ('stdout', 'stderr'):
+                span = phase[channel]
+                start, length = span['offset'], span['length']
+                # 位置は本文の範囲内だけを許し，壊れた対応表でfooter等を出力として読まない．
+                if not (isinstance(start, int) and isinstance(length, int) and 0 <= start <= start + length <= len(body)):
+                    raise ValueError('invalid output span in verification log: ' + str(log))
+                phase[channel] = raw[start:start + length].decode('utf-8', errors='replace')
+        return metadata
+
+    # 保存済みの旧9ファイルは変更せず，読取り時だけ新形式と同じキーへそろえる．
+    def legacy_phase(prefix):
+        exit_text = _read_text(Path(str(model) + prefix + '.exitcode')).strip()
+        return dict(
+            stdout=_read_text(Path(str(model) + prefix + '.stdout')),
+            stderr=_read_text(Path(str(model) + prefix + '.stderr')),
+            exitcode=int(exit_text) if exit_text else None,
+            seconds=None, timedOut=exit_text == '124',
+        )
+    check = legacy_phase('')
+    seconds = _read_text(Path(str(model) + '.seconds')).strip()
+    if seconds:
+        check['seconds'] = float(seconds)
+    timing = _read_text(Path(str(model) + '.timing'))
+    match = re.search(r'real\s+(\d+)m\s*([0-9.]+)s', timing)
+    if match:
+        check['seconds'] = int(match[1]) * 60 + float(match[2])
+    stats = legacy_phase('.stats')
+    return dict(format='legacy-sidecars', modelCheck=check, reachability=stats)
+
+
+def verify(model, executable='NuSMV', timeout=120):
+    """CTL検査と状態列挙を実行し，1つのログと2つの終了コードを返す．"""
+    if timeout <= 0:
+        raise ValueError('timeout must be positive')
     model = Path(model).resolve()
     if not model.is_file():
         raise FileNotFoundError(model)
-    outputs = {suffix: Path(str(model) + suffix) for suffix in
-               ('.stdout', '.stderr', '.exitcode', '.seconds', '.timing', '.commands',
-                '.stats.stdout', '.stats.stderr', '.stats.exitcode')}
-    for path in outputs.values():
-        if path.exists():
+    log = Path(str(model) + '.log')
+    # 同じmodelに旧結果が残る場合も，混在・上書きを避けて新しい保存先を要求する．
+    for path in (log, *(Path(str(model) + suffix) for suffix in _LEGACY_SUFFIXES)):
+        if path.exists() or path.is_symlink():
             raise FileExistsError(f'result already exists; use a new output directory: {path}')
+    metadata = dict(
+        format='tbv-verification-log-v1', model=str(model), timeoutSeconds=timeout,
+        invocation=[sys.executable, *sys.argv], startedAt=_now(),
+        modelCheck=None, reachability=None,
+    )
     started = time.monotonic()
-    with outputs['.stdout'].open('x') as stdout, outputs['.stderr'].open('x') as stderr:
-        result = subprocess.run([executable, '-ctt', str(model)], stdout=stdout, stderr=stderr)
-    elapsed = time.monotonic() - started
-    outputs['.exitcode'].write_text(str(result.returncode) + '\n')
-    outputs['.seconds'].write_text(str(int(elapsed)) + '\n')
-    outputs['.timing'].write_text(f'real 0m{elapsed:.6f}s\n')
-    stats_code = None
-    if result.returncode == 0:
-        # NuSMV command syntax accepts a quoted input path.
-        outputs['.commands'].write_text(
-            f'read_model -i {json.dumps(str(model))}\ngo\ncompute_reachable\nprint_reachable_states\nquit\n')
-        with outputs['.stats.stdout'].open('x') as stdout, outputs['.stats.stderr'].open('x') as stderr:
-            stats = subprocess.run([executable, '-source', str(outputs['.commands'])], stdout=stdout, stderr=stderr)
-        stats_code = stats.returncode
-        outputs['.stats.exitcode'].write_text(str(stats_code) + '\n')
-    print(f'NuSMV exit={result.returncode}, stats={stats_code}: {model}', flush=True)
-    return result.returncode, stats_code
+    # 無bufferのbinary fileにし，子プロセスが書いた後のbyte位置も同じfile descriptorで取得する．
+    with log.open('xb', buffering=0) as stream:
+        _write(stream, f'NuSMV 検証ログ\nモデル: {model}\n開始: {metadata["startedAt"]}\n起動: {shlex.join(metadata["invocation"])}\n1回の時間上限（秒）: {timeout}\n')
+        check = _run_phase(stream, 'CTL検査・遷移全域性', [executable, '-ctt', str(model)], timeout)
+        metadata['modelCheck'] = check
+        if check['exitcode'] == 0:
+            # 日本語パスを\\uへ変換せず，NuSMVへUTF-8のパスをそのまま渡す．
+            commands = f'read_model -i {json.dumps(str(model), ensure_ascii=False)}\ngo\ncompute_reachable\nprint_reachable_states\nquit\n'
+            with tempfile.TemporaryDirectory(prefix='tbv-nusmv-') as temporary:
+                command_file = Path(temporary) / 'commands'
+                command_file.write_text(commands)
+                stats = _run_phase(stream, '到達状態数の計算', [executable, '-source', str(command_file)], timeout, commands)
+            # NuSMVは内部エラーでも0で終わる場合があるので，到達状態数の実出力も確認する．
+            # 本文はstdoutの範囲だけを読み，stderrや後続のmetadataをproperty結果へ混ぜない．
+            with log.open('rb') as saved:
+                saved.seek(stats['stdout']['offset'])
+                stdout = saved.read(stats['stdout']['length']).decode('utf-8', errors='replace')
+            counts = re.findall(r'reachable states:\s*([^\n]+)', stdout, re.I)
+            try:
+                nonempty = bool(counts) and float(counts[0].split()[0]) > 0
+            except (ValueError, IndexError):
+                nonempty = False
+            stats['nonemptyReachableSet'] = nonempty
+            if stats['exitcode'] == 0 and not nonempty:
+                stats['exitcode'] = 1
+                stats['diagnostic'] = 'NuSMV returned 0 but no positive reachable-state count was produced.'
+                _write(stream, '\n検証支援の診断: ' + stats['diagnostic'] + '\n判定用終了コード: 1\n')
+            metadata['reachability'] = stats
+        metadata['finishedAt'] = _now()
+        metadata['totalSeconds'] = time.monotonic() - started
+        stats = metadata['reachability']
+        stats_code = stats['exitcode'] if stats else None
+        _write(stream, f'\n=== 全体の終了状態 ===\nCTL検査: {check["exitcode"]}\n到達状態数の計算: {stats_code}\n合計実行時間（秒）: {metadata["totalSeconds"]:.6f}\n')
+        # 集計用の情報は同じログの末尾へ置き，別のJSONや時間fileを作らない．
+        stream.write(_METADATA_MARKER)
+        _write(stream, json.dumps(metadata, ensure_ascii=False, indent=2) + '\n')
+    print(f'NuSMV exit={check["exitcode"]}, stats={stats_code}; log={log}', flush=True)
+    return check['exitcode'], stats_code
 
 
 def main():
+    """単一SMVまたはinventory全体を検証するCLI．"""
     parser = argparse.ArgumentParser(description=__doc__)
+    # Path/floatは引数の文字列を変換し，存在や正の時間はverifyで別途確認する．
     parser.add_argument('target', type=Path, help='one .smv file, or an evaluation directory containing inventory.json')
+    parser.add_argument('--timeout', type=float, default=120, help='seconds allowed per NuSMV invocation; timeout is incomplete, not safe')
     args = parser.parse_args()
     try:
         if args.target.is_dir():
             inventory = json.loads((args.target / 'inventory.json').read_text())
             failed = False
             for item in inventory:
-                code, stats_code = verify(args.target / item['model'])
+                code, stats_code = verify(args.target / item['model'], timeout=args.timeout)
                 intentional = item['id'] == 'legacy-nusmv-invalid-input'
-                failed |= (code == 0) if intentional else (code != 0 or stats_code != 0)
+                failed |= code == 0 if intentional else code != 0 or stats_code != 0
             return int(failed)
-        code, stats_code = verify(args.target)
+        code, stats_code = verify(args.target, timeout=args.timeout)
         return int(code != 0 or stats_code != 0)
     except (OSError, ValueError) as exc:
         parser.error(str(exc))

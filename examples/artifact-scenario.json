@@ -1,0 +1,53 @@
+{
+  "runs": [
+    {
+      "id": "run0",
+      "event": "pull_request",
+      "activity": "opened",
+      "branch": "main",
+      "scope": "refs/pull/1/merge",
+      "repository": "bounded/repository",
+      "defaultBranch": "refs/heads/main",
+      "baseBranch": "refs/heads/main",
+      "fork": true,
+      "sendWriteTokens": false,
+      "defaultBranchWorkflow": true,
+      "refType": "branch",
+      "runnerOS": "Linux",
+      "runnerArch": "X64",
+      "changedPaths": [],
+      "diffComplete": true,
+      "checkoutFiles": [
+        "examples/payload.txt"
+      ],
+      "checkoutValues": {
+        "examples/payload.txt": [
+          "payload\n"
+        ]
+      }
+    },
+    {
+      "id": "run1",
+      "event": "workflow_run",
+      "activity": "completed",
+      "branch": "main",
+      "scope": "refs/heads/main",
+      "repository": "bounded/repository",
+      "defaultBranch": "refs/heads/main",
+      "baseBranch": "refs/heads/main",
+      "fork": false,
+      "sendWriteTokens": false,
+      "defaultBranchWorkflow": true,
+      "refType": "branch",
+      "runnerOS": "Linux",
+      "runnerArch": "X64",
+      "changedPaths": [],
+      "diffComplete": true,
+      "checkoutFiles": [],
+      "checkoutValues": {},
+      "upstreamRun": "run0",
+      "upstreamName": "Artifact Producer"
+    }
+  ],
+  "defaultContext": "synthetic finite contexts inferred from declared events and closed file operations; not observed GitHub runs"
+}

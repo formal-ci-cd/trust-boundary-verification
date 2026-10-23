@@ -1,0 +1,23 @@
+# 同じPR由来のArtifactを取得するが，内容を利用しない対照例．
+name: Artifact Safe Consumer
+on:
+  workflow_run:
+    workflows: [Artifact Producer]
+    types: [completed]
+permissions:
+  actions: read
+jobs:
+  consume:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: payload
+          path: payload
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+      # PR由来の場合は読取りstepを実行しない．Artifactの取得は共通で行う．
+      - if: ${{ github.event.workflow_run.event != 'pull_request' }}
+        run: value=$(tr -d '\r\n' < "$ARTIFACT_FILE")
+        env:
+          ARTIFACT_FILE: payload/payload.txt
